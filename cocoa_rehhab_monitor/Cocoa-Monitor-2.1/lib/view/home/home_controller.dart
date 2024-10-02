@@ -16,14 +16,18 @@ import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/po_location.
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/controller/utils/connection_verify.dart';
 import 'package:cocoa_monitor/controller/utils/dio_singleton_instance.dart';
+import 'package:cocoa_monitor/view/contractor_certificate_history/contractor_certificate_history.dart';
+import 'package:cocoa_monitor/view/farm_history/farm_history.dart';
 import 'package:cocoa_monitor/view/global_components/custom_button.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
+import 'package:cocoa_monitor/view/initial_treatment_monitoring_history/initial_treatment_monitoring_history.dart';
 import 'package:cocoa_monitor/view/polygon_drawing_tool/polygon_drawing_tool.dart';
 import 'package:cocoa_monitor/view/utils/double_value_trimmer.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:cocoa_monitor/view/utils/user_current_location.dart';
 import 'package:cocoa_monitor/view/utils/view_constants.dart';
+import 'package:cocoa_monitor/view/workdone_verification_history/certificate_verification_history.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'package:flutter/material.dart';
@@ -37,9 +41,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
+import '../../controller/entity/cocoa_rehub_monitor/map_farm.dart';
 import '../../controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
+import '../add_initial_treatment_monitoring_record/add_initial_treatment_monitoring_record.dart';
+import '../add_map_farm/map_farm.dart';
+import '../add_personnel/add_personnel.dart';
+import '../add_workdone_certificate_record/add_workdone_certificate_record.dart';
+import '../add_workdone_certificate_verification_record/add_workdone_verification_certificate_record.dart';
 import '../global_components/text_input_decoration.dart';
+import '../personnel_history/personnel_history.dart';
 import '../update_compulsion/mandatory_update.dart';
+import 'components/workdone_certificate_options_bottomsheet.dart';
 
 class HomeController extends GetxController {
   GlobalController globalController = Get.find();
@@ -47,6 +59,10 @@ class HomeController extends GetxController {
   var activeButtonIndex = (-1).obs;
 
   Globals globals = Globals();
+
+  Rx<int> check = 0.obs;
+
+  Rx<String> title = ''.obs;
 
   late BuildContext homeScreenContext;
 
@@ -85,6 +101,111 @@ class HomeController extends GetxController {
     Timer.periodic(const Duration(minutes: 5), (timer) {
       navigateToAlertScreen();
     });
+  }
+
+  setTitle() {
+    switch (check.value) {
+      case 0:
+        title.value = 'Initial Treatment';
+        break;
+      case 1:
+        title.value = 'Maintenance';
+        break;
+      case 2:
+        title.value = 'Establishment';
+        break;
+      case 3:
+        title.value = 'Contractor\'s Certificate';
+        break;
+      case 4:
+        title.value = 'Farm Mapping';
+        break;
+      case 5:
+        title.value = 'Verification Form';
+        break;
+      case 6:
+        title.value = 'Rehab Assistant';
+    }
+  }
+
+  navigateToPageForAddingData() {
+    switch (check.value) {
+        /// initial treatment
+      case 0:
+        Get.to(() => AddInitialTreatmentMonitoringRecord(
+              allMonitorings: AllMonitorings.InitialTreatment,
+            ));
+        break;
+        /// maintenance
+      case 1:
+        Get.to(() => AddInitialTreatmentMonitoringRecord(
+              allMonitorings: AllMonitorings.Maintenance,
+            ));
+        break;
+        /// Establishment
+      case 2:
+        Get.to(() => AddInitialTreatmentMonitoringRecord(
+              allMonitorings: AllMonitorings.Establishment,
+            ));
+        break;
+        /// contractor's certificate
+      case 3:
+        Get.to(() => AddContractorCertificateRecord(
+        ));
+        break;
+        /// map farms
+      case 4:
+        Get.to(() => MapNewFarm(
+        ));
+        break;
+        /// verification form
+      case 5:
+        Get.to(() => AddContratorCertificateVerificationRecord());
+        break;
+        /// rehab assistant
+      case 6: Get.to(() => AddPersonnel());
+        break;
+    }
+  }
+
+  navigateToPageForHistory() {
+    switch (check.value) {
+    /// initial treatment
+      case 0:
+        Get.to(() => InitialTreatmentMonitoringHistory(
+          allMonitorings: AllMonitorings.InitialTreatment,
+        ));
+        break;
+    /// maintenance
+      case 1:
+        Get.to(() => InitialTreatmentMonitoringHistory(
+          allMonitorings: AllMonitorings.Maintenance,
+        ));
+        break;
+    /// Establishment
+      case 2:
+        Get.to(() => InitialTreatmentMonitoringHistory(
+          allMonitorings: AllMonitorings.Establishment,
+        ));
+        break;
+    /// contractor's certificate
+      case 3:
+        Get.to(() => ContractorCertificateHistory(
+        ));
+        break;
+    /// map farms
+      case 4:
+        Get.to(() => MapFarmHistory(
+        ));
+        break;
+    /// verification form
+      case 5:
+        Get.to(() => CertificateVerificationHistory());
+        break;
+    /// rehab assistant
+      case 6: Get.to(() => PersonnelHistory());
+      break;
+    }
   }
 
   void navigateToAlertScreen() async {

@@ -21,6 +21,7 @@ import '../reports/generate_payment_report_form.dart';
 import '../submit_issue/submit_issue_tab.dart';
 import '../widgets/main_drawer.dart';
 import 'components/grid_container.dart';
+import 'components/grid_container_2.dart';
 import 'home_controller.dart';
 
 class Home extends StatefulWidget {
@@ -30,7 +31,7 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home>  with TickerProviderStateMixin{
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   AnimationController? _controller;
   Animation<double>? _animation;
   AnimationStatus _animationStatus = AnimationStatus.dismissed;
@@ -42,19 +43,20 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 50));
     _animation = Tween(end: 1.0, begin: 0.0).animate(_controller!)
-    ..addListener(() {
-      setState(() {});
-    })
-    ..addStatusListener((status) {
-      _animationStatus = status;
-    });
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        _animationStatus = status;
+      });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Fetch screen dimensions
+    homeController.homeScreenContext = context;
     final Size screenSize = MediaQuery.of(context).size;
     final double screenHeight = screenSize.height;
     final double screenWidth = screenSize.width;
@@ -277,7 +279,8 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
 
             /// Overlapping White Container
             Positioned(
-              bottom: screenHeight * 0.4, // Positioned above the black container for overlap
+              bottom: screenHeight *
+                  0.4, // Positioned above the black container for overlap
               left: AppPadding.horizontal * 0.5, // Adjust margin from sides
               right: AppPadding.horizontal * 0.5,
               child: AnimatedBuilder(
@@ -293,35 +296,37 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
                       ..rotateY(rotation),
                     child: isSecondHalf
                         ? Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()..rotateY(pi),
-                      child: _buildSecondContainer(),
-                    )
+                            alignment: Alignment.center,
+                            transform: Matrix4.identity()..rotateY(pi),
+                            child: _buildSecondContainer(),
+                          )
                         : _buildFirstContainer(),
                   );
                 },
               ),
             ),
 
-
             /// bottom navigation bar
             Positioned(
-              bottom: 20,
+              bottom: 0,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: AppPadding.horizontal),
+                // margin: EdgeInsets.symmetric(horizontal: AppPadding.horizontal),
                 height: 70,
-                width: screenWidth - (AppPadding.horizontal * 2),
+                width: screenWidth,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                   color: AppColor.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Colors.grey.withOpacity(0.2),
+                  //     spreadRadius: 2,
+                  //     blurRadius: 5,
+                  //     offset: const Offset(0, 3),
+                  //   ),
+                  // ],
                 ),
                 child: Row(
                   children: [
@@ -476,11 +481,19 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
     final double screenWidth = screenSize.width;
     return Container(
       padding: EdgeInsets.all(10),
-      height: screenHeight * 0.38, // Adjust height of the white container
+      height: screenHeight * 0.38,
       width: screenWidth - (AppPadding.horizontal * 2),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: AppColor.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -490,6 +503,8 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
               label: "Initial\nTreatment",
               image: "assets/images/cocoa_monitor/chainsaw.png",
               onTap: () {
+                homeController.check.value = 0;
+                homeController.setTitle();
                 if (_animationStatus == AnimationStatus.dismissed) {
                   _controller!.forward();
                 } else {
@@ -499,12 +514,30 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
             ),
             Spacer(),
             GridContainer(
+              onTap: () {
+                homeController.check.value = 1;
+                homeController.setTitle();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
               gap: 10,
               label: "Maintenance",
               image: "assets/images/cocoa_monitor/binoculars.png",
             ),
             Spacer(),
             GridContainer(
+              onTap: () {
+                homeController.check.value = 2;
+                homeController.setTitle();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
               gap: 10,
               label: "Establishment",
               image: "assets/images/cocoa_monitor/cocoa.png",
@@ -513,18 +546,45 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
           Spacer(),
           Row(children: [
             GridContainer(
+              onTap: () {
+                homeController.check.value = 3;
+                homeController.setTitle();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
               gap: 10,
               label: "Contractor's\nCertificate",
               image: "assets/images/cocoa_monitor/note.png",
             ),
             Spacer(),
             GridContainer(
+              onTap: () {
+                homeController.check.value = 4;
+                homeController.setTitle();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
               gap: 10,
               label: "Map\nFarms",
               image: "assets/images/farmhouse.png",
             ),
             Spacer(),
             GridContainer(
+              onTap: () {
+                homeController.check.value = 5;
+                homeController.setTitle();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
               gap: 10,
               label: "Verification\nForm",
               image: "assets/images/cocoa_monitor/note.png",
@@ -533,18 +593,40 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
           Spacer(),
           Row(children: [
             GridContainer(
+              onTap: () {
+                homeController.check.value = 6;
+                homeController.setTitle();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
               gap: 10,
               label: "Rehab\nAssistant",
               image: "assets/images/cocoa_monitor/farmer.png",
             ),
             Spacer(),
             GridContainer(
+              onTap: () {
+                Get.to(() => const AssignedFarmsMap(),
+                    transition: Transition.fadeIn);
+              },
               gap: 10,
               label: "Assigned\nFarms",
               image: "assets/images/cocoa_monitor/farmer.png",
             ),
             Spacer(),
             GridContainer(
+              onTap: () {
+                Get.to(() => const AssignedOutbreaksMap(),
+                    transition: Transition.fadeIn);
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
               gap: 10,
               label: "Assigned\nOutbreaks",
               image: "assets/images/cocoa_monitor/farmer.png",
@@ -566,39 +648,100 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: AppColor.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Spacer(),
-          Text(
-            "Initial Treatment",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          Spacer(),
-          Row(children: [
-            /// Initial Treatment
-            GridContainer(
-              onTap: () {
+          TextButton(
+              onPressed: () {
                 if (_animationStatus == AnimationStatus.dismissed) {
                   _controller!.forward();
                 } else {
                   _controller!.reverse();
                 }
               },
-              label: "Initial\nTreatment",
-              image: "assets/images/cocoa_monitor/chainsaw.png",
+              child: Text(
+                "Back",
+                style: TextStyle(color: AppColor.black),
+              )),
+          Spacer(),
+          GetBuilder(
+              init: homeController,
+              builder: (_) {
+                return Text(
+                  homeController.title.value,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                );
+              }),
+          // Obx(
+          //   () => Text(
+          //     homeController.title.value,
+          //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+          Spacer(),
+          Row(children: [
+            /// Initial Treatment
+            GridContainer2(
+              color: AppColor().primaryMaterial.shade50,
+              borderColor: AppColor.black,
+              label: "Add",
+              icon: Icons.add_circle_outline_sharp,
+              onTap: () {
+                homeController.navigateToPageForAddingData();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
             ),
             Spacer(),
-            GridContainer(
-              gap: 10,
-              label: "Maintenance",
-              image: "assets/images/cocoa_monitor/binoculars.png",
+            GridContainer2(
+              color: AppColor().primaryMaterial.shade50,
+              borderColor: AppColor.black,
+              label: "History",
+              icon: Icons.history_rounded,
+              onTap: () {
+                homeController.navigateToPageForHistory();
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _controller!.forward();
+                } else {
+                  _controller!.reverse();
+                }
+              },
             ),
             Spacer(),
-            GridContainer(
-              gap: 10,
-              label: "Establishment",
-              image: "assets/images/cocoa_monitor/cocoa.png",
+            GridContainer2(
+              color: AppColor().primaryMaterial.shade50,
+              borderColor: AppColor.black,
+              label: "Sync",
+              icon: Icons.sync_sharp,
+              onTap: () {
+                homeController.globals.newConfirmDialog(
+                    title: 'Activity Data',
+                    context: context,
+                    content: const Text(
+                      'Are you sure you want to sync data to the server?',
+                      style: TextStyle(fontSize: 13),
+                      textAlign: TextAlign.center,
+                    ),
+                    okayTap: () async {
+                      Get.back();
+                      homeController.syncAllMonitorings();
+                    },
+                    cancelTap: () {
+                      Get.back();
+                    });
+              },
             ),
           ]),
           Spacer(),
@@ -606,5 +749,4 @@ class _HomeState extends State<Home>  with TickerProviderStateMixin{
       ),
     );
   }
-
 }

@@ -13,14 +13,14 @@ import '../global_components/text_input_decoration.dart';
 import '../utils/style.dart';
 import 'map_farm_controller.dart';
 
-class MapFarm extends StatefulWidget {
-  const MapFarm({Key? key}) : super(key: key);
+class MapNewFarm extends StatefulWidget {
+  const MapNewFarm({Key? key}) : super(key: key);
 
   @override
-  State<MapFarm> createState() => _MapFarmState();
+  State<MapNewFarm> createState() => _MapNewFarmState();
 }
 
-class _MapFarmState extends State<MapFarm> {
+class _MapNewFarmState extends State<MapNewFarm> {
   GlobalController globalController = Get.find();
   MapFarmController mapFarmController = Get.put(MapFarmController());
 

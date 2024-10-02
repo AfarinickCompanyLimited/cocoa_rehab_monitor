@@ -236,6 +236,9 @@ flutter:
     - assets/images/leaf.png
     - assets/icon/group.svg
     - assets/images/farmhouse.png
+    - assets/images/add.png
+    - assets/images/history.png
+    - assets/images/sync.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

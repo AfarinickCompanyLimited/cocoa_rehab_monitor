@@ -98,7 +98,7 @@ class MapFarmsMenuOptionsBottomSheet extends StatelessWidget {
                   icon: appIconAdd(color: AppColor().primaryMaterial, size: 20),
                   onTap: () {
                     Get.back();
-                    Get.to(() => const MapFarm(),
+                    Get.to(() => const MapNewFarm(),
                         transition: Transition.topLevel);
                   },
                 ),

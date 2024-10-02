@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../utils/style.dart';
 
-class GridContainer extends StatefulWidget {
-  final String? image;
+class GridContainer2 extends StatefulWidget {
   final String? label;
   final double? gap;
   final VoidCallback? onTap;
   final Color? color, borderColor;
+  final IconData? icon;
 
 
-  const GridContainer({
+  const GridContainer2({
     Key? key,
-    this.image,
     this.label,
     this.gap,
-    this.onTap, this.color, this.borderColor,
+    this.onTap, this.color, this.borderColor, this.icon,
   }) : super(key: key);
 
   @override
-  _GridContainerState createState() => _GridContainerState();
+  _GridContainer2State createState() => _GridContainer2State();
 }
 
-class _GridContainerState extends State<GridContainer> with SingleTickerProviderStateMixin {
+class _GridContainer2State extends State<GridContainer2> with SingleTickerProviderStateMixin {
 
   // AnimationController to control the animation
   late AnimationController _controller;
@@ -66,19 +65,17 @@ class _GridContainerState extends State<GridContainer> with SingleTickerProvider
           decoration: BoxDecoration(
             color: widget.color??AppColor.black,
             borderRadius: BorderRadius.all(Radius.circular(20)),
+            border: Border.all(color: widget.borderColor??AppColor.white, width: 1),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 5),
-              Image.asset(
-                widget.image!,
-                height: 30,
-                width: 30,
-              ),
-              SizedBox(height: widget.gap ?? 5),
+              Icon(widget.icon, color: AppColor.black, size: 30),
+              SizedBox(height: 10),
               Text(
                 widget.label ?? "",
-                style: TextStyle(color: AppColor.white, fontSize: 12),
+                style: TextStyle(color: AppColor.black, fontSize: 12),
                 textAlign: TextAlign.center,
               ),
             ],
