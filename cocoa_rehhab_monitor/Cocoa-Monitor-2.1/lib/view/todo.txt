@@ -1,0 +1,15 @@
+TODO :: IOS
+
+google_maps_flutter
+Location access
+Internet access
+Firebase app setup
+
+Firebase messaging :: On IOS, user permission must be requested first
+https://firebase.flutter.dev/docs/messaging/usage
+
+Map launcher not opening on IOS === https://stackoverflow.com/questions/47046637/open-google-maps-app-if-available-with-flutter
+
+
+TODO :: GENERAL
+Restrict Google API Key

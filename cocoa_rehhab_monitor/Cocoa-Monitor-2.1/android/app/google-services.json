@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "47857378119",
+    "project_id": "cocoa-rehab",
+    "storage_bucket": "cocoa-rehab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47857378119:android:aa84a8fdaa14da5a42e262",
+        "android_client_info": {
+          "package_name": "com.afarinick.kumad.cocoamonitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47857378119-j068jni9vtekuhp2l2sdalfihhu3g1u6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.afarinick.kumad.cocoamonitor",
+            "certificate_hash": "7258281f524d5c698176be064b6ac3e58eca398a"
+          }
+        },
+        {
+          "client_id": "47857378119-plj45mm07l85efbgbm4u4he6c64kh2fa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhRLVYDN2Ql5rhb66VaxzesQcEYp-LsBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47857378119-plj45mm07l85efbgbm4u4he6c64kh2fa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "47857378119-4de8gbd33r826fi6h2ktqb9tb4btkad9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.afarinick.kumad.cocoamonitor"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

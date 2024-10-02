@@ -1,0 +1,22 @@
+
+
+// Started recording on Friday, 1 December, 2023 @ 18:43 hrs
+
+modified Build No. from ``11`` to ``11.1`` to track changes by me in apks
+
+==> spellin correction from ``Activuty`` to ``Activity`` in following files (4)
+ + lib\view\home\components\
+    -- initial_treatment_options_bottomsheet.dart
+    -- menu_options_bottomsheet.dart
+    -- workdone_certificate_options_bottomsheet.dart
+    -- workdone_verification_options_bottomsheet.dart
+
+
+
+
+
+
+
+
+
+    MICHAEL	BAFFOE	MALE	July 28, 1995	0246828671
