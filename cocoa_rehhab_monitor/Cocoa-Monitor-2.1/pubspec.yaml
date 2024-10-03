@@ -239,6 +239,8 @@ flutter:
     - assets/images/add.png
     - assets/images/history.png
     - assets/images/sync.png
+    - assets/images/field.png
+    - assets/images/outbreak.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

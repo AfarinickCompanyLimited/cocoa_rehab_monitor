@@ -33,7 +33,7 @@ class _GridContainerState extends State<GridContainer> with SingleTickerProvider
 
     // Initialize the AnimationController
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 

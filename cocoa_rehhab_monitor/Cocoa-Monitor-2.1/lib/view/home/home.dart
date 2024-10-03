@@ -310,8 +310,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             Positioned(
               bottom: 0,
               child: Container(
-                // margin: EdgeInsets.symmetric(horizontal: AppPadding.horizontal),
-                height: 70,
+                padding: EdgeInsets.only(top: 10),
+                height: 90,
                 width: screenWidth,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
@@ -331,94 +331,114 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 child: Row(
                   children: [
                     Spacer(),
-                    Obx(() => FloatingActionButton(
-                          tooltip: 'Submit An Issue',
-                          backgroundColor:
-                              homeController.activeButtonIndex.value == 0
-                                  ? AppColor.black // Active color
-                                  : AppColor.white, // Default color
-                          child: appIconComment(
-                              color: homeController.activeButtonIndex.value == 0
-                                  ? AppColor.white // Active icon color
-                                  : AppColor.black, // Default icon color
-                              size: 25),
-                          onPressed: () {
-                            homeController.activeButtonIndex.value = 0;
-                            Get.to(() => const IssueTabScreen(),
-                                transition: Transition.fadeIn);
-                          },
-                        )),
-                    Spacer(),
-                    Obx(() => FloatingActionButton(
-                          tooltip: 'Submit Leave Request',
-                          backgroundColor:
-                              homeController.activeButtonIndex.value == 1
-                                  ? AppColor.black
-                                  : AppColor.white,
-                          child: appIconLeaveRequest(
-                              color: homeController.activeButtonIndex.value == 1
-                                  ? AppColor.white
-                                  : AppColor.black,
-                              size: 25),
-                          onPressed: () {
-                            homeController.activeButtonIndex.value = 1;
-                            Get.to(() => const LeaveRequest(),
-                                transition: Transition.fadeIn);
-                          },
-                        )),
-                    Spacer(),
-                    Obx(() => FloatingActionButton(
-                          tooltip: 'RA / RT List',
-                          backgroundColor:
-                              homeController.activeButtonIndex.value == 2
-                                  ? AppColor.black
-                                  : AppColor.white,
-                          child: appIconGroup(
-                              color: homeController.activeButtonIndex.value == 2
-                                  ? AppColor.white
-                                  : AppColor.black,
-                              size: 40),
-                          onPressed: () {
-                            homeController.activeButtonIndex.value = 2;
-                            Get.to(() => const RAList(),
-                                transition: Transition.fadeIn);
-                          },
-                        )),
-                    Spacer(),
-                    Obx(() => FloatingActionButton(
-                          tooltip: 'Log Location',
-                          backgroundColor:
-                              homeController.activeButtonIndex.value == 3
-                                  ? AppColor.black
-                                  : AppColor.white,
-                          child: homeController.isLoading.value
-                              ? CircularProgressIndicator()
-                              : appIconMarker(
-                                  color:
-                                      homeController.activeButtonIndex.value ==
-                                              3
-                                          ? AppColor.white
-                                          : AppColor.black,
+                    Obx(() => Column(
+                      children: [
+                        FloatingActionButton(
+                              tooltip: 'Submit An Issue',
+                              backgroundColor:
+                                  homeController.activeButtonIndex.value == 0
+                                      ? AppColor.black // Active color
+                                      : AppColor.white, // Default color
+                              child: appIconComment(
+                                  color: homeController.activeButtonIndex.value == 0
+                                      ? AppColor.white // Active icon color
+                                      : AppColor.black, // Default icon color
                                   size: 25),
-                          onPressed: () {
-                            homeController.activeButtonIndex.value = 3;
-                            homeController.globals.newConfirmDialog(
-                                title: 'Farm Location Data',
-                                context: context,
-                                content: const Text(
-                                  'Are you sure you want to save your current location?',
-                                  style: TextStyle(fontSize: 13),
-                                  textAlign: TextAlign.center,
-                                ),
-                                okayTap: () async {
-                                  Get.back();
-                                  homeController.saveUserLocation();
-                                },
-                                cancelTap: () {
-                                  Get.back();
-                                });
-                          },
-                        )),
+                              onPressed: () {
+                                homeController.activeButtonIndex.value = 0;
+                                Get.to(() => const IssueTabScreen(),
+                                    transition: Transition.fadeIn);
+                              },
+                            ),
+                        Text("Issues")
+                      ],
+                    )),
+                    Spacer(),
+                    Obx(() => Column(
+                      children: [
+                        FloatingActionButton(
+                              tooltip: 'Submit Leave Request',
+                              backgroundColor:
+                                  homeController.activeButtonIndex.value == 1
+                                      ? AppColor.black
+                                      : AppColor.white,
+                              child: appIconLeaveRequest(
+                                  color: homeController.activeButtonIndex.value == 1
+                                      ? AppColor.white
+                                      : AppColor.black,
+                                  size: 25),
+                              onPressed: () {
+                                homeController.activeButtonIndex.value = 1;
+                                Get.to(() => const LeaveRequest(),
+                                    transition: Transition.fadeIn);
+                              },
+                            ),
+                        Text("Leave")
+                      ],
+                    )),
+                    Spacer(),
+                    Obx(() => Column(
+                      children: [
+                        FloatingActionButton(
+                              tooltip: 'RA / RT List',
+                              backgroundColor:
+                                  homeController.activeButtonIndex.value == 2
+                                      ? AppColor.black
+                                      : AppColor.white,
+                              child: appIconGroup(
+                                  color: homeController.activeButtonIndex.value == 2
+                                      ? AppColor.white
+                                      : AppColor.black,
+                                  size: 40),
+                              onPressed: () {
+                                homeController.activeButtonIndex.value = 2;
+                                Get.to(() => const RAList(),
+                                    transition: Transition.fadeIn);
+                              },
+                            ),
+                        Text("RA/RT")
+                      ],
+                    )),
+                    Spacer(),
+                    Obx(() => Column(
+                      children: [
+                        FloatingActionButton(
+                              tooltip: 'Log Location',
+                              backgroundColor:
+                                  homeController.activeButtonIndex.value == 3
+                                      ? AppColor.black
+                                      : AppColor.white,
+                              child: homeController.isLoading.value
+                                  ? CircularProgressIndicator()
+                                  : appIconMarker(
+                                      color:
+                                          homeController.activeButtonIndex.value ==
+                                                  3
+                                              ? AppColor.white
+                                              : AppColor.black,
+                                      size: 25),
+                              onPressed: () {
+                                homeController.activeButtonIndex.value = 3;
+                                homeController.globals.newConfirmDialog(
+                                    title: 'Farm Location Data',
+                                    context: context,
+                                    content: const Text(
+                                      'Are you sure you want to save your current location?',
+                                      style: TextStyle(fontSize: 13),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    okayTap: () async {
+                                      Get.back();
+                                      homeController.saveUserLocation();
+                                    },
+                                    cancelTap: () {
+                                      Get.back();
+                                    });
+                              },
+                            ),
+                        Text("Location")
+                      ],
+                    )),
                     Spacer(),
                   ],
                 ),
@@ -614,22 +634,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               },
               gap: 10,
               label: "Assigned\nFarms",
-              image: "assets/images/cocoa_monitor/farmer.png",
+              image: "assets/images/field.png",
             ),
             Spacer(),
             GridContainer(
               onTap: () {
                 Get.to(() => const AssignedOutbreaksMap(),
                     transition: Transition.fadeIn);
-                if (_animationStatus == AnimationStatus.dismissed) {
-                  _controller!.forward();
-                } else {
-                  _controller!.reverse();
-                }
               },
               gap: 10,
               label: "Assigned\nOutbreaks",
-              image: "assets/images/cocoa_monitor/farmer.png",
+              image: "assets/images/outbreak.png",
             ),
           ])
         ],
