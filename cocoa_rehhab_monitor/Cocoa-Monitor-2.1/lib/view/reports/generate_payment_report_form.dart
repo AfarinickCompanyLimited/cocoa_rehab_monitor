@@ -121,27 +121,29 @@ class _GeneratePaymentReportFormState extends State<GeneratePaymentReportForm> {
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   hintText: 'Select Week',
+                                  hintStyle: TextStyle(color: AppColor.black),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.grey,
+                                    borderSide: BorderSide(
+                                      color: AppColor.black,
                                       width: 1.5,
                                     ),
                                   ),
                                   isDense: true,
-                                  filled: true,
-                                  fillColor: Colors.grey,
-                                  contentPadding: const EdgeInsets.all(10.0)),
+                                  // filled: true,
+                                  // fillColor: Colors.grey.shade100,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0)),
                               value: _selectedWeek,
                               onChanged: (String? value) {
                                 setState(() {
@@ -166,27 +168,27 @@ class _GeneratePaymentReportFormState extends State<GeneratePaymentReportForm> {
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   hintText: 'Select Month',
+                                  hintStyle: TextStyle(color: AppColor.black),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.grey,
+                                    borderSide: BorderSide(
+                                      color: AppColor.black,
                                       width: 1.5,
                                     ),
                                   ),
                                   isDense: true,
-                                  filled: true,
-                                  fillColor: Colors.grey,
-                                  contentPadding: const EdgeInsets.all(10.0)),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0)),
                               value: _selectedMonth,
                               onChanged: (String? value) {
                                 setState(() {
@@ -211,27 +213,27 @@ class _GeneratePaymentReportFormState extends State<GeneratePaymentReportForm> {
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   hintText: 'Select Year',
+                                  hintStyle: TextStyle(color: AppColor.black),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.grey,
+                                    borderSide: BorderSide(
+                                      color: AppColor.black,
                                       width: 1.5,
                                     ),
                                   ),
                                   isDense: true,
-                                  filled: true,
-                                  fillColor: Colors.grey,
-                                  contentPadding: const EdgeInsets.all(10.0)),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0)),
                               value: _selectedYear,
                               onChanged: (String? value) {
                                 setState(() {
@@ -269,7 +271,7 @@ class _GeneratePaymentReportFormState extends State<GeneratePaymentReportForm> {
                                 _submit();
                               },
                               child: Text(
-                                'Submit',
+                                'Generate',
                                 style: TextStyle(
                                     color: AppColor.white, fontSize: 14),
                               ),

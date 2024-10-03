@@ -122,27 +122,29 @@ class _GenerateDetailedReportFormState
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   hintText: 'Select Week',
+                                  hintStyle: TextStyle(
+                                    color: AppColor.black,
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide:  BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.grey,
+                                    borderSide:  BorderSide(
+                                      color: AppColor.black,
                                       width: 1.5,
                                     ),
                                   ),
                                   isDense: true,
-                                  filled: true,
-                                  fillColor: Colors.grey,
-                                  contentPadding: const EdgeInsets.all(10.0)),
+
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0)),
                               value: _selectedWeek,
                               onChanged: (String? value) {
                                 setState(() {
@@ -169,25 +171,24 @@ class _GenerateDetailedReportFormState
                                   hintText: 'Select Month',
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide:  BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide:  BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.grey,
+                                    borderSide:  BorderSide(
+                                      color: AppColor.black,
                                       width: 1.5,
                                     ),
                                   ),
                                   isDense: true,
-                                  filled: true,
-                                  fillColor: Colors.grey,
-                                  contentPadding: const EdgeInsets.all(10.0)),
+
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0)),
                               value: _selectedMonth,
                               onChanged: (String? value) {
                                 setState(() {
@@ -212,27 +213,29 @@ class _GenerateDetailedReportFormState
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   hintText: 'Select Year',
+                                  hintStyle: TextStyle(
+                                    color: AppColor.black,
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide:  BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.5),
+                                    borderSide:  BorderSide(
+                                        color: AppColor.black, width: 1.5),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.grey,
+                                    borderSide:  BorderSide(
+                                      color: AppColor.black,
                                       width: 1.5,
                                     ),
                                   ),
                                   isDense: true,
-                                  filled: true,
-                                  fillColor: Colors.grey,
-                                  contentPadding: const EdgeInsets.all(10.0)),
+
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0)),
                               value: _selectedYear,
                               onChanged: (String? value) {
                                 setState(() {

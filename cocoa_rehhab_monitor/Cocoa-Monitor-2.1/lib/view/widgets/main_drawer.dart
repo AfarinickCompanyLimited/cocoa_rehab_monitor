@@ -61,10 +61,10 @@ class MainDrawer extends StatelessWidget {
                     ListTile(
                       title: Row(
                         children: [
-                          const Text(
-                            'Hello, ',
-                            style: TextStyle(fontSize: 14),
-                          ),
+                          // const Text(
+                          //   'Hello, ',
+                          //   style: TextStyle(fontSize: 14),
+                          // ),
                           Flexible(
                             child: Text(
                               "${indexController.userInfo.value.firstName!} ${indexController.userInfo.value.lastName!}",
@@ -212,25 +212,25 @@ class MainDrawer extends StatelessWidget {
                               fontSize: 18),
                         ),
                         const SizedBox(height: 6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                  AppColor.black, BlendMode.plus),
-                              child: Image.asset(
-                                "assets/images/cocoa_monitor/af_logo.png",
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                    AppColor.black, BlendMode.plus),
+                                child: Image.asset(
+                                  "assets/images/cocoa_monitor/af_logo.png",
+                                  fit: BoxFit.contain,
+                                  height: 80,
+                                ),
+                              ),
+                              Image.asset(
+                                "assets/images/cocoa_monitor/k_logo.png",
                                 fit: BoxFit.contain,
                                 height: 80,
                               ),
-                            ),
-                            Image.asset(
-                              "assets/images/cocoa_monitor/k_logo.png",
-                              fit: BoxFit.contain,
-                              height: 80,
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
                         const SizedBox(height: 6),
                         Text(
                           '\u00a9 Copyright ${currentYear()}',

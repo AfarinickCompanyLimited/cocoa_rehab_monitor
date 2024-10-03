@@ -169,7 +169,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Good Morning, Francis",
+                          "${homeController.getGreetings()}, ${globalController.userInfo.value.firstName}",
                           style: TextStyle(
                             color: AppColor.black,
                             fontSize: 16,
@@ -180,7 +180,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         Row(
                           children: [
                             Text(
-                              "PO105",
+                              "${globalController.userInfo.value.staffId}",
                               style: TextStyle(
                                 color: AppColor.black,
                               ),
@@ -188,7 +188,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             Text(" | ",
                                 style: TextStyle(color: AppColor.black)),
                             Text(
-                              "Sankore",
+                              "${globalController.userInfo.value.group}",
                               style: TextStyle(
                                 color: AppColor.black,
                               ),
