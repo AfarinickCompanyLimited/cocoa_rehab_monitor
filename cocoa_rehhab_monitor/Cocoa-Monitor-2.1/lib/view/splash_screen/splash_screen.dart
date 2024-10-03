@@ -54,7 +54,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    startTime();
+    // startTime();
   }
 
   @override
@@ -74,7 +74,7 @@ class _SplashState extends State<Splash> {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
         child: Scaffold(
-          backgroundColor: AppColor.lightBackground,
+          backgroundColor: AppColor.black,
           body: Stack(
             children: [
               // Positioned(
@@ -84,21 +84,21 @@ class _SplashState extends State<Splash> {
               //   child: Image.asset("assets/images/cocoa_monitor/cocoa_beans.jpg"),
               // ),
 
-              Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/cocoa_monitor/cacao_beans.jpg',
-                          ),
-                          fit: BoxFit.cover)),
-                ),
-              ),
+              // Positioned(
+              //   bottom: 0,
+              //   right: 0,
+              //   left: 0,
+              //   child: Container(
+              //     height: MediaQuery.of(context).size.height * 0.05,
+              //     width: double.infinity,
+              //     decoration: const BoxDecoration(
+              //         image: DecorationImage(
+              //             image: AssetImage(
+              //               'assets/images/cocoa_monitor/cacao_beans.jpg',
+              //             ),
+              //             fit: BoxFit.cover)),
+              //   ),
+              // ),
 
               BackdropFilter(
                 // filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
@@ -109,11 +109,11 @@ class _SplashState extends State<Splash> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Expanded(
-                          child: SizedBox(
-                            height: 0,
-                          ),
-                        ),
+                        // const Expanded(
+                        //   child: SizedBox(
+                        //     height: 0,
+                        //   ),
+                        // ),
                         Expanded(
                           // flex: 2,
                           child: Align(
@@ -139,67 +139,67 @@ class _SplashState extends State<Splash> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w900,
                                           fontSize: 25,
-                                          color: AppColor.black),
+                                          color: AppColor.white),
                                     ),
                                   ],
                                 ),
                               )),
                         ),
-                        Expanded(
-                          // child: Container(),
-                          child: Align(
-                              alignment: FractionalOffset.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 0.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    const SizedBox(
-                                      height: 6,
-                                    ),
-                                    const Text(
-                                      'A PRODUCT OF',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                          color: Colors.black54),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/cocoa_monitor/af_logo.png",
-                                          fit: BoxFit.contain,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.2,
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Image.asset(
-                                          "assets/images/cocoa_monitor/k_logo.png",
-                                          fit: BoxFit.contain,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.2,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.07),
-                                    // Text(
-                                    //   'Copyright \u00a9 ${now.year}',
-                                    //   style: TextStyle(
-                                    //       fontWeight: FontWeight.bold, fontSize: 11, color: Colors.black),
-                                    // ),
-                                  ],
-                                ),
-                              )),
-                        ),
+                        // Expanded(
+                        //   // child: Container(),
+                        //   child: Align(
+                        //       alignment: FractionalOffset.bottomCenter,
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.only(bottom: 0.0),
+                        //         child: Column(
+                        //           mainAxisAlignment: MainAxisAlignment.end,
+                        //           children: [
+                        //             const SizedBox(
+                        //               height: 6,
+                        //             ),
+                        //             const Text(
+                        //               'A PRODUCT OF',
+                        //               style: TextStyle(
+                        //                   fontWeight: FontWeight.bold,
+                        //                   fontSize: 12,
+                        //                   color: Colors.black54),
+                        //             ),
+                        //             Row(
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.center,
+                        //               children: [
+                        //                 Image.asset(
+                        //                   "assets/images/cocoa_monitor/af_logo.png",
+                        //                   fit: BoxFit.contain,
+                        //                   height: MediaQuery.of(context)
+                        //                           .size
+                        //                           .width *
+                        //                       0.2,
+                        //                 ),
+                        //                 const SizedBox(width: 10),
+                        //                 Image.asset(
+                        //                   "assets/images/cocoa_monitor/k_logo.png",
+                        //                   fit: BoxFit.contain,
+                        //                   height: MediaQuery.of(context)
+                        //                           .size
+                        //                           .width *
+                        //                       0.2,
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //             SizedBox(
+                        //                 height:
+                        //                     MediaQuery.of(context).size.height *
+                        //                         0.07),
+                        //             // Text(
+                        //             //   'Copyright \u00a9 ${now.year}',
+                        //             //   style: TextStyle(
+                        //             //       fontWeight: FontWeight.bold, fontSize: 11, color: Colors.black),
+                        //             // ),
+                        //           ],
+                        //         ),
+                        //       )),
+                        // ),
                       ],
                     ),
                   ),

@@ -1,6 +1,5 @@
 import 'package:cocoa_monitor/view/about/about.dart';
 import 'package:cocoa_monitor/view/auth/login/login.dart';
-import 'package:cocoa_monitor/view/auth/register/register.dart';
 import 'package:cocoa_monitor/view/intro/intro.dart';
 import 'package:cocoa_monitor/view/splash_screen/splash_screen.dart';
 import 'package:cocoa_monitor/view/user_account/user_account.dart';
@@ -23,8 +22,8 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const IntroScreen());
     case loginScreen:
       return MaterialPageRoute(builder: (context) => const Login());
-    case registerScreen:
-      return MaterialPageRoute(builder: (context) => const Register());
+    // case registerScreen:
+    //   return MaterialPageRoute(builder: (context) => const Register());
     case userAccountScreen:
       return MaterialPageRoute(builder: (context) => const UserAccount());
     case aboutScreen:

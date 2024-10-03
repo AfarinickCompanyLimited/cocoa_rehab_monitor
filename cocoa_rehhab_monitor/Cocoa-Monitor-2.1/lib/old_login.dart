@@ -1,23 +1,22 @@
-import 'dart:ui';
+// ignore_for_file: avoid_print
 
+import 'package:cocoa_monitor/view/auth/login/login_controller.dart';
+import 'package:cocoa_monitor/view/auth/reset_password/reset_password.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
-import 'package:cocoa_monitor/view/utils/view_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'dart:ui';
 
-import '../../global_components/text_input_decoration.dart';
-import 'reset_password_controller.dart';
 
-class ResetPassword extends StatelessWidget {
-  const ResetPassword({Key? key}) : super(key: key);
+class Login extends StatelessWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ResetPasswordController resetPasswordController =
-        Get.put(ResetPasswordController());
-    resetPasswordController.resetScreenContext = context;
-    Size size = MediaQuery.of(context).size;
+    LoginController loginController = Get.put(LoginController());
+    loginController.loginScreenContext = context;
+    // Size size = MediaQuery.of(context).size;
 
     return Material(
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -96,7 +95,7 @@ class ResetPassword extends StatelessWidget {
                                   child: Text(
                                     'Login',
                                     style: TextStyle(
-                                        // color: AppColor.primary,
+                                      // color: AppColor.primary,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -108,24 +107,24 @@ class ResetPassword extends StatelessWidget {
                                 // ),
                                 // SizedBox(height: 5,),
                                 Form(
-                                  key: resetPasswordController.resetFormKey,
+                                  key: loginController.loginFormKey,
                                   child: Column(
                                     children: [
                                       TextFormField(
-                                        controller: resetPasswordController
-                                            .passwordTextController,
+                                        controller:
+                                        loginController.phoneTextController,
                                         decoration: InputDecoration(
                                           contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 15, horizontal: 20),
+                                          const EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 20),
                                           enabledBorder: inputBorder,
                                           focusedBorder: inputBorderFocused,
                                           errorBorder: inputBorder,
                                           focusedErrorBorder:
-                                              inputBorderFocused,
+                                          inputBorderFocused,
                                           filled: true,
                                           fillColor: Colors.white,
-                                          hintText: 'Enter new password',
+                                          hintText: 'Enter your phone number',
                                           hintStyle: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.black54),
@@ -134,51 +133,77 @@ class ResetPassword extends StatelessWidget {
                                           //   loginController
                                           // ),
                                         ),
-                                        keyboardType: TextInputType.name,
-                                        validator: (String? value) => value!
-                                                    .trim()
-                                                    .isEmpty ||
-                                                value.trim().length < 5
-                                            ? "Password must be at least 5 characters long"
+                                        keyboardType: TextInputType.phone,
+                                        validator: (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Phone number required"
                                             : null,
                                       ),
 
-                                      const SizedBox(height: 20),
+                                      // TextFormField(
+                                      //   controller: loginController
+                                      //       .usernameTextController,
+                                      //   decoration: InputDecoration(
+                                      //     contentPadding:
+                                      //         const EdgeInsets.symmetric(
+                                      //             vertical: 15, horizontal: 20),
+                                      //     enabledBorder: inputBorder,
+                                      //     focusedBorder: inputBorderFocused,
+                                      //     errorBorder: inputBorder,
+                                      //     focusedErrorBorder:
+                                      //         inputBorderFocused,
+                                      //     filled: true,
+                                      //     fillColor: Colors.white,
+                                      //     hintText: 'Enter your username',
+                                      //     hintStyle: const TextStyle(
+                                      //         fontSize: 12,
+                                      //         color: Colors.black54),
+                                      //     // prefixIcon: _buildFlagsButton(
+                                      //     //   context,
+                                      //     //   loginController
+                                      //     // ),
+                                      //   ),
+                                      //   keyboardType: TextInputType.name,
+                                      //   validator: (String? value) =>
+                                      //       value!.trim().isEmpty
+                                      //           ? "Username required"
+                                      //           : null,
+                                      // ),
 
-                                      TextFormField(
-                                        controller: resetPasswordController
-                                            .passwordConfirmTextController,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 15, horizontal: 20),
-                                          enabledBorder: inputBorder,
-                                          focusedBorder: inputBorderFocused,
-                                          errorBorder: inputBorder,
-                                          focusedErrorBorder:
-                                              inputBorderFocused,
-                                          filled: true,
-                                          fillColor: Colors.white,
-                                          hintText: 'Re-enter your password',
-                                          hintStyle: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black54),
-                                          // prefixIcon: _buildFlagsButton(
-                                          //   context,
-                                          //   loginController
-                                          // ),
-                                        ),
-                                        keyboardType:
-                                            TextInputType.visiblePassword,
-                                        validator: (String? value) => value!
-                                                    .trim()
-                                                    .isEmpty !=
-                                                resetPasswordController
-                                                    .passwordTextController.text
-                                                    .trim()
-                                            ? "Password must be at least 5 characters long"
-                                            : null,
-                                      ),
+                                      // const SizedBox(height: 20),
+
+                                      // TextFormField(
+                                      //   controller: loginController
+                                      //       .passwordTextController,
+                                      //   decoration: InputDecoration(
+                                      //     contentPadding:
+                                      //         const EdgeInsets.symmetric(
+                                      //             vertical: 15, horizontal: 20),
+                                      //     enabledBorder: inputBorder,
+                                      //     focusedBorder: inputBorderFocused,
+                                      //     errorBorder: inputBorder,
+                                      //     focusedErrorBorder:
+                                      //         inputBorderFocused,
+                                      //     filled: true,
+                                      //     fillColor: Colors.white,
+                                      //     hintText: 'Enter your password',
+                                      //     hintStyle: const TextStyle(
+                                      //         fontSize: 12,
+                                      //         color: Colors.black54),
+                                      //     // prefixIcon: _buildFlagsButton(
+                                      //     //   context,
+                                      //     //   loginController
+                                      //     // ),
+                                      //   ),
+                                      //   keyboardType:
+                                      //       TextInputType.visiblePassword,
+                                      //   validator: (String? value) => value!
+                                      //               .trim()
+                                      //               .isEmpty ||
+                                      //           value.trim().length < 5
+                                      //       ? "Password must be at least 5 characters long"
+                                      //       : null,
+                                      // ),
 
                                       // IntlPhoneField(
                                       //   controller: loginController.phoneTextController,
@@ -227,20 +252,25 @@ class ResetPassword extends StatelessWidget {
                                                     AppBorderRadius.xl))),
                                       ),
                                       onPressed: () {
-                                        if (resetPasswordController
-                                            .resetFormKey.currentState!
+                                        print(
+                                            'PHONE NUMBER::::: ${loginController.phoneTextController}');
+                                        if (loginController
+                                            .loginFormKey.currentState!
                                             .validate()) {
+                                          print('PHONE VERIFICATION STARTED');
                                           // loginController.sendOTP(loginController.phoneTextController.text.trim());
                                           // loginController.sendOTP();
-                                          resetPasswordController
-                                              .resetPassword();
+                                          // loginController
+                                          //     .lookupUsernamePassword();
+                                          loginController.lookupPhoneNumber();
+                                          print('PHONE VERIFICATION HAS ENDED');
                                         }
                                       },
                                       child: const Padding(
                                         padding:
-                                            EdgeInsets.symmetric(vertical: 5.0),
+                                        EdgeInsets.symmetric(vertical: 5.0),
                                         child: Text(
-                                          "Change Password",
+                                          "Login",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
@@ -251,6 +281,28 @@ class ResetPassword extends StatelessWidget {
                                 const SizedBox(
                                   height: 30,
                                 ),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Forgot your password?"),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => const ResetPassword(),
+                                            transition: Transition.fadeIn);
+                                      },
+                                      child: Text(
+                                        "Reset Here.".toUpperCase(),
+                                        style: TextStyle(
+                                            color: AppColor.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
                           ),
@@ -296,7 +348,7 @@ class ResetPassword extends StatelessWidget {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.07),
+                              MediaQuery.of(context).size.height * 0.07),
                           // Text(
                           //   'Copyright \u00a9 ${now.year}',
                           //   style: TextStyle(
@@ -322,4 +374,89 @@ class ResetPassword extends StatelessWidget {
   }
 }
 
+var inputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+    borderSide:
+    BorderSide(width: 0.2, color: AppColor.primary.withOpacity(0.5)));
 
+var inputBorderFocused = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+    borderSide: BorderSide(width: 1, color: AppColor.primary));
+
+var inputBorderError = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+    borderSide: BorderSide(width: 1, color: AppColor.primary));
+
+
+
+/*
+DecoratedBox _buildFlagsButton(context, LoginController loginController) {
+  return DecoratedBox(
+    decoration: const BoxDecoration(),
+    child: InkWell(
+      // borderRadius: widget.dropdownDecoration.borderRadius as BorderRadius?,
+      child: Padding(
+        padding: EdgeInsets.only(left: 20),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              CountryUtils.countryCodeToEmoji(loginController.selectedCountry['countryCode'].toString()),
+              style: TextStyle(
+                fontSize: 25,
+              ),
+            ),
+            SizedBox(width: 8,),
+            FittedBox(
+              child: Text(
+                '+${loginController.selectedCountry['phoneCode'].toString()}',
+                // style: widget.dropdownTextStyle,
+              ),
+            ),
+            SizedBox(width: 8),
+          ],
+        ),
+      ),
+      onTap: (){
+        showCountryPicker(
+            context: context,
+            countryListTheme: CountryListThemeData(
+              flagSize: 25,
+              backgroundColor: Colors.white,
+              textStyle: TextStyle(fontSize: 13, color: Colors.black),
+              //Optional. Sets the border radius for the bottomsheet.
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              ),
+              //Optional. Styles the search field.
+              inputDecoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                enabledBorder: inputBorder,
+                focusedBorder: inputBorderFocused,
+                errorBorder: inputBorder,
+                focusedErrorBorder: inputBorderFocused,
+                filled: true,
+                fillColor: Colors.white,
+                prefixIcon: Icon(appIconSearchOld),
+                hintText: 'Search for country',
+                hintStyle: TextStyle(fontSize: 12, color: Colors.black54),
+                // border: OutlineInputBorder(
+                //   borderSide: BorderSide(
+                //     color: const Color(0xFF8C98A8).withOpacity(0.2),
+                //   ),
+                // ),
+              ),
+            ),
+            onSelect: (Country country){
+              loginController.selectedCountry['phoneCode'] = country.phoneCode;
+              loginController.selectedCountry['countryCode'] = country.countryCode;
+              loginController.selectedCountry['name'] = country.name;
+            }
+        );
+      },
+    ),
+  );
+}
+*/

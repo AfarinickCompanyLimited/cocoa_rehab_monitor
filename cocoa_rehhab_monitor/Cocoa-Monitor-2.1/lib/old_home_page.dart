@@ -258,7 +258,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               label: "Calculate\nArea",
                               backgroundColor: Colors.white,
                               foreColor: AppColor.black,
-                              icon:
+                              child:
                               appIconRuler(color: AppColor.black, size: 40),
                               onTap: () =>
                                   homeController.usePolygonDrawingTool(),
@@ -268,7 +268,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 label: "Assigned\nFarms",
                                 backgroundColor: Colors.white,
                                 foreColor: AppColor.black,
-                                icon: appIconSeedlingInHand(
+                                child: appIconSeedlingInHand(
                                     color: AppColor.black, size: 40),
                                 onTap: () => Get.to(
                                         () => const AssignedFarmsMap(),
@@ -278,7 +278,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 label: "Farm\nStatus",
                                 backgroundColor: Colors.white,
                                 foreColor: AppColor.black,
-                                icon: appIconTractor(
+                                child: appIconTractor(
                                     color: AppColor.black, size: 40),
                                 onTap: () => Get.to(() => const FarmsStatus(),
                                     transition: Transition.fadeIn)),
@@ -287,7 +287,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 label: "Assigned\nOutbreaks",
                                 backgroundColor: Colors.white,
                                 foreColor: AppColor.black,
-                                icon: appIconLayers(
+                                child: appIconLayers(
                                     color: AppColor.black, size: 40),
                                 onTap: () => Get.to(
                                         () => const AssignedOutbreaksMap(),
@@ -314,7 +314,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 label: "Equipment\nList",
                                 backgroundColor: Colors.white,
                                 foreColor: AppColor.black,
-                                icon: appIconKnife(
+                                child: appIconKnife(
                                     color: AppColor.black, size: 40),
                                 onTap: () => Get.to(() => const EquipmentList(),
                                     transition: Transition.fadeIn)),

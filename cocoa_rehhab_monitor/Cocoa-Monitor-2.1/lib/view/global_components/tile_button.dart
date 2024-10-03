@@ -63,11 +63,11 @@ class TileButton extends StatelessWidget {
 
 class TileButtonDetached extends StatelessWidget {
   final String? label;
-  final Widget icon;
+  final Widget child;
   final Color? backgroundColor;
   final Color? foreColor;
   final Function? onTap;
-  const TileButtonDetached({Key? key, required this.label, required this.icon, this.backgroundColor, this.foreColor,  required this.onTap}) : super(key: key);
+  const TileButtonDetached({Key? key, required this.label, required this.child, this.backgroundColor, this.foreColor,  required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,23 +75,9 @@ class TileButtonDetached extends StatelessWidget {
       onTap: () => onTap!(),
       child: Column(
         children: [
-          TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white, backgroundColor: backgroundColor ?? AppColor.primary,
-              // minimumSize: const Size(0, 36),
-              shape: const CircleBorder(),
-              splashFactory: NoSplash.splashFactory,
-            ),
-            onPressed: () => onTap!(),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: icon,
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(label!,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: foreColor ?? Colors.white),
-            textAlign: TextAlign.center,
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: child,
           ),
         ],
       ),
