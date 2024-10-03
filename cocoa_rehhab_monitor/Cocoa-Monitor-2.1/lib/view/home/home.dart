@@ -107,33 +107,33 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       // Action Buttons
                       Row(
                         children: [
-                          Obx(() {
-                            return homeController.isLoadingRAs.value
-                                ? Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    period: const Duration(milliseconds: 800),
-                                    child: CircleIconButton(
-                                      icon: appIconDownload(
-                                          color: AppColor.white, size: 20),
-                                      size: 45,
-                                      backgroundColor: AppColor.black,
-                                      hasShadow: false,
-                                      onTap: () => homeController
-                                          .checkAppVersionBeforeSync(),
-                                    ),
-                                  )
-                                : CircleIconButton(
-                                    icon: appIconDownload(
-                                        color: AppColor.white, size: 20),
-                                    size: 45,
-                                    backgroundColor: AppColor.black,
-                                    hasShadow: false,
-                                    onTap: () => homeController
-                                        .checkAppVersionBeforeSync(),
-                                  );
-                          }),
-                          const SizedBox(width: 20),
+                          // Obx(() {
+                          //   return homeController.isLoadingRAs.value
+                          //       ? Shimmer.fromColors(
+                          //           baseColor: Colors.grey[300]!,
+                          //           highlightColor: Colors.grey[100]!,
+                          //           period: const Duration(milliseconds: 800),
+                          //           child: CircleIconButton(
+                          //             icon: appIconDownload(
+                          //                 color: AppColor.white, size: 20),
+                          //             size: 45,
+                          //             backgroundColor: AppColor.black,
+                          //             hasShadow: false,
+                          //             onTap: () => homeController
+                          //                 .checkAppVersionBeforeSync(),
+                          //           ),
+                          //         )
+                          //       : CircleIconButton(
+                          //           icon: appIconDownload(
+                          //               color: AppColor.white, size: 20),
+                          //           size: 45,
+                          //           backgroundColor: AppColor.black,
+                          //           hasShadow: false,
+                          //           onTap: () => homeController
+                          //               .checkAppVersionBeforeSync(),
+                          //         );
+                          // }),
+                          // const SizedBox(width: 20),
                           // Notification Button with Badge
                           Stack(
                             clipBehavior: Clip.none,
@@ -165,36 +165,48 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       EdgeInsets.symmetric(horizontal: AppPadding.horizontal),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text(
-                          "${homeController.getGreetings()}, ${globalController.userInfo.value.firstName}",
-                          style: TextStyle(
-                            color: AppColor.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${globalController.userInfo.value.staffId}",
+                              "${homeController.getGreetings()}, ${globalController.userInfo.value.firstName}",
                               style: TextStyle(
                                 color: AppColor.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            Text(" | ",
-                                style: TextStyle(color: AppColor.black)),
-                            Text(
-                              "${globalController.userInfo.value.group}",
-                              style: TextStyle(
-                                color: AppColor.black,
-                              ),
-                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Text(
+                                  "${globalController.userInfo.value.staffId}",
+                                  style: TextStyle(
+                                    color: AppColor.black,
+                                  ),
+                                ),
+                                Text(" | ",
+                                    style: TextStyle(color: AppColor.black)),
+                                Text(
+                                  "${globalController.userInfo.value.group}",
+                                  style: TextStyle(
+                                    color: AppColor.black,
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
+                        ),
+                        Spacer(),
+                        CircleIconButton(
+                            icon: appIconRefresh(
+                                color: AppColor.primary, size: 20),
+                            size: 45,
+                            backgroundColor: AppColor.white,
+                            hasShadow: true,
+                            onTap: () => homeController.syncData()),
                       ],
                     ),
                   ),
@@ -332,15 +344,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   children: [
                     Spacer(),
                     Obx(() => Column(
-                      children: [
-                        FloatingActionButton(
+                          children: [
+                            FloatingActionButton(
                               tooltip: 'Submit An Issue',
                               backgroundColor:
                                   homeController.activeButtonIndex.value == 0
                                       ? AppColor.black // Active color
                                       : AppColor.white, // Default color
                               child: appIconComment(
-                                  color: homeController.activeButtonIndex.value == 0
+                                  color: homeController
+                                              .activeButtonIndex.value ==
+                                          0
                                       ? AppColor.white // Active icon color
                                       : AppColor.black, // Default icon color
                                   size: 25),
@@ -350,22 +364,24 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     transition: Transition.fadeIn);
                               },
                             ),
-                        Text("Issues")
-                      ],
-                    )),
+                            Text("Issues")
+                          ],
+                        )),
                     Spacer(),
                     Obx(() => Column(
-                      children: [
-                        FloatingActionButton(
+                          children: [
+                            FloatingActionButton(
                               tooltip: 'Submit Leave Request',
                               backgroundColor:
                                   homeController.activeButtonIndex.value == 1
                                       ? AppColor.black
                                       : AppColor.white,
                               child: appIconLeaveRequest(
-                                  color: homeController.activeButtonIndex.value == 1
-                                      ? AppColor.white
-                                      : AppColor.black,
+                                  color:
+                                      homeController.activeButtonIndex.value ==
+                                              1
+                                          ? AppColor.white
+                                          : AppColor.black,
                                   size: 25),
                               onPressed: () {
                                 homeController.activeButtonIndex.value = 1;
@@ -373,22 +389,24 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     transition: Transition.fadeIn);
                               },
                             ),
-                        Text("Leave")
-                      ],
-                    )),
+                            Text("Leave")
+                          ],
+                        )),
                     Spacer(),
                     Obx(() => Column(
-                      children: [
-                        FloatingActionButton(
+                          children: [
+                            FloatingActionButton(
                               tooltip: 'RA / RT List',
                               backgroundColor:
                                   homeController.activeButtonIndex.value == 2
                                       ? AppColor.black
                                       : AppColor.white,
                               child: appIconGroup(
-                                  color: homeController.activeButtonIndex.value == 2
-                                      ? AppColor.white
-                                      : AppColor.black,
+                                  color:
+                                      homeController.activeButtonIndex.value ==
+                                              2
+                                          ? AppColor.white
+                                          : AppColor.black,
                                   size: 40),
                               onPressed: () {
                                 homeController.activeButtonIndex.value = 2;
@@ -396,13 +414,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     transition: Transition.fadeIn);
                               },
                             ),
-                        Text("RA/RT")
-                      ],
-                    )),
+                            Text("RA/RT")
+                          ],
+                        )),
                     Spacer(),
                     Obx(() => Column(
-                      children: [
-                        FloatingActionButton(
+                          children: [
+                            FloatingActionButton(
                               tooltip: 'Log Location',
                               backgroundColor:
                                   homeController.activeButtonIndex.value == 3
@@ -411,11 +429,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               child: homeController.isLoading.value
                                   ? CircularProgressIndicator()
                                   : appIconMarker(
-                                      color:
-                                          homeController.activeButtonIndex.value ==
-                                                  3
-                                              ? AppColor.white
-                                              : AppColor.black,
+                                      color: homeController
+                                                  .activeButtonIndex.value ==
+                                              3
+                                          ? AppColor.white
+                                          : AppColor.black,
                                       size: 25),
                               onPressed: () {
                                 homeController.activeButtonIndex.value = 3;
@@ -436,9 +454,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     });
                               },
                             ),
-                        Text("Location")
-                      ],
-                    )),
+                            Text("Location")
+                          ],
+                        )),
                     Spacer(),
                   ],
                 ),

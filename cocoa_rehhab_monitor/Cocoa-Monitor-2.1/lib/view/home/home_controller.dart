@@ -249,9 +249,9 @@ class HomeController extends GetxController {
     // };
 
     if (await ConnectionVerify.connectionIsAvailable()) {
-      if (homeScreenContext.mounted) {
-        globals.startWait(homeScreenContext);
-      }
+      // if (homeScreenContext.mounted) {
+      //   globals.startWait(homeScreenContext);
+      // }
       SharedPreferences? prefs = ShareP.preferences;
 
       try {
@@ -346,9 +346,9 @@ class HomeController extends GetxController {
   syncData() async {
     // if (await ConnectionVerify.connectionIsAvailable()) {
     loadingInitialData.value = true;
-    //if (homeScreenContext.mounted) {
-    //  globals.startWait(homeScreenContext);
-    //  }
+    if (homeScreenContext.mounted) {
+     globals.startWait(homeScreenContext);
+     }
     var futures = await Future.wait([
       // generalCocoaRehabApiInterface.loadPaginatedRehabAssistants(),
       generalCocoaRehabApiInterface.loadRegionContractors(),
