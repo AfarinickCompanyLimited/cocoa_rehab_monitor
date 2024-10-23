@@ -604,7 +604,7 @@ class ReportDataGridSource extends DataGridSource {
         DataGridCell<String>(
             columnName: 'activity', value: dataGridRow.activity),
         DataGridCell<String>(
-            columnName: 'achievement', value: dataGridRow.achievement),
+            columnName: 'achievement', value: dataGridRow.achievement.toString()),
         DataGridCell<String>(columnName: 'amount', value: dataGridRow.amount),
         DataGridCell<String>(columnName: 'week', value: dataGridRow.week),
         DataGridCell<String>(columnName: 'month', value: dataGridRow.month),

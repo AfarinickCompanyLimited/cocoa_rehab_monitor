@@ -51,7 +51,7 @@ class DetailedReport {
   final String? farmReference;
   final String? numberInAGroup;
   final String? activity;
-  final String? achievement;
+  final double? achievement;
   final String? amount;
   final String? week;
   final String? month;

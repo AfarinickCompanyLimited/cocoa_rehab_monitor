@@ -44,7 +44,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
 
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 50));
+        vsync: this, duration: const Duration(milliseconds: 5000));
     _animation = Tween(end: 1.0, begin: 0.0).animate(_controller!)
       ..addListener(() {
         setState(() {});
@@ -424,8 +424,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               tooltip: 'Log Location',
                               backgroundColor:
                                   homeController.activeButtonIndex.value == 3
-                                      ? AppColor.black
-                                      : AppColor.white,
+                                      ? AppColor.secondary
+                                      : AppColor.secondary,
                               child: homeController.isLoading.value
                                   ? CircularProgressIndicator()
                                   : appIconMarker(
