@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:io' as io;
 
 import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
@@ -26,12 +27,16 @@ import 'package:uuid/uuid.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
+import '../../controller/model/activity_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 import '../../controller/model/picked_media.dart';
 import '../global_components/custom_button.dart';
 import '../utils/bytes_to_size.dart';
 import '../utils/location_color.dart';
 import '../utils/style.dart';
 import '../widgets/_media_source_dialog.dart';
+import 'dart:io' as io;
+import 'package:image/image.dart' as img;
 
 class AddContractorCertificateVerificationRecordController
     extends GetxController {
@@ -68,9 +73,9 @@ class AddContractorCertificateVerificationRecordController
   TextEditingController? farmReferenceNumberTC = TextEditingController();
   TextEditingController? communityNameTC = TextEditingController();
 
-  Activity activity = Activity();
+  String? activity;
 
-  List<Activity> subActivity = [];
+  List<ActivityModel> subActivity = [];
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
 
@@ -242,25 +247,25 @@ class AddContractorCertificateVerificationRecordController
     List<int> subActivityList =
         subActivity.map((activity) => activity.code).cast<int>().toList();
 
-    ContractorCertificateVerification contractorCertificateVerification =
-        ContractorCertificateVerification(
+    ContractorCertificateVerificationModel contractorCertificateVerification =
+        ContractorCertificateVerificationModel(
       uid: const Uuid().v4(),
       userId: int.tryParse(
         globalController.userInfo.value.userId!,
       ),
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
-      currrentWeek: selectedWeek.value,
+      currentWeek: selectedWeek.value,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude,
       lng: locationData?.longitude,
       accuracy: double.tryParse(
               locationData!.accuracy!.truncateToDecimalPlaces(2).toString()) ??
           0.0,
-      mainActivity: activity.code,
+      mainActivity: subActivityList.first,
       activity: subActivityList,
       farmRefNumber: farmReferenceNumberTC!.text,
-      farmSizeHa: double.parse(farmSizeTC!.text),
+      farmSizeHa: double.tryParse(farmSizeTC!.text),
       community: communityNameTC!.text,
       currentFarmPic:
           // Uint8List(0),
@@ -361,6 +366,7 @@ class AddContractorCertificateVerificationRecordController
   // START ADD MONITORING RECORD OFFLINE UPDATE
   // ==============================================================================
   offlineUpdate() async {
+
     // Uint8List? pictureOfFarm;
     String? pictureOfFarm;
     if (farmPhoto?.file != null) {
@@ -376,12 +382,12 @@ class AddContractorCertificateVerificationRecordController
     List<int> subActivityList =
         subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
 
-    ContractorCertificateVerification contractorCertificateVerification =
-        ContractorCertificateVerification(
+    ContractorCertificateVerificationModel contractorCertificateVerification =
+    ContractorCertificateVerificationModel(
       uid: const Uuid().v4(),
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
-      currrentWeek: selectedWeek.value,
+      currentWeek: selectedWeek.value,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude ?? 0.0,
       lng: locationData?.longitude ?? 0.0,
@@ -389,11 +395,11 @@ class AddContractorCertificateVerificationRecordController
           ? double.tryParse(
               locationData!.accuracy!.truncateToDecimalPlaces(2).toString())
           : 0.0,
-      mainActivity: activity.code,
+      mainActivity: subActivityList.first,
       activity: subActivityList,
       status: SubmissionStatus.pending,
       farmRefNumber: farmReferenceNumberTC!.text,
-      farmSizeHa: double.parse(farmSizeTC!.text),
+      farmSizeHa: double.tryParse(farmSizeTC!.text),
       community: communityNameTC!.text,
       district: regionDistrict?.districtId,
       userId: int.tryParse(globalController.userInfo.value.userId!),
@@ -402,18 +408,25 @@ class AddContractorCertificateVerificationRecordController
       completedBy: isCompletedBy.value,
     );
 
-    Map<String, dynamic> data = contractorCertificateVerification.toJson();
+    // Map<String, dynamic> data = contractorCertificateVerification.toJson();
 
-    data.remove('main_activity');
-    data.remove('submission_status');
-    data.remove('current_farm_pic');
-    print('THIS IS Contractor Certificate Verification DATA DETAILS:::: $data');
+    // data.remove('main_activity');
+    // data.remove('submission_status');
+    // data.remove('current_farm_pic');
 
-    final contractorCertificateVerificationDao =
-        globalController.database!.contractorCertificateVerificationDao;
-    await contractorCertificateVerificationDao
-        .insertContractorCertificateVerification(
-            contractorCertificateVerification);
+
+
+    // final contractorCertificateVerificationDao =
+    //     globalController.database!.contractorCertificateVerificationDao;
+    // await contractorCertificateVerificationDao
+    //     .insertContractorCertificateVerification(
+    //         contractorCertificateVerification);
+
+    /// initialise the database
+    ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+
+    /// save the data offline
+    await dbHelper.saveData(contractorCertificateVerification);
 
     globals.endWait(addContractorCertificateVerificationRecordScreenContext);
     Get.back();
@@ -439,6 +452,7 @@ class AddContractorCertificateVerificationRecordController
   // START OFFLINE SAVE MONITORING RECORD
   // ==============================================================================
   handleSaveOfflineMonitoringRecord() async {
+
     if (farmPhoto == null) {
       globals.showSnackBar(
           title: 'Alert', message: 'Kindly add a picture of the farm');
@@ -512,35 +526,93 @@ class AddContractorCertificateVerificationRecordController
 // ===========================================
 // START PICK MEDIA
 // ==========================================
+
   pickMedia({int? source}) async {
     final XFile? mediaFile;
     var fileType = FileType.image;
+
     if (source == 0) {
       mediaFile = await mediaPicker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
     } else {
       mediaFile = await mediaPicker.pickImage(
-          source: ImageSource.camera, imageQuality: 50);
+        source: ImageSource.camera,
+        imageQuality: 50,
+      );
     }
 
     if (mediaFile != null) {
-      var fileSize = await mediaFile.length();
+      var originalFile = io.File(mediaFile.path);
+      var fileSize = await originalFile.length();
+
+      // Load the original image
+      final originalImageBytes = await originalFile.readAsBytes();
+      img.Image? image = img.decodeImage(originalImageBytes);
+
+      if (image != null) {
+        // Resize the image to 30% of the original dimensions
+        img.Image resizedImage = img.copyResize(image,
+            width: (image.width * 0.3).toInt(),
+            height: (image.height * 0.3).toInt());
+
+        // Compress the resized image and save it to the same file path
+        final compressedImageBytes = img.encodeJpg(resizedImage, quality: 70);
+        await originalFile.writeAsBytes(compressedImageBytes);
+
+        // Update the file size after compression
+        fileSize = compressedImageBytes.length;
+      }
+
+      // Create and save the PickedMedia instance
       PickedMedia pickedMedia = PickedMedia(
         name: mediaFile.name,
         path: mediaFile.path,
         type: fileType,
         size: fileSize,
-        file: io.File(mediaFile.path),
+        file: originalFile,
       );
-      // print('haaaaaaaaaaaaaaaa');
-      // print(bytesToSize(fileSize));
+
       farmPhoto = pickedMedia;
       update();
+
       print(bytesToSize(fileSize));
     } else {
       return null;
     }
   }
+
+
+//   pickMedia({int? source}) async {
+//     final XFile? mediaFile;
+//     var fileType = FileType.image;
+//     if (source == 0) {
+//       mediaFile = await mediaPicker.pickImage(
+//           source: ImageSource.gallery, imageQuality: 50);
+//     } else {
+//       mediaFile = await mediaPicker.pickImage(
+//           source: ImageSource.camera, imageQuality: 50);
+//     }
+//
+//     if (mediaFile != null) {
+//       var fileSize = await mediaFile.length();
+//       PickedMedia pickedMedia = PickedMedia(
+//         name: mediaFile.name,
+//         path: mediaFile.path,
+//         type: fileType,
+//         size: fileSize,
+//         file: io.File(mediaFile.path),
+//       );
+//       // print('haaaaaaaaaaaaaaaa');
+//       // print(bytesToSize(fileSize));
+//       farmPhoto = pickedMedia;
+//       update();
+//       print(bytesToSize(fileSize));
+//     } else {
+//       return null;
+//     }
+//   }
 
 // ===========================================
 // END PICK MEDIA

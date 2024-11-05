@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
+import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_model.dart';
 import 'package:cocoa_monitor/controller/utils/connection_verify.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:dio/adapter.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../db/contractor_certificate_of_workdone_db.dart';
 import '../../entity/cocoa_rehub_monitor/contractor_certificate.dart';
 
 class ContractorCertificateApiInterface {
@@ -196,7 +198,7 @@ class ContractorCertificateApiInterface {
 // START ADD WORK DONE BY CONTRACTOR CERTIFICATE VERIFICATION
 // ===================================================================================
   saveContractorCertificateVerification(
-      ContractorCertificateVerification contractorCertificateVerification,
+      ContractorCertificateVerificationModel contractorCertificateVerification,
       data) async {
     final contractorCertificateVerificationDao =
         indexController.database!.contractorCertificateVerificationDao;
@@ -216,9 +218,16 @@ class ContractorCertificateApiInterface {
         print('JJKJJK:::::${response.data['status']}');
 
         if (response.data['status'] == RequestStatus.True) {
-          contractorCertificateVerificationDao
-              .insertContractorCertificateVerification(
-                  contractorCertificateVerification);
+
+          /// initialise the database
+          ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+
+          /// save the data offline
+          await dbHelper.saveData(contractorCertificateVerification);
+
+          // contractorCertificateVerificationDao
+          //     .insertContractorCertificateVerification(
+          //         contractorCertificateVerification);
           return {
             'status': response.data['status'],
             'connectionAvailable': true,
@@ -260,9 +269,11 @@ class ContractorCertificateApiInterface {
       }
     } else {
       contractorCertificateVerification.status = SubmissionStatus.pending;
-      contractorCertificateVerificationDao
-          .insertContractorCertificateVerification(
-              contractorCertificateVerification);
+      /// initialise the database
+      ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+
+      /// save the data offline
+      await dbHelper.saveData(contractorCertificateVerification);
       return {
         'status': RequestStatus.NoInternet,
         'connectionAvailable': false,

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/assigned_outbreak.dart';
@@ -16,6 +17,7 @@ import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_far
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/po_location.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
+import 'package:cocoa_monitor/controller/model/activity_model.dart';
 import 'package:cocoa_monitor/controller/utils/connection_verify.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -190,11 +192,29 @@ class GeneralCocoaRehabApiInterface {
       var response =
           await DioSingleton.instance.get(URLs.baseUrl + URLs.loadActivities);
       if (response.data['status'] == true && response.data['data'] != null) {
+
         List resultList = response.data['data'];
-        List<Activity> listOfActivity =
-            resultList.map((e) => activityFromJson(jsonEncode(e))).toList();
-        await activityDao.deleteAllActivity();
-        await activityDao.bulkInsertActivity(listOfActivity);
+
+        // debugPrint(
+        //   "ALL THE ACTIVITY DATA ::::::::: ${response.data['data'].runtimeType}",
+        // );
+        //
+        // print("THE ACTIVITY DATA ::::::::: ${resultList[0].runtimeType}");
+
+        List<ActivityModel> listOfActivity =
+            resultList.map((e){
+              return activityFromJsonM(jsonEncode(e));
+            }).toList();
+
+        /// initialize the database
+        ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+        /// delete existing records
+        await db.deleteAll();
+        /// bulk insert the data
+        await db.bulkInsertData(listOfActivity);
+
+        // await activityDao.deleteAllActivity();
+        // await activityDao.bulkInsertActivity(listOfActivity);
         debugPrint(
             'LOADING ACTIVITIES TO LOCAL DB SHOULD BE SUCCESSFUL ::: ${response.data?['status']}');
         return true;
@@ -569,6 +589,7 @@ class GeneralCocoaRehabApiInterface {
 
   Future loadCommunities() async {
     final communityDao = indexController.database!.communityDao;
+    print("THE USER ID IS :::::::::::::: ${indexController.userInfo.value.userId}");
     // Dio? dio = Dio();
     // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     //     (HttpClient dioClient) {

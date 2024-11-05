@@ -15,9 +15,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../controller/constants.dart';
+import '../../controller/db/activity_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
+import '../../controller/model/activity_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 import '../global_components/image_field_card.dart';
 import '../utils/location_color.dart';
 import '../utils/pattern_validator.dart';
@@ -25,12 +28,12 @@ import 'edit_certificate_verification_record_controller.dart';
 import 'package:cocoa_monitor/view/utils/double_value_trimmer.dart';
 
 class EditCertificateVerificationRecord extends StatefulWidget {
-  final ContractorCertificateVerification contractorCertificateVerification;
-  final bool isViewMode;
+  final ContractorCertificateVerificationModel contractorCertificateVerification;
+  final bool isViewMode, isSubmitted;
   const EditCertificateVerificationRecord(
       {Key? key,
       required this.contractorCertificateVerification,
-      required this.isViewMode})
+      required this.isViewMode, this.isSubmitted=false})
       : super(key: key);
 
   @override
@@ -317,7 +320,7 @@ class _EditMonitoringRecordState
                                         },
                                         selectedItem: widget
                                             .contractorCertificateVerification
-                                            .currrentWeek,
+                                            .currentWeek,
                                       ),
                                       const SizedBox(height: 20),
                                       const Text(
@@ -679,126 +682,116 @@ class _EditMonitoringRecordState
                                           init:
                                               editContractorCertificateRecordController,
                                           builder: (ctx) {
-                                            return DropdownSearch<Activity>(
-                                              popupProps:
-                                                  PopupProps.modalBottomSheet(
-                                                      showSelectedItems: true,
-                                                      showSearchBox: true,
-                                                      title: const Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 15),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Select Activity',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
+                                            return
+                                              DropdownSearch<String>(
+                                                popupProps: PopupProps.modalBottomSheet(
+                                                    showSelectedItems: true,
+                                                    showSearchBox: true,
+                                                    title: const Padding(
+                                                      padding:
+                                                      EdgeInsets.symmetric(vertical: 15),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Select Activity',
+                                                          style: TextStyle(
+                                                              fontWeight: FontWeight.w500),
                                                         ),
                                                       ),
-                                                      disabledItemFn:
-                                                          (Activity s) => false,
-                                                      modalBottomSheetProps:
-                                                          ModalBottomSheetProps(
-                                                        elevation: 6,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        AppBorderRadius
-                                                                            .md),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        AppBorderRadius
-                                                                            .md))),
+                                                    ),
+                                                    disabledItemFn: (String s) => false,
+                                                    modalBottomSheetProps:
+                                                    ModalBottomSheetProps(
+                                                      elevation: 6,
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(
+                                                                  AppBorderRadius.md),
+                                                              topRight: Radius.circular(
+                                                                  AppBorderRadius.md))),
+                                                    ),
+                                                    searchFieldProps: TextFieldProps(
+                                                      decoration: InputDecoration(
+                                                        contentPadding:
+                                                        const EdgeInsets.symmetric(
+                                                            vertical: 4, horizontal: 15),
+                                                        enabledBorder: inputBorder,
+                                                        focusedBorder: inputBorderFocused,
+                                                        errorBorder: inputBorder,
+                                                        focusedErrorBorder: inputBorderFocused,
+                                                        filled: true,
+                                                        fillColor: AppColor.xLightBackground,
                                                       ),
-                                                      searchFieldProps:
-                                                          TextFieldProps(
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 4,
-                                                                  horizontal:
-                                                                      15),
-                                                          enabledBorder:
-                                                              inputBorder,
-                                                          focusedBorder:
-                                                              inputBorderFocused,
-                                                          errorBorder:
-                                                              inputBorder,
-                                                          focusedErrorBorder:
-                                                              inputBorderFocused,
-                                                          filled: true,
-                                                          fillColor: AppColor
-                                                              .xLightBackground,
-                                                        ),
-                                                      )),
-                                              dropdownDecoratorProps:
-                                                  DropDownDecoratorProps(
-                                                dropdownSearchDecoration:
-                                                    InputDecoration(
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 4,
-                                                          horizontal: 15),
-                                                  enabledBorder: inputBorder,
-                                                  focusedBorder:
-                                                      inputBorderFocused,
-                                                  errorBorder: inputBorder,
-                                                  focusedErrorBorder:
-                                                      inputBorderFocused,
-                                                  filled: true,
-                                                  fillColor:
-                                                      AppColor.xLightBackground,
+                                                    )),
+                                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                                  dropdownSearchDecoration: InputDecoration(
+                                                    contentPadding: const EdgeInsets.symmetric(
+                                                        vertical: 4, horizontal: 15),
+                                                    enabledBorder: inputBorder,
+                                                    focusedBorder: inputBorderFocused,
+                                                    errorBorder: inputBorder,
+                                                    focusedErrorBorder: inputBorderFocused,
+                                                    filled: true,
+                                                    fillColor: AppColor.xLightBackground,
+                                                  ),
                                                 ),
-                                              ),
-                                              asyncItems:
-                                                  (String filter) async {
-                                                // var response = await editMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
-                                                var response =
-                                                    await editContractorCertificateRecordController
-                                                        .globalController
-                                                        .database!
-                                                        .activityDao
-                                                        .findAllActivityWithMainActivityList([
-                                                  MainActivities
-                                                      .InitialTreatment,
-                                                  MainActivities.Maintenance,
-                                                  MainActivities.Establishment
-                                                ]);
-                                                return response;
-                                              },
-                                              itemAsString: (Activity d) =>
-                                                  d.mainActivity?.toString() ??
-                                                  '',
-                                              // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                              compareFn: (activity, filter) =>
-                                                  activity.mainActivity ==
-                                                  filter.mainActivity,
-                                              onChanged: (val) {
-                                                editContractorCertificateRecordController
-                                                    .activity = val!;
-                                                // editContractorCertificateRecordController.subActivity = Activity();
-                                                editContractorCertificateRecordController.update();
-                                              },
-                                              autoValidateMode:
-                                                  AutovalidateMode.always,
-                                              selectedItem:
+                                                items: [
+                                                  "Establishment",
+                                                  "Initial Treatment",
+                                                  "Maintenance",
+                                                ],
+                                                // asyncItems: (String filter) async {
+                                                //   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+                                                //   var response = await db.findAllActivityWithMainActivityList(
+                                                //   [
+                                                //       MainActivities.InitialTreatment,
+                                                //       MainActivities.Maintenance,
+                                                //       MainActivities.Establishment
+                                                //     ]
+                                                //   );
+                                                //
+                                                //   print("THE RESPONSE ::::::: ${response}");
+                                                //
+                                                //    // var response = await addContractorCertificateVerificationRecordController.globalController.database!.activityDao.findAllMainActivity();
+                                                //   // var response =
+                                                //   //     await addContractorCertificateVerificationRecordController
+                                                //   //         .globalController
+                                                //   //         .database!
+                                                //   //         .activityDao
+                                                //   //         .findAllActivityWithMainActivityList([
+                                                //   //   MainActivities.InitialTreatment,
+                                                //   //   MainActivities.Maintenance,
+                                                //   //   MainActivities.Establishment
+                                                //   // ]);
+                                                //   return response;
+                                                // },
+                                                itemAsString: (String d) =>
+                                                d,
+                                                //filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                                // compareFn: (activity, filter) =>
+                                                //     activity.mainActivity ==
+                                                //     filter.mainActivity,
+                                                onChanged: (val) {
+
+                                                  print("YESSSSS");
                                                   editContractorCertificateRecordController
-                                                      .activity,
-                                              validator: (item) {
-                                                if (item == null) {
-                                                  return 'Activity is required';
-                                                } else {
-                                                  return null;
-                                                }
-                                              },
-                                            );
+                                                      .activity = val!;
+                                                  // print("CODE ::::::::::: ${addContractorCertificateVerificationRecordController.activity.mainActivity}");
+                                                  // print("MAIN ACTIVITY :::::::::::::: ${addContractorCertificateVerificationRecordController.activity.code}");
+
+                                                  // addContractorCertificateRecordController
+                                                  //     .subActivity = Activity() as List<Activity>;
+                                                  editContractorCertificateRecordController
+                                                      .update();
+                                                },
+                                                autoValidateMode: AutovalidateMode.always,
+                                                validator: (item) {
+                                                  if (item == null) {
+                                                    return 'Activity is required';
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                },
+                                              );
                                           }),
                                       const SizedBox(height: 20),
                                       const Text(
@@ -813,126 +806,103 @@ class _EditMonitoringRecordState
                                           init:
                                               editContractorCertificateRecordController,
                                           builder: (ctx) {
-                                            return DropdownSearch<
-                                                Activity>.multiSelection(
-                                              popupProps: PopupPropsMultiSelection
-                                                  .modalBottomSheet(
-                                                      showSelectedItems: true,
-                                                      showSearchBox: true,
-                                                      title: const Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 15),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Select Sub Activity',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
+                                            return
+                                              DropdownSearch<ActivityModel>.multiSelection(
+                                                popupProps:
+                                                PopupPropsMultiSelection.modalBottomSheet(
+                                                    showSelectedItems: true,
+                                                    showSearchBox: true,
+                                                    title: const Padding(
+                                                      padding: EdgeInsets.symmetric(
+                                                          vertical: 15),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Select Sub Activity',
+                                                          style: TextStyle(
+                                                              fontWeight: FontWeight.w500),
                                                         ),
                                                       ),
-                                                      disabledItemFn:
-                                                          (Activity s) => false,
-                                                      modalBottomSheetProps:
-                                                          ModalBottomSheetProps(
-                                                        elevation: 6,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        AppBorderRadius
-                                                                            .md),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        AppBorderRadius
-                                                                            .md))),
+                                                    ),
+                                                    disabledItemFn: (ActivityModel s) => false,
+                                                    modalBottomSheetProps:
+                                                    ModalBottomSheetProps(
+                                                      elevation: 6,
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(
+                                                                  AppBorderRadius.md),
+                                                              topRight: Radius.circular(
+                                                                  AppBorderRadius.md))),
+                                                    ),
+                                                    searchFieldProps: TextFieldProps(
+                                                      decoration: InputDecoration(
+                                                        contentPadding:
+                                                        const EdgeInsets.symmetric(
+                                                            vertical: 4,
+                                                            horizontal: 15),
+                                                        enabledBorder: inputBorder,
+                                                        focusedBorder: inputBorderFocused,
+                                                        errorBorder: inputBorder,
+                                                        focusedErrorBorder:
+                                                        inputBorderFocused,
+                                                        filled: true,
+                                                        fillColor:
+                                                        AppColor.xLightBackground,
                                                       ),
-                                                      searchFieldProps:
-                                                          TextFieldProps(
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 4,
-                                                                  horizontal:
-                                                                      15),
-                                                          enabledBorder:
-                                                              inputBorder,
-                                                          focusedBorder:
-                                                              inputBorderFocused,
-                                                          errorBorder:
-                                                              inputBorder,
-                                                          focusedErrorBorder:
-                                                              inputBorderFocused,
-                                                          filled: true,
-                                                          fillColor: AppColor
-                                                              .xLightBackground,
-                                                        ),
-                                                      )),
-                                              dropdownDecoratorProps:
-                                                  DropDownDecoratorProps(
-                                                dropdownSearchDecoration:
-                                                    InputDecoration(
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 4,
-                                                          horizontal: 15),
-                                                  enabledBorder: inputBorder,
-                                                  focusedBorder:
-                                                      inputBorderFocused,
-                                                  errorBorder: inputBorder,
-                                                  focusedErrorBorder:
-                                                      inputBorderFocused,
-                                                  filled: true,
-                                                  fillColor:
-                                                      AppColor.xLightBackground,
+                                                    )),
+                                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                                  dropdownSearchDecoration: InputDecoration(
+                                                    contentPadding: const EdgeInsets.symmetric(
+                                                        vertical: 4, horizontal: 15),
+                                                    enabledBorder: inputBorder,
+                                                    focusedBorder: inputBorderFocused,
+                                                    errorBorder: inputBorder,
+                                                    focusedErrorBorder: inputBorderFocused,
+                                                    filled: true,
+                                                    fillColor: AppColor.xLightBackground,
+                                                  ),
                                                 ),
-                                              ),
-                                              asyncItems:
-                                                  (String filter) async {
-                                                var response =
-                                                    await editContractorCertificateRecordController
-                                                        .globalController
-                                                        .database!
-                                                        .activityDao
-                                                        .findSubActivities(
-                                                            editContractorCertificateRecordController
-                                                                    .activity
-                                                                    .mainActivity ??
-                                                                "");
+                                                asyncItems: (String filter) async {
 
-                                                return response;
-                                              },
-                                              itemAsString: (Activity d) =>
-                                                  d.subActivity!.toString(),
-                                              // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                              compareFn: (activity, filter) =>
-                                                  activity.subActivity ==
-                                                  filter.subActivity,
-                                              onChanged: (activities) {
-                                                editContractorCertificateRecordController
-                                                    .subActivity = activities;
-                                                editContractorCertificateRecordController
-                                                    .update();
-                                              },
-                                              autoValidateMode:
-                                                  AutovalidateMode.always,
-                                              selectedItems:
+                                                  ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+                                                  var response = await db.getSubActivityByMainActivity(
+                                                      editContractorCertificateRecordController
+                                                          .activity ?? ""
+                                                  );
+
+                                                  // var response =
+                                                  //     await addContractorCertificateVerificationRecordController
+                                                  //         .globalController
+                                                  //         .database!
+                                                  //         .activityDao
+                                                  //         .findSubActivities(
+                                                  //             addContractorCertificateVerificationRecordController
+                                                  //                     .activity ?? ""
+                                                  //                 );
+
+                                                  return response;
+                                                },
+                                                selectedItems: editContractorCertificateRecordController.subActivity,
+                                                itemAsString: (ActivityModel d) =>
+                                                    d.subActivity!.toString(),
+                                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                                compareFn: (activity, filter) =>
+                                                activity.subActivity == filter.subActivity,
+                                                onChanged: (vals) {
                                                   editContractorCertificateRecordController
-                                                      .subActivity,
-                                              validator: (items) {
-                                                if (items == null ||
-                                                    items.isEmpty) {
-                                                  return 'Sub activity is required';
-                                                } else {
-                                                  return null;
-                                                }
-                                              },
-                                            );
+                                                      .subActivity = vals;
+                                                  editContractorCertificateRecordController
+                                                      .update();
+                                                },
+                                                autoValidateMode: AutovalidateMode.always,
+                                                validator: (items) {
+                                                  if (items == null || items.isEmpty) {
+                                                    return 'Sub activity is required';
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                },
+                                              );
                                           }),
                                       const SizedBox(height: 20),
                                       const Text(

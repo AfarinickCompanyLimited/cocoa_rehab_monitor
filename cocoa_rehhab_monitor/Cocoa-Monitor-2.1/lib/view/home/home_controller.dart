@@ -160,7 +160,7 @@ class HomeController extends GetxController {
         break;
         /// verification form
       case 5:
-        Get.to(() => AddContratorCertificateVerificationRecord());
+        Get.to(() => AddContractorCertificateVerificationRecord());
         break;
         /// rehab assistant
       case 6: Get.to(() => AddPersonnel());

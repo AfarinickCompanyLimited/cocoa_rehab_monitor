@@ -7,9 +7,10 @@ import 'package:get/get.dart';
 import '../../../controller/entity/cocoa_rehub_monitor/activity.dart';
 import '../../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../../controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
+import '../../../controller/model/contractor_certificate_of_workdone_model.dart';
 
 class CertificateVerificationCard extends StatelessWidget {
-  final ContractorCertificateVerification contractorCertificateVerification;
+  final ContractorCertificateVerificationModel contractorCertificateVerification;
   final Function? onViewTap;
   final Function? onEditTap;
   final Function? onDeleteTap;
@@ -84,36 +85,36 @@ class CertificateVerificationCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
         
-        if (contractorCertificateVerification.contractor != null)
-          FutureBuilder(
-              builder: (ctx, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        '${snapshot.error} occurred',
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
-                    List<Contractor> dataList =
-                        snapshot.data as List<Contractor>;
-
-                    return Text(dataList.first.contractorName ?? '',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColor.black));
-                  }
-                }
-
-                // Displaying LoadingSpinner to indicate waiting state
-                return const Center(
-                  child: Text('...'),
-                );
-              },
-              future: globalController.database!.contractorDao
-                  .findContractorById(
-                      contractorCertificateVerification.contractor!)),
+        // if (contractorCertificateVerification.contractor != null)
+        //   FutureBuilder(
+        //       builder: (ctx, snapshot) {
+        //         if (snapshot.connectionState == ConnectionState.done) {
+        //           if (snapshot.hasError) {
+        //             return Center(
+        //               child: Text(
+        //                 '${snapshot.error} occurred',
+        //                 style: const TextStyle(fontSize: 18),
+        //               ),
+        //             );
+        //           } else if (snapshot.hasData) {
+        //             List<Contractor> dataList =
+        //                 snapshot.data as List<Contractor>;
+        //
+        //             return Text(dataList.first.contractorName ?? '',
+        //                 style: TextStyle(
+        //                     fontWeight: FontWeight.w600,
+        //                     color: AppColor.black));
+        //           }
+        //         }
+        //
+        //         // Displaying LoadingSpinner to indicate waiting state
+        //         return const Center(
+        //           child: Text('...'),
+        //         );
+        //       },
+        //       future: globalController.database!.contractorDao
+        //           .findContractorById(
+        //               contractorCertificateVerification.contractor!)),
           const SizedBox(height: 10),
           FutureBuilder(
             builder: (ctx, snapshot) {
@@ -185,7 +186,9 @@ class CertificateVerificationCard extends StatelessWidget {
               return const Center(
                 child: Text('...'),
               );
-            },
+            },data.remove('main_activity');
+    data.remove('submission_status');
+    data.remove('current_farm_pic');
             future: globalController.database!.activityDao.findActivityByCode(monitor.activity!),
           ),
           const SizedBox(height: 10),

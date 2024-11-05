@@ -103,7 +103,7 @@ class WorkDoneCertificateVerificationMenuOptionsBottomSheet
                   onTap: () {
                     Get.back();
                     Get.to(
-                        () => const AddContratorCertificateVerificationRecord(),
+                        () => const AddContractorCertificateVerificationRecord(),
                         transition: Transition.topLevel);
                   },
                 ),

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 // import 'dart:typed_data';
 
+import 'package:cocoa_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
@@ -24,6 +25,8 @@ import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 // import '../utils/user_current_location.dart';
+import '../../controller/model/activity_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 import '../../controller/model/picked_media.dart';
 import '../global_components/custom_button.dart';
 import '../utils/bytes_to_size.dart';
@@ -38,7 +41,7 @@ class EditContractorCertificateVerificationRecordController
 
   final editCertificateVerificationRecordFormKey = GlobalKey<FormState>();
 
-  ContractorCertificateVerification? contractorCertificateVerification;
+  ContractorCertificateVerificationModel? contractorCertificateVerification;
   bool? isViewMode;
 
   HomeController homeController = Get.find();
@@ -72,9 +75,9 @@ class EditContractorCertificateVerificationRecordController
   TextEditingController? farmReferenceNumberTC = TextEditingController();
   TextEditingController? communityNameTC = TextEditingController();
 
-  Activity activity = Activity();
+  String? activity;
 
-  List<Activity> subActivity = [];
+  List<ActivityModel> subActivity = [];
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
 
@@ -133,8 +136,10 @@ class EditContractorCertificateVerificationRecordController
       //       }
       //     });
 
+      print("THE RECEIVED DATA IS ${contractorCertificateVerification!.toJson()}");
+
       selectedWeek.value =
-          contractorCertificateVerification!.currrentWeek ?? '';
+          contractorCertificateVerification!.currentWeek ?? '';
       selectedMonth.value =
           contractorCertificateVerification!.currentMonth ?? '';
       selectedYear.value = contractorCertificateVerification!.currentYear ?? '';
@@ -148,16 +153,28 @@ class EditContractorCertificateVerificationRecordController
       isCompletedBy.value =
           contractorCertificateVerification!.completedBy ?? '';
 
-      List? activityDataList = await globalController.database!.activityDao
-          .findActivityByCode(contractorCertificateVerification!.activity[0]);
-      activity = activityDataList.first;
-      update();
+      // List activityDataList = await globalController.database!.activityDao
+      //     .findActivityByCode(contractorCertificateVerification!.activity.first);
+      // print('THIS IS ACTIVITY DATA LIST :::: ${activityDataList}');
+      // activity = activityDataList.first;
+      // update();
 
-      List<Activity>? subActivityDataList = await globalController
-          .database!.activityDao
-          .findAllActivityWithCodeList(
-              contractorCertificateVerification!.activity);
-      subActivity = subActivityDataList;
+      // List<ActivityModel>? subActivityDataList = await globalController
+      //     .database!.activityDao
+      //     .findAllActivityWithCodeList(
+      //         contractorCertificateVerification!.activity);
+      // subActivity = subActivityDataList;
+
+      for (int i = 0; i < contractorCertificateVerification!.activity.length; i++) {
+        ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+        var s = await db.getSubActivityByCode(contractorCertificateVerification!.activity[i]);
+        subActivity.add(s.first);
+
+        s.clear();
+      }
+
+      activity = subActivity.first.mainActivity;
+
       update();
 
       List? regionDistrictList = await globalController
@@ -308,15 +325,15 @@ class EditContractorCertificateVerificationRecordController
     List<int> subActivityList =
         subActivity.map((activity) => activity.code).cast<int>().toList();
 
-    ContractorCertificateVerification contractorCertificateVerificationData =
-        ContractorCertificateVerification(
+    ContractorCertificateVerificationModel contractorCertificateVerificationData =
+        ContractorCertificateVerificationModel(
       uid: contractorCertificateVerification?.uid,
       userId: int.tryParse(
         globalController.userInfo.value.userId!,
       ),
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
-      currrentWeek: selectedWeek.value,
+      currentWeek: selectedWeek.value,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude ?? contractorCertificateVerification?.lat,
       lng: locationData?.longitude ?? contractorCertificateVerification?.lng,
@@ -324,7 +341,7 @@ class EditContractorCertificateVerificationRecordController
           ? double.tryParse(
               locationData!.accuracy!.truncateToDecimalPlaces(2).toString())
           : contractorCertificateVerification?.accuracy,
-      mainActivity: activity.code,
+      mainActivity: subActivityList.first,
       activity: subActivityList,
       farmRefNumber: farmReferenceNumberTC!.text,
       farmSizeHa: double.parse(farmSizeTC!.text),
@@ -468,7 +485,7 @@ class EditContractorCertificateVerificationRecordController
           ? double.tryParse(
               locationData!.accuracy!.truncateToDecimalPlaces(2).toString())
           : contractorCertificateVerification?.accuracy ?? 0.0,
-      mainActivity: activity.code,
+      mainActivity: subActivityList.first,
       activity: subActivityList,
       status: SubmissionStatus.pending,
       farmRefNumber: farmReferenceNumberTC!.text,

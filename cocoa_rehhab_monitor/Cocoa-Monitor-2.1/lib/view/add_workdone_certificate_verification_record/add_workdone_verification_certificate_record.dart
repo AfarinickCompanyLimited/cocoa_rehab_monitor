@@ -1,3 +1,4 @@
+import 'package:cocoa_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/view/global_components/custom_button.dart';
@@ -13,21 +14,22 @@ import 'package:get/get.dart';
 
 import '../../controller/constants.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
+import '../../controller/model/activity_model.dart';
 import '../global_components/image_field_card.dart';
 import '../utils/location_color.dart';
 import '../utils/pattern_validator.dart';
 import 'add_workdone_verification_record_controller.dart';
 
-class AddContratorCertificateVerificationRecord extends StatefulWidget {
-  const AddContratorCertificateVerificationRecord({Key? key}) : super(key: key);
+class AddContractorCertificateVerificationRecord extends StatefulWidget {
+  const AddContractorCertificateVerificationRecord({Key? key}) : super(key: key);
 
   @override
-  State<AddContratorCertificateVerificationRecord> createState() =>
-      _AddContratorCertificateVerificationRecordState();
+  State<AddContractorCertificateVerificationRecord> createState() =>
+      _AddContractorCertificateVerificationRecordState();
 }
 
-class _AddContratorCertificateVerificationRecordState
-    extends State<AddContratorCertificateVerificationRecord> {
+class _AddContractorCertificateVerificationRecordState
+    extends State<AddContractorCertificateVerificationRecord> {
   @override
   Widget build(BuildContext context) {
     int currentYear = DateTime.now().year;
@@ -551,7 +553,7 @@ class _AddContratorCertificateVerificationRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              DropdownSearch<Activity>(
+                              DropdownSearch<String>(
                                 popupProps: PopupProps.modalBottomSheet(
                                     showSelectedItems: true,
                                     showSearchBox: true,
@@ -566,7 +568,7 @@ class _AddContratorCertificateVerificationRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (Activity s) => false,
+                                    disabledItemFn: (String s) => false,
                                     modalBottomSheetProps:
                                         ModalBottomSheetProps(
                                       elevation: 6,
@@ -602,29 +604,49 @@ class _AddContratorCertificateVerificationRecordState
                                     fillColor: AppColor.xLightBackground,
                                   ),
                                 ),
-                                asyncItems: (String filter) async {
-                                  // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
-                                  var response =
-                                      await addContractorCertificateVerificationRecordController
-                                          .globalController
-                                          .database!
-                                          .activityDao
-                                          .findAllActivityWithMainActivityList([
-                                    MainActivities.InitialTreatment,
-                                    MainActivities.Maintenance,
-                                    MainActivities.Establishment
-                                  ]);
-                                  return response;
-                                },
-                                itemAsString: (Activity d) =>
-                                    d.mainActivity!.toString(),
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (activity, filter) =>
-                                    activity.mainActivity ==
-                                    filter.mainActivity,
+                                items: [
+                              "Establishment",
+                              "Initial Treatment",
+                              "Maintenance",
+                                ],
+                                // asyncItems: (String filter) async {
+                                //   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+                                //   var response = await db.findAllActivityWithMainActivityList(
+                                //   [
+                                //       MainActivities.InitialTreatment,
+                                //       MainActivities.Maintenance,
+                                //       MainActivities.Establishment
+                                //     ]
+                                //   );
+                                //
+                                //   print("THE RESPONSE ::::::: ${response}");
+                                //
+                                //    // var response = await addContractorCertificateVerificationRecordController.globalController.database!.activityDao.findAllMainActivity();
+                                //   // var response =
+                                //   //     await addContractorCertificateVerificationRecordController
+                                //   //         .globalController
+                                //   //         .database!
+                                //   //         .activityDao
+                                //   //         .findAllActivityWithMainActivityList([
+                                //   //   MainActivities.InitialTreatment,
+                                //   //   MainActivities.Maintenance,
+                                //   //   MainActivities.Establishment
+                                //   // ]);
+                                //   return response;
+                                // },
+                                itemAsString: (String d) =>
+                                    d,
+                                //filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                // compareFn: (activity, filter) =>
+                                //     activity.mainActivity ==
+                                //     filter.mainActivity,
                                 onChanged: (val) {
+
+                                  print("YESSSSS");
                                   addContractorCertificateVerificationRecordController
                                       .activity = val!;
+                                  // print("CODE ::::::::::: ${addContractorCertificateVerificationRecordController.activity.mainActivity}");
+                                  // print("MAIN ACTIVITY :::::::::::::: ${addContractorCertificateVerificationRecordController.activity.code}");
 
                                   // addContractorCertificateRecordController
                                   //     .subActivity = Activity() as List<Activity>;
@@ -648,7 +670,7 @@ class _AddContratorCertificateVerificationRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              DropdownSearch<Activity>.multiSelection(
+                              DropdownSearch<ActivityModel>.multiSelection(
                                 popupProps:
                                     PopupPropsMultiSelection.modalBottomSheet(
                                         showSelectedItems: true,
@@ -664,7 +686,7 @@ class _AddContratorCertificateVerificationRecordState
                                             ),
                                           ),
                                         ),
-                                        disabledItemFn: (Activity s) => false,
+                                        disabledItemFn: (ActivityModel s) => false,
                                         modalBottomSheetProps:
                                             ModalBottomSheetProps(
                                           elevation: 6,
@@ -704,19 +726,26 @@ class _AddContratorCertificateVerificationRecordState
                                   ),
                                 ),
                                 asyncItems: (String filter) async {
-                                  var response =
-                                      await addContractorCertificateVerificationRecordController
-                                          .globalController
-                                          .database!
-                                          .activityDao
-                                          .findSubActivities(
-                                              addContractorCertificateVerificationRecordController
-                                                      .activity.mainActivity ??
-                                                  "");
+
+                                    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+                                    var response = await db.getSubActivityByMainActivity(
+                                      addContractorCertificateVerificationRecordController
+                                          .activity ?? ""
+                                    );
+
+                                  // var response =
+                                  //     await addContractorCertificateVerificationRecordController
+                                  //         .globalController
+                                  //         .database!
+                                  //         .activityDao
+                                  //         .findSubActivities(
+                                  //             addContractorCertificateVerificationRecordController
+                                  //                     .activity ?? ""
+                                  //                 );
 
                                   return response;
                                 },
-                                itemAsString: (Activity d) =>
+                                itemAsString: (ActivityModel d) =>
                                     d.subActivity!.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
@@ -936,7 +965,7 @@ class _AddContratorCertificateVerificationRecordState
                                           )
                                         : Container(),
                               ),
-                              const SizedBox(height: 20),
+
                               const Text(
                                 'Picture of Farm',
                                 style: TextStyle(fontWeight: FontWeight.w500),
