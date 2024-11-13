@@ -81,7 +81,7 @@ class ContractorCertificateVerificationModel {
     "uid": uid,
     "current_year": currentYear,
     "current_month": currentMonth,
-    "current_week": currentWeek,
+    "currrent_week": currentWeek,
     "main_activity": mainActivity,
     "activity": activity,
     "reporting_date": reportingDate,

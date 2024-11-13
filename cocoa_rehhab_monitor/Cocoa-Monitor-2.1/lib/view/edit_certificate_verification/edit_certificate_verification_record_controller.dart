@@ -33,7 +33,7 @@ import '../utils/bytes_to_size.dart';
 import '../utils/location_color.dart';
 import '../utils/style.dart';
 import '../utils/user_current_location.dart';
-import '../utils/view_constants.dart';
+import '../utils/view_constants.dart';import 'package:image/image.dart' as img;
 
 class EditContractorCertificateVerificationRecordController
     extends GetxController {
@@ -168,7 +168,12 @@ class EditContractorCertificateVerificationRecordController
       for (int i = 0; i < contractorCertificateVerification!.activity.length; i++) {
         ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
         var s = await db.getSubActivityByCode(contractorCertificateVerification!.activity[i]);
+
+        // print("THE DATA FROM THE DATABASE ::::::::::::::::: $s");
+
         subActivity.add(s.first);
+
+        // print("THE DATA FROM THE DATABASE 2 ::::::::::::::::: $subActivity");
 
         s.clear();
       }
@@ -359,7 +364,7 @@ class EditContractorCertificateVerificationRecordController
     data.remove('main_activity');
     data.remove('submission_status');
 
-    print('THIS IS Contractor Certificate DETAILS:::: $data');
+    print('THIS IS Contractor Certificate DETAILS:::: ${data["current_farm_pic"]}');
 
     var postResult = await contractorCertificateApiInterface
         .saveContractorCertificateVerification(
@@ -601,27 +606,53 @@ class EditContractorCertificateVerificationRecordController
   pickMedia({int? source}) async {
     final XFile? mediaFile;
     var fileType = FileType.image;
+
     if (source == 0) {
       mediaFile = await mediaPicker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
     } else {
       mediaFile = await mediaPicker.pickImage(
-          source: ImageSource.camera, imageQuality: 50);
+        source: ImageSource.camera,
+        imageQuality: 50,
+      );
     }
 
     if (mediaFile != null) {
-      var fileSize = await mediaFile.length();
+      var originalFile = io.File(mediaFile.path);
+      var fileSize = await originalFile.length();
+
+      // Load the original image
+      final originalImageBytes = await originalFile.readAsBytes();
+      img.Image? image = img.decodeImage(originalImageBytes);
+
+      if (image != null) {
+        // Resize the image to 30% of the original dimensions
+        img.Image resizedImage = img.copyResize(image,
+            width: (image.width * 0.3).toInt(),
+            height: (image.height * 0.3).toInt());
+
+        // Compress the resized image and save it to the same file path
+        final compressedImageBytes = img.encodeJpg(resizedImage, quality: 70);
+        await originalFile.writeAsBytes(compressedImageBytes);
+
+        // Update the file size after compression
+        fileSize = compressedImageBytes.length;
+      }
+
+      // Create and save the PickedMedia instance
       PickedMedia pickedMedia = PickedMedia(
         name: mediaFile.name,
         path: mediaFile.path,
         type: fileType,
         size: fileSize,
-        file: io.File(mediaFile.path),
+        file: originalFile,
       );
-      // print('haaaaaaaaaaaaaaaa');
-      // print(bytesToSize(fileSize));
+
       farmPhoto = pickedMedia;
       update();
+
       print(bytesToSize(fileSize));
     } else {
       return null;

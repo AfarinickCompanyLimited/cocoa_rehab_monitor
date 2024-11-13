@@ -35,7 +35,7 @@ import '../utils/bytes_to_size.dart';
 import '../utils/location_color.dart';
 import '../utils/style.dart';
 import '../widgets/_media_source_dialog.dart';
-import 'dart:io' as io;
+
 import 'package:image/image.dart' as img;
 
 class AddContractorCertificateVerificationRecordController

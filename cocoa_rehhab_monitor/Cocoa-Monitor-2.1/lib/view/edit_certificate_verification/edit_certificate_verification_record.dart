@@ -739,6 +739,7 @@ class _EditMonitoringRecordState
                                                   "Initial Treatment",
                                                   "Maintenance",
                                                 ],
+                                                selectedItem: editContractorCertificateRecordController.activity,
                                                 // asyncItems: (String filter) async {
                                                 //   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
                                                 //   var response = await db.findAllActivityWithMainActivityList(
@@ -886,8 +887,8 @@ class _EditMonitoringRecordState
                                                 itemAsString: (ActivityModel d) =>
                                                     d.subActivity!.toString(),
                                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                                compareFn: (activity, filter) =>
-                                                activity.subActivity == filter.subActivity,
+                                                compareFn: (activity, filter) => activity.code == filter.code,
+
                                                 onChanged: (vals) {
                                                   editContractorCertificateRecordController
                                                       .subActivity = vals;

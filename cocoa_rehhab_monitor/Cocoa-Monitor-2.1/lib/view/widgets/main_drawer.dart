@@ -1,4 +1,5 @@
 import 'package:cocoa_monitor/controller/api_interface/user_info_apis.dart';
+import 'package:cocoa_monitor/view/appraisal/appraisal.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
@@ -154,6 +155,19 @@ class MainDrawer extends StatelessWidget {
                         Get.to(() => const EquipmentList(),
                             transition: Transition.fadeIn);
                       },
+                    ),
+                    const Divider(),
+                    ListTile(
+                      title: const Text(
+                        'Appraisal',
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                      minLeadingWidth: 10,
+                      leading: appIconKnife(
+                          color: AppColor.black, size: 25),
+                      onTap: () {Navigator.of(context).pop();
+                      Get.to(() => const Appraisal(),
+                          transition: Transition.fadeIn);},
                     ),
                     const Divider(),
                     SizedBox(
