@@ -6,26 +6,29 @@ import 'package:get/get.dart';
 import '../../controller/constants.dart';
 import '../../controller/global_controller.dart';
 import '../../controller/utils/dio_singleton_instance.dart';
+import '../global_components/globals.dart';
 
 class AppraisalController extends GetxController {
+  BuildContext? appraisalContext;
   final indexController  = Get.put(GlobalController());
   int id = 0;
   int employee = 0;
+
+  final globals = Globals();
 
   RxBool done= false.obs;
 
   List questions = [];
   List reasonControllers = [];
   List ratingsController = [];
-  List areasForImprovementControllers = [];
-  List commentsControllers = [];
+
+  final TextEditingController commentController = TextEditingController();
+  final TextEditingController areaForImprovementController = TextEditingController();
 
   _createTextController() {
     questions.forEach((element) {
       reasonControllers.add(TextEditingController());
       ratingsController.add(TextEditingController());
-      areasForImprovementControllers.add(TextEditingController());
-      commentsControllers.add(TextEditingController());
     });
   }
 
@@ -69,17 +72,27 @@ class AppraisalController extends GetxController {
     }
   }
 
-  // submit() async {
-  //   for(int i=0; i<questions.length; i++){
-  //     AppraisalModel model = AppraisalModel(
-  //         id: id,
-  //         employeeID: indexController.userInfo.value.staffId,
-  //         competency: ,
-  //         areas_for_improvement: ,
-  //         comment: ,
-  //     );
-  //   }
-  // }
+  submit(data) async {
+    String employeeID = 'U0004';
+    String baseURL = "http://18.171.87.243/";
+    String appraisalEndPoint = "api/v1/appraisals/${employeeID}/";
+    globals.startWait(appraisalContext!);
+    try {
+      var response = await DioSingleton.instance
+          .post(baseURL + appraisalEndPoint,
+        data: data
+      );
+
+      print("THE RESPONSE IS ============ ${response.data}");
+    globals.endWait(appraisalContext!);
+      if(response.data["data"] != null) {
+
+      }
+
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   void onInit() {
