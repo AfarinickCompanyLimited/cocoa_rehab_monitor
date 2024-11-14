@@ -14,6 +14,7 @@ class AppraisalController extends GetxController {
   int id = 0;
   int employee = 0;
 
+  final globalController = Get.put(GlobalController());
   final globals = Globals();
 
   RxBool done= false.obs;
@@ -73,7 +74,7 @@ class AppraisalController extends GetxController {
   }
 
   submit(data) async {
-    String employeeID = 'U0004';
+    String employeeID = globalController.userInfo.value.userId.toString();
     String baseURL = "http://18.171.87.243/";
     String appraisalEndPoint = "api/v1/appraisals/${employeeID}/";
     globals.startWait(appraisalContext!);
@@ -85,12 +86,14 @@ class AppraisalController extends GetxController {
 
       print("THE RESPONSE IS ============ ${response.data}");
     globals.endWait(appraisalContext!);
-      if(response.data["data"] != null) {
-
+      if(response.data["status"] == 200) {
+        return true;
+      }else {
+        return false;
       }
 
     } catch (e) {
-      print(e);
+      return false;
     }
   }
 
@@ -101,7 +104,6 @@ class AppraisalController extends GetxController {
 
     _fetchAppraisalQuestions();
 
-    print("THE QUESTIONS ARE ================= ${questions}");
     _createTextController();
   }
 }

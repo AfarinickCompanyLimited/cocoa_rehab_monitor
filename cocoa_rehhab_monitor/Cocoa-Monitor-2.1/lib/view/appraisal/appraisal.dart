@@ -64,6 +64,53 @@ class _AppraisalState extends State<Appraisal> {
     super.dispose();
   }
 
+  validateFields(){
+    for (int i = 0; i < ratingsController.length; i++) {
+      if (ratingsController[i].text == "" ||
+          reasonControllers[i].text == "") {
+        _appraisalController.globals.showSnackBar(
+            title: 'Alert',
+            message:
+            'Kindly provide all required information');
+        return;
+      }
+    }
+  }
+
+  submit()async {
+    validateFields();
+    var dt = [];
+    for (int i = 0; i < data.length; i++) {
+      var item = {
+        "evaluation": data[i]["evaluation"],
+        "appraisee_rating": int.tryParse(ratingsController[i].text),
+        "appraisee_reasons": reasonControllers[i].text,
+      };
+      dt.add(item);
+    }
+
+    var d = {
+      "id": _appraisalController.id,
+      "employee": _appraisalController.employee,
+      "performance_appraisal": dt,
+      "development_appraisal":{"areas_for_improvement": _appraisalController.areaForImprovementController.text},
+      "appraisal_comment":{"appraisee_comments": _appraisalController.commentController.text}
+    };
+
+    bool feedback = await _appraisalController.submit(d);
+
+    if (feedback) {
+      Get.back();
+      _appraisalController.globals.showSnackBar(
+          title: 'Success',
+          message: 'Feedback submitted successfully');
+    } else {
+      _appraisalController.globals.showSnackBar(
+          title: 'Failed',
+          message: 'Failed to submit appraisal, contact support');
+
+    }
+  }
   @override
   Widget build(BuildContext context) {
     _appraisalController.appraisalContext = context;
@@ -239,40 +286,7 @@ class _AppraisalState extends State<Appraisal> {
                       backgroundColor: AppColor.primary,
                       verticalPadding: 0.0,
                       horizontalPadding: 8.0,
-                      onTap: () async {
-                        for (int i = 0; i < ratingsController.length; i++) {
-                          if (ratingsController[i].text == "" ||
-                              reasonControllers[i].text == "") {
-                            _appraisalController.globals.showSnackBar(
-                                title: 'Alert',
-                                message:
-                                    'Kindly provide all required information');
-                            return;
-                          }
-                        }
-
-                        var dt = [];
-                        for (int i = 0; i < data.length; i++) {
-                          var item = {
-                            "evaluation": data[i]["evaluation"],
-                            "appraisee_rating": int.tryParse(ratingsController[i].text),
-                            "appraisee_reasons": reasonControllers[i].text,
-                          };
-                          dt.add(item);
-                        }
-
-                        var d = {
-                          "id": _appraisalController.id,
-                          "employee": _appraisalController.employee,
-                          "performance_appraisal": dt,
-                          "development_appraisal":{"areas_for_improvement": _appraisalController.areaForImprovementController.text},
-                          "appraisal_comment":{"appraisee_comments": _appraisalController.commentController.text}
-                        };
-
-                        print("THE DATA FOR POST ============== ${d}");
-
-                        _appraisalController.submit(d);
-                      },
+                      onTap: () => submit(),
                       child: Text(
                         'Submit',
                         style: TextStyle(color: AppColor.white, fontSize: 14),

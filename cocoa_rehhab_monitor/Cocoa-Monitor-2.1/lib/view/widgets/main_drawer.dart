@@ -170,6 +170,19 @@ class MainDrawer extends StatelessWidget {
                           transition: Transition.fadeIn);},
                     ),
                     const Divider(),
+                    ListTile(
+                      title: const Text(
+                        'Leave Request',
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                      minLeadingWidth: 10,
+                      leading: appIconKnife(
+                          color: AppColor.black, size: 25),
+                      onTap: () {Navigator.of(context).pop();
+                      Get.to(() => const LeaveRequest(),
+                          transition: Transition.fadeIn);},
+                    ),
+                    const Divider(),
                     SizedBox(
                       height: 30,
                     ),

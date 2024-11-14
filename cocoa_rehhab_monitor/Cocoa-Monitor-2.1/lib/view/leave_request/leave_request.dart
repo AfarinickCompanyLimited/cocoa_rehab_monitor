@@ -2,8 +2,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import '../auth/login/login.dart';
-import '../auth/register/register.dart';
 import '../global_components/custom_button.dart';
 import '../global_components/round_icon_button.dart';
 import '../global_components/text_input_decoration.dart';
