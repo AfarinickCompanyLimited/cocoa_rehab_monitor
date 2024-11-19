@@ -163,8 +163,7 @@ class MainDrawer extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w400),
                       ),
                       minLeadingWidth: 10,
-                      leading: appIconKnife(
-                          color: AppColor.black, size: 25),
+                      leading: Image.asset("assets/images/appraisal.png", width: 25, color: AppColor.black,),
                       onTap: () {Navigator.of(context).pop();
                       Get.to(() => const Appraisal(),
                           transition: Transition.fadeIn);},
@@ -176,8 +175,7 @@ class MainDrawer extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w400),
                       ),
                       minLeadingWidth: 10,
-                      leading: appIconKnife(
-                          color: AppColor.black, size: 25),
+                      leading: Image.asset("assets/images/leave-request.png",  width: 25, color: AppColor.black,),
                       onTap: () {Navigator.of(context).pop();
                       Get.to(() => const LeaveRequest(),
                           transition: Transition.fadeIn);},
@@ -275,7 +273,6 @@ class MainDrawer extends StatelessWidget {
       ),
     );
   }
-
   currentYear() {
     var now = DateTime.now();
     var formatter = DateFormat('yyyy');

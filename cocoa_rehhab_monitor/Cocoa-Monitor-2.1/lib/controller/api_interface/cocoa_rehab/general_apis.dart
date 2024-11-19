@@ -1050,24 +1050,26 @@ class GeneralCocoaRehabApiInterface {
 // ==============================================================================
 
   Future submitLeave(data) async {
+    String? staffID = indexController.userInfo.value.staffId;
     if (await ConnectionVerify.connectionIsAvailable()) {
     try {
       var response =
-      await DioSingleton.instance.post(URLs.baseUrl + URLs.submitLeave, data: data);
-      if (response.data['status'] == true && response.data['data'] != null) {
+      //todo: change the baseurl to the actual after backend hosting
+      await DioSingleton.instance.post("http://18.171.87.243/api/v1/leaves/${staffID}/", data: data);
+      if (response.data['status'] == 201) {
 
-        return true;
+        return 1;
       } else {
         // return false;
         debugPrint(
-            'RESPONSE DATA FAILED IN LOAD ACTIVITIES ::: ${response.data?['status']}');
+            'RESPONSE DATA FAILED IN SUBMIT LEAVE ::: ${response.data?['status']}');
       }
-      return 1;
+      return 2;
     } catch (e, stackTrace) {
       debugPrint(
           "AN UNKNOWN ERROR OCCURRED IN SUBMIT LEAVE");
     }
-    return 2;
+    return 3;
     // }
   }
     else{

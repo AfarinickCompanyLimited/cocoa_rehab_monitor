@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../global_components/custom_button.dart';
 import '../global_components/round_icon_button.dart';
 import '../global_components/text_input_decoration.dart';
@@ -18,10 +19,12 @@ class LeaveRequest extends StatefulWidget {
 class _LeaveRequestState extends State<LeaveRequest> {
 
   LeaveRequestController leaveRequestController = Get.put(LeaveRequestController());
+
+  var maxDays = 0;
+
   @override
   Widget build(BuildContext context) {
-
-
+    leaveRequestController.LeaveRequestScreenContext = context;
     return Material(
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
@@ -88,7 +91,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             'Leave Type',
                             style: TextStyle(fontWeight: FontWeight.w500),
                           ),
-                          DropdownSearch<String>(
+                          Obx(() => DropdownSearch<String>(
                             popupProps: PopupProps.menu(
                               showSelectedItems: true,
                               disabledItemFn: (String s) => false,
@@ -99,7 +102,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               ),
                             ),
                             items: leaveRequestController.leaveList
-                                .map((year) => year.toString())
+                                .map((leave_type) => leave_type.toString())
                                 .toList(),
                             dropdownDecoratorProps: DropDownDecoratorProps(
                               dropdownSearchDecoration: InputDecoration(
@@ -123,9 +126,9 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             },
                             onChanged: (val) {
                               leaveRequestController.selectedLeave.value = val!;
-                              leaveRequestController.update();
+                              leaveRequestController.getMaximumLeaveDays();
                             },
-                          ),
+                          )),
                           const SizedBox(height: 20),
                           const Text(
                             'Starting Date',
@@ -139,6 +142,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               }
                               return null;
                             },
+                            readOnly: true, // Prevent manual editing
                             onTap: () async {
                               // Show date picker for start date
                               DateTime? pickedStartDate = await showDatePicker(
@@ -149,8 +153,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               );
 
                               if (pickedStartDate != null) {
-                                leaveRequestController.startDate.text = pickedStartDate.toString();
-                                leaveRequestController.update();
+                                leaveRequestController.startDate.text = DateFormat('yyyy-MM-dd').format(pickedStartDate);
                               }
                             },
                             decoration: InputDecoration(
@@ -165,7 +168,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               fillColor: AppColor.xLightBackground,
                             ),
                             keyboardType: TextInputType.none,
-                            textCapitalization: TextCapitalization.characters,
+                            textCapitalization: TextCapitalization.none,
                             textInputAction: TextInputAction.next,
                             autovalidateMode: AutovalidateMode.always,
                           ),
@@ -183,9 +186,13 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               return null;
                             },
                             onTap: () async {
+                              print("THR NUMBER OF DAYS: ${leaveRequestController.maxDays.value}");
                               // Ensure a start date is selected
                               if (leaveRequestController.startDate.text.isEmpty) {
-                                Get.snackbar('Error', 'Please select a starting date first');
+                                leaveRequestController.globals.showSnackBar(
+                                  title: 'Error',
+                                  message: 'Please select a starting date first',
+                                );
                                 return;
                               }
 
@@ -194,17 +201,34 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               // Show date picker for end date starting from one day after start date
                               DateTime? pickedEndDate = await showDatePicker(
                                 context: context,
-                                initialDate: pickedStartDate.add(Duration(days: 1)),
-                                firstDate: pickedStartDate.add(Duration(days: 1)),
+                                initialDate: pickedStartDate.add(const Duration(days: 1)),
+                                firstDate: pickedStartDate.add(const Duration(days: 1)),
                                 lastDate: DateTime(2101),
                               );
 
                               if (pickedEndDate != null) {
-                                leaveRequestController.endDate.text = pickedEndDate.toString();
-                                // Calculate the number of days between start and end dates
-                                final difference = pickedEndDate.difference(pickedStartDate).inDays;
+                                leaveRequestController.endDate.text = DateFormat('yyyy-MM-dd').format(pickedEndDate);
+                                final difference = pickedEndDate.difference(pickedStartDate).inDays + 1;
+
+                                if (difference < leaveRequestController.maxDays.value) {
+                                  leaveRequestController.globals.showSnackBar(
+                                    title: 'Error',
+                                    message: 'End date must be after start date',
+                                  );
+                                  leaveRequestController.endDate.clear();
+                                  return;
+                                }
+
+                                if (difference != leaveRequestController.maxDays.value) {
+                                  leaveRequestController.globals.showSnackBar(
+                                    title: 'Error',
+                                    message: 'The number of days cannot exceed ${leaveRequestController.maxDays.value}',
+                                  );
+                                  leaveRequestController.endDate.clear();
+                                  return;
+                                }
+
                                 leaveRequestController.numberOfDays.text = difference.toString();
-                                leaveRequestController.update();
                               }
                             },
                             decoration: InputDecoration(
@@ -219,7 +243,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               fillColor: AppColor.xLightBackground,
                             ),
                             keyboardType: TextInputType.none,
-                            textCapitalization: TextCapitalization.characters,
+                            textCapitalization: TextCapitalization.none,
                             textInputAction: TextInputAction.next,
                             autovalidateMode: AutovalidateMode.always,
                           ),
@@ -232,17 +256,21 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             controller: leaveRequestController.numberOfDays,
                             onTap: () => null,
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                               enabledBorder: inputBorder,
-                              focusedBorder: inputBorderFocused,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+                                borderSide: BorderSide(width: 1, color: AppColor.lightText),
+                              ),
                               errorBorder: inputBorder,
                               focusedErrorBorder: inputBorderFocused,
                               filled: true,
-                              fillColor: AppColor.xLightBackground,
+                              fillColor: AppColor.lightText,
                             ),
                             keyboardType: TextInputType.none,
+                            cursorColor: AppColor.lightText
                           ),
+
                           const SizedBox(height: 20),
                           const Text(
                             'Reason',
@@ -279,7 +307,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             verticalPadding: 0.0,
                             horizontalPadding: 8.0,
                             onTap: () async {
-                              // Add your submission logic here
+                              leaveRequestController.submitLeaveRequest();
                             },
                             child: Text(
                               'Submit',

@@ -1,5 +1,9 @@
+import '../global_controller.dart';
+import 'package:get/get.dart';
+
 class Leave {
-  String leaveType;
+  final globalController = Get.put(GlobalController());
+  int leaveType;
   String numberOfDays;
   String leaveReason;
   String startDate;
@@ -12,9 +16,9 @@ class Leave {
       required this.endDate});
 
   Map<String, dynamic> toJson() => {
+    'employee': globalController.userInfo.value.staffId,
     'leave_type': leaveType,
-    'number_of_days': numberOfDays,
-    'leave_reason': leaveReason,
+    'description': leaveReason,
     'start_date': startDate,
     'end_date': endDate
   };
