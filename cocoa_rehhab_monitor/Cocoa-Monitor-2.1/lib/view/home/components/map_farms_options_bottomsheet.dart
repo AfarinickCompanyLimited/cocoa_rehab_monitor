@@ -6,8 +6,6 @@ import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../contractor_certificate_history/contractor_certificate_history.dart';
-
 class MapFarmsMenuOptionsBottomSheet extends StatelessWidget {
   const MapFarmsMenuOptionsBottomSheet({Key? key}) : super(key: key);
 

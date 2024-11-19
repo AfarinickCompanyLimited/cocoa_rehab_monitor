@@ -153,6 +153,12 @@ class ContractorCertificateDatabaseHelper {
         : [];
   }
 
+  // delete data by uid
+  Future<int> deleteData(String id) async {
+    final db = await instance.database;
+    return await db.delete(tableName, where: '$uid = ?', whereArgs: [id]);
+  }
+
   Future<int> deleteAll() async {
     final db = await instance.database;
     return await db.delete(tableName);

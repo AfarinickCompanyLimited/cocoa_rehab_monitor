@@ -8,7 +8,6 @@ import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/map_farms_api
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/community.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/farm.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/farmer_from_server.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/map_farm.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/society.dart';
 import 'package:cocoa_monitor/view/utils/double_value_trimmer.dart';
@@ -160,8 +159,8 @@ class MapFarmController extends GetxController {
 
     globals.startWait(mapFarmScreenContext);
 
-    DateTime now = DateTime.now();
-    String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
+    // DateTime now = DateTime.now();
+    // String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
     MapFarm farmData = MapFarm(
       uid: const Uuid().v4(),
@@ -243,8 +242,8 @@ class MapFarmController extends GetxController {
 
     globals.startWait(mapFarmScreenContext);
 
-    DateTime now = DateTime.now();
-    String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
+    // DateTime now = DateTime.now();
+    // String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
     MapFarm mapFarmData = MapFarm(
       uid: const Uuid().v4(),

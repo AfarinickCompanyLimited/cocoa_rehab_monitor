@@ -37,11 +37,8 @@ import 'package:intl/intl.dart';
 // import 'package:intl/intl.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
-import '../../controller/entity/cocoa_rehub_monitor/map_farm.dart';
 import '../../controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
 import '../add_initial_treatment_monitoring_record/add_initial_treatment_monitoring_record.dart';
 import '../add_map_farm/map_farm.dart';
@@ -51,7 +48,6 @@ import '../add_workdone_certificate_verification_record/add_workdone_verificatio
 import '../global_components/text_input_decoration.dart';
 import '../personnel_history/personnel_history.dart';
 import '../update_compulsion/mandatory_update.dart';
-import 'components/workdone_certificate_options_bottomsheet.dart';
 
 class HomeController extends GetxController {
   GlobalController globalController = Get.find();

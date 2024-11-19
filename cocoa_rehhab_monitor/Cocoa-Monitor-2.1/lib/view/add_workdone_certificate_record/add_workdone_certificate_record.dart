@@ -6,8 +6,6 @@ import '../../controller/constants.dart';
 import '../../controller/entity/cocoa_rehub_monitor/activity.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
-import '../auth/login/login.dart';
-import '../auth/register/register.dart';
 import '../global_components/custom_button.dart';
 import '../global_components/round_icon_button.dart';
 import '../global_components/text_input_decoration.dart';

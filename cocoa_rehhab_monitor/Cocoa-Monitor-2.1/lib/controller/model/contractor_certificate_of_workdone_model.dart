@@ -14,7 +14,7 @@ class ContractorCertificateVerificationModel {
     this.uid,
     this.currentYear,
     this.currentMonth,
-    this.currentWeek,
+    this.currrentWeek,
     this.mainActivity,
     required this.activity,
     this.reportingDate,
@@ -35,7 +35,7 @@ class ContractorCertificateVerificationModel {
   String? uid;
   String? currentYear;
   String? currentMonth;
-  String? currentWeek;
+  String? currrentWeek;
   int? mainActivity;
   final List<int> activity;
   String? reportingDate;
@@ -58,7 +58,7 @@ class ContractorCertificateVerificationModel {
         uid: json["uid"],
         currentYear: json["current_year"],
         currentMonth: json["current_month"],
-        currentWeek: json["current_week"],
+        currrentWeek: json["currrent_week"],
         mainActivity: json["main_activity"],
         activity:
         json["activity"],
@@ -81,7 +81,7 @@ class ContractorCertificateVerificationModel {
     "uid": uid,
     "current_year": currentYear,
     "current_month": currentMonth,
-    "currrent_week": currentWeek,
+    "currrent_week": currrentWeek,
     "main_activity": mainActivity,
     "activity": activity,
     "reporting_date": reportingDate,
@@ -94,8 +94,8 @@ class ContractorCertificateVerificationModel {
     "lat": lat,
     "lng": lng,
     "accuracy": accuracy,
-    "current_farm_pic": currentFarmPic,
     "contractor": contractor,
     "completed_by": completedBy,
+    "current_farm_pic": currentFarmPic,
   };
 }

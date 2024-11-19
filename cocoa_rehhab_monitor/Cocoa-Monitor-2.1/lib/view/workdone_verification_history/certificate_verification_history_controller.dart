@@ -1,5 +1,4 @@
 import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
@@ -63,26 +62,6 @@ class CertificateVerificationHistoryController extends GetxController {
   }
 
   confirmDeleteMonitoring(ContractorCertificateVerificationModel contractorCertificateVerification) async {
-    globals.primaryConfirmDialog(
-        context: certificateVerificationHistoryScreenContext,
-        title: 'Delete Record',
-        image: 'assets/images/cocoa_monitor/question.png',
-        content: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-              "This action is irreversible. Are you sure you want to delete this record?",
-              textAlign: TextAlign.center),
-        ),
-        cancelTap: () {
-          Get.back();
-        },
-        okayTap: () {
-          Get.back();
-          globalController.database!.contractorCertificateVerificationDao
-              .deleteContractorCertificateVerificationByUID(contractorCertificateVerification.uid!);
-          // update();
-          pendingRecordsController.itemList!.remove(contractorCertificateVerification);
-          update(['pendingRecordsBuilder']);
-        });
+
   }
 }

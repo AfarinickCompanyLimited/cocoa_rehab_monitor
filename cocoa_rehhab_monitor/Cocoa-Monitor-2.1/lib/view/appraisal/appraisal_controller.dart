@@ -1,9 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:cocoa_monitor/controller/model/appraisal_model.dart';
 import 'package:get/get.dart';
-
-import '../../controller/constants.dart';
 import '../../controller/global_controller.dart';
 import '../../controller/utils/dio_singleton_instance.dart';
 import '../global_components/globals.dart';

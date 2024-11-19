@@ -1,18 +1,14 @@
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/view/global_components/custom_button.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/view/global_components/text_input_decoration.dart';
 import 'package:cocoa_monitor/view/utils/double_value_trimmer.dart';
-
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
-import '../../controller/constants.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/model/activity_model.dart';
 import '../global_components/image_field_card.dart';

@@ -219,11 +219,11 @@ class ContractorCertificateApiInterface {
 
         if (response.data['status'] == RequestStatus.True) {
 
-          /// initialise the database
-          ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
-
-          /// save the data offline
-          await dbHelper.saveData(contractorCertificateVerification);
+          // /// initialise the database
+          // ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+          //
+          // /// save the data offline
+          // await dbHelper.saveData(contractorCertificateVerification);
 
           // contractorCertificateVerificationDao
           //     .insertContractorCertificateVerification(

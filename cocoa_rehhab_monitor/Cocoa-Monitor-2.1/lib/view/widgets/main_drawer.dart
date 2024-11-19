@@ -7,7 +7,6 @@ import 'package:cocoa_monitor/view/leave_request/leave_request.dart';
 import 'package:cocoa_monitor/view/saved_area_calculations/saved_area_calculations.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
@@ -15,8 +14,6 @@ import 'package:cocoa_monitor/controller/constants.dart';
 
 import '../equipments/equipments.dart';
 import '../farms_status/farms_status.dart';
-import '../submit_issue/submit_issue_tab.dart';
-// import 'package:url_launcher/url_launcher.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);

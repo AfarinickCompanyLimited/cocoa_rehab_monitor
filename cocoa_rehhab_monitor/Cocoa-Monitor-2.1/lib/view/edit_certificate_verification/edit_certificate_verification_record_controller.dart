@@ -2,10 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-// import 'dart:typed_data';
-
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
@@ -21,6 +18,7 @@ import 'dart:io' as io;
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/constants.dart';
+import '../../controller/db/contractor_certificate_of_workdone_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
@@ -139,7 +137,7 @@ class EditContractorCertificateVerificationRecordController
       print("THE RECEIVED DATA IS ${contractorCertificateVerification!.toJson()}");
 
       selectedWeek.value =
-          contractorCertificateVerification!.currentWeek ?? '';
+          contractorCertificateVerification!.currrentWeek ?? '';
       selectedMonth.value =
           contractorCertificateVerification!.currentMonth ?? '';
       selectedYear.value = contractorCertificateVerification!.currentYear ?? '';
@@ -338,7 +336,7 @@ class EditContractorCertificateVerificationRecordController
       ),
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
-      currentWeek: selectedWeek.value,
+      currrentWeek: selectedWeek.value,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude ?? contractorCertificateVerification?.lat,
       lng: locationData?.longitude ?? contractorCertificateVerification?.lng,
@@ -364,7 +362,7 @@ class EditContractorCertificateVerificationRecordController
     data.remove('main_activity');
     data.remove('submission_status');
 
-    print('THIS IS Contractor Certificate DETAILS:::: ${data["current_farm_pic"]}');
+    print('THIS IS Contractor Certificate DETAILS:::: ${data}');
 
     var postResult = await contractorCertificateApiInterface
         .saveContractorCertificateVerification(
@@ -374,10 +372,21 @@ class EditContractorCertificateVerificationRecordController
     if (postResult['status'] == RequestStatus.True ||
         postResult['status'] == RequestStatus.Exist ||
         postResult['status'] == RequestStatus.NoInternet) {
+
+      /// initialise the database
+      ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+
+      await dbHelper.deleteData(contractorCertificateVerification!.uid!);
+
+      /// save the data offline
+      await dbHelper.saveData(contractorCertificateVerificationData);
+
       Get.back(result: {
         'CertificateVerification': contractorCertificateVerificationData,
         'submitted': true
       });
+
+      Get.back();
 
       globals.showSecondaryDialog(
           context: homeController.homeScreenContext,

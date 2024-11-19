@@ -7,9 +7,7 @@ import 'dart:typed_data';
 import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/map_farms_api.dart';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/farm.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/farmer_from_server.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/map_farm.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/society.dart';
 import 'package:cocoa_monitor/view/utils/double_value_trimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +15,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
-import 'package:uuid/uuid.dart';
-
 import '../../controller/global_controller.dart';
 import '../global_components/globals.dart';
 import '../home/home_controller.dart';
@@ -139,8 +135,8 @@ class EditMapFarmController extends GetxController {
 
     globals.startWait(editMapFarmScreenContext);
 
-    DateTime now = DateTime.now();
-    String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
+    //DateTime now = DateTime.now();
+   //  String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
     MapFarm editMapFarmData = MapFarm(
       uid: mapfarm?.uid,
@@ -221,8 +217,8 @@ class EditMapFarmController extends GetxController {
 
     globals.startWait(editMapFarmScreenContext);
 
-    DateTime now = DateTime.now();
-    String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
+    // DateTime now = DateTime.now();
+    // String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
     MapFarm editMapFarmData = MapFarm(
       uid: mapfarm?.uid,

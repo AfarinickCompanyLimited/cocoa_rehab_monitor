@@ -1,13 +1,12 @@
 import 'package:cocoa_monitor/controller/constants.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../controller/db/contractor_certificate_of_workdone_db.dart';
 import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 import '../edit_certificate_verification/edit_certificate_verification_record.dart';
 import 'components/certificate_verification_card.dart';
@@ -223,7 +222,33 @@ class _CertificateVerificationHistoryState extends State<CertificateVerification
                       }
                     });
                   },
-                  onDeleteTap: () => certificateVerificationHistoryController.confirmDeleteMonitoring(item),
+                  onDeleteTap: () {
+                    print("THE ITEM IS: ${item.uid}");
+                    certificateVerificationHistoryController.globals.primaryConfirmDialog(
+                        context: certificateVerificationHistoryController.certificateVerificationHistoryScreenContext,
+                        title: 'Delete Record',
+                        image: 'assets/images/cocoa_monitor/question.png',
+                        content: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                              "This action is irreversible. Are you sure you want to delete this record?",
+                              textAlign: TextAlign.center),
+                        ),
+                        cancelTap: () {
+                          Get.back();
+                        },
+                        okayTap: () async {
+                          Get.back();
+                          ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
+                          await db.deleteData(item.uid);
+                          setState(() {});
+                          // globalController.database!.contractorCertificateVerificationDao
+                          //     .deleteContractorCertificateVerificationByUID(contractorCertificateVerification.uid!);
+                          // update();
+                          // pendingRecordsController.itemList!.remove(contractorCertificateVerification);
+                          // update(['pendingRecordsBuilder']);
+                        });
+                  },
                   allowDelete: true,
                   allowEdit: allowEdit,
                 );

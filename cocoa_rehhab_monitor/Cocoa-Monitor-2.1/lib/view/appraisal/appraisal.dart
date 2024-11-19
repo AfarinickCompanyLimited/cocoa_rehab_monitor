@@ -2,7 +2,6 @@ import 'package:cocoa_monitor/view/appraisal/appraisal_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../global_components/custom_button.dart';
-import '../global_components/globals.dart';
 import '../global_components/round_icon_button.dart';
 import '../global_components/text_input_decoration.dart';
 import '../utils/style.dart';

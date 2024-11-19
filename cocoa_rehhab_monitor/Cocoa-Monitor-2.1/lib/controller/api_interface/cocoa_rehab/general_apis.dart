@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/assigned_outbreak.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/cocoa_age_class.dart';
@@ -178,7 +177,7 @@ class GeneralCocoaRehabApiInterface {
   // ==============================================================================
 
   Future loadActivities() async {
-    final activityDao = indexController.database!.activityDao;
+    // final activityDao = indexController.database!.activityDao;
     // Dio? dio = Dio();
     // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     //     (HttpClient dioClient) {
@@ -1067,7 +1066,7 @@ class GeneralCocoaRehabApiInterface {
       return 2;
     } catch (e, stackTrace) {
       debugPrint(
-          "AN UNKNOWN ERROR OCCURRED IN SUBMIT LEAVE");
+          "AN UNKNOWN ERROR OCCURRED IN SUBMIT LEAVE ${stackTrace}");
     }
     return 3;
     // }

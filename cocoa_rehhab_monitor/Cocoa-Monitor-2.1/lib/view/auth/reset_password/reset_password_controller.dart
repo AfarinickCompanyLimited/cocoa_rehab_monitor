@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:cocoa_monitor/controller/api_interface/user_info_apis.dart';
-import 'package:cocoa_monitor/view/auth/login/login_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/utils/view_constants.dart';

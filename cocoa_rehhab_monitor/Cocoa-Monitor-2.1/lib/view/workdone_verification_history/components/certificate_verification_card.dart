@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/entity/cocoa_rehub_monitor/activity.dart';
-import '../../../controller/entity/cocoa_rehub_monitor/contractor.dart';
-import '../../../controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import '../../../controller/model/contractor_certificate_of_workdone_model.dart';
 
 class CertificateVerificationCard extends StatelessWidget {

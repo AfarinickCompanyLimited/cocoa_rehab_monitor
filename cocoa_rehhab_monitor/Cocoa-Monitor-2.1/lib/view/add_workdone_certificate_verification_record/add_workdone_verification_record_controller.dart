@@ -2,13 +2,9 @@
 
 import 'dart:async';
 import 'dart:convert';
-// import 'dart:typed_data';
 import 'dart:io' as io;
-
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
@@ -255,7 +251,7 @@ class AddContractorCertificateVerificationRecordController
       ),
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
-      currentWeek: selectedWeek.value,
+      currrentWeek: selectedWeek.value,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude,
       lng: locationData?.longitude,
@@ -291,6 +287,12 @@ class AddContractorCertificateVerificationRecordController
     if (postResult['status'] == RequestStatus.True ||
         postResult['status'] == RequestStatus.Exist ||
         postResult['status'] == RequestStatus.NoInternet) {
+      /// initialise the database
+      ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+
+      /// save the data offline
+      await dbHelper.saveData(contractorCertificateVerification);
+
       Get.back(result: {
         'CertificateVerification': contractorCertificateVerification,
         'submitted': true
@@ -387,7 +389,7 @@ class AddContractorCertificateVerificationRecordController
       uid: const Uuid().v4(),
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
-      currentWeek: selectedWeek.value,
+      currrentWeek: selectedWeek.value,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude ?? 0.0,
       lng: locationData?.longitude ?? 0.0,

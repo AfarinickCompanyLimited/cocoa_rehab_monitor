@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:cocoa_monitor/view/utils/style.dart';
-import 'package:cocoa_monitor/view/utils/view_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ class ResetPassword extends StatelessWidget {
     ResetPasswordController resetPasswordController =
         Get.put(ResetPasswordController());
     resetPasswordController.resetScreenContext = context;
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
 
     return Material(
       child: AnnotatedRegion<SystemUiOverlayStyle>(

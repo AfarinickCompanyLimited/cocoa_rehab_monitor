@@ -2,7 +2,6 @@ import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../global_components/text_input_decoration.dart';
-import '../../global_components/tile_button.dart';
 import 'login_controller.dart';
 
 class Login extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cocoa_monitor/controller/model/activity_model.dart';
-import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
