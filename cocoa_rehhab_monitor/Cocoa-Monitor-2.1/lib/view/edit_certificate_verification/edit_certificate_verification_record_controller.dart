@@ -22,7 +22,6 @@ import '../../controller/db/contractor_certificate_of_workdone_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
-// import '../utils/user_current_location.dart';
 import '../../controller/model/activity_model.dart';
 import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 import '../../controller/model/picked_media.dart';
@@ -123,67 +122,38 @@ class EditContractorCertificateVerificationRecordController
     super.onInit();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // UserCurrentLocation? userCurrentLocation = UserCurrentLocation(
-      //     context: editContractorCertificateRecordScreenContext);
-      // userCurrentLocation.getUserLocation(
-      //     forceEnableLocation: true,
-      //     onLocationEnabled: (isEnabled, pos) {
-      //       if (isEnabled == true) {
-      //         locationData = pos!;
-      //         update();
-      //       }
-      //     });
-
       print("THE RECEIVED DATA IS ${contractorCertificateVerification!.toJson()}");
 
-      selectedWeek.value =
-          contractorCertificateVerification!.currrentWeek ?? '';
-      selectedMonth.value =
-          contractorCertificateVerification!.currentMonth ?? '';
+      selectedWeek.value = contractorCertificateVerification!.currrentWeek ?? '';
+      selectedMonth.value = contractorCertificateVerification!.currentMonth ?? '';
       selectedYear.value = contractorCertificateVerification!.currentYear ?? '';
-      farmReferenceNumberTC?.text =
-          contractorCertificateVerification!.farmRefNumber ?? '';
-      farmSizeTC?.text =
-          contractorCertificateVerification!.farmSizeHa.toString();
-      communityNameTC?.text =
-          contractorCertificateVerification!.community.toString();
+      farmReferenceNumberTC?.text = contractorCertificateVerification!.farmRefNumber ?? '';
+      farmSizeTC?.text = contractorCertificateVerification!.farmSizeHa.toString();
+      communityNameTC?.text = contractorCertificateVerification!.community.toString();
 
-      isCompletedBy.value =
-          contractorCertificateVerification!.completedBy ?? '';
+      isCompletedBy.value = contractorCertificateVerification!.completedBy ?? '';
 
-      // List activityDataList = await globalController.database!.activityDao
-      //     .findActivityByCode(contractorCertificateVerification!.activity.first);
-      // print('THIS IS ACTIVITY DATA LIST :::: ${activityDataList}');
-      // activity = activityDataList.first;
-      // update();
+      // Clear subActivity to avoid duplicates
+      subActivity.clear();
+      ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-      // List<ActivityModel>? subActivityDataList = await globalController
-      //     .database!.activityDao
-      //     .findAllActivityWithCodeList(
-      //         contractorCertificateVerification!.activity);
-      // subActivity = subActivityDataList;
-
-      for (int i = 0; i < contractorCertificateVerification!.activity.length; i++) {
-        ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
-        var s = await db.getSubActivityByCode(contractorCertificateVerification!.activity[i]);
-
-        // print("THE DATA FROM THE DATABASE ::::::::::::::::: $s");
-
-        subActivity.add(s.first);
-
-        // print("THE DATA FROM THE DATABASE 2 ::::::::::::::::: $subActivity");
-
-        s.clear();
+      for (var activityCode in contractorCertificateVerification!.activity) {
+        print("THE ACTIVITY CODE IS ${activityCode}");
+        var subActivities = await db.getSubActivityByCode(contractorCertificateVerification!.mainActivity!);
+        subActivity.addAll(subActivities);
+        print("THE SUB ACTIVITY IS ${subActivity}");
       }
 
-      activity = subActivity.first.mainActivity;
+      if (subActivity.isNotEmpty) {
+        activity = subActivity.first.mainActivity;
+      }
 
       update();
 
       List? regionDistrictList = await globalController
           .database!.regionDistrictDao
-          .findRegionDistrictByDistrictId(
-              contractorCertificateVerification!.district!);
+          .findRegionDistrictByDistrictId(contractorCertificateVerification!.district!);
+
       regionDistrict = regionDistrictList.first;
       update();
 
@@ -203,19 +173,6 @@ class EditContractorCertificateVerificationRecordController
       });
     });
   }
-
-  /* getUsersCurrentLocation() {
-    UserCurrentLocation? userCurrentLocation = UserCurrentLocation(
-        context: editCertificateVerificationRecordScreenContext);
-    userCurrentLocation.getUserLocation(
-        forceEnableLocation: true,
-        onLocationEnabled: (isEnabled, pos) {
-          if (isEnabled == true) {
-            locationData = pos!;
-            update();
-          }
-        });
-  }*/
 
   // ==============================================================================
   // START SHOW LOCATION STREAM DIALOG

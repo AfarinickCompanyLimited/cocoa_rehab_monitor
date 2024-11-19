@@ -236,6 +236,15 @@ class AddContractorCertificateVerificationRecordController
       // pictureOfFarm = bytes;
     }
 
+    String subActivityString = '';
+
+    for (int i = 0; i < subActivity.length; i++) {
+      subActivityString += subActivity[i].subActivity!;
+      if (i < subActivity.length - 1) {
+        subActivityString += ', ';
+      }
+    }
+
     globals.startWait(addContractorCertificateVerificationRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
@@ -249,6 +258,7 @@ class AddContractorCertificateVerificationRecordController
       userId: int.tryParse(
         globalController.userInfo.value.userId!,
       ),
+      subActivityString: subActivityString,
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
       currrentWeek: selectedWeek.value,

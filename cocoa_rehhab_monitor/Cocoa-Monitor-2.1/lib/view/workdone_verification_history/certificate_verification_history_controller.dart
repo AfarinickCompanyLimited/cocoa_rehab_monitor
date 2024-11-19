@@ -60,8 +60,4 @@ class CertificateVerificationHistoryController extends GetxController {
 
     }
   }
-
-  confirmDeleteMonitoring(ContractorCertificateVerificationModel contractorCertificateVerification) async {
-
-  }
 }

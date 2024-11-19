@@ -145,9 +145,9 @@ class ActivityDatabaseHelper {
         : [];
   }
 
-  Future<List<ActivityModel>> getSubActivityByCode(int code) async {
+  Future<List<ActivityModel>> getSubActivityByCode(int c) async {
     final db = await instance.database;
-    final result = await db.query(tableName, where: '$code = ?', whereArgs: [code]);
+    final result = await db.query(tableName, where: '$code = ?', whereArgs: [c]);
     return result.isNotEmpty
         ? result.map((json) => activityFromJsonM(jsonEncode(json))).toList()
         : [];

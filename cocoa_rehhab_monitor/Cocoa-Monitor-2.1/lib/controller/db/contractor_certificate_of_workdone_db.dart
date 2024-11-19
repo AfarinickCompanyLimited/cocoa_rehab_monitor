@@ -20,6 +20,7 @@ class ContractorCertificateDatabaseHelper {
   static const String current_year = "current_year";
   static const String current_month = "current_month";
   static const String current_week = "currrent_week";
+  static const String sub_activity_string = "sub_activity_string";
   static const String main_activity = "main_activity";
   static const String activity = "activity";
   static const String reporting_date = "reporting_date";

@@ -57,6 +57,9 @@ class _EditMonitoringRecordState
 
   @override
   Widget build(BuildContext context) {
+
+    // print("The SUbACTIVITY = ${editContractorCertificateRecordController.subActivity[0].subActivity}");
+
     int currentYear = DateTime.now().year;
     int startingYear = 2022;
     List<int> yearList =
@@ -805,52 +808,43 @@ class _EditMonitoringRecordState
                                           builder: (ctx) {
                                             return
                                               DropdownSearch<ActivityModel>.multiSelection(
-                                                popupProps:
-                                                PopupPropsMultiSelection.modalBottomSheet(
-                                                    showSelectedItems: true,
-                                                    showSearchBox: true,
-                                                    title: const Padding(
-                                                      padding: EdgeInsets.symmetric(
-                                                          vertical: 15),
-                                                      child: Center(
-                                                        child: Text(
-                                                          'Select Sub Activity',
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.w500),
-                                                        ),
+                                                popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                                                  showSelectedItems: true,
+                                                  showSearchBox: true,
+                                                  title: const Padding(
+                                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Select Sub Activity',
+                                                        style: TextStyle(fontWeight: FontWeight.w500),
                                                       ),
                                                     ),
-                                                    disabledItemFn: (ActivityModel s) => false,
-                                                    modalBottomSheetProps:
-                                                    ModalBottomSheetProps(
-                                                      elevation: 6,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.only(
-                                                              topLeft: Radius.circular(
-                                                                  AppBorderRadius.md),
-                                                              topRight: Radius.circular(
-                                                                  AppBorderRadius.md))),
-                                                    ),
-                                                    searchFieldProps: TextFieldProps(
-                                                      decoration: InputDecoration(
-                                                        contentPadding:
-                                                        const EdgeInsets.symmetric(
-                                                            vertical: 4,
-                                                            horizontal: 15),
-                                                        enabledBorder: inputBorder,
-                                                        focusedBorder: inputBorderFocused,
-                                                        errorBorder: inputBorder,
-                                                        focusedErrorBorder:
-                                                        inputBorderFocused,
-                                                        filled: true,
-                                                        fillColor:
-                                                        AppColor.xLightBackground,
+                                                  ),
+                                                  disabledItemFn: (ActivityModel s) => false,
+                                                  modalBottomSheetProps: ModalBottomSheetProps(
+                                                    elevation: 6,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(AppBorderRadius.md),
+                                                        topRight: Radius.circular(AppBorderRadius.md),
                                                       ),
-                                                    )),
+                                                    ),
+                                                  ),
+                                                  searchFieldProps: TextFieldProps(
+                                                    decoration: InputDecoration(
+                                                      contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
+                                                      enabledBorder: inputBorder,
+                                                      focusedBorder: inputBorderFocused,
+                                                      errorBorder: inputBorder,
+                                                      focusedErrorBorder: inputBorderFocused,
+                                                      filled: true,
+                                                      fillColor: AppColor.xLightBackground,
+                                                    ),
+                                                  ),
+                                                ),
                                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                                   dropdownSearchDecoration: InputDecoration(
-                                                    contentPadding: const EdgeInsets.symmetric(
-                                                        vertical: 4, horizontal: 15),
+                                                    contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
                                                     enabledBorder: inputBorder,
                                                     focusedBorder: inputBorderFocused,
                                                     errorBorder: inputBorder,
@@ -860,36 +854,20 @@ class _EditMonitoringRecordState
                                                   ),
                                                 ),
                                                 asyncItems: (String filter) async {
-
                                                   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
                                                   var response = await db.getSubActivityByMainActivity(
-                                                      editContractorCertificateRecordController
-                                                          .activity ?? ""
+                                                      editContractorCertificateRecordController.activity ?? ""
                                                   );
-
-                                                  // var response =
-                                                  //     await addContractorCertificateVerificationRecordController
-                                                  //         .globalController
-                                                  //         .database!
-                                                  //         .activityDao
-                                                  //         .findSubActivities(
-                                                  //             addContractorCertificateVerificationRecordController
-                                                  //                     .activity ?? ""
-                                                  //                 );
-
+                                                  print("THE SUB ACTIVITY RESPONSE ::::::: $response");
                                                   return response;
                                                 },
-                                                selectedItems: editContractorCertificateRecordController.subActivity,
-                                                itemAsString: (ActivityModel d) =>
-                                                    d.subActivity!.toString(),
-                                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                                compareFn: (activity, filter) => activity.code == filter.code,
+                                                selectedItems: List<ActivityModel>.from(editContractorCertificateRecordController.subActivity),
 
+                                                itemAsString: (ActivityModel d) => d.subActivity ?? '',
+                                                compareFn: (activity, filter) => activity.code == filter.code, // Ensures proper matching
                                                 onChanged: (vals) {
-                                                  editContractorCertificateRecordController
-                                                      .subActivity = vals;
-                                                  editContractorCertificateRecordController
-                                                      .update();
+                                                  editContractorCertificateRecordController.subActivity = vals;
+                                                  editContractorCertificateRecordController.update();
                                                 },
                                                 autoValidateMode: AutovalidateMode.always,
                                                 validator: (items) {
@@ -900,6 +878,7 @@ class _EditMonitoringRecordState
                                                   }
                                                 },
                                               );
+
                                           }),
                                       const SizedBox(height: 20),
                                       const Text(
