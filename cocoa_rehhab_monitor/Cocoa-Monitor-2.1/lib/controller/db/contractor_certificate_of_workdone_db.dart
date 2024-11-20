@@ -56,6 +56,7 @@ class ContractorCertificateDatabaseHelper {
         $current_year TEXT,
         $current_month TEXT,
         $current_week TEXT,
+        $sub_activity_string TEXT,
         $main_activity INTEGER,
         $activity TEXT,
         $reporting_date TEXT,

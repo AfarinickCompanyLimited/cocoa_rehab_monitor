@@ -75,6 +75,7 @@ class EditContractorCertificateVerificationRecordController
   String? activity;
 
   List<ActivityModel> subActivity = [];
+  List<String> sub_activity_strings = [];
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
 
@@ -122,8 +123,6 @@ class EditContractorCertificateVerificationRecordController
     super.onInit();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      print("THE RECEIVED DATA IS ${contractorCertificateVerification!.toJson()}");
-
       selectedWeek.value = contractorCertificateVerification!.currrentWeek ?? '';
       selectedMonth.value = contractorCertificateVerification!.currentMonth ?? '';
       selectedYear.value = contractorCertificateVerification!.currentYear ?? '';
@@ -137,12 +136,18 @@ class EditContractorCertificateVerificationRecordController
       subActivity.clear();
       ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-      for (var activityCode in contractorCertificateVerification!.activity) {
-        print("THE ACTIVITY CODE IS ${activityCode}");
-        var subActivities = await db.getSubActivityByCode(contractorCertificateVerification!.mainActivity!);
+      sub_activity_strings = contractorCertificateVerification!.sub_activity_string!.split(',');
+
+      for (var sub_activity in sub_activity_strings) {
+        // print("THE ACTIVITY CODE IS ${activityCode}");
+        var subActivities = await db.getActivityBySubActivity(sub_activity);
         subActivity.addAll(subActivities);
         print("THE SUB ACTIVITY IS ${subActivity}");
       }
+
+
+
+      print("THE SUB ACTIVITY STRING IS ${sub_activity_strings}");
 
       if (subActivity.isNotEmpty) {
         activity = subActivity.first.mainActivity;
@@ -273,6 +278,16 @@ class EditContractorCertificateVerificationRecordController
       pictureOfFarm = base64Encode(bytes);
       // pictureOfFarm = bytes;
     }
+
+    String subActivityString = '';
+
+    for (int i = 0; i < subActivity.length; i++) {
+      subActivityString += subActivity[i].subActivity!;
+      if (i < subActivity.length - 1) {
+        subActivityString += ', ';
+      }
+    }
+
     // else {
     //   pictureOfFarm =
     //       Uint8List(0); // Assign empty Uint8List when pictureOfFarm is null
@@ -294,6 +309,7 @@ class EditContractorCertificateVerificationRecordController
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
       currrentWeek: selectedWeek.value,
+      sub_activity_string: subActivityString,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude ?? contractorCertificateVerification?.lat,
       lng: locationData?.longitude ?? contractorCertificateVerification?.lng,
@@ -318,6 +334,7 @@ class EditContractorCertificateVerificationRecordController
     Map<String, dynamic> data = contractorCertificateVerificationData.toJson();
     data.remove('main_activity');
     data.remove('submission_status');
+    data.remove('sub_activity_string');
 
     print('THIS IS Contractor Certificate DETAILS:::: ${data}');
 

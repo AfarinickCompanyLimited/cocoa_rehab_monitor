@@ -52,6 +52,8 @@ class _EditMonitoringRecordState
     editContractorCertificateRecordController
             .contractorCertificateVerification =
         widget.contractorCertificateVerification;
+
+    print("THE CONTRACTOR DATA ============= ${widget.contractorCertificateVerification.sub_activity_string}");
     editContractorCertificateRecordController.isViewMode = widget.isViewMode;
   }
 
@@ -858,13 +860,13 @@ class _EditMonitoringRecordState
                                                   var response = await db.getSubActivityByMainActivity(
                                                       editContractorCertificateRecordController.activity ?? ""
                                                   );
-                                                  print("THE SUB ACTIVITY RESPONSE ::::::: $response");
+
                                                   return response;
                                                 },
                                                 selectedItems: List<ActivityModel>.from(editContractorCertificateRecordController.subActivity),
 
                                                 itemAsString: (ActivityModel d) => d.subActivity ?? '',
-                                                compareFn: (activity, filter) => activity.code == filter.code, // Ensures proper matching
+                                                compareFn: (activity, filter) => activity.subActivity == filter.subActivity, // Ensures proper matching
                                                 onChanged: (vals) {
                                                   editContractorCertificateRecordController.subActivity = vals;
                                                   editContractorCertificateRecordController.update();

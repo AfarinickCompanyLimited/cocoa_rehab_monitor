@@ -258,10 +258,10 @@ class AddContractorCertificateVerificationRecordController
       userId: int.tryParse(
         globalController.userInfo.value.userId!,
       ),
-      subActivityString: subActivityString,
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
       currrentWeek: selectedWeek.value,
+      sub_activity_string: subActivityString,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude,
       lng: locationData?.longitude,
@@ -285,6 +285,7 @@ class AddContractorCertificateVerificationRecordController
     Map<String, dynamic> data = contractorCertificateVerification.toJson();
     data.remove('main_activity');
     data.remove('submission_status');
+    data.remove('sub_activity_string');
     // print(
     // 'THIS IS Contractor CertificateONLINE UPDATE DETAILS::::${json.encode(data)}');
     print('THIS IS Contractor CertificateONLINE UPDATE DETAILS:::: $data');
@@ -387,6 +388,18 @@ class AddContractorCertificateVerificationRecordController
 
       // pictureOfFarm = bytes;
     }
+
+    String subActivityString = '';
+
+    for (int i = 0; i < subActivity.length; i++) {
+      subActivityString += subActivity[i].subActivity!;
+      if (i < subActivity.length - 1) {
+        subActivityString += ', ';
+      }
+    }
+
+    print("THE STRING IS: $subActivityString");
+
     globals.startWait(addContractorCertificateVerificationRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
@@ -400,6 +413,7 @@ class AddContractorCertificateVerificationRecordController
       currentYear: selectedYear.value,
       currentMonth: selectedMonth.value,
       currrentWeek: selectedWeek.value,
+      sub_activity_string: subActivityString,
       reportingDate: formattedReportingDate,
       lat: locationData?.latitude ?? 0.0,
       lng: locationData?.longitude ?? 0.0,
@@ -420,14 +434,15 @@ class AddContractorCertificateVerificationRecordController
       completedBy: isCompletedBy.value,
     );
 
-    // Map<String, dynamic> data = contractorCertificateVerification.toJson();
+    Map<String, dynamic> data = contractorCertificateVerification.toJson();
+    print("THE DATA IS: $data");
 
     // data.remove('main_activity');
     // data.remove('submission_status');
     // data.remove('current_farm_pic');
 
 
-
+    //
     // final contractorCertificateVerificationDao =
     //     globalController.database!.contractorCertificateVerificationDao;
     // await contractorCertificateVerificationDao

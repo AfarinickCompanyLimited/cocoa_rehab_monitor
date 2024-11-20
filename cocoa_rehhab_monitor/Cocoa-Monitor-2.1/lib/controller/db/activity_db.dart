@@ -153,6 +153,15 @@ class ActivityDatabaseHelper {
         : [];
   }
 
+  // get activity by sub_Activity
+  Future<List<ActivityModel>> getActivityBySubActivity(String subActivity) async {
+    final db = await instance.database;
+    final result = await db.query(tableName, where: '$sub_activity = ?', whereArgs: [subActivity]);
+    return result.isNotEmpty
+        ? result.map((json) => activityFromJsonM(jsonEncode(json))).toList()
+        : [];
+  }
+
   Future<List<ActivityModel>> getSubActivityByMainActivity(String activity) async {
     final db = await instance.database;
     final result = await db.query(tableName, where: '$main_activity = ?', whereArgs: [activity]);

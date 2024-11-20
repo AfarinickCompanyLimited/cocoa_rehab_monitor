@@ -30,14 +30,14 @@ class ContractorCertificateVerificationModel {
     this.currentFarmPic,
     this.contractor,
     this.completedBy,
-    this.subActivityString
+    this.sub_activity_string
   });
 
   String? uid;
   String? currentYear;
   String? currentMonth;
   String? currrentWeek;
-  String? subActivityString;
+  String? sub_activity_string;
   int? mainActivity;
   final List<int> activity;
   String? reportingDate;
@@ -62,6 +62,7 @@ class ContractorCertificateVerificationModel {
         currentMonth: json["current_month"],
         currrentWeek: json["currrent_week"],
         mainActivity: json["main_activity"],
+        sub_activity_string: json["sub_activity_string"],
         activity:
         json["activity"],
         reportingDate: json["reporting_date"],
@@ -81,7 +82,7 @@ class ContractorCertificateVerificationModel {
 
   Map<String, dynamic> toJson() => {
     "uid": uid,
-    "subActivityString": subActivityString,
+    "sub_activity_string": sub_activity_string,
     "current_year": currentYear,
     "current_month": currentMonth,
     "currrent_week": currrentWeek,
