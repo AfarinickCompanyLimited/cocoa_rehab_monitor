@@ -150,7 +150,12 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime.now(),
                                 lastDate: DateTime(2101),
+                                selectableDayPredicate: (DateTime date) {
+                                  // Return true if the day is not Saturday or Sunday
+                                  return date.weekday != DateTime.saturday && date.weekday != DateTime.sunday;
+                                },
                               );
+
 
                               if (pickedStartDate != null) {
                                 leaveRequestController.startDate.text = DateFormat('yyyy-MM-dd').format(pickedStartDate);
@@ -185,6 +190,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               }
                               return null;
                             },
+                            readOnly: true, // Prevent manual editing
                             onTap: () async {
                               print("THR NUMBER OF DAYS: ${leaveRequestController.maxDays.value}");
                               // Ensure a start date is selected
@@ -204,28 +210,28 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                 initialDate: pickedStartDate.add(const Duration(days: 1)),
                                 firstDate: pickedStartDate.add(const Duration(days: 1)),
                                 lastDate: DateTime(2101),
+                                selectableDayPredicate: (DateTime date) {
+                                  // Return true if the day is not Saturday or Sunday
+                                  return date.weekday != DateTime.saturday && date.weekday != DateTime.sunday;
+                                },
                               );
+
 
                               if (pickedEndDate != null) {
                                 leaveRequestController.endDate.text = DateFormat('yyyy-MM-dd').format(pickedEndDate);
-                                final difference = pickedEndDate.difference(pickedStartDate).inDays + 1;
+                                // final difference = pickedEndDate.difference(pickedStartDate).inDays + 1;
+                                final difference = leaveRequestController.calculateWorkingDays(pickedStartDate, pickedEndDate);
 
-                                if (difference < leaveRequestController.maxDays.value) {
-                                  leaveRequestController.globals.showSnackBar(
-                                    title: 'Error',
-                                    message: 'End date must be after start date',
-                                  );
-                                  leaveRequestController.endDate.clear();
-                                  return;
-                                }
-
-                                if (difference != leaveRequestController.maxDays.value) {
-                                  leaveRequestController.globals.showSnackBar(
-                                    title: 'Error',
-                                    message: 'The number of days cannot exceed ${leaveRequestController.maxDays.value}',
-                                  );
-                                  leaveRequestController.endDate.clear();
-                                  return;
+                                if(leaveRequestController.maxDays.value != 0) {
+                                  if (difference > leaveRequestController.maxDays.value) {
+                                    leaveRequestController.globals.showSnackBar(
+                                      title: 'Error',
+                                      message: 'The number of days cannot exceed ${leaveRequestController.maxDays.value}',
+                                    );
+                                    leaveRequestController.endDate.clear();
+                                    leaveRequestController.numberOfDays.text = "";
+                                    return;
+                                  }
                                 }
 
                                 leaveRequestController.numberOfDays.text = difference.toString();

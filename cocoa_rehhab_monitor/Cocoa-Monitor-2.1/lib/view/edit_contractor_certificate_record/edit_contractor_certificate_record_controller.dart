@@ -12,10 +12,12 @@ import 'package:location/location.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/constants.dart';
+import '../../controller/db/activity_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 // import '../utils/user_current_location.dart';
+import '../../controller/model/activity_model.dart';
 import '../utils/view_constants.dart';
 
 class EditContractorCertificateRecordController extends GetxController {
@@ -57,9 +59,9 @@ class EditContractorCertificateRecordController extends GetxController {
   TextEditingController? communityNameTC = TextEditingController();
 
   Contractor? contractor = Contractor();
-  Activity activity = Activity();
+  String? activity;
 
-  List<Activity> subActivity = [];
+  List<ActivityModel> subActivity = [];
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
 
@@ -82,12 +84,37 @@ class EditContractorCertificateRecordController extends GetxController {
   var selectedMonth = ''.obs;
   var selectedYear = ''.obs;
 
+  ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+
   // INITIALISE
   @override
   void onInit() async {
     super.onInit();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+
+      var sub_activity_strings=[];
+      var comAndSub = contractorCertificate!.community!.split(',');
+
+      for(int i=1;i<comAndSub.length;i++){
+        sub_activity_strings.add(comAndSub[i].trim());
+      }
+
+      print("THE RECEIVED DATA ============= ${contractorCertificate!.toJson()}");
+
+      List? regionDistrictList = await globalController
+          .database!.regionDistrictDao
+          .findRegionDistrictByDistrictId(contractorCertificate!.district!);
+
+      print("THE REGION DISTRICT DATA ============= ${regionDistrictList.first}");
+
+      regionDistrict = regionDistrictList.first;
+      update();
+
+      List? contractorDataList = await globalController.database!.contractorDao
+          .findContractorById(contractorCertificate!.contractor!);
+      contractor = contractorDataList.first;
+      update();
       // UserCurrentLocation? userCurrentLocation = UserCurrentLocation(
       //     context: editContractorCertificateRecordScreenContext);
       // userCurrentLocation.getUserLocation(
@@ -104,34 +131,26 @@ class EditContractorCertificateRecordController extends GetxController {
       selectedYear.value = contractorCertificate!.currentYear ?? '';
       farmReferenceNumberTC?.text = contractorCertificate!.farmRefNumber ?? '';
       farmSizeTC?.text = contractorCertificate!.farmSizeHa.toString();
-      communityNameTC?.text = contractorCertificate!.community.toString();
+      communityNameTC?.text = comAndSub[0];
 
-      List? activityDataList = await globalController.database!.activityDao
-          .findActivityByCode(contractorCertificate!.activity[0]);
-      activity = activityDataList.first;
-      update();
+      for (var sub_activity in sub_activity_strings) {
+        // print("THE ACTIVITY CODE IS ${activityCode}");
+        var subActivities = await db.getActivityBySubActivity(sub_activity);
+        subActivity.addAll(subActivities);
+        print("THE SUB ACTIVITY IS ${subActivity}");
+      }
 
-      List<Activity>? subActivityDataList = await globalController
-          .database!.activityDao
-          .findAllActivityWithCodeList(contractorCertificate!.activity);
-      subActivity = subActivityDataList;
-      update();
+      print("THE SUB ACTIVITY STRING IS ${sub_activity_strings}");
 
-      List? regionDistrictList = await globalController
-          .database!.regionDistrictDao
-          .findRegionDistrictByDistrictId(contractorCertificate!.district!);
-      regionDistrict = regionDistrictList.first;
+      if (subActivity.isNotEmpty) {
+        activity = subActivity.first.mainActivity;
+      }
       update();
 
       // List? communityDataList = await globalController.database!.communityDao
       //     .findCommunityById(contractorCertificate!.community!);
       // community = communityDataList.first;
       // update();
-
-      List? contractorDataList = await globalController.database!.contractorDao
-          .findContractorById(contractorCertificate!.contractor!);
-      contractor = contractorDataList.first;
-      update();
 
       Future.delayed(const Duration(seconds: 3), () async {
         update();
@@ -152,13 +171,15 @@ class EditContractorCertificateRecordController extends GetxController {
     List<int> subActivityList =
         subActivity.map((activity) => activity.code).cast<int>().toList();
 
+    var code = await db.getActivityCodeByMainActivity(activity!);
+
     ContractorCertificate contractorCertificateData = ContractorCertificate(
         uid: contractorCertificate?.uid,
         currentYear: selectedYear.value,
         currentMonth: selectedMonth.value,
         currrentWeek: selectedWeek.value,
         reportingDate: formattedReportingDate,
-        mainActivity: activity.code,
+        mainActivity: code,
         activity: subActivityList,
         farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
@@ -220,13 +241,15 @@ class EditContractorCertificateRecordController extends GetxController {
     List<int> subActivityList =
         subActivity.map((activity) => activity.code).cast<int>().toList();
 
+    var code = await db.getActivityCodeByMainActivity(activity!);
+
     ContractorCertificate contractorCertificateData = ContractorCertificate(
         uid: contractorCertificate?.uid,
         currentYear: selectedYear.value,
         currentMonth: selectedMonth.value,
         currrentWeek: selectedWeek.value,
         reportingDate: formattedReportingDate,
-        mainActivity: activity.code,
+        mainActivity: code,
         activity: subActivityList,
         status: SubmissionStatus.pending,
         farmRefNumber: farmReferenceNumberTC!.text,

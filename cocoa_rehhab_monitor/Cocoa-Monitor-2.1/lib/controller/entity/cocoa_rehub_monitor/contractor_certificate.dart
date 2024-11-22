@@ -27,8 +27,8 @@ class ContractorCertificate {
     this.status,
     this.district,
     this.userId,
-    this.farmerName,
-    this.roundsOfWeeding,
+    // this.farmerName,
+    // this.roundsOfWeeding,
   });
 
   @primaryKey
@@ -46,8 +46,8 @@ class ContractorCertificate {
   int? status;
   int? district;
   int? userId;
-  String? farmerName;
-  int? roundsOfWeeding;
+  // String? farmerName;
+  // int? roundsOfWeeding;
 
   factory ContractorCertificate.fromJson(Map<String, dynamic> json) =>
       ContractorCertificate(
@@ -66,8 +66,8 @@ class ContractorCertificate {
         status: json["submission_status"],
         district: json["district"],
         userId: json["userid"],
-        farmerName: json["farmer_name"],
-        roundsOfWeeding: json["rounds_of_weeding"],
+        // farmerName: json["farmer_name"],
+        // roundsOfWeeding: json["rounds_of_weeding"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,7 +85,7 @@ class ContractorCertificate {
         "submission_status": status,
         "district": district,
         "userid": userId,
-        "farmer_name": farmerName,
-        "rounds_of_weeding": roundsOfWeeding,
+        // "farmer_name": farmerName,
+        // "rounds_of_weeding": roundsOfWeeding,
       };
 }

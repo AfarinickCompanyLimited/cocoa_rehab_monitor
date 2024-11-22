@@ -73,7 +73,7 @@ class LeaveRequestController extends GetxController {
         startDate: startDate.text,
         endDate: endDate.text);
     Map<String, dynamic> leaveMap = leave.toJson();
-    print("THE DATA FOR SUBMISSION IS ${leaveMap}");
+    // print("THE DATA FOR SUBMISSION IS ${leaveMap}");
 
     globals.startWait(LeaveRequestScreenContext!);
     int response = await _api.submitLeave(leaveMap);
@@ -86,13 +86,29 @@ class LeaveRequestController extends GetxController {
     } else if (response == 2) {
       print("THE RESPONSE IS ${response}");
       globals.showSnackBar(
-          title: 'Error', message: 'Error submitting leave request');
+          title: 'Error', message: 'Cannot submit leave request, contact your supervisor for assistance');
     } else {
       globals.showSnackBar(
           title: 'An unknown error occurred',
           message: 'Try again or contact support for assistance');
     }
   }
+
+  // calculate the number of working days between two dates without saturday and sunday
+  int calculateWorkingDays(DateTime startDate, DateTime endDate) {
+    int workingDays = 0;
+    DateTime currentDate = startDate;
+
+    while (currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate)) {
+      if (currentDate.weekday != DateTime.saturday && currentDate.weekday != DateTime.sunday) {
+        workingDays++;
+      }
+      currentDate = currentDate.add(const Duration(days: 1));
+    }
+
+    return workingDays;
+  }
+
 
   saveLeaveRequest() {}
 

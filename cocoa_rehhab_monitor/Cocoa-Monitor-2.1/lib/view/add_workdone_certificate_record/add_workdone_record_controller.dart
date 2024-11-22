@@ -1,4 +1,15 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously, avoid_print
+
+import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/activity_db.dart';
+import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
+import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor.dart';
+import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
+import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
+import 'package:cocoa_monitor/controller/global_controller.dart';
+import 'package:cocoa_monitor/view/global_components/globals.dart';
+import 'package:cocoa_monitor/view/home/home_controller.dart';
+import 'package:cocoa_monitor/view/utils/view_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,15 +18,7 @@ import 'package:location/location.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
-import '../../controller/constants.dart';
-import '../../controller/entity/cocoa_rehub_monitor/activity.dart';
-import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
-import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
-import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
-import '../../controller/global_controller.dart';
-import '../global_components/globals.dart';
-import '../home/home_controller.dart';
-import '../utils/view_constants.dart';
+import '../../controller/model/activity_model.dart';
 
 class AddContractorCertificateRecordController extends GetxController {
   late BuildContext addContractorCertificateRecordScreenContext;
@@ -23,10 +26,6 @@ class AddContractorCertificateRecordController extends GetxController {
   final addContractorCertificateRecordFormKey = GlobalKey<FormState>();
 
   HomeController homeController = Get.find();
-
-
-  var activityCheck = false.obs;
-  var subActivityCheck = false.obs;
 
   Globals globals = Globals();
 
@@ -51,17 +50,15 @@ class AddContractorCertificateRecordController extends GetxController {
   Contractor? contractor = Contractor();
 
   TextEditingController? farmSizeTC = TextEditingController();
-  TextEditingController? farmerNameTC = TextEditingController();
 
   TextEditingController? farmReferenceNumberTC = TextEditingController();
   TextEditingController? communityTC = TextEditingController();
 
-  Activity activity = Activity();
+  String? activity;
 
-  List<Activity> subActivity = [];
+  List<ActivityModel> subActivity = [];
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
-  List<String> listOfRoundsOfWeeding = ['1', '2'];
 
   List<String> listOfMonths = [
     'January',
@@ -81,7 +78,6 @@ class AddContractorCertificateRecordController extends GetxController {
   var selectedWeek;
   var selectedMonth;
   var selectedYear;
-  var roundsOfWeeding;
 
   // INITIALISE
   @override
@@ -108,9 +104,27 @@ class AddContractorCertificateRecordController extends GetxController {
   handleAddMonitoringRecord() async {
     // isButtonDisabled.value = false;
 
+    String subActivityString = '';
+
+    for (int i = 0; i < subActivity.length; i++) {
+      subActivityString += subActivity[i].subActivity!;
+      if (i < subActivity.length - 1) {
+        subActivityString += ', ';
+      }
+    }
+
+    var com = '';
+    com += communityTC!.text;
+    com += ', ';
+    com += subActivityString;
+
     globals.startWait(addContractorCertificateRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
+
+    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+
+    var code = await db.getActivityCodeByMainActivity(activity!);
 
     List<int> subActivityList =
     subActivity.map((activity) => activity.code).cast<int>().toList();
@@ -120,14 +134,12 @@ class AddContractorCertificateRecordController extends GetxController {
         currentYear: selectedYear,
         currentMonth: selectedMonth,
         currrentWeek: selectedWeek,
-        farmerName: farmerNameTC!.text,
-        roundsOfWeeding: int.tryParse(roundsOfWeeding),
         reportingDate: formattedReportingDate,
-        mainActivity: activity.code,
+        mainActivity: code,
         activity: subActivityList,
         farmRefNumber: farmReferenceNumberTC!.text,
-        farmSizeHa: double.tryParse(farmSizeTC!.text),
-        community: communityTC!.text,
+        farmSizeHa: double.parse(farmSizeTC!.text),
+        community: com,
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
         status: SubmissionStatus.submitted,
@@ -139,41 +151,41 @@ class AddContractorCertificateRecordController extends GetxController {
     data.remove('main_activity');
     data.remove('submission_status');
 
+    data["community"] = communityTC!.text;
+
     print('THIS IS Contractor Certificate DETAILS:::: $data');
 
-    // var postResult = await contractorCertificateApiInterface
-    //     .saveContractorCertificate(contractorCertificate, data);
+    var postResult = await contractorCertificateApiInterface
+        .saveContractorCertificate(contractorCertificate, data);
     globals.endWait(addContractorCertificateRecordScreenContext);
-    //
-    // if (postResult['status'] == RequestStatus.True ||
-    //     postResult['status'] == RequestStatus.Exist ||
-    //     postResult['status'] == RequestStatus.NoInternet) {
-    //   Get.back(result: {
-    //     'contractorCertificate': contractorCertificate,
-    //     'submitted': true
-    //   });
-    //   globals.showSecondaryDialog(
-    //      context: homeController.homeScreenContext,
-    //       content: Text(
-    //         postResult['msg'],
-    //         style: const TextStyle(fontSize: 13),
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       status: AlertDialogStatus.success,
-    //       okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    // }
-    // else if (postResult['status'] == RequestStatus.False) {
-    //   globals.showSecondaryDialog(
-    //       context: addContractorCertificateRecordScreenContext,
-    //       content: Text(
-    //         postResult['msg'],
-    //         style: const TextStyle(fontSize: 13),
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       status: AlertDialogStatus.error);
-    // }
-  }
 
+    if (postResult['status'] == RequestStatus.True ||
+        postResult['status'] == RequestStatus.Exist ||
+        postResult['status'] == RequestStatus.NoInternet) {
+      Get.back(result: {
+        'contractorCertificate': contractorCertificate,
+        'submitted': true
+      });
+      globals.showSecondaryDialog(
+          context: homeController.homeScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.success,
+          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    } else if (postResult['status'] == RequestStatus.False) {
+      globals.showSecondaryDialog(
+          context: addContractorCertificateRecordScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.error);
+    }
+  }
   // ==============================================================================
   // END ADD MONITORING RECORD
   // ==============================================================================
@@ -188,6 +200,24 @@ class AddContractorCertificateRecordController extends GetxController {
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
+    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+
+    var code = await db.getActivityCodeByMainActivity(activity!);
+
+    String subActivityString = '';
+
+    for (int i = 0; i < subActivity.length; i++) {
+      subActivityString += subActivity[i].subActivity!;
+      if (i < subActivity.length - 1) {
+        subActivityString += ', ';
+      }
+    }
+
+    var com = '';
+    com += communityTC!.text;
+    com += ', ';
+    com += subActivityString;
+
     List<int> subActivityList =
     subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
 
@@ -195,16 +225,14 @@ class AddContractorCertificateRecordController extends GetxController {
         uid: const Uuid().v4(),
         currentYear: selectedYear,
         currentMonth: selectedMonth,
-        farmerName: farmerNameTC!.text,
-        roundsOfWeeding: roundsOfWeeding!.text,
         currrentWeek: selectedWeek,
         reportingDate: formattedReportingDate,
-        mainActivity: activity.code,
+        mainActivity: code,
         activity: subActivityList,
         status: SubmissionStatus.pending,
         farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
-        community: communityTC?.text,
+        community: com,
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
         userId: int.tryParse(globalController.userInfo.value.userId!));

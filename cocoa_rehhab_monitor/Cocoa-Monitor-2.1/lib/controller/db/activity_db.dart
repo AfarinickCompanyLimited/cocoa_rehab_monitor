@@ -70,6 +70,18 @@ class ActivityDatabaseHelper {
     return count;
   }
 
+  getActivityCodeByMainActivity(String mainActivity) async {
+    final db = await instance.database;
+    final result = await db.query(
+      tableName,
+      where: '$main_activity = ?',
+      whereArgs: [mainActivity],
+    );
+    if (result.isNotEmpty) {
+      return result.first[code];
+    }
+    return null;
+  }
 
   // Future<List<Map<String, dynamic>>?> getDataByFarmRef(String ref) async {
   //   final db = await instance.database;

@@ -64,13 +64,15 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         height: 30,
                       ),
-                      Text("Phone number"),
+
                       Form(
                         key: loginController.loginFormKey,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text("username"),
                             TextFormField(
-                              controller: loginController.phoneTextController,
+                              controller: loginController.usernameTextController,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 20),
@@ -87,15 +89,41 @@ class _LoginState extends State<Login> {
                               keyboardType: TextInputType.phone,
                               validator: (String? value) =>
                                   value!.trim().isEmpty
-                                      ? "Phone number required"
+                                      ? "username is required"
                                       : null,
                             ),
+                            SizedBox(height: 10,),
+                            Text("password"),
+                            TextFormField(
+                              obscureText: true,
+                              controller: loginController.passwordTextController,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 20),
+                                enabledBorder: inputBorder,
+                                focusedBorder: inputBorderFocused,
+                                errorBorder: inputBorder,
+                                focusedErrorBorder: inputBorderFocused,
+                                filled: true,
+                                fillColor: Colors.white,
+                                hintText: 'Enter your password',
+                                hintStyle: const TextStyle(
+                                    fontSize: 12, color: Colors.black54),
+                              ),
+                              //keyboardType: TextInputType.phone,
+                              validator: (String? value) =>
+                              value!.trim().isEmpty
+                                  ? "Password is required"
+                                  : null,
+                            ),
+                            SizedBox(height: 10,),
+                            TextButton(onPressed: (){}, child: Text("Reset Password"))
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
                       SizedBox(
                           width: double.infinity,
                           child: TextButton(
@@ -116,7 +144,7 @@ class _LoginState extends State<Login> {
                                 // loginController.sendOTP();
                                 // loginController
                                 //     .lookupUsernamePassword();
-                                loginController.lookupPhoneNumber();
+                                loginController.lookupUsernamePassword();
                                 print('PHONE VERIFICATION HAS ENDED');
                               }
                             },
@@ -131,7 +159,7 @@ class _LoginState extends State<Login> {
                             ),
                           )),
                       SizedBox(
-                        height: 200,
+                        height: 100,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

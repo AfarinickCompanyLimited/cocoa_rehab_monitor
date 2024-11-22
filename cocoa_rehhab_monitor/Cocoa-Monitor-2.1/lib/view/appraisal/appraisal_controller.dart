@@ -34,7 +34,7 @@ class AppraisalController extends GetxController {
   get create => _createTextController();
 
   _fetchAppraisalQuestions() async {
-    String employeeID = 'U0004';
+    String employeeID = globalController.userInfo.value.userId.toString();
     String baseURL = "http://18.171.87.243/";
     String appraisalEndPoint = "api/v1/appraisals/${employeeID}/";
     try {
@@ -80,7 +80,6 @@ class AppraisalController extends GetxController {
         data: data
       );
 
-      print("THE RESPONSE IS ============ ${response.data}");
     globals.endWait(appraisalContext!);
       if(response.data["status"] == 200) {
         return true;

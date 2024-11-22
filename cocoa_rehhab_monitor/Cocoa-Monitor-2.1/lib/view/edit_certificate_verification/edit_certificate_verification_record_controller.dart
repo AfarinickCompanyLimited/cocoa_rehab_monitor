@@ -136,16 +136,17 @@ class EditContractorCertificateVerificationRecordController
       subActivity.clear();
       ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-      sub_activity_strings = contractorCertificateVerification!.sub_activity_string!.split(',');
+      var sub_activity = contractorCertificateVerification!.sub_activity_string!.split(',');
+      for(int i=0;i<sub_activity.length;i++){
+        sub_activity_strings.add(sub_activity[i].trim());
+      }
 
       for (var sub_activity in sub_activity_strings) {
         // print("THE ACTIVITY CODE IS ${activityCode}");
         var subActivities = await db.getActivityBySubActivity(sub_activity);
         subActivity.addAll(subActivities);
-        print("THE SUB ACTIVITY IS ${subActivity}");
       }
-
-
+      print("THE SUB ACTIVITY IS ${subActivity}");
 
       print("THE SUB ACTIVITY STRING IS ${sub_activity_strings}");
 

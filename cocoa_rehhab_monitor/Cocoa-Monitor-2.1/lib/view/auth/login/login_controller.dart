@@ -162,7 +162,8 @@ class LoginController extends GetxController {
     var userLoginStatus =
         await userInfoApiInterface.accountLookupUsername(username, password);
     globals.endWait(loginScreenContext);
-    if (userLoginStatus['status'] == true) {
+
+    if (userLoginStatus['status']) {
       indexController.userInfo.value =
           await userInfoApiInterface.retrieveUserInfoFromSharedPrefs();
       indexController.userIsLoggedIn.value = true;

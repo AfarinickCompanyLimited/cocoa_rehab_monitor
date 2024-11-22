@@ -216,11 +216,49 @@ class _ContractorCertificateHistoryState
                                                 contractorCertificate,
                                             isViewMode: false),
                                         transition: Transition.fadeIn),
-                                    onDeleteTap: () =>
-                                        contractorCertificateHistoryController
-                                            .confirmDeleteMonitoring(
-                                                contractorCertificate),
-                                    allowDelete: false,
+                                    onDeleteTap: () {
+                                      contractorCertificateHistoryController.globals.primaryConfirmDialog(
+                                        context: contractorCertificateHistoryController.contractorCertificateHistoryScreenContext,
+                                        title: 'Delete Record',
+                                        image: 'assets/images/cocoa_monitor/question.png',
+                                        content: const Padding(
+                                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                                          child: Text(
+                                            "This action is irreversible. Are you sure you want to delete this record?",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        cancelTap: () {
+                                          Get.back();
+                                        },
+                                        okayTap: () async {
+                                          Get.back(); // Close the confirmation dialog
+                                          await globalController.database!.contractorCertificateDao
+                                              .deleteContractorCertificateByUID(contractorCertificate.uid!);
+
+                                          // Update the list in real-time
+                                          final isSubmittedTab = contractorCertificateHistoryController
+                                              .activeTabIndex.value ==
+                                              0;
+
+                                          if (isSubmittedTab) {
+                                            contractorCertificateHistoryController
+                                                .submittedRecordsController.itemList
+                                                ?.remove(contractorCertificate);
+                                            contractorCertificateHistoryController
+                                                .submittedRecordsController.refresh();
+                                          } else {
+                                            contractorCertificateHistoryController
+                                                .pendingRecordsController.itemList
+                                                ?.remove(contractorCertificate);
+                                            contractorCertificateHistoryController
+                                                .update(['pendingRecordsBuilder']);
+                                          }
+                                        },
+                                      );
+                                    },
+
+                                    allowDelete: true,
                                     allowEdit: false,
                                   );
                                 },
@@ -321,10 +359,48 @@ class _ContractorCertificateHistoryState
                                           }
                                         });
                                       },
-                                      onDeleteTap: () =>
-                                          contractorCertificateHistoryController
-                                              .confirmDeleteMonitoring(
-                                                  contractorCertificate),
+                                      onDeleteTap: () {
+                                        contractorCertificateHistoryController.globals.primaryConfirmDialog(
+                                          context: contractorCertificateHistoryController.contractorCertificateHistoryScreenContext,
+                                          title: 'Delete Record',
+                                          image: 'assets/images/cocoa_monitor/question.png',
+                                          content: const Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                                            child: Text(
+                                              "This action is irreversible. Are you sure you want to delete this record?",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          cancelTap: () {
+                                            Get.back();
+                                          },
+                                          okayTap: () async {
+                                            Get.back(); // Close the confirmation dialog
+                                            await globalController.database!.contractorCertificateDao
+                                                .deleteContractorCertificateByUID(contractorCertificate.uid!);
+
+                                            // Update the list in real-time
+                                            final isSubmittedTab = contractorCertificateHistoryController
+                                                .activeTabIndex.value ==
+                                                0;
+
+                                            if (isSubmittedTab) {
+                                              contractorCertificateHistoryController
+                                                  .submittedRecordsController.itemList
+                                                  ?.remove(contractorCertificate);
+                                              contractorCertificateHistoryController
+                                                  .submittedRecordsController.refresh();
+                                            } else {
+                                              contractorCertificateHistoryController
+                                                  .pendingRecordsController.itemList
+                                                  ?.remove(contractorCertificate);
+                                              contractorCertificateHistoryController
+                                                  .update(['pendingRecordsBuilder']);
+                                            }
+                                          },
+                                        );
+                                      },
+
                                       allowDelete: true,
                                       allowEdit: true,
                                     );
