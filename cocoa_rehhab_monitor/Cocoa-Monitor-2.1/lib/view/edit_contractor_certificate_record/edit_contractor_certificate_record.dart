@@ -1,6 +1,4 @@
 // import 'dart:convert';
-
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/custom_button.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
@@ -11,8 +9,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
-import '../../controller/constants.dart';
 import '../../controller/db/activity_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';

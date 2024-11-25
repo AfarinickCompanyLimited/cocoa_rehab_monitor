@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, prefer_typing_uninitialized_variables, avoid_print
 
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';

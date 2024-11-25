@@ -2,7 +2,6 @@
 
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
