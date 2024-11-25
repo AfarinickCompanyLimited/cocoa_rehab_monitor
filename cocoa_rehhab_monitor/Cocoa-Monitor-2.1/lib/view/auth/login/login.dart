@@ -70,9 +70,9 @@ class _LoginState extends State<Login> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("username"),
+                            Text("telephone number"),
                             TextFormField(
-                              controller: loginController.usernameTextController,
+                              controller: loginController.phoneTextController,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 20),
@@ -92,32 +92,32 @@ class _LoginState extends State<Login> {
                                       ? "username is required"
                                       : null,
                             ),
-                            SizedBox(height: 10,),
-                            Text("password"),
-                            TextFormField(
-                              obscureText: true,
-                              controller: loginController.passwordTextController,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 20),
-                                enabledBorder: inputBorder,
-                                focusedBorder: inputBorderFocused,
-                                errorBorder: inputBorder,
-                                focusedErrorBorder: inputBorderFocused,
-                                filled: true,
-                                fillColor: Colors.white,
-                                hintText: 'Enter your password',
-                                hintStyle: const TextStyle(
-                                    fontSize: 12, color: Colors.black54),
-                              ),
-                              //keyboardType: TextInputType.phone,
-                              validator: (String? value) =>
-                              value!.trim().isEmpty
-                                  ? "Password is required"
-                                  : null,
-                            ),
-                            SizedBox(height: 10,),
-                            TextButton(onPressed: (){}, child: Text("Reset Password"))
+                            // SizedBox(height: 10,),
+                            // Text("password"),
+                            // TextFormField(
+                            //   obscureText: true,
+                            //   controller: loginController.passwordTextController,
+                            //   decoration: InputDecoration(
+                            //     contentPadding: const EdgeInsets.symmetric(
+                            //         vertical: 15, horizontal: 20),
+                            //     enabledBorder: inputBorder,
+                            //     focusedBorder: inputBorderFocused,
+                            //     errorBorder: inputBorder,
+                            //     focusedErrorBorder: inputBorderFocused,
+                            //     filled: true,
+                            //     fillColor: Colors.white,
+                            //     hintText: 'Enter your password',
+                            //     hintStyle: const TextStyle(
+                            //         fontSize: 12, color: Colors.black54),
+                            //   ),
+                            //   //keyboardType: TextInputType.phone,
+                            //   validator: (String? value) =>
+                            //   value!.trim().isEmpty
+                            //       ? "Password is required"
+                            //       : null,
+                            // ),
+                            // SizedBox(height: 10,),
+                            // TextButton(onPressed: (){}, child: Text("Reset Password"))
                           ],
                         ),
                       ),
@@ -144,7 +144,7 @@ class _LoginState extends State<Login> {
                                 // loginController.sendOTP();
                                 // loginController
                                 //     .lookupUsernamePassword();
-                                loginController.lookupUsernamePassword();
+                                loginController.lookupPhoneNumber();
                                 print('PHONE VERIFICATION HAS ENDED');
                               }
                             },

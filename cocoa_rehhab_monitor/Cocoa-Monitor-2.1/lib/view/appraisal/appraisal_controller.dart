@@ -34,6 +34,7 @@ class AppraisalController extends GetxController {
   get create => _createTextController();
 
   _fetchAppraisalQuestions() async {
+    // String employeeID = "U0004";
     String employeeID = globalController.userInfo.value.userId.toString();
     String baseURL = "http://18.171.87.243/";
     String appraisalEndPoint = "api/v1/appraisals/${employeeID}/";
@@ -41,6 +42,8 @@ class AppraisalController extends GetxController {
       var response = await DioSingleton.instance
           .get(baseURL + appraisalEndPoint,
       );
+
+      print("THE RESPONSE IS ${response.data}");
 
       done.value = true;
 

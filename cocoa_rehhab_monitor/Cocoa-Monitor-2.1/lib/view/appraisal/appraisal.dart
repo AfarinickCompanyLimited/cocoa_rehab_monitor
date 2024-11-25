@@ -1,5 +1,6 @@
 import 'package:cocoa_monitor/view/appraisal/appraisal_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../global_components/custom_button.dart';
 import '../global_components/round_icon_button.dart';
@@ -15,7 +16,7 @@ class Appraisal extends StatefulWidget {
 
 class _AppraisalState extends State<Appraisal> {
   final AppraisalController _appraisalController =
-      Get.put(AppraisalController());
+  Get.put(AppraisalController());
 
   List data = [];
   List<TextEditingController> reasonControllers = [];
@@ -23,10 +24,17 @@ class _AppraisalState extends State<Appraisal> {
   List<TextEditingController> areasForImprovementControllers = [];
   List<TextEditingController> commentsControllers = [];
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Form key
+
   @override
   void initState() {
     super.initState();
     _fetch();
+  }
+
+  _getQuestionLimit(String dt) {
+    var d = dt.split("- (")[1].split(" ")[0];
+    return int.parse(d);
   }
 
   _fetch() async {
@@ -34,6 +42,8 @@ class _AppraisalState extends State<Appraisal> {
     _initializeControllers();
     setState(() {});
   }
+
+  bool isDoneChecked = false; // Checkbox state variable
 
   _initializeControllers() {
     reasonControllers =
@@ -63,21 +73,27 @@ class _AppraisalState extends State<Appraisal> {
     super.dispose();
   }
 
-  validateFields(){
-    for (int i = 0; i < ratingsController.length; i++) {
-      if (ratingsController[i].text == "" ||
-          reasonControllers[i].text == "") {
-        _appraisalController.globals.showSnackBar(
-            title: 'Alert',
-            message:
-            'Kindly provide all required information');
-        return;
-      }
+  validateFields() {
+    if (!_formKey.currentState!.validate()) {
+      _appraisalController.globals.showSnackBar(
+        title: 'Alert',
+        message: 'Kindly provide review and fix all the issues',
+      );
+      return false;
     }
+
+    if(!isDoneChecked) {
+      _appraisalController.globals.showSnackBar(
+        title: 'Alert',
+        message: 'Kindly check the checkbox if you are done',
+      );
+      return false;
+    }
+    return true;
   }
 
-  submit()async {
-    validateFields();
+  submit() async {
+    if (!validateFields()) return;
     var dt = [];
     for (int i = 0; i < data.length; i++) {
       var item = {
@@ -92,8 +108,14 @@ class _AppraisalState extends State<Appraisal> {
       "id": _appraisalController.id,
       "employee": _appraisalController.employee,
       "performance_appraisal": dt,
-      "development_appraisal":{"areas_for_improvement": _appraisalController.areaForImprovementController.text},
-      "appraisal_comment":{"appraisee_comments": _appraisalController.commentController.text}
+      "development_appraisal": {
+        "areas_for_improvement":
+        _appraisalController.areaForImprovementController.text,
+      },
+      "appraisal_comment": {
+        "appraisee_comments": _appraisalController.commentController.text,
+      },
+      "appraisee_completed": isDoneChecked
     };
 
     bool feedback = await _appraisalController.submit(d);
@@ -101,22 +123,21 @@ class _AppraisalState extends State<Appraisal> {
     if (feedback) {
       Get.back();
       _appraisalController.globals.showSnackBar(
-          title: 'Success',
-          message: 'Feedback submitted successfully');
+          title: 'Success', message: 'Feedback submitted successfully');
     } else {
       _appraisalController.globals.showSnackBar(
           title: 'Failed',
           message: 'Failed to submit appraisal, contact support');
-
     }
   }
+
   @override
   Widget build(BuildContext context) {
     _appraisalController.appraisalContext = context;
     return Scaffold(
       body: Column(
         children: [
-          // Fixed Top navigation and title bar
+          // Top navigation and title bar
           Container(
             decoration: BoxDecoration(
               border: Border(
@@ -159,140 +180,197 @@ class _AppraisalState extends State<Appraisal> {
           // Scrollable content
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Obx(() {
-                      if (_appraisalController.done.value == false) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (data.isEmpty) {
-                        return const Center(
-                            child: Text("No questions to display"));
-                      }
-                      return ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        separatorBuilder: (ctx, index) => Column(
-                          children: [
-                            const SizedBox(height: 20),
-                            Divider(
-                                color: AppColor.lightText.withOpacity(0.5),
-                                thickness: 1),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
-                        itemCount: data.length,
-                        itemBuilder: (ctx, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              child: Form(
+                key: _formKey, // Attach the form key
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Obx(() {
+                        if (_appraisalController.done.value == false) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (data.isEmpty) {
+                          return const Center(
+                              child: Text("No questions to display"));
+                        }
+                        return ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          separatorBuilder: (ctx, index) => Column(
                             children: [
-                              Text(
-                                data[index]["evaluation"],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 17),
-                              ),
-                              const SizedBox(height: 15),
-                              const Text('Rating',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w500)),
-                              TextFormField(
-                                keyboardType: TextInputType.number,
-                                controller: ratingsController[index],
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
-                                ),
-                              ),
-                              const Text('Reason',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w500)),
-                              TextFormField(
-                                controller: reasonControllers[index],
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
-                                ),
-                              ),
+                              const SizedBox(height: 20),
+                              Divider(
+                                  color: AppColor.lightText.withOpacity(0.5),
+                                  thickness: 1),
+                              const SizedBox(height: 20),
                             ],
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Divider(
-                            color: AppColor.lightText.withOpacity(0.5), thickness: 1),
-                        const Text('Area for improvement',
-                            style:
-                            TextStyle(fontWeight: FontWeight.w500)),
-                        TextFormField(
-                          controller: _appraisalController.areaForImprovementController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 15),
-                            enabledBorder: inputBorder,
-                            focusedBorder: inputBorderFocused,
-                            errorBorder: inputBorder,
-                            focusedErrorBorder: inputBorderFocused,
-                            filled: true,
-                            fillColor: AppColor.xLightBackground,
                           ),
-                        ),
-                        const Text('Comment',
-                            style:
-                            TextStyle(fontWeight: FontWeight.w500)),
-                        TextFormField(
-                          controller: _appraisalController.commentController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 15),
-                            enabledBorder: inputBorder,
-                            focusedBorder: inputBorderFocused,
-                            errorBorder: inputBorder,
-                            focusedErrorBorder: inputBorderFocused,
-                            filled: true,
-                            fillColor: AppColor.xLightBackground,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                          itemCount: data.length,
+                          itemBuilder: (ctx, index) {
+                            int limit =
+                            _getQuestionLimit(data[index]["evaluation"]);
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 15),
-                    child: CustomButton(
-                      isFullWidth: true,
-                      backgroundColor: AppColor.primary,
-                      verticalPadding: 0.0,
-                      horizontalPadding: 8.0,
-                      onTap: () => submit(),
-                      child: Text(
-                        'Submit',
-                        style: TextStyle(color: AppColor.white, fontSize: 14),
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data[index]["evaluation"],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 17),
+                                ),
+                                const SizedBox(height: 15),
+                                const Text('Rating',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500)),
+                                TextFormField(
+                                  controller: ratingsController[index],
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
+                                  autovalidateMode: AutovalidateMode.always, // Auto-validate on input
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly, // Allow only digits
+                                  ],
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty) {
+                                      final int? numValue = int.tryParse(value);
+                                      if (numValue != null && numValue > limit) {
+                                        ratingsController[index].text = "";
+                                        // _appraisalController.globals.showSnackBar(
+                                        //   title: "Invalid Rating",
+                                        //   message: "Enter a number between 0 and $limit",
+                                        //   duration: 5,
+                                        // );
+                                      }
+                                    }
+                                  },
+                                  validator: (value) {
+
+                                    if (value == null || value.isEmpty) {
+                                      return 'Enter a number between 0 and $limit';
+                                    }
+
+                                    final int? numValue = int.tryParse(value);
+                                    if (numValue == null || numValue < 0 || numValue > limit) {
+                                      return 'Enter a number between 0 and $limit';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const Text('Reason',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500)),
+                                TextFormField(
+                                  controller: reasonControllers[index],
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Reason is required';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                    ),
+                    // Additional form fields
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Divider(
+                              color: AppColor.lightText.withOpacity(0.5),
+                              thickness: 1),
+                          const Text('Area for improvement',
+                              style: TextStyle(fontWeight: FontWeight.w500)),
+                          TextFormField(
+                            controller:
+                            _appraisalController.areaForImprovementController,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 15),
+                              enabledBorder: inputBorder,
+                              focusedBorder: inputBorderFocused,
+                              errorBorder: inputBorder,
+                              focusedErrorBorder: inputBorderFocused,
+                              filled: true,
+                              fillColor: AppColor.xLightBackground,
+                            ),
+                          ),
+                          const Text('Comment',
+                              style: TextStyle(fontWeight: FontWeight.w500)),
+                          TextFormField(
+                            controller:
+                            _appraisalController.commentController,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 15),
+                              enabledBorder: inputBorder,
+                              focusedBorder: inputBorderFocused,
+                              errorBorder: inputBorder,
+                              focusedErrorBorder: inputBorderFocused,
+                              filled: true,
+                              fillColor: AppColor.xLightBackground,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                    Row(
+                      children: [
+                        Checkbox(value: isDoneChecked, onChanged: (value){
+                          setState(() {
+                            isDoneChecked = value ?? false;
+                          });
+                        }),
+                        const Text('I confirm that I have completed this activity',
+                            style: TextStyle(fontWeight: FontWeight.w500)),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 15),
+                      child: CustomButton(
+                        isFullWidth: true,
+                        backgroundColor: AppColor.primary,
+                        verticalPadding: 0.0,
+                        horizontalPadding: 8.0,
+                        onTap: () => submit(),
+                        child: Text(
+                          'Submit',
+                          style:
+                          TextStyle(color: AppColor.white, fontSize: 14),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -301,3 +379,4 @@ class _AppraisalState extends State<Appraisal> {
     );
   }
 }
+
