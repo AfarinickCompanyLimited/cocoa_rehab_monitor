@@ -35,7 +35,7 @@ class AppraisalController extends GetxController {
 
   _fetchAppraisalQuestions() async {
     // String employeeID = "U0004";
-    String employeeID = globalController.userInfo.value.userId.toString();
+    String employeeID = globalController.userInfo.value.staffId.toString().trim();
     String baseURL = "http://18.171.87.243/";
     String appraisalEndPoint = "api/v1/appraisals/${employeeID}/";
     try {
@@ -43,7 +43,7 @@ class AppraisalController extends GetxController {
           .get(baseURL + appraisalEndPoint,
       );
 
-      print("THE RESPONSE IS ${response.data}");
+      //print("THE RESPONSE IS ${response.data}");
 
       done.value = true;
 

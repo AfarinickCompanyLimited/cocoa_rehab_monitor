@@ -213,6 +213,10 @@ class _AppraisalState extends State<Appraisal> {
                             int limit =
                             _getQuestionLimit(data[index]["evaluation"]);
 
+                            if(ratingsController[index].text.isEmpty) {
+                              ratingsController[index].text =1.toString();
+                            }
+
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -226,53 +230,35 @@ class _AppraisalState extends State<Appraisal> {
                                 const Text('Rating',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500)),
-                                TextFormField(
-                                  controller: ratingsController[index],
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                  autovalidateMode: AutovalidateMode.always, // Auto-validate on input
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly, // Allow only digits
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Selected Rating: ${int.parse(ratingsController[index].text)}",
+                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    Slider(
+                                      value: double.parse(ratingsController[index].text),
+                                      min: 1,
+                                      max: limit.toDouble(),
+                                      divisions: limit - 1,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          // sliderValues[index] = value;
+                                          ratingsController[index].text = value.toInt().toString(); // Sync with controller
+                                        });
+                                      },
+                                      activeColor: AppColor.primary,
+                                      inactiveColor: AppColor.lightText.withOpacity(0.5),
+                                    ),
                                   ],
-                                  onChanged: (value) {
-                                    if (value.isNotEmpty) {
-                                      final int? numValue = int.tryParse(value);
-                                      if (numValue != null && numValue > limit) {
-                                        ratingsController[index].text = "";
-                                        // _appraisalController.globals.showSnackBar(
-                                        //   title: "Invalid Rating",
-                                        //   message: "Enter a number between 0 and $limit",
-                                        //   duration: 5,
-                                        // );
-                                      }
-                                    }
-                                  },
-                                  validator: (value) {
-
-                                    if (value == null || value.isEmpty) {
-                                      return 'Enter a number between 0 and $limit';
-                                    }
-
-                                    final int? numValue = int.tryParse(value);
-                                    if (numValue == null || numValue < 0 || numValue > limit) {
-                                      return 'Enter a number between 0 and $limit';
-                                    }
-                                    return null;
-                                  },
                                 ),
+
+
                                 const Text('Reason',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500)),
                                 TextFormField(
+                                  maxLines: 2,
                                   controller: reasonControllers[index],
                                   decoration: InputDecoration(
                                     contentPadding:
