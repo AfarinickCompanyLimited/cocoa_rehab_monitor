@@ -91,7 +91,7 @@ class AppraisalController extends GetxController {
       }
 
     } catch (e) {
-      return false;
+      return 1;
     }
   }
 

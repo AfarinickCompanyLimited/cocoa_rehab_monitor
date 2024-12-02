@@ -207,7 +207,7 @@ class MainActivities {
 }
 
 class Build {
-  static int buildNumber = 12;
+  static int buildNumber = 11;
   // static double buildNumber = 11.1; // TrueKing changed
 }
 

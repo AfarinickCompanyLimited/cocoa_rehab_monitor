@@ -120,14 +120,19 @@ class _AppraisalState extends State<Appraisal> {
 
     bool feedback = await _appraisalController.submit(d);
 
+    print("THE FEEDBACK IS ${feedback}");
+
     if (feedback) {
       Get.back();
       _appraisalController.globals.showSnackBar(
-          title: 'Success', message: 'Feedback submitted successfully');
-    } else {
+          title: 'Success', message: 'Appraisal submitted successfully');
+    } else if(!feedback){
       _appraisalController.globals.showSnackBar(
           title: 'Failed',
-          message: 'Failed to submit appraisal, contact support');
+          message: 'You have submitted the appraisal already');
+    } else {
+      _appraisalController.globals.showSnackBar(
+          title: 'Failed', message: 'Something went wrong, contact support for assistance');
     }
   }
 
