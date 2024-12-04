@@ -808,6 +808,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../appraisal/appraisal.dart';
+import '../leave_request/leave_request.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -1219,20 +1222,23 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 color: Colors.blueGrey.shade100,
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center, // Center contents
-                                children: [
-                                  Image.asset(
-                                    "assets/images/leave-request.png",
-                                    width: 25,
-                                    color: AppColor.black,
-                                  ),
-                                  const SizedBox(width: 8), // Add space between icon and text
-                                  Text(
-                                    "Leave Request",
-                                    style: TextStyle(color: AppColor.black, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                              child: GestureDetector(
+                                onTap: ()=>Get.to(()=>LeaveRequest(),transition: Transition.fadeIn),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center, // Center contents
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/leave-request.png",
+                                      width: 25,
+                                      color: AppColor.black,
+                                    ),
+                                    const SizedBox(width: 8), // Add space between icon and text
+                                    Text(
+                                      "Leave Request",
+                                      style: TextStyle(color: AppColor.black, fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -1244,20 +1250,23 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 color: Colors.blueGrey.shade100,
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center, // Center contents
-                                children: [
-                                  Image.asset(
-                                    "assets/images/appraisal.png",
-                                    width: 25,
-                                    color: AppColor.black,
-                                  ),
-                                  const SizedBox(width: 8), // Add space between icon and text
-                                  Text(
-                                    "Appraisal",
-                                    style: TextStyle(color: AppColor.black, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                              child: GestureDetector(
+                                onTap: ()=>Get.to(()=>Appraisal(),transition: Transition.fadeIn),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center, // Center contents
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/appraisal.png",
+                                      width: 25,
+                                      color: AppColor.black,
+                                    ),
+                                    const SizedBox(width: 8), // Add space between icon and text
+                                    Text(
+                                      "Appraisal",
+                                      style: TextStyle(color: AppColor.black, fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
