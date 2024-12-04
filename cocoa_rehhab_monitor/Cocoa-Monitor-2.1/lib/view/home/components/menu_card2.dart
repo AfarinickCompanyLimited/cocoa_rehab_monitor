@@ -12,7 +12,8 @@ class MenuCard2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 52,
+      height:100,
+      width: 120,
       decoration: BoxDecoration(
           color: Colors.blueGrey.shade100,
           borderRadius: BorderRadius.circular(AppButtonProps.borderRadius),
@@ -32,23 +33,20 @@ class MenuCard2 extends StatelessWidget {
           // splashFactory: NoSplash.splashFactory,
         ),
         onPressed: () => onTap(),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            children: [
-              Image.asset(image, height: 40),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      color: AppColor.black),
-                ),
+        child: Column(
+          children: [
+            Image.asset( image, height: 40),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    color: AppColor.black),
+                textAlign: TextAlign.center,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

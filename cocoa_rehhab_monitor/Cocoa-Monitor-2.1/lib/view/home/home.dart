@@ -780,7 +780,6 @@
 //   }
 // }
 
-
 import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/general_apis.dart';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/notification_data.dart';
@@ -818,7 +817,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   GeneralCocoaRehabApiInterface generalCocoaRehabApiInterface =
-  GeneralCocoaRehabApiInterface();
+      GeneralCocoaRehabApiInterface();
   GlobalController globalController = Get.find();
   HomeController homeController = Get.put(HomeController());
 
@@ -869,7 +868,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 padding: const EdgeInsets.only(left: 35.0),
                 child: Padding(
                   padding: MediaQuery.of(context).orientation ==
-                      Orientation.landscape
+                          Orientation.landscape
                       ? const EdgeInsets.only(left: 80.0)
                       : const EdgeInsets.all(0.0),
                   child: FloatingActionButton(
@@ -883,7 +882,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 ),
               ),
               Obx(
-                    () => FloatingActionButton(
+                () => FloatingActionButton(
                     heroTag: null,
                     tooltip: 'Log Location',
                     backgroundColor: homeController.isLoading.value
@@ -948,28 +947,28 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         Obx(() {
                           return homeController.isLoadingRAs.value
                               ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            period: Duration(milliseconds: 800),
-                            child: CircleIconButton(
-                              icon: appIconDownload(
-                                  color: AppColor.white, size: 20),
-                              size: 45,
-                              backgroundColor: AppColor.black,
-                              hasShadow: false,
-                              onTap: () => homeController
-                                  .checkAppVersionBeforeSync(),
-                            ),
-                          )
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  period: Duration(milliseconds: 800),
+                                  child: CircleIconButton(
+                                    icon: appIconDownload(
+                                        color: AppColor.white, size: 20),
+                                    size: 45,
+                                    backgroundColor: AppColor.black,
+                                    hasShadow: false,
+                                    onTap: () => homeController
+                                        .checkAppVersionBeforeSync(),
+                                  ),
+                                )
                               : CircleIconButton(
-                            icon: appIconDownload(
-                                color: AppColor.white, size: 20),
-                            size: 45,
-                            backgroundColor: AppColor.black,
-                            hasShadow: false,
-                            onTap: () => homeController
-                                .checkAppVersionBeforeSync(),
-                          );
+                                  icon: appIconDownload(
+                                      color: AppColor.white, size: 20),
+                                  size: 45,
+                                  backgroundColor: AppColor.black,
+                                  hasShadow: false,
+                                  onTap: () => homeController
+                                      .checkAppVersionBeforeSync(),
+                                );
                         }),
                         const SizedBox(width: 20),
                         Stack(
@@ -977,7 +976,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           children: [
                             CircleIconButton(
                               icon:
-                              appIconBell(color: AppColor.white, size: 20),
+                                  appIconBell(color: AppColor.white, size: 20),
                               size: 45,
                               backgroundColor: AppColor.black,
                               hasShadow: false,
@@ -1042,7 +1041,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               backgroundColor: Colors.white,
                               foreColor: AppColor.black,
                               icon:
-                              appIconRuler(color: AppColor.black, size: 40),
+                                  appIconRuler(color: AppColor.black, size: 40),
                               onTap: () =>
                                   homeController.usePolygonDrawingTool(),
                             ),
@@ -1054,18 +1053,18 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 icon: appIconSeedlingInHand(
                                     color: AppColor.black, size: 40),
                                 onTap: () => Get.to(
-                                        () => const AssignedFarmsMap(),
+                                    () => const AssignedFarmsMap(),
                                     transition: Transition.fadeIn)),
                             const SizedBox(width: 30),
-                            TileButtonDetached(
-                                label: "Farm\nStatus",
-                                backgroundColor: Colors.white,
-                                foreColor: AppColor.black,
-                                icon: appIconTractor(
-                                    color: AppColor.black, size: 40),
-                                onTap: () => Get.to(() => const FarmsStatus(),
-                                    transition: Transition.fadeIn)),
-                            const SizedBox(width: 30),
+                            // TileButtonDetached(
+                            //     label: "Farm\nStatus",
+                            //     backgroundColor: Colors.white,
+                            //     foreColor: AppColor.black,
+                            //     icon: appIconTractor(
+                            //         color: AppColor.black, size: 40),
+                            //     onTap: () => Get.to(() => const FarmsStatus(),
+                            //         transition: Transition.fadeIn)),
+                            // const SizedBox(width: 30),
                             TileButtonDetached(
                                 label: "Assigned\nOutbreaks",
                                 backgroundColor: Colors.white,
@@ -1073,25 +1072,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 icon: appIconLayers(
                                     color: AppColor.black, size: 40),
                                 onTap: () => Get.to(
-                                        () => const AssignedOutbreaksMap(),
+                                    () => const AssignedOutbreaksMap(),
                                     transition: Transition.fadeIn)),
-                            /*SizedBox(width: 30),
-                              TileButtonDetached(
-                                  label: "RA\nList",
-                                  backgroundColor: Colors.white,
-                                  foreColor: AppColor.black,
-                                  icon: appIconRAList(color: AppColor.black, size: 40),
-                                  onTap: () => Get.to(() => RAList(), transition: Transition.fadeIn)
-                              ),*/
-                            // SizedBox(width: 30),
-                            // TileButtonDetached(
-                            //     label: "Generate\nReport",
-                            //     backgroundColor: Colors.white,
-                            //     foreColor: AppColor.black,
-                            //     icon: appIconDownloadCSV(
-                            //         color: AppColor.black, size: 40),
-                            //     onTap: () => Get.to(() => FarmCSV(),
-                            //         transition: Transition.fadeIn)),
                             const SizedBox(width: 30),
                             TileButtonDetached(
                                 label: "Equipment\nList",
@@ -1106,486 +1088,182 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         ),
                       ),
 
-                      // Padding(
-                      //   padding: EdgeInsets.only(left: AppPadding.horizontal, right: AppPadding.horizontal),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //     children: [
-                      //       TileButtonDetached(
-                      //         label: "Calculate\nArea",
-                      //         backgroundColor: Colors.white,
-                      //         foreColor: AppColor.black,
-                      //         icon: appIconRuler(color: AppColor.black, size: 40),
-                      //         onTap: () => homeController.usePolygonDrawingTool(),
-                      //       ),
-                      //       SizedBox(width: 30),
-                      //       TileButtonDetached(
-                      //         label: "Assigned\nFarms",
-                      //         backgroundColor: Colors.white,
-                      //         foreColor: AppColor.black,
-                      //         icon: appIconSeedlingInHand(color: AppColor.black, size: 40),
-                      //           onTap: () => Get.to(() => AssignedFarmsMap(), transition: Transition.fadeIn)
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(left: AppPadding.horizontal, right: AppPadding.horizontal),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //     children: [
-                      //       TileButtonDetached(
-                      //           label: "Farm\nStatus",
-                      //           backgroundColor: Colors.white,
-                      //           foreColor: AppColor.black,
-                      //           icon: appIconTractor(color: AppColor.black, size: 40),
-                      //           onTap: () => Get.to(() => FarmsStatus(), transition: Transition.fadeIn)
-                      //       ),
-                      //       SizedBox(width: 30),
-                      //       TileButtonDetached(
-                      //           label: "Farm\nStatus",
-                      //           backgroundColor: Colors.white,
-                      //           foreColor: AppColor.black,
-                      //           icon: appIconTractor(color: AppColor.black, size: 40),
-                      //           onTap: () => Get.to(() => FarmsStatus(), transition: Transition.fadeIn)
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-
                       SizedBox(height: AppPadding.sectionDividerSpace + 10),
 
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/chainsaw.png',
-                          label: 'Initial Treatment',
-                          onTap: () => homeController.showMenuOptions(
-                              AllMomitoringsMenuOptionsBottomSheet(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MenuCard2(
+                              image: 'assets/images/cocoa_monitor/chainsaw.png',
+                              label: '    Initial\nTreatment    ',
+                              onTap: () => homeController.showMenuOptions(
+                                  AllMomitoringsMenuOptionsBottomSheet(
                                 allMonitorings: AllMonitorings.InitialTreatment,
                               )),
-                          // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
-                        ),
-                      ),
+                              // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                            ),
 
-                      SizedBox(height: AppPadding.sectionDividerSpace),
+                            // SizedBox(height: AppPadding.sectionDividerSpace),
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/binoculars.png',
-                          label: 'Maintenance',
-                          onTap: () => homeController.showMenuOptions(
-                              AllMomitoringsMenuOptionsBottomSheet(
+                            MenuCard2(
+                              image:
+                                  'assets/images/cocoa_monitor/binoculars.png',
+                              label: 'Maintenance',
+                              onTap: () => homeController.showMenuOptions(
+                                  AllMomitoringsMenuOptionsBottomSheet(
                                 allMonitorings: AllMonitorings.Maintenance,
                               )),
-                          // onTap: () => homeController.showMenuOptions('Maintenance', HomeMenuItem.Monitoring),
-                        ),
-                      ),
+                              // onTap: () => homeController.showMenuOptions('Maintenance', HomeMenuItem.Monitoring),
+                            ),
 
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/cocoa.png',
-                          label: 'Establishment',
-                          onTap: () => homeController.showMenuOptions(
-                              AllMomitoringsMenuOptionsBottomSheet(
+                            MenuCard2(
+                              image: 'assets/images/cocoa_monitor/cocoa.png',
+                              label: 'Establishment',
+                              onTap: () => homeController.showMenuOptions(
+                                  AllMomitoringsMenuOptionsBottomSheet(
                                 allMonitorings: AllMonitorings.Establishment,
                               )),
-                          // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                              // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Divider(
+                        color: AppColor.black.withOpacity(0.2),
+                        thickness: 1,
+                      ),
+                      // SizedBox(height: AppPadding.sectionDividerSpace),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MenuCard2(
+                              image:
+                                  'assets/images/cocoa_monitor/assignment2.png',
+                              label: '   Map Farms   ',
+                              onTap: () => homeController.showMenuOptions(
+                                  const MapFarmsMenuOptionsBottomSheet()),
+                              // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                            ),
+
+                            // SizedBox(height: AppPadding.sectionDividerSpace),
+                            MenuCard2(
+                              image: 'assets/images/cocoa_monitor/farmer.png',
+                              label: 'Rehab Assistant',
+                              onTap: () => homeController.showMenuOptions(
+                                  MenuOptionsBottomSheet(
+                                      title: 'Rehab Assistant',
+                                      menuItem: HomeMenuItem.Personnel)),
+                              // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
+                            ),
+
+                            MenuCard2(
+                                image: 'assets/images/cocoa_monitor/group2.png',
+                                label: 'RA / RT List',
+                                onTap: () => Get.to(() => const RAList(),
+                                    transition: Transition.fadeIn)),
+                          ],
+                        ),
+                      ),
+
+                      Divider(
+                        color: AppColor.black.withOpacity(0.2),
+                        thickness: 1,
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MenuCard2(
+                              image: 'assets/images/cocoa_monitor/note.png',
+                              label: '    Contractors\nCertificate    ',
+                              onTap: () => homeController.showMenuOptions(
+                                  const WorkDoneCertificateMenuOptionsBottomSheet()),
+                            ),
+                            MenuCard2(
+                              image: 'assets/images/cocoa_monitor/note.png',
+                              label: '    Verification\nForm    ',
+                              onTap: () => homeController.showMenuOptions(
+                                  const WorkDoneCertificateVerificationMenuOptionsBottomSheet()),
+                            ),
+                            MenuCard2(
+                              image: 'assets/images/cocoa_monitor/history.png',
+                              label: 'Generate Report',
+                              onTap: () => homeController.showMenuOptions(
+                                GenerateReportBottomSheet(
+                                    title: 'Generate Report',
+                                    menuItem: HomeMenuItem.report),
+                              ),
+                              // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
+                            ),
+                          ],
                         ),
                       ),
 
                       SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/assignment2.png',
-                          label: 'Map Farms',
-                          onTap: () => homeController.showMenuOptions(
-                              const MapFarmsMenuOptionsBottomSheet()),
-                          // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
-                        ),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/note.png',
-                          label: 'Contractors Certificate  ',
-                          onTap: () => homeController.showMenuOptions(
-                              const WorkDoneCertificateMenuOptionsBottomSheet()),
-                        ),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/note.png',
-                          label: 'Verification Form  ',
-                          onTap: () => homeController.showMenuOptions(
-                              const WorkDoneCertificateVerificationMenuOptionsBottomSheet()),
-                        ),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/farmer.png',
-                          label: 'Rehab Assistant',
-                          onTap: () => homeController.showMenuOptions(
-                              MenuOptionsBottomSheet(
-                                  title: 'Rehab Assistant',
-                                  menuItem: HomeMenuItem.Personnel)),
-                          // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
-                        ),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                            image: 'assets/images/cocoa_monitor/group2.png',
-                            label: 'RA / RT List',
-                            onTap: () => Get.to(() => const RAList(),
-                                transition: Transition.fadeIn)),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/history.png',
-                          label: 'Generate Report',
-                          onTap: () => homeController.showMenuOptions(
-                            GenerateReportBottomSheet(
-                                title: 'Generate Report',
-                                menuItem: HomeMenuItem.report),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Distributes space evenly
+                        children: [
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              width: MediaQuery.of(context).size.width * 0.45, // 40% of screen width
+                              decoration: BoxDecoration(
+                                color: Colors.blueGrey.shade100,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center, // Center contents
+                                children: [
+                                  Image.asset(
+                                    "assets/images/leave-request.png",
+                                    width: 25,
+                                    color: AppColor.black,
+                                  ),
+                                  const SizedBox(width: 8), // Add space between icon and text
+                                  Text(
+                                    "Leave Request",
+                                    style: TextStyle(color: AppColor.black, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
-                        ),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      /*Padding(
-                        padding: EdgeInsets.symmetric(horizontal: AppPadding.horizontal),
-                        child: MenuCard2(
-                          image: 'assets/images/cocoa_monitor/farmer1.png',
-                          label: 'Assign Rehab Assistant',
-                          onTap: () => homeController.showMenuOptions('Assign Rehab Assistant', HomeMenuItem.AssignPersonnel),
-                        ),
-                      ),
-                      SizedBox(height: AppPadding.sectionDividerSpace),*/
-
-                      /*Padding(
-                        padding: EdgeInsets.only(left: AppPadding.horizontal, right: AppPadding.horizontal),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 15),
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              width: MediaQuery.of(context).size.width * 0.45, // 40% of screen width
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(AppButtonProps.borderRadius),
-                                  boxShadow: [const BoxShadow(
-                                    color: Color.fromRGBO(2, 41, 10, 0.08),
-                                    blurRadius: 80,
-                                    offset: Offset(0, -4),
-                                  )]
+                                color: Colors.blueGrey.shade100,
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                              child: Column(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center, // Center contents
                                 children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('assets/images/cocoa_monitor/digger.png',
-                                          height: width * 0.15
-                                      ),
-                                      SizedBox(width: 15),
-                                      Text('Initial Treatment',
-                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColor.black),
-                                      ),
-                                    ],
+                                  Image.asset(
+                                    "assets/images/appraisal.png",
+                                    width: 25,
+                                    color: AppColor.black,
                                   ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: CustomButton(
-                                            child: Text(
-                                              'History',
-                                              style: TextStyle(color: AppColor.black, fontSize: 14),
-                                            ),
-                                            isFullWidth: true,
-                                            backgroundColor: AppColor.black.withOpacity(0.1),
-                                            verticalPadding: 0.0,
-                                            horizontalPadding: 8.0,
-                                            onTap: () => Get.to(() => OutbreakFarmHistory(), transition: Transition.fadeIn)
-                                            // onTap: () {}
-                                        ),
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                          icon: appIconRefresh(color: AppColor.primary, size: 20),
-                                          size: 45,
-                                          backgroundColor:  AppColor.white,
-                                          hasShadow: true,
-                                          // onTap: () => homeController.syncMonitoringData()
-                                          onTap: () {}
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                          icon: appIconPlus(color: AppColor.white, size: 20),
-                                          size: 45,
-                                          backgroundColor:  AppColor.primary,
-                                          hasShadow: true,
-                                          onTap: () => Get.to(() => AddOutbreakFarm(), transition: Transition.fadeIn)
-                                          // onTap: (){}
-                                      ),
-                                    ],
-                                  )
+                                  const SizedBox(width: 8), // Add space between icon and text
+                                  Text(
+                                    "Appraisal",
+                                    style: TextStyle(color: AppColor.black, fontWeight: FontWeight.bold),
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                        ],
+                      )
 
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.only(left: AppPadding.horizontal, right: AppPadding.horizontal),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 15),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(AppButtonProps.borderRadius),
-                                  boxShadow: [const BoxShadow(
-                                    color: Color.fromRGBO(2, 41, 10, 0.08),
-                                    blurRadius: 80,
-                                    offset: Offset(0, -4),
-                                  )]
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('assets/images/cocoa_monitor/espionage.png',
-                                          height: width * 0.15
-                                      ),
-                                      SizedBox(width: 15),
-                                      Text('Monitoring',
-                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColor.black),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: CustomButton(
-                                          child: Text(
-                                            'History',
-                                            style: TextStyle(color: AppColor.black, fontSize: 14),
-                                          ),
-                                          isFullWidth: true,
-                                          backgroundColor: AppColor.black.withOpacity(0.1),
-                                          verticalPadding: 0.0,
-                                          horizontalPadding: 8.0,
-                                            onTap: () => Get.to(() => MonitoringHistory(), transition: Transition.fadeIn)
-                                        ),
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                          icon: appIconRefresh(color: AppColor.primary, size: 20),
-                                          size: 45,
-                                          backgroundColor:  AppColor.white,
-                                          hasShadow: true,
-                                          onTap: () => homeController.syncMonitoringData()
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                          icon: appIconPlus(color: AppColor.white, size: 20),
-                                          size: 45,
-                                          backgroundColor:  AppColor.primary,
-                                          hasShadow: true,
-                                          onTap: () => Get.to(() => AddMonitoringRecord(), transition: Transition.fadeIn)
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.only(left: AppPadding.horizontal, right: AppPadding.horizontal),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 15),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(AppButtonProps.borderRadius),
-                                boxShadow: [const BoxShadow(
-                                  color: Color.fromRGBO(2, 41, 10, 0.08),
-                                  blurRadius: 80,
-                                  offset: Offset(0, -4),
-                                )]
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('assets/images/cocoa_monitor/group2.png',
-                                          height: width * 0.15
-                                      ),
-                                      SizedBox(width: 15),
-                                      Text('Personnel',
-                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColor.black),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: CustomButton(
-                                          child: Text(
-                                            'History',
-                                            style: TextStyle(color: AppColor.black, fontSize: 14),
-                                          ),
-                                          isFullWidth: true,
-                                          backgroundColor: AppColor.black.withOpacity(0.1),
-                                          verticalPadding: 0.0,
-                                          horizontalPadding: 8.0,
-                                            onTap: () => Get.to(() => PersonnelHistory(), transition: Transition.fadeIn)
-                                        ),
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                          icon: appIconRefresh(color: AppColor.primary, size: 20),
-                                          size: 45,
-                                          backgroundColor:  AppColor.white,
-                                          hasShadow: true,
-                                          onTap: () => homeController.syncPersonnelData()
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                        icon: appIconPlus(color: AppColor.white, size: 20),
-                                        size: 45,
-                                        backgroundColor:  AppColor.primary,
-                                        hasShadow: true,
-                                          onTap: () => Get.to(() => AddPersonnel(), transition: Transition.fadeIn)
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: AppPadding.sectionDividerSpace),
-
-                      Padding(
-                        padding: EdgeInsets.only(left: AppPadding.horizontal, right: AppPadding.horizontal),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 15),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(AppButtonProps.borderRadius),
-                                  boxShadow: [const BoxShadow(
-                                    color: Color.fromRGBO(2, 41, 10, 0.08),
-                                    blurRadius: 80,
-                                    offset: Offset(0, -4),
-                                  )]
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('assets/images/cocoa_monitor/assignment.png',
-                                          height: width * 0.15
-                                      ),
-                                      SizedBox(width: 15),
-                                      Text('Assign Personnel',
-                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColor.black),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: CustomButton(
-                                          child: Text(
-                                            'History',
-                                            style: TextStyle(color: AppColor.black, fontSize: 14),
-                                          ),
-                                          isFullWidth: true,
-                                          backgroundColor: AppColor.black.withOpacity(0.1),
-                                          verticalPadding: 0.0,
-                                          horizontalPadding: 8.0,
-                                            onTap: () => Get.to(() => PersonnelAssignmentHistory(), transition: Transition.fadeIn)
-                                        ),
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                          icon: appIconRefresh(color: AppColor.primary, size: 20),
-                                          size: 45,
-                                          backgroundColor:  AppColor.white,
-                                          hasShadow: true,
-                                          onTap: () => homeController.syncPersonnelAssignmentData()
-                                      ),
-                                      SizedBox(width: 30),
-                                      CircleIconButton(
-                                          icon: appIconPlus(color: AppColor.white, size: 20),
-                                          size: 45,
-                                          backgroundColor:  AppColor.primary,
-                                          hasShadow: true,
-                                          onTap: () => Get.to(() => AssignRA(), transition: Transition.fadeIn)
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),*/
                     ],
                   ),
                 ),
