@@ -1000,7 +1000,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(bottom: 50, top: 10),
+                  padding: const EdgeInsets.only(bottom: 50),
                   // padding: EdgeInsets.only(left: AppPadding.horizontal, right: AppPadding.horizontal, bottom: 50, top: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1029,7 +1029,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               color: AppColor.black),
                         ),
                       ),
-                      SizedBox(height: AppPadding.sectionDividerSpace),
+                      SizedBox(height: 20),
 
                       SizedBox(
                         height: 130,
@@ -1091,7 +1091,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         ),
                       ),
 
-                      SizedBox(height: AppPadding.sectionDividerSpace + 10),
+                      SizedBox(height: 10),
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),

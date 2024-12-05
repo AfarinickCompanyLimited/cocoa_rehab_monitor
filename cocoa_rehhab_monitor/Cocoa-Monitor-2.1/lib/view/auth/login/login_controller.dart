@@ -155,7 +155,8 @@ class LoginController extends GetxController {
   // START CHECK IF USERNAME AND PASSWORD ARE REGISTERED
   // ==============================================================================
   lookupUsernamePassword() async {
-    username = usernameTextController.text.trim();
+    // username = usernameTextController.text.trim();
+    username = phoneTextController.text.trim();
     password = passwordTextController.text.trim();
 
     globals.startWait(loginScreenContext);

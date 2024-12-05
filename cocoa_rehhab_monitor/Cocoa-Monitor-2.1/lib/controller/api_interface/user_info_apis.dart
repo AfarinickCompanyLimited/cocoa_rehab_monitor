@@ -107,7 +107,7 @@ class UserInfoApiInterface {
     if (await ConnectionVerify.connectionIsAvailable()) {
       try {
         var response = await dio.post(URLs.baseUrl + URLs.lookupUserAccount,
-            data: {'username': username, "password": password});
+            data: {'telephone': username, "password": password});
         print('THE LOGIN RESPONSE::: $response');
         print('THE LOGIN RESPONSE STATUS::: ${response.data['status']}');
 

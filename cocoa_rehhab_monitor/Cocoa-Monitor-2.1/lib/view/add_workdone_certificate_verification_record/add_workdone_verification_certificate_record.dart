@@ -80,7 +80,7 @@ class _AddContractorCertificateVerificationRecordState
                           width: 12,
                         ),
                         Expanded(
-                          child: Text('New Certificate Verification',
+                          child: Text('New Verification Form',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,

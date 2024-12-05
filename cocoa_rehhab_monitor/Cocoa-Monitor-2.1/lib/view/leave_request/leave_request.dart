@@ -222,7 +222,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                 // final difference = pickedEndDate.difference(pickedStartDate).inDays + 1;
                                 final difference = leaveRequestController.calculateWorkingDays(pickedStartDate, pickedEndDate);
 
-                                if(leaveRequestController.maxDays.value != 0) {
+                                if(leaveRequestController.maxDays.value > 0) {
                                   if (difference > leaveRequestController.maxDays.value) {
                                     leaveRequestController.globals.showSnackBar(
                                       title: 'Error',
