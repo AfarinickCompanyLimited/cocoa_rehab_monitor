@@ -289,7 +289,7 @@ class _AppraisalState extends State<Appraisal> {
                         );
                       }),
                     ),
-                    // Additional form fields
+                    if(data.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
@@ -333,6 +333,7 @@ class _AppraisalState extends State<Appraisal> {
                         ],
                       ),
                     ),
+                    if(data.isNotEmpty)
                     Row(
                       children: [
                         Checkbox(value: isDoneChecked, onChanged: (value){
@@ -344,6 +345,7 @@ class _AppraisalState extends State<Appraisal> {
                             style: TextStyle(fontWeight: FontWeight.w500)),
                       ],
                     ),
+                    if(data.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10.0, vertical: 15),
