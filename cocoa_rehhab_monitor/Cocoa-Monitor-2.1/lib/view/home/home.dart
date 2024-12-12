@@ -1100,7 +1100,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           children: [
                             MenuCard2(
                               image: 'assets/images/cocoa_monitor/chainsaw.png',
-                              label: '    Initial\nTreatment    ',
+                              label: 'Initial\nTreatment',
                               onTap: () => homeController.showMenuOptions(
                                   AllMomitoringsMenuOptionsBottomSheet(
                                 allMonitorings: AllMonitorings.InitialTreatment,
@@ -1148,7 +1148,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                             MenuCard2(
                               image:
                                   'assets/images/cocoa_monitor/assignment2.png',
-                              label: '   Map Farms   ',
+                              label: 'Map Farms',
                               onTap: () => homeController.showMenuOptions(
                                   const MapFarmsMenuOptionsBottomSheet()),
                               // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
@@ -1186,13 +1186,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           children: [
                             MenuCard2(
                               image: 'assets/images/cocoa_monitor/note.png',
-                              label: '    Contractors\nCertificate    ',
+                              label: 'Contractors\nCertificate',
                               onTap: () => homeController.showMenuOptions(
                                   const WorkDoneCertificateMenuOptionsBottomSheet()),
                             ),
                             MenuCard2(
                               image: 'assets/images/cocoa_monitor/note.png',
-                              label: '    Verification\nForm    ',
+                              label: 'Verification\nForm',
                               onTap: () => homeController.showMenuOptions(
                                   const WorkDoneCertificateVerificationMenuOptionsBottomSheet()),
                             ),

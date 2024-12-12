@@ -595,6 +595,9 @@ class _PaymentReportGridScreenState extends State<PaymentReportGridScreen> {
           'week': args[0]['week'],
           'year': args[2]['year'],
         });
+
+        print("THE PAYMENT REPORT: ${response.data['data']}");
+
         if (response.data['status'] == true && response.data['data'] != null) {
           List resultList = response.data['data'];
           List<Report> reportList =
@@ -607,7 +610,7 @@ class _PaymentReportGridScreenState extends State<PaymentReportGridScreen> {
 
           // mainReportList = [];
           unavailable = true;
-          print(':::$unavailable.toString()');
+
         }
       } catch (e, stackTrace) {
         print(e);

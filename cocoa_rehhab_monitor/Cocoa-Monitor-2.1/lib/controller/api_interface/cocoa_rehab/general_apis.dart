@@ -1050,11 +1050,12 @@ class GeneralCocoaRehabApiInterface {
 
   Future submitLeave(data) async {
     String? staffID = indexController.userInfo.value.staffId;
+    String? baseURL = "http://hradmin.cocoarehabmonitor.com/";
     if (await ConnectionVerify.connectionIsAvailable()) {
     try {
       var response =
       //todo: change the baseurl to the actual after backend hosting
-      await DioSingleton.instance.post("http://18.171.87.243/api/v1/leaves/${staffID}/", data: data);
+      await DioSingleton.instance.post("${baseURL}api/v1/leaves/${staffID}/", data: data);
       if (response.data['status'] == 201) {
 
         return 1;

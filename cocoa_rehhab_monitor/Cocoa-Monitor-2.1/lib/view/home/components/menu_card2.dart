@@ -36,12 +36,13 @@ class MenuCard2 extends StatelessWidget {
         child: Column(
           children: [
             Image.asset( image, height: 40),
+            SizedBox(height: 10,),
             Expanded(
               child: Text(
                 label,
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: 14,
+                    fontSize: 12,
                     color: AppColor.black),
                 textAlign: TextAlign.center,
               ),

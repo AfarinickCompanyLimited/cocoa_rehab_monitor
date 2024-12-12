@@ -21,13 +21,14 @@ class LoginController extends GetxController {
   var phoneTextController = TextEditingController();
   var usernameTextController = TextEditingController();
   var passwordTextController = TextEditingController();
+  var newPasswordTextController = TextEditingController();
   // var phoneNumberWithCountryCode;
 
   var otpVerificationID;
 
   var loginScreenContext;
   // var firstName, lastName, username, phoneNumber;
-  var phoneNumber, username, password, country;
+  var phoneNumber, username, password, country, newPassword;
 
   // var selectedCountry = "";
 
@@ -183,4 +184,28 @@ class LoginController extends GetxController {
   // ==============================================================================
   // END CHECK IF USERNAME AND PASSWORD ARE REGISTERED
   // ==============================================================================
+
+  resetPassword() async {
+    newPassword = newPasswordTextController.text.trim();
+
+    globals.startWait(loginScreenContext);
+    var userLoginStatus =
+        await userInfoApiInterface.changePassword(newPassword);
+    globals.endWait(loginScreenContext);
+
+    if (userLoginStatus['status']) {
+      globals.showSnackBar(title: 'Success', message: userLoginStatus['message'],backgroundColor: Colors.green);
+
+      Get.offAll(() => const Home(), transition: Transition.fadeIn);
+    } else if (userLoginStatus['status'] == false &&
+        userLoginStatus['connectionAvailable'] == true) {
+      // Phone number is not registered ::: Do OTP
+      // sendOTP(loginIsSuccessful: false);
+      // globals.showToast(phoneNumberStatus['message']);
+      globals.showSnackBar(title: 'Error', message: userLoginStatus['message']);
+    } else {
+      globals.showToast("Check your internet connection");
+    }
+  }
+
 }

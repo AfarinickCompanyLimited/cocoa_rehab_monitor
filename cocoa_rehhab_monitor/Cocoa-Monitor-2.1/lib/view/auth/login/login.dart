@@ -1,7 +1,9 @@
+import 'package:cocoa_monitor/view/auth/reset_password/reset_password.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../global_components/text_input_decoration.dart';
+import '../../reset_password/reset_password.dart';
 import 'login_controller.dart';
 
 class Login extends StatefulWidget {
@@ -117,7 +119,9 @@ class _LoginState extends State<Login> {
                                   : null,
                             ),
                             SizedBox(height: 10,),
-                            TextButton(onPressed: (){}, child: Text("Reset Password"))
+                            TextButton(onPressed: (){
+                              Get.to(() => ResetPassword());
+                            }, child: Text("Reset Password"))
                           ],
                         ),
                       ),
