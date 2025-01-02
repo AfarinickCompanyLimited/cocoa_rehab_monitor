@@ -1093,45 +1093,41 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                       SizedBox(height: 10),
 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MenuCard2(
-                              image: 'assets/images/cocoa_monitor/chainsaw.png',
-                              label: 'Initial\nTreatment',
-                              onTap: () => homeController.showMenuOptions(
-                                  AllMomitoringsMenuOptionsBottomSheet(
-                                allMonitorings: AllMonitorings.InitialTreatment,
-                              )),
-                              // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
-                            ),
-
-                            // SizedBox(height: AppPadding.sectionDividerSpace),
-
-                            MenuCard2(
-                              image:
-                                  'assets/images/cocoa_monitor/binoculars.png',
-                              label: 'Maintenance',
-                              onTap: () => homeController.showMenuOptions(
-                                  AllMomitoringsMenuOptionsBottomSheet(
-                                allMonitorings: AllMonitorings.Maintenance,
-                              )),
-                              // onTap: () => homeController.showMenuOptions('Maintenance', HomeMenuItem.Monitoring),
-                            ),
-
-                            MenuCard2(
-                              image: 'assets/images/cocoa_monitor/cocoa.png',
-                              label: 'Establishment',
-                              onTap: () => homeController.showMenuOptions(
-                                  AllMomitoringsMenuOptionsBottomSheet(
-                                allMonitorings: AllMonitorings.Establishment,
-                              )),
-                              // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
-                            ),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          Spacer(),
+                          MenuCard2(
+                            image: 'assets/images/cocoa_monitor/chainsaw.png',
+                            label: 'Initial\nTreatment',
+                            onTap: () => homeController.showMenuOptions(
+                                AllMomitoringsMenuOptionsBottomSheet(
+                              allMonitorings: AllMonitorings.InitialTreatment,
+                            )),
+                            // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                          ),
+                          Spacer(),
+                          MenuCard2(
+                            image:
+                                'assets/images/cocoa_monitor/binoculars.png',
+                            label: 'Maintenance',
+                            onTap: () => homeController.showMenuOptions(
+                                AllMomitoringsMenuOptionsBottomSheet(
+                              allMonitorings: AllMonitorings.Maintenance,
+                            )),
+                            // onTap: () => homeController.showMenuOptions('Maintenance', HomeMenuItem.Monitoring),
+                          ),
+                          Spacer(),
+                          MenuCard2(
+                            image: 'assets/images/cocoa_monitor/cocoa.png',
+                            label: 'Establishment',
+                            onTap: () => homeController.showMenuOptions(
+                                AllMomitoringsMenuOptionsBottomSheet(
+                              allMonitorings: AllMonitorings.Establishment,
+                            )),
+                            // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                          ),
+                          Spacer(),
+                        ],
                       ),
 
                       Divider(
@@ -1140,38 +1136,36 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       ),
                       // SizedBox(height: AppPadding.sectionDividerSpace),
 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MenuCard2(
-                              image:
-                                  'assets/images/cocoa_monitor/assignment2.png',
-                              label: 'Map Farms',
-                              onTap: () => homeController.showMenuOptions(
-                                  const MapFarmsMenuOptionsBottomSheet()),
-                              // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
-                            ),
-
-                            // SizedBox(height: AppPadding.sectionDividerSpace),
-                            MenuCard2(
-                              image: 'assets/images/cocoa_monitor/farmer.png',
-                              label: 'Rehab Assistant',
-                              onTap: () => homeController.showMenuOptions(
-                                  MenuOptionsBottomSheet(
-                                      title: 'Rehab Assistant',
-                                      menuItem: HomeMenuItem.Personnel)),
-                              // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
-                            ),
-
-                            MenuCard2(
-                                image: 'assets/images/cocoa_monitor/group2.png',
-                                label: 'RA / RT List',
-                                onTap: () => Get.to(() => const RAList(),
-                                    transition: Transition.fadeIn)),
-                          ],
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Spacer(),
+                          MenuCard2(
+                            image:
+                                'assets/images/cocoa_monitor/assignment2.png',
+                            label: 'Map Farms',
+                            onTap: () => homeController.showMenuOptions(
+                                const MapFarmsMenuOptionsBottomSheet()),
+                            // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                          ),
+                          Spacer(),
+                          MenuCard2(
+                            image: 'assets/images/cocoa_monitor/farmer.png',
+                            label: 'Rehab Assistant',
+                            onTap: () => homeController.showMenuOptions(
+                                MenuOptionsBottomSheet(
+                                    title: 'Rehab Assistant',
+                                    menuItem: HomeMenuItem.Personnel)),
+                            // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
+                          ),
+                          Spacer(),
+                          MenuCard2(
+                              image: 'assets/images/cocoa_monitor/group2.png',
+                              label: 'RA / RT List',
+                              onTap: () => Get.to(() => const RAList(),
+                                  transition: Transition.fadeIn)),
+                          Spacer(),
+                        ],
                       ),
 
                       Divider(
@@ -1179,35 +1173,32 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         thickness: 1,
                       ),
 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MenuCard2(
-                              image: 'assets/images/cocoa_monitor/note.png',
-                              label: 'Contractors\nCertificate',
-                              onTap: () => homeController.showMenuOptions(
-                                  const WorkDoneCertificateMenuOptionsBottomSheet()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MenuCard2(
+                            image: 'assets/images/cocoa_monitor/note.png',
+                            label: 'Contractors\nCertificate',
+                            onTap: () => homeController.showMenuOptions(
+                                const WorkDoneCertificateMenuOptionsBottomSheet()),
+                          ),
+                          MenuCard2(
+                            image: 'assets/images/cocoa_monitor/note.png',
+                            label: 'Verification\nForm',
+                            onTap: () => homeController.showMenuOptions(
+                                const WorkDoneCertificateVerificationMenuOptionsBottomSheet()),
+                          ),
+                          MenuCard2(
+                            image: 'assets/images/cocoa_monitor/history.png',
+                            label: 'Generate Report',
+                            onTap: () => homeController.showMenuOptions(
+                              GenerateReportBottomSheet(
+                                  title: 'Generate Report',
+                                  menuItem: HomeMenuItem.report),
                             ),
-                            MenuCard2(
-                              image: 'assets/images/cocoa_monitor/note.png',
-                              label: 'Verification\nForm',
-                              onTap: () => homeController.showMenuOptions(
-                                  const WorkDoneCertificateVerificationMenuOptionsBottomSheet()),
-                            ),
-                            MenuCard2(
-                              image: 'assets/images/cocoa_monitor/history.png',
-                              label: 'Generate Report',
-                              onTap: () => homeController.showMenuOptions(
-                                GenerateReportBottomSheet(
-                                    title: 'Generate Report',
-                                    menuItem: HomeMenuItem.report),
-                              ),
-                              // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
-                            ),
-                          ],
-                        ),
+                            // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
+                          ),
+                        ],
                       ),
 
                       SizedBox(height: AppPadding.sectionDividerSpace),
