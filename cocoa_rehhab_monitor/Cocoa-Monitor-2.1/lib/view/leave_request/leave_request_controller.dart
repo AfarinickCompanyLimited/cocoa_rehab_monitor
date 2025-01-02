@@ -115,7 +115,7 @@ class LeaveRequestController extends GetxController {
 
   fetchLeaveTypes() async {
     try {
-      var response = await DioSingleton.instance.get("http://18.171.87.243/api/v1/leavetypes");
+      var response = await DioSingleton.instance.get("http://hradmin.cocoarehabmonitor.com/leavetypes");
       if(response.data['data'] != null) {
         leaveTypesResponse = response.data['data'].map((e) => e).toList();
         leaveList.addAll(leaveTypesResponse.map((e) => e['name'])); // Updating leaveList
