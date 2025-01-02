@@ -36,7 +36,7 @@ class AppraisalController extends GetxController {
   _fetchAppraisalQuestions() async {
     // String employeeID = "U0004";
     String employeeID = globalController.userInfo.value.staffId.toString().trim();
-    String baseURL = "http://18.171.87.243/";
+    String baseURL = "http://hradmin.cocoarehabmonitor.com/";
     String appraisalEndPoint = "api/v1/appraisals/${employeeID}/";
     try {
       var response = await DioSingleton.instance
@@ -73,7 +73,7 @@ class AppraisalController extends GetxController {
   }
 
   submit(data) async {
-    String employeeID = globalController.userInfo.value.userId.toString();
+    String employeeID = globalController.userInfo.value.userId.toString().trim();
     String? baseURL = "http://hradmin.cocoarehabmonitor.com/";
     String appraisalEndPoint = "api/v1/appraisals/${employeeID}/";
     globals.startWait(appraisalContext!);
