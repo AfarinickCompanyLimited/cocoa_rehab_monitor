@@ -38,7 +38,7 @@ class ContractorCertificateModel {
   final int? currrentWeek;
   final List<int>? activity;
   final String? reportingDate;
-  final int? farmRefNumber;
+  final String? farmRefNumber;
   final double? farmSizeHa;
   final String? community;
   final int? contractor;

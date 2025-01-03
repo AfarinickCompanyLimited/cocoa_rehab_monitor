@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../controller/constants.dart';
 import '../../controller/entity/cocoa_rehub_monitor/activity.dart';
+import '../../controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 import '../../controller/model/activity_model.dart';
@@ -29,8 +30,8 @@ class _AddContractorCertificateRecordState
   bool subActivityCheck = false;
 
   AddContractorCertificateRecordController
-  addContractorCertificateRecordController =
-  Get.put(AddContractorCertificateRecordController());
+      addContractorCertificateRecordController =
+      Get.put(AddContractorCertificateRecordController());
 
   @override
   void initState() {
@@ -38,12 +39,16 @@ class _AddContractorCertificateRecordState
     super.initState();
     addContractorCertificateRecordController.getActivity();
     addContractorCertificateRecordController.getDistinctActivity();
-
+    addContractorCertificateRecordController.getFarmRefs();
+    addContractorCertificateRecordController.getDistinctFarmRefs();
   }
+
   @override
   Widget build(BuildContext context) {
     addContractorCertificateRecordController.getActivity();
     addContractorCertificateRecordController.getDistinctActivity();
+    addContractorCertificateRecordController.getFarmRefs();
+    addContractorCertificateRecordController.getDistinctFarmRefs();
     int currentYear = DateTime.now().year;
     int startingYear = 2022;
     List<int> yearList =
@@ -268,44 +273,141 @@ class _AddContractorCertificateRecordState
                                 height: 5,
                               ),
 
-                              TextFormField(
-                                onTap: () {
-                                  // Show the bottom sheet when the TextFormField is tapped
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled:
-                                        true, // Allows the bottom sheet to be sized based on its content
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20),
+                              DropdownSearch<AssignedFarm>(
+                                popupProps: PopupProps.modalBottomSheet(
+                                    showSelectedItems: true,
+                                    showSearchBox: true,
+                                    title: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      child: Center(
+                                        child: Text(
+                                          'Select farm reference number',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    builder: (context) {
-                                      return FarmIdBottomSheet(); // Your custom bottom sheet widget
-                                    },
-                                  );
-                                },
-                                controller:
-                                    addContractorCertificateRecordController
-                                        .farmReferenceNumberTC,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
+                                    disabledItemFn: (AssignedFarm s) => false,
+                                    modalBottomSheetProps:
+                                        ModalBottomSheetProps(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(
+                                                  AppBorderRadius.md),
+                                              topRight: Radius.circular(
+                                                  AppBorderRadius.md))),
+                                    ),
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 4, horizontal: 15),
+                                        enabledBorder: inputBorder,
+                                        focusedBorder: inputBorderFocused,
+                                        errorBorder: inputBorder,
+                                        focusedErrorBorder: inputBorderFocused,
+                                        filled: true,
+                                        fillColor: AppColor.xLightBackground,
+                                      ),
+                                    )),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
                                 ),
-                                keyboardType: TextInputType.none,
-                                textCapitalization:
-                                    TextCapitalization.characters,
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode: AutovalidateMode.always,
-                                validator:
-                                    FarmReferencePatternValidator.validate,
+                                asyncItems: (String filter) async {
+                                  // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
+                                  var response =
+                                      await addContractorCertificateRecordController
+                                         .globalController.database!.assignedFarmDao.findAllAssignedFarms();
+                                  print("THE RESPONSE ::::::::::: $response");
+                                  return response;
+                                },
+                                itemAsString: (AssignedFarm d) => d.farmReference.toString(),
+                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                compareFn: (activity, filter) =>
+                                    activity == filter,
+                                onChanged: (val) {
+                                  addContractorCertificateRecordController
+                                      .farmReferenceNumberTC!.text = val!.farmReference.toString();
+                                  addContractorCertificateRecordController.farmerNameTC!.text = val.farmername.toString();
+                                  addContractorCertificateRecordController.farmSizeTC!.text = val.farmSize.toString();
+                                  addContractorCertificateRecordController.communityTC!.text = val.location.toString();
+                                  // print(farmSizeTC
+                                  //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
+                                  //
+                                  // if (addContractorCertificateRecordController
+                                  //         .activity?.mainActivity ==
+                                  //     MainActivities.Maintenance) {
+                                  //   // addContractorCertificateRecordController
+                                  //   //     .activityCheck.value = true;
+                                  // }
+
+                                  // addContractorCertificateRecordController
+                                  //     .subActivity = Activity() as List<Activity>;
+                                  addContractorCertificateRecordController
+                                      .update();
+                                  // print(
+                                  //     ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
+                                },
+                                autoValidateMode: AutovalidateMode.always,
+                                validator: (item) {
+                                  if (item == null) {
+                                    return 'Farm reference is required';
+                                  } else {
+                                    return null;
+                                  }
+                                },
                               ),
+
+                              // TextFormField(
+                              //   onTap: () {
+                              //     // Show the bottom sheet when the TextFormField is tapped
+                              //     showModalBottomSheet(
+                              //       context: context,
+                              //       isScrollControlled:
+                              //           true, // Allows the bottom sheet to be sized based on its content
+                              //       shape: RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.vertical(
+                              //           top: Radius.circular(20),
+                              //         ),
+                              //       ),
+                              //       builder: (context) {
+                              //         return FarmIdBottomSheet(); // Your custom bottom sheet widget
+                              //       },
+                              //     );
+                              //   },
+                              //   controller:
+                              //       addContractorCertificateRecordController
+                              //           .farmReferenceNumberTC,
+                              //   decoration: InputDecoration(
+                              //     contentPadding: const EdgeInsets.symmetric(
+                              //         vertical: 15, horizontal: 15),
+                              //     enabledBorder: inputBorder,
+                              //     focusedBorder: inputBorderFocused,
+                              //     errorBorder: inputBorder,
+                              //     focusedErrorBorder: inputBorderFocused,
+                              //     filled: true,
+                              //     fillColor: AppColor.xLightBackground,
+                              //   ),
+                              //   keyboardType: TextInputType.none,
+                              //   textCapitalization:
+                              //       TextCapitalization.characters,
+                              //   textInputAction: TextInputAction.next,
+                              //   autovalidateMode: AutovalidateMode.always,
+                              //   validator:
+                              //       FarmReferencePatternValidator.validate,
+                              // ),
 
                               // const SizedBox(height: 20),
                               // const Text(
@@ -338,6 +440,38 @@ class _AddContractorCertificateRecordState
                               // ),
                               const SizedBox(height: 20),
                               const Text(
+                                'Farmer name',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller:
+                                addContractorCertificateRecordController
+                                    .farmerNameTC,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 15),
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorderFocused,
+                                  errorBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderFocused,
+                                  filled: true,
+                                  fillColor: AppColor.lightText,
+                                ),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                textInputAction: TextInputAction.next,
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (String? value) =>
+                                value!.trim().isEmpty
+                                    ? "Farmer name is required"
+                                    : null,
+                              ),
+                              const SizedBox(height: 20),
+                              const Text(
                                 'Farm Size (in hectares)',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
@@ -345,7 +479,6 @@ class _AddContractorCertificateRecordState
                                 height: 5,
                               ),
                               TextFormField(
-
                                 controller:
                                     addContractorCertificateRecordController
                                         .farmSizeTC,
@@ -501,6 +634,103 @@ class _AddContractorCertificateRecordState
                                 },
                               ),
 
+                              const SizedBox(height: 20),
+                              const Text(
+                                'Sector',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              DropdownSearch<String>(
+                                popupProps: PopupProps.modalBottomSheet(
+                                    showSelectedItems: true,
+                                    showSearchBox: true,
+                                    itemBuilder: (context, item, selected) {
+                                      return ListTile(
+                                        title: Text(
+                                            item,
+                                            style: selected
+                                                ? TextStyle(
+                                                color: AppColor.primary)
+                                                : const TextStyle())
+                                      );
+                                    },
+                                    title: const Padding(
+                                      padding:
+                                      EdgeInsets.symmetric(vertical: 15),
+                                      child: Center(
+                                        child: Text(
+                                          'Select sector',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                    disabledItemFn: (String s) => false,
+                                    modalBottomSheetProps:
+                                    ModalBottomSheetProps(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(
+                                                  AppBorderRadius.md),
+                                              topRight: Radius.circular(
+                                                  AppBorderRadius.md))),
+                                    ),
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                        const EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 15),
+                                        enabledBorder: inputBorder,
+                                        focusedBorder: inputBorderFocused,
+                                        errorBorder: inputBorder,
+                                        focusedErrorBorder: inputBorderFocused,
+                                        filled: true,
+                                        fillColor: AppColor.xLightBackground,
+                                      ),
+                                    )),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
+                                ),
+                                items: addContractorCertificateRecordController.sectorData,
+                                // asyncItems: (String filter) async {
+                                //   var response =
+                                //   await addContractorCertificateRecordController
+                                //       .globalController
+                                //       .database!
+                                //       .regionDistrictDao
+                                //       .findAllRegionDistrict();
+                                //   return response;
+                                // },
+                                itemAsString: (String d) =>
+                                d,
+                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                compareFn: (d, filter) =>
+                                d == filter,
+                                onChanged: (val) {
+                                  addContractorCertificateRecordController
+                                      .sector = val;
+                                },
+                                autoValidateMode: AutovalidateMode.always,
+                                validator: (item) {
+                                  if (item == null) {
+                                    return 'District is required';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
                               /* const Text(
                                 'Community',
                                 style: TextStyle(fontWeight: FontWeight.w500),
@@ -660,7 +890,8 @@ class _AddContractorCertificateRecordState
                                     fillColor: AppColor.xLightBackground,
                                   ),
                                 ),
-                                items: addContractorCertificateRecordController.act,
+                                items: addContractorCertificateRecordController
+                                    .act,
                                 // asyncItems: (String filter) async {
                                 //   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
                                 //   var response =
@@ -673,12 +904,10 @@ class _AddContractorCertificateRecordState
                                 //   print("THE RESPONSE ::::::::::: $response");
                                 //   return response;
                                 // },
-                                itemAsString: (String d) =>
-                                    d,
+                                itemAsString: (String d) => d,
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                    activity ==
-                                    filter,
+                                    activity == filter,
                                 onChanged: (val) {
                                   addContractorCertificateRecordController
                                       .activity = val!;
@@ -732,7 +961,8 @@ class _AddContractorCertificateRecordState
                                             ),
                                           ),
                                         ),
-                                        disabledItemFn: (ActivityModel s) => false,
+                                        disabledItemFn: (ActivityModel s) =>
+                                            false,
                                         modalBottomSheetProps:
                                             ModalBottomSheetProps(
                                           elevation: 6,
@@ -773,15 +1003,16 @@ class _AddContractorCertificateRecordState
                                 ),
                                 asyncItems: (String filter) async {
                                   var response =
-                                  await addContractorCertificateRecordController
-                                      .db.getSubActivityByMainActivity(
-                                          addContractorCertificateRecordController
-                                              .activity!);
+                                      await addContractorCertificateRecordController
+                                          .db
+                                          .getSubActivityByMainActivity(
+                                              addContractorCertificateRecordController
+                                                  .activity!);
 
                                   return response;
                                 },
                                 itemAsString: (ActivityModel d) =>
-                                    d.subActivity!.toString(),
+                                    d.subActivity.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
                                     activity.subActivity == filter.subActivity,
@@ -789,21 +1020,19 @@ class _AddContractorCertificateRecordState
                                   addContractorCertificateRecordController
                                       .subActivity = vals;
 
-                                  if (addContractorCertificateRecordController
-                                              .subActivity.length ==
-                                          1 &&
-                                      addContractorCertificateRecordController
-                                              .subActivity[0].subActivity
-                                              .toString()
-                                              .toUpperCase() ==
-                                          "weeding of replanted farms"
-                                              .toUpperCase()) {
-                                    print(
-                                        "SubActivity ======= ${addContractorCertificateRecordController.subActivity[0].subActivity}");
-
-                                    // addContractorCertificateRecordController
-                                    //     .subActivityCheck.value = true;
-                                  }
+                                  // if (addContractorCertificateRecordController
+                                  //             .subActivity.length ==
+                                  //         1 &&
+                                  //     addContractorCertificateRecordController
+                                  //             .subActivity[0].subActivity
+                                  //             .toString()
+                                  //             .toUpperCase() ==
+                                  //         "weeding of replanted farms"
+                                  //             .toUpperCase()) {
+                                  //
+                                  //   // addContractorCertificateRecordController
+                                  //   //     .subActivityCheck.value = true;
+                                  // }
 
                                   addContractorCertificateRecordController
                                       .update();
@@ -1124,8 +1353,6 @@ class _AddContractorCertificateRecordState
     );
   }
 }
-
-
 
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor.dart';
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';

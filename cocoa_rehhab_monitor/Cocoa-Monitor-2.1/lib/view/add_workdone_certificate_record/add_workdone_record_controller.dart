@@ -19,6 +19,7 @@ import 'package:location/location.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
+import '../../controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import '../../controller/model/activity_model.dart';
 import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 
@@ -49,6 +50,8 @@ class AddContractorCertificateRecordController extends GetxController {
 
   RegionDistrict? regionDistrict = RegionDistrict();
 
+  String? sector;
+
   Contractor? contractor = Contractor();
 
   TextEditingController? farmSizeTC = TextEditingController();
@@ -65,7 +68,12 @@ class AddContractorCertificateRecordController extends GetxController {
   List<ActivityModel> subActivity = [];
 
   List<ActivityModel> activities = [];
+
+  List<AssignedFarm> farmRefs = [];
+
   List<String> act = [];
+
+  List<String> fr = [];
 
   getDistinctActivity() {
     activities.forEach((activity) {
@@ -74,6 +82,16 @@ class AddContractorCertificateRecordController extends GetxController {
       }
     });
     print("THE ACTIVITY STRINGS ::::::::: ${act}");
+  }
+
+  getDistinctFarmRefs(){
+    farmRefs.forEach((f){
+      fr.add(f.farmReference!);
+    });
+  }
+
+  getFarmRefs()async{
+    farmRefs = await globalController.database!.assignedFarmDao.findAllAssignedFarms();
   }
 
   getActivity() async {
@@ -90,6 +108,8 @@ class AddContractorCertificateRecordController extends GetxController {
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
 
   List<String> listOfRoundsOfWeeding = ['1', '2', ];
+
+  List<String> sectorData = ['1', '2', '3', '4'];
 
   List<String> listOfMonths = [
     'January',
@@ -126,6 +146,11 @@ class AddContractorCertificateRecordController extends GetxController {
       //         update();
       //       }
       //     });
+
+      getFarmRefs();
+      getDistinctFarmRefs();
+      getActivity();
+      getDistinctActivity();
     });
   }
 
@@ -166,10 +191,11 @@ class AddContractorCertificateRecordController extends GetxController {
         reportingDate: formattedReportingDate,
         activity: subActivityList,
         farmerName: farmerNameTC!.text,
-        farmRefNumber: 123,
-        //farmRefNumber: farmReferenceNumberTC!.text,
+        farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: com,
+        roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+        sector: int.tryParse(sector!),
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
         status: SubmissionStatus.submitted,
@@ -257,17 +283,19 @@ class AddContractorCertificateRecordController extends GetxController {
         currentMonth: selectedMonth,
         currrentWeek: selectedWeek,
         reportingDate: formattedReportingDate,
-        // mainActivity: code,
         activity: subActivityList,
-        status: SubmissionStatus.pending,
         farmerName: farmerNameTC!.text,
-        farmRefNumber: 123,
-        //farmRefNumber: farmReferenceNumberTC!.text,
+        farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: com,
+        roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+        sector: int.tryParse(sector!),
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
-        userId: int.tryParse(globalController.userInfo.value.userId!));
+        status: SubmissionStatus.submitted,
+        userId: int.tryParse(
+          globalController.userInfo.value.userId!,
+        ));
 
     Map<String, dynamic> data = contractorCertificate.toJson();
     print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
