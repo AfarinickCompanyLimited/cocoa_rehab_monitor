@@ -49,7 +49,6 @@ class ActivityDatabaseHelper {
 
   Future<int> saveData(ActivityModel activity) async {
     Map<String, dynamic> data = activity.toJson();
-    print('THIS IS Contractor Certificate Verification DATA DETAILS:::: $data');
     final db = await instance.database;
     return await db.insert(tableName, data);
   }
@@ -61,7 +60,6 @@ class ActivityDatabaseHelper {
       for (final data in allData) {
         // Convert requiredEquipment to an integer in the toJson() method
         final dataMap = data.toJson();
-       dataMap.remove("required_equipment");
 
         await txn.insert(tableName, dataMap);
         count++;

@@ -27,8 +27,23 @@ class _AddContractorCertificateRecordState
     extends State<AddContractorCertificateRecord> {
   bool activityCheck = false;
   bool subActivityCheck = false;
+
+  AddContractorCertificateRecordController
+  addContractorCertificateRecordController =
+  Get.put(AddContractorCertificateRecordController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    addContractorCertificateRecordController.getActivity();
+    addContractorCertificateRecordController.getDistinctActivity();
+
+  }
   @override
   Widget build(BuildContext context) {
+    addContractorCertificateRecordController.getActivity();
+    addContractorCertificateRecordController.getDistinctActivity();
     int currentYear = DateTime.now().year;
     int startingYear = 2022;
     List<int> yearList =
@@ -36,9 +51,7 @@ class _AddContractorCertificateRecordState
       return startingYear + index;
     });
     // HomeController homeController = Get.find();
-    AddContractorCertificateRecordController
-        addContractorCertificateRecordController =
-        Get.put(AddContractorCertificateRecordController());
+
     addContractorCertificateRecordController
         .addContractorCertificateRecordScreenContext = context;
 
@@ -596,7 +609,7 @@ class _AddContractorCertificateRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              DropdownSearch<ActivityModel>(
+                              DropdownSearch<String>(
                                 popupProps: PopupProps.modalBottomSheet(
                                     showSelectedItems: true,
                                     showSearchBox: true,
@@ -611,7 +624,7 @@ class _AddContractorCertificateRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (ActivityModel s) => false,
+                                    disabledItemFn: (String s) => false,
                                     modalBottomSheetProps:
                                         ModalBottomSheetProps(
                                       elevation: 6,
@@ -647,39 +660,44 @@ class _AddContractorCertificateRecordState
                                     fillColor: AppColor.xLightBackground,
                                   ),
                                 ),
-                                asyncItems: (String filter) async {
-                                  // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
-                                  var response =
-                                      await addContractorCertificateRecordController
-                                         .db.getAllData();
-                                  return response;
-                                },
-                                itemAsString: (ActivityModel d) =>
-                                    d.mainActivity!.toString(),
+                                items: addContractorCertificateRecordController.act,
+                                // asyncItems: (String filter) async {
+                                //   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
+                                //   var response =
+                                //       await addContractorCertificateRecordController
+                                //          .db.getAllActivityWithMainActivityList([
+                                //        MainActivities.Maintenance,
+                                //        MainActivities.Establishment,
+                                //        MainActivities.InitialTreatment,
+                                //       ]);
+                                //   print("THE RESPONSE ::::::::::: $response");
+                                //   return response;
+                                // },
+                                itemAsString: (String d) =>
+                                    d,
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                    activity.mainActivity ==
-                                    filter.mainActivity,
+                                    activity ==
+                                    filter,
                                 onChanged: (val) {
                                   addContractorCertificateRecordController
                                       .activity = val!;
-
-                                  print(
-                                      "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
-
-                                  if (addContractorCertificateRecordController
-                                          .activity?.mainActivity ==
-                                      MainActivities.Maintenance) {
-                                    // addContractorCertificateRecordController
-                                    //     .activityCheck.value = true;
-                                  }
+                                  // print(
+                                  //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
+                                  //
+                                  // if (addContractorCertificateRecordController
+                                  //         .activity?.mainActivity ==
+                                  //     MainActivities.Maintenance) {
+                                  //   // addContractorCertificateRecordController
+                                  //   //     .activityCheck.value = true;
+                                  // }
 
                                   // addContractorCertificateRecordController
                                   //     .subActivity = Activity() as List<Activity>;
                                   addContractorCertificateRecordController
                                       .update();
-                                  print(
-                                      ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
+                                  // print(
+                                  //     ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
                                 },
                                 autoValidateMode: AutovalidateMode.always,
                                 validator: (item) {
@@ -756,7 +774,9 @@ class _AddContractorCertificateRecordState
                                 asyncItems: (String filter) async {
                                   var response =
                                   await addContractorCertificateRecordController
-                                      .db.getAllData();
+                                      .db.getSubActivityByMainActivity(
+                                          addContractorCertificateRecordController
+                                              .activity!);
 
                                   return response;
                                 },
@@ -853,7 +873,7 @@ class _AddContractorCertificateRecordState
                                       .update();
                                 },
                               ),
-                              const SizedBox(height: 5),
+                              const SizedBox(height: 20),
 
                               const Text(
                                 'Contractor Name',

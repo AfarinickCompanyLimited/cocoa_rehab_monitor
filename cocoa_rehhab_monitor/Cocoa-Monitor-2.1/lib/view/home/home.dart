@@ -787,7 +787,6 @@ import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/assigned_farms_map/assigned_farms_map.dart';
 import 'package:cocoa_monitor/view/assigned_outbreaks_map/assigned_outbreaks_map.dart';
 import 'package:cocoa_monitor/view/equipments/equipments.dart';
-import 'package:cocoa_monitor/view/farms_status/farms_status.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/view/global_components/tile_button.dart';
 import 'package:cocoa_monitor/view/home/components/generate_report_bottomsheet.dart';

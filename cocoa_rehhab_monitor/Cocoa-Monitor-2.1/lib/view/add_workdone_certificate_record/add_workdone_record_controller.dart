@@ -57,11 +57,34 @@ class AddContractorCertificateRecordController extends GetxController {
   TextEditingController? farmReferenceNumberTC = TextEditingController();
   TextEditingController? communityTC = TextEditingController();
 
-  ActivityModel? activity;
+  ActivityModel? activit;
+  String? activity;
 
-  ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
+  ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
   List<ActivityModel> subActivity = [];
+
+  List<ActivityModel> activities = [];
+  List<String> act = [];
+
+  getDistinctActivity() {
+    activities.forEach((activity) {
+      if(!act.contains(activity.mainActivity)){
+        act.add(activity.mainActivity!);
+      }
+    });
+    print("THE ACTIVITY STRINGS ::::::::: ${act}");
+  }
+
+  getActivity() async {
+    activities = await db.getAllActivityWithMainActivityList([
+      MainActivities.Maintenance,
+      MainActivities.Establishment,
+      MainActivities.InitialTreatment,
+    ]);
+    print("THE ACTIVITY ::::::::: ${activities[0].mainActivity}");
+  }
+
   String? roundsOfWeeding;
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
