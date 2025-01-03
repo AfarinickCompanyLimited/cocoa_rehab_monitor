@@ -18,12 +18,12 @@ import 'dart:io' as io;
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/constants.dart';
-import '../../controller/db/contractor_certificate_of_workdone_db.dart';
+import '../../controller/db/contractor_certificate_of_workdone_verification_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 import '../../controller/model/activity_model.dart';
-import '../../controller/model/contractor_certificate_of_workdone_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_verification_model.dart';
 import '../../controller/model/picked_media.dart';
 import '../global_components/custom_button.dart';
 import '../utils/bytes_to_size.dart';
@@ -349,7 +349,7 @@ class EditContractorCertificateVerificationRecordController
         postResult['status'] == RequestStatus.NoInternet) {
 
       /// initialise the database
-      ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+      ContractorCertificateVerificationDatabaseHelper dbHelper = ContractorCertificateVerificationDatabaseHelper.instance;
 
       await dbHelper.deleteData(contractorCertificateVerification!.uid!);
 

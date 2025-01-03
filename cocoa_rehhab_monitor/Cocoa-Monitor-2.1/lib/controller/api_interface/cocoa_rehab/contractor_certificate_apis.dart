@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate_verification.dart';
-import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_model.dart';
+import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_verification_model.dart';
 import 'package:cocoa_monitor/controller/utils/connection_verify.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:dio/adapter.dart';
@@ -10,8 +11,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../db/contractor_certificate_of_workdone_db.dart';
+import '../../db/contractor_certificate_of_workdone_verification_db.dart';
 import '../../entity/cocoa_rehub_monitor/contractor_certificate.dart';
+import '../../model/contractor_certificate_of_workdone_model.dart';
 
 class ContractorCertificateApiInterface {
   GlobalController indexController = Get.find();
@@ -20,9 +22,10 @@ class ContractorCertificateApiInterface {
 // START ADD WORK DONE BY CONTRACTOR CERTIFICATE
 // ===================================================================================
   saveContractorCertificate(
-      ContractorCertificate contractorCertificate, data) async {
-    final contractorCertificateDao =
-        indexController.database!.contractorCertificateDao;
+      ContractorCertificateModel contractorCertificate, data) async {
+    ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
+    // final contractorCertificateDao =
+    //     indexController.database!.contractorCertificateDao;
 
     Dio? dio = Dio();
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -37,17 +40,14 @@ class ContractorCertificateApiInterface {
         var response = await dio
             .post(URLs.baseUrl + URLs.saveContractorCertificate, data: data);
         if (response.data['status'] == RequestStatus.True) {
-          contractorCertificateDao
-              .insertContractorCertificate(contractorCertificate);
+          db
+              .saveData(contractorCertificate);
           return {
             'status': response.data['status'],
             'connectionAvailable': true,
             'msg': response.data['msg']
           };
         } else if (response.data['status'] == RequestStatus.Exist) {
-          contractorCertificateDao
-              .updateContractorCertificateSubmissionStatusByUID(
-                  SubmissionStatus.submitted, contractorCertificate.uid!);
           return {
             'status': response.data['status'],
             'connectionAvailable': true,
@@ -79,8 +79,8 @@ class ContractorCertificateApiInterface {
       }
     } else {
       contractorCertificate.status = SubmissionStatus.pending;
-      contractorCertificateDao
-          .insertContractorCertificate(contractorCertificate);
+      db
+          .saveData(contractorCertificate);
       return {
         'status': RequestStatus.NoInternet,
         'connectionAvailable': false,
@@ -270,7 +270,7 @@ class ContractorCertificateApiInterface {
     } else {
       contractorCertificateVerification.status = SubmissionStatus.pending;
       /// initialise the database
-      ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+      ContractorCertificateVerificationDatabaseHelper dbHelper = ContractorCertificateVerificationDatabaseHelper.instance;
 
       /// save the data offline
       await dbHelper.saveData(contractorCertificateVerification);

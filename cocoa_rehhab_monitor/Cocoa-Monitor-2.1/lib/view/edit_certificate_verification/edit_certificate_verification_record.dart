@@ -16,7 +16,7 @@ import '../../controller/db/activity_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 import '../../controller/model/activity_model.dart';
-import '../../controller/model/contractor_certificate_of_workdone_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_verification_model.dart';
 import '../global_components/image_field_card.dart';
 import '../utils/location_color.dart';
 import '../utils/pattern_validator.dart';

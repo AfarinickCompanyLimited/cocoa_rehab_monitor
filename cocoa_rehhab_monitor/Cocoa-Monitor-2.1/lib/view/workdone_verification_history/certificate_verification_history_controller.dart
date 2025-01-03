@@ -1,4 +1,4 @@
-import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
+import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_verification_db.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
-import '../../controller/model/contractor_certificate_of_workdone_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_verification_model.dart';
 
 class CertificateVerificationHistoryController extends GetxController {
   BuildContext? certificateVerificationHistoryScreenContext;
@@ -21,7 +21,7 @@ class CertificateVerificationHistoryController extends GetxController {
 
   ContractorCertificateApiInterface contractorCertificateApiInterface =
       ContractorCertificateApiInterface();
-  ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
+  ContractorCertificateVerificationDatabaseHelper db = ContractorCertificateVerificationDatabaseHelper.instance;
   TabController? tabController;
   var activeTabIndex = 0.obs;
 

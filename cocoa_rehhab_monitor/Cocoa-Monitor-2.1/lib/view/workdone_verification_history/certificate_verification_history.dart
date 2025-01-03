@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../../controller/db/contractor_certificate_of_workdone_db.dart';
-import '../../controller/model/contractor_certificate_of_workdone_model.dart';
+import '../../controller/db/contractor_certificate_of_workdone_verification_db.dart';
+import '../../controller/model/contractor_certificate_of_workdone_verification_model.dart';
 import '../edit_certificate_verification/edit_certificate_verification_record.dart';
 import 'components/certificate_verification_card.dart';
 import 'certificate_verification_history_controller.dart';
@@ -239,7 +239,7 @@ class _CertificateVerificationHistoryState extends State<CertificateVerification
                         },
                         okayTap: () async {
                           Get.back();
-                          ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
+                          ContractorCertificateVerificationDatabaseHelper db = ContractorCertificateVerificationDatabaseHelper.instance;
                           await db.deleteData(item.uid);
                           setState(() {});
                           // globalController.database!.contractorCertificateVerificationDao

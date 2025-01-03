@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' as io;
 import 'package:cocoa_monitor/controller/constants.dart';
-import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
+import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_verification_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
@@ -24,7 +24,7 @@ import 'package:uuid/uuid.dart';
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/model/activity_model.dart';
-import '../../controller/model/contractor_certificate_of_workdone_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_verification_model.dart';
 import '../../controller/model/picked_media.dart';
 import '../global_components/custom_button.dart';
 import '../utils/bytes_to_size.dart';
@@ -299,7 +299,7 @@ class AddContractorCertificateVerificationRecordController
         postResult['status'] == RequestStatus.Exist ||
         postResult['status'] == RequestStatus.NoInternet) {
       /// initialise the database
-      ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+      ContractorCertificateVerificationDatabaseHelper dbHelper = ContractorCertificateVerificationDatabaseHelper.instance;
 
       /// save the data offline
       await dbHelper.saveData(contractorCertificateVerification);
@@ -450,7 +450,7 @@ class AddContractorCertificateVerificationRecordController
     //         contractorCertificateVerification);
 
     /// initialise the database
-    ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
+    ContractorCertificateVerificationDatabaseHelper dbHelper = ContractorCertificateVerificationDatabaseHelper.instance;
 
     /// save the data offline
     await dbHelper.saveData(contractorCertificateVerification);

@@ -2,6 +2,8 @@
 
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
+import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
+import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
@@ -18,6 +20,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/model/activity_model.dart';
+import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 
 class AddContractorCertificateRecordController extends GetxController {
   late BuildContext addContractorCertificateRecordScreenContext;
@@ -49,15 +52,21 @@ class AddContractorCertificateRecordController extends GetxController {
   Contractor? contractor = Contractor();
 
   TextEditingController? farmSizeTC = TextEditingController();
+  TextEditingController? farmerNameTC = TextEditingController();
 
   TextEditingController? farmReferenceNumberTC = TextEditingController();
   TextEditingController? communityTC = TextEditingController();
 
-  String? activity;
+  ActivityModel? activity;
+
+  ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
 
   List<ActivityModel> subActivity = [];
+  String? roundsOfWeeding;
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
+
+  List<String> listOfRoundsOfWeeding = ['1', '2', ];
 
   List<String> listOfMonths = [
     'January',
@@ -123,20 +132,19 @@ class AddContractorCertificateRecordController extends GetxController {
 
     ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-    var code = await db.getActivityCodeByMainActivity(activity!);
-
     List<int> subActivityList =
     subActivity.map((activity) => activity.code).cast<int>().toList();
 
-    ContractorCertificate contractorCertificate = ContractorCertificate(
+    ContractorCertificateModel contractorCertificate = ContractorCertificateModel(
         uid: const Uuid().v4(),
         currentYear: selectedYear,
         currentMonth: selectedMonth,
         currrentWeek: selectedWeek,
         reportingDate: formattedReportingDate,
-        mainActivity: code,
         activity: subActivityList,
-        farmRefNumber: farmReferenceNumberTC!.text,
+        farmerName: farmerNameTC!.text,
+        farmRefNumber: 123,
+        //farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: com,
         contractor: contractor?.contractorId,
@@ -201,7 +209,7 @@ class AddContractorCertificateRecordController extends GetxController {
 
     ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-    var code = await db.getActivityCodeByMainActivity(activity!);
+    // var code = await db.getActivityCodeByMainActivity(activity!);
 
     String subActivityString = '';
 
@@ -220,16 +228,18 @@ class AddContractorCertificateRecordController extends GetxController {
     List<int> subActivityList =
     subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
 
-    ContractorCertificate contractorCertificate = ContractorCertificate(
+    ContractorCertificateModel contractorCertificate = ContractorCertificateModel(
         uid: const Uuid().v4(),
         currentYear: selectedYear,
         currentMonth: selectedMonth,
         currrentWeek: selectedWeek,
         reportingDate: formattedReportingDate,
-        mainActivity: code,
+        // mainActivity: code,
         activity: subActivityList,
         status: SubmissionStatus.pending,
-        farmRefNumber: farmReferenceNumberTC!.text,
+        farmerName: farmerNameTC!.text,
+        farmRefNumber: 123,
+        //farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: com,
         contractor: contractor?.contractorId,
@@ -244,8 +254,8 @@ class AddContractorCertificateRecordController extends GetxController {
 
     final contractorCertificateDao =
         globalController.database!.contractorCertificateDao;
-    await contractorCertificateDao
-        .insertContractorCertificate(contractorCertificate);
+    // await contractorCertificateDao
+    //     .insertContractorCertificate(contractorCertificate);
 
     globals.endWait(addContractorCertificateRecordScreenContext);
 

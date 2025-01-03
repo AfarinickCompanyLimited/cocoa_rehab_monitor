@@ -194,35 +194,36 @@ class EditContractorCertificateRecordController extends GetxController {
 
     print('THIS IS Contractor Certificate DETAILS:::: $data');
 
-    var postResult = await contractorCertificateApiInterface
-        .saveContractorCertificate(contractorCertificateData, data);
-    globals.endWait(editContractorCertificateRecordScreenContext);
-
-    if (postResult['status'] == RequestStatus.True ||
-        postResult['status'] == RequestStatus.Exist ||
-        postResult['status'] == RequestStatus.NoInternet) {
-      Get.back(
-          result: {'contractorCertificate': contractorCertificateData, 'submitted': true});
-
-      globals.showSecondaryDialog(
-          context: homeController.homeScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.success,
-          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    } else if (postResult['status'] == RequestStatus.False) {
-      globals.showSecondaryDialog(
-          context: editContractorCertificateRecordScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.error);
-    }
+    // var postResult = await contractorCertificateApiInterface
+    //     .saveContractorCertificate(contractorCertificateData, data);
+    //
+    // globals.endWait(editContractorCertificateRecordScreenContext);
+    //
+    // if (postResult['status'] == RequestStatus.True ||
+    //     postResult['status'] == RequestStatus.Exist ||
+    //     postResult['status'] == RequestStatus.NoInternet) {
+    //   Get.back(
+    //       result: {'contractorCertificate': contractorCertificateData, 'submitted': true});
+    //
+    //   globals.showSecondaryDialog(
+    //       context: homeController.homeScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.success,
+    //       okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    // } else if (postResult['status'] == RequestStatus.False) {
+    //   globals.showSecondaryDialog(
+    //       context: editContractorCertificateRecordScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.error);
+    // }
   }
 
   // ==============================================================================
