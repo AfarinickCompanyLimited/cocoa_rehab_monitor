@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import '../../controller/entity/cocoa_rehub_monitor/community.dart';
 import '../global_components/image_field_card.dart';
 import '../utils/pattern_validator.dart';
@@ -298,27 +299,101 @@ class _AddInitialTreatmentMonitoringRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              TextFormField(
-                                controller:
-                                    addInitialTreatmentMonitoringRecordController
-                                        .farmReferenceNumberTC,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
+                              DropdownSearch<AssignedFarm>(
+                                popupProps: PopupProps.modalBottomSheet(
+                                    showSelectedItems: true,
+                                    showSearchBox: true,
+                                    title: const Padding(
+                                      padding:
+                                      EdgeInsets.symmetric(vertical: 15),
+                                      child: Center(
+                                        child: Text(
+                                          'Select farm reference number',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    disabledItemFn: (AssignedFarm s) => false,
+                                    modalBottomSheetProps:
+                                    ModalBottomSheetProps(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(
+                                                  AppBorderRadius.md),
+                                              topRight: Radius.circular(
+                                                  AppBorderRadius.md))),
+                                    ),
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                        const EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 15),
+                                        enabledBorder: inputBorder,
+                                        focusedBorder: inputBorderFocused,
+                                        errorBorder: inputBorder,
+                                        focusedErrorBorder: inputBorderFocused,
+                                        filled: true,
+                                        fillColor: AppColor.xLightBackground,
+                                      ),
+                                    )),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
                                 ),
-                                keyboardType: TextInputType.url,
-                                textCapitalization:
-                                    TextCapitalization.characters,
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode: AutovalidateMode.always,
-                                validator:
-                                    FarmReferencePatternValidator.validate,
+                                asyncItems: (String filter) async {
+                                  // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
+                                  var response =
+                                  await addInitialTreatmentMonitoringRecordController
+                                      .globalController.database!.assignedFarmDao.findAllAssignedFarms();
+                                  print("THE RESPONSE ::::::::::: $response");
+                                  return response;
+                                },
+                                itemAsString: (AssignedFarm d) => d.farmReference.toString(),
+                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                compareFn: (activity, filter) =>
+                                activity == filter,
+                                onChanged: (val) {
+                                  addInitialTreatmentMonitoringRecordController
+                                      .farmReferenceNumberTC!.text = val!.farmReference.toString();
+                                  //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
+                                  addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val.farmSize.toString();
+                                  //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
+                                  // print(farmSizeTC
+                                  //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
+                                  //
+                                  // if (addContractorCertificateRecordController
+                                  //         .activity?.mainActivity ==
+                                  //     MainActivities.Maintenance) {
+                                  //   // addContractorCertificateRecordController
+                                  //   //     .activityCheck.value = true;
+                                  // }
+
+                                  // addContractorCertificateRecordController
+                                  //     .subActivity = Activity() as List<Activity>;
+                                  addInitialTreatmentMonitoringRecordController
+                                      .update();
+                                  // print(
+                                  //     ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
+                                },
+                                autoValidateMode: AutovalidateMode.always,
+                                validator: (item) {
+                                  if (item == null) {
+                                    return 'Farm reference is required';
+                                  } else {
+                                    return null;
+                                  }
+                                },
                               ),
 
                               const SizedBox(height: 20),
@@ -332,9 +407,9 @@ class _AddInitialTreatmentMonitoringRecordState
                               ),
                               TextFormField(
                                 controller:
-                                    addInitialTreatmentMonitoringRecordController
-                                        .farmSizeTC,
-                                // readOnly: true,
+                                addInitialTreatmentMonitoringRecordController
+                                    .farmSizeTC,
+                                readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 15, horizontal: 15),
@@ -343,17 +418,16 @@ class _AddInitialTreatmentMonitoringRecordState
                                   errorBorder: inputBorder,
                                   focusedErrorBorder: inputBorderFocused,
                                   filled: true,
-                                  fillColor: AppColor.xLightBackground,
+                                  fillColor: AppColor.lightText,
                                 ),
                                 keyboardType: TextInputType.numberWithOptions(
                                     decimal: true),
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-
                                 validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Farm size is required"
-                                        : null,
+                                value!.trim().isEmpty
+                                    ? "Farm size is required"
+                                    : null,
                               ),
                               const SizedBox(height: 20),
 

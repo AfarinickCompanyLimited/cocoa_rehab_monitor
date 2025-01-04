@@ -50,7 +50,7 @@ class AddContractorCertificateRecordController extends GetxController {
 
   RegionDistrict? regionDistrict = RegionDistrict();
 
-  String? sector;
+  TextEditingController? sectorTC = TextEditingController();
 
   Contractor? contractor = Contractor();
 
@@ -130,6 +130,8 @@ class AddContractorCertificateRecordController extends GetxController {
   var selectedMonth;
   var selectedYear;
 
+  ContractorCertificateDatabaseHelper contractorCertificateDatabaseHelper = ContractorCertificateDatabaseHelper.instance;
+
   // INITIALISE
   @override
   void onInit() async {
@@ -195,7 +197,7 @@ class AddContractorCertificateRecordController extends GetxController {
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: com,
         roundsOfWeeding: int.tryParse(roundsOfWeeding!),
-        sector: int.tryParse(sector!),
+        sector: int.tryParse(sectorTC!.text),
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
         status: SubmissionStatus.submitted,
@@ -289,7 +291,7 @@ class AddContractorCertificateRecordController extends GetxController {
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: com,
         roundsOfWeeding: int.tryParse(roundsOfWeeding!),
-        sector: int.tryParse(sector!),
+        sector: int.tryParse(sectorTC!.text),
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
         status: SubmissionStatus.submitted,
@@ -303,10 +305,12 @@ class AddContractorCertificateRecordController extends GetxController {
     data.remove('main_activity');
     data.remove('submission_status');
 
-    final contractorCertificateDao =
-        globalController.database!.contractorCertificateDao;
+    // final contractorCertificateDao =
+    //     globalController.database!.contractorCertificateDao;
     // await contractorCertificateDao
     //     .insertContractorCertificate(contractorCertificate);
+
+    await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
 
     globals.endWait(addContractorCertificateRecordScreenContext);
 

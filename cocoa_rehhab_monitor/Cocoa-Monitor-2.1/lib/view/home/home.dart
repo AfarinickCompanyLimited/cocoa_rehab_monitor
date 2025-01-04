@@ -1175,18 +1175,21 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Spacer(),
                           MenuCard2(
                             image: 'assets/images/cocoa_monitor/note.png',
                             label: 'Contractors\nCertificate',
                             onTap: () => homeController.showMenuOptions(
                                 const WorkDoneCertificateMenuOptionsBottomSheet()),
                           ),
+                          Spacer(),
                           MenuCard2(
                             image: 'assets/images/cocoa_monitor/note.png',
                             label: 'Verification\nForm',
                             onTap: () => homeController.showMenuOptions(
                                 const WorkDoneCertificateVerificationMenuOptionsBottomSheet()),
                           ),
+                          Spacer(),
                           MenuCard2(
                             image: 'assets/images/cocoa_monitor/history.png',
                             label: 'Generate Report',
@@ -1197,6 +1200,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                             ),
                             // onTap: () => homeController.showMenuOptions('Rehab Assistant', HomeMenuItem.Personnel),
                           ),
+                          Spacer(),
                         ],
                       ),
 

@@ -535,104 +535,104 @@ class _AddContractorCertificateRecordState
                                         : null,
                               ),
                               const SizedBox(height: 20),
-                              const Text(
-                                'District',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              DropdownSearch<RegionDistrict>(
-                                popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    itemBuilder: (context, item, selected) {
-                                      return ListTile(
-                                        title: Text(
-                                            item.districtName.toString(),
-                                            style: selected
-                                                ? TextStyle(
-                                                    color: AppColor.primary)
-                                                : const TextStyle()),
-                                        subtitle: Text(
-                                          item.regionName.toString(),
-                                        ),
-                                      );
-                                    },
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select district',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    disabledItemFn: (RegionDistrict s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
-                                      ),
-                                    )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                ),
-                                asyncItems: (String filter) async {
-                                  var response =
-                                      await addContractorCertificateRecordController
-                                          .globalController
-                                          .database!
-                                          .regionDistrictDao
-                                          .findAllRegionDistrict();
-                                  return response;
-                                },
-                                itemAsString: (RegionDistrict d) =>
-                                    d.districtName ?? '',
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (d, filter) =>
-                                    d.districtName == filter.districtName,
-                                onChanged: (val) {
-                                  addContractorCertificateRecordController
-                                      .regionDistrict = val;
-                                },
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null) {
-                                    return 'District is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
+                              // const Text(
+                              //   'District',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // DropdownSearch<RegionDistrict>(
+                              //   popupProps: PopupProps.modalBottomSheet(
+                              //       showSelectedItems: true,
+                              //       showSearchBox: true,
+                              //       itemBuilder: (context, item, selected) {
+                              //         return ListTile(
+                              //           title: Text(
+                              //               item.districtName.toString(),
+                              //               style: selected
+                              //                   ? TextStyle(
+                              //                       color: AppColor.primary)
+                              //                   : const TextStyle()),
+                              //           subtitle: Text(
+                              //             item.regionName.toString(),
+                              //           ),
+                              //         );
+                              //       },
+                              //       title: const Padding(
+                              //         padding:
+                              //             EdgeInsets.symmetric(vertical: 15),
+                              //         child: Center(
+                              //           child: Text(
+                              //             'Select district',
+                              //             style: TextStyle(
+                              //                 fontWeight: FontWeight.w500),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       disabledItemFn: (RegionDistrict s) => false,
+                              //       modalBottomSheetProps:
+                              //           ModalBottomSheetProps(
+                              //         elevation: 6,
+                              //         shape: RoundedRectangleBorder(
+                              //             borderRadius: BorderRadius.only(
+                              //                 topLeft: Radius.circular(
+                              //                     AppBorderRadius.md),
+                              //                 topRight: Radius.circular(
+                              //                     AppBorderRadius.md))),
+                              //       ),
+                              //       searchFieldProps: TextFieldProps(
+                              //         decoration: InputDecoration(
+                              //           contentPadding:
+                              //               const EdgeInsets.symmetric(
+                              //                   vertical: 4, horizontal: 15),
+                              //           enabledBorder: inputBorder,
+                              //           focusedBorder: inputBorderFocused,
+                              //           errorBorder: inputBorder,
+                              //           focusedErrorBorder: inputBorderFocused,
+                              //           filled: true,
+                              //           fillColor: AppColor.xLightBackground,
+                              //         ),
+                              //       )),
+                              //   dropdownDecoratorProps: DropDownDecoratorProps(
+                              //     dropdownSearchDecoration: InputDecoration(
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           vertical: 4, horizontal: 15),
+                              //       enabledBorder: inputBorder,
+                              //       focusedBorder: inputBorderFocused,
+                              //       errorBorder: inputBorder,
+                              //       focusedErrorBorder: inputBorderFocused,
+                              //       filled: true,
+                              //       fillColor: AppColor.xLightBackground,
+                              //     ),
+                              //   ),
+                              //   asyncItems: (String filter) async {
+                              //     var response =
+                              //         await addContractorCertificateRecordController
+                              //             .globalController
+                              //             .database!
+                              //             .regionDistrictDao
+                              //             .findAllRegionDistrict();
+                              //     return response;
+                              //   },
+                              //   itemAsString: (RegionDistrict d) =>
+                              //       d.districtName ?? '',
+                              //   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                              //   compareFn: (d, filter) =>
+                              //       d.districtName == filter.districtName,
+                              //   onChanged: (val) {
+                              //     addContractorCertificateRecordController
+                              //         .regionDistrict = val;
+                              //   },
+                              //   autoValidateMode: AutovalidateMode.always,
+                              //   validator: (item) {
+                              //     if (item == null) {
+                              //       return 'District is required';
+                              //     } else {
+                              //       return null;
+                              //     }
+                              //   },
+                              // ),
 
                               const SizedBox(height: 20),
                               const Text(
@@ -642,94 +642,29 @@ class _AddContractorCertificateRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              DropdownSearch<String>(
-                                popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    itemBuilder: (context, item, selected) {
-                                      return ListTile(
-                                        title: Text(
-                                            item,
-                                            style: selected
-                                                ? TextStyle(
-                                                color: AppColor.primary)
-                                                : const TextStyle())
-                                      );
-                                    },
-                                    title: const Padding(
-                                      padding:
-                                      EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select sector',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    disabledItemFn: (String s) => false,
-                                    modalBottomSheetProps:
-                                    ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
-                                      ),
-                                    )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
+                              TextFormField(
+                                readOnly: true,
+                                controller:
+                                addContractorCertificateRecordController
+                                    .sectorTC,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 15),
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorderFocused,
+                                  errorBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderFocused,
+                                  filled: true,
+                                  fillColor: AppColor.lightText,
                                 ),
-                                items: addContractorCertificateRecordController.sectorData,
-                                // asyncItems: (String filter) async {
-                                //   var response =
-                                //   await addContractorCertificateRecordController
-                                //       .globalController
-                                //       .database!
-                                //       .regionDistrictDao
-                                //       .findAllRegionDistrict();
-                                //   return response;
-                                // },
-                                itemAsString: (String d) =>
-                                d,
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (d, filter) =>
-                                d == filter,
-                                onChanged: (val) {
-                                  addContractorCertificateRecordController
-                                      .sector = val;
-                                },
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null) {
-                                    return 'District is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.words,
+                                textInputAction: TextInputAction.next,
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (String? value) =>
+                                value!.trim().isEmpty
+                                    ? "Community is required"
+                                    : null,
                               ),
                               /* const Text(
                                 'Community',
