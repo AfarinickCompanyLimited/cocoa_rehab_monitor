@@ -17,6 +17,7 @@ import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/po_location.
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
 import 'package:cocoa_monitor/controller/model/activity_model.dart';
+import 'package:cocoa_monitor/controller/model/job_order_farms_model.dart';
 import 'package:cocoa_monitor/controller/utils/connection_verify.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -27,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../view/global_components/globals.dart';
+import '../../db/job_order_farms_db.dart';
 import '../../utils/dio_singleton_instance.dart';
 
 typedef OnOperationCompletedCallback = Function();
@@ -288,6 +290,53 @@ class GeneralCocoaRehabApiInterface {
 // ==============================================================================
 // ============================  END GET FARMS  ===============================
 // ==============================================================================
+
+  Future loadJobOrderFarms() async {
+    JobOrderFarmsDbFarmDatabaseHelper db = JobOrderFarmsDbFarmDatabaseHelper.instance;
+    // Dio? dio = Dio();
+    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (HttpClient dioClient) {
+    //   dioClient.badCertificateCallback =
+    //       ((X509Certificate cert, String host, int port) => true);
+    //   return dioClient;
+    // };
+
+    if (await ConnectionVerify.connectionIsAvailable()) {
+      try {
+        var response = await DioSingleton.instance
+            .post(URLs.baseUrl + URLs.loadJobOrderFarms, data:
+        // kDebugMode
+        // ? {'userid': 12622}
+        // ? {'userid': 12863}
+        // :
+        {'userid': indexController.userInfo.value.userId});
+        // print(response.data);
+        // print(response.data);
+        // print(response.data);
+        // print(response.data);
+        if (response.data['status'] == true && response.data['data'] != null) {
+          List resultList = response.data['data'];
+          List<JobOrderFarmModel> farmList =
+          resultList.map((e) => jobOrderFarmFromJson(jsonEncode(e))).toList();
+          await db.deleteAll();
+          await db.bulkInsertData(farmList);
+          debugPrint(
+              'LOADING JOB ORDER FARMS TO LOCAL DB SHOULD BE SUCCESSFUL ::: ${response.data?['status']}');
+
+          return true;
+        } else {
+          debugPrint(
+              'RESPONSE DATA FAILED IN LOAD JOB ORDER FARMS ::: ${response.data?['status']}');
+
+          return false;
+        }
+      } catch (e, stackTrace) {
+        print(' LOAD JOB ORDER FARMS TO LOCAL DB ERROR ${e.toString()}');
+        FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        FirebaseCrashlytics.instance.log('loadFarms');
+      }
+    }
+  }
 
   // ==============================================================================
   // =========================== START GET REHAB ASSISTANTS  ===============================

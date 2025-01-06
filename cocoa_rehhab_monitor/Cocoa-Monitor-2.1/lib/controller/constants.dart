@@ -22,6 +22,7 @@ class URLs {
   static String submitLeave = '/api/v1/leave/';
   static String loadActivities = '/api/v1/activity/';
   static String loadFarms = '/api/v1/farms/';
+  static String loadJobOrderFarms = '/api/v1/fetchjoborder/';
   static String loadRehabAssistants = '/api/v1/fetchrehabassistants/';
   static String loadPaginatedRehabAssistants =
       '/rehabassistantslist_drf/?page=';
@@ -207,7 +208,7 @@ class MainActivities {
 }
 
 class Build {
-  static int buildNumber = 11;
+  static int buildNumber = 12;
   // static double buildNumber = 11.1; // TrueKing changed
 }
 

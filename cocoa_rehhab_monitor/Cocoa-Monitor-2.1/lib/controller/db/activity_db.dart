@@ -81,54 +81,6 @@ class ActivityDatabaseHelper {
     return null;
   }
 
-  // Future<List<Map<String, dynamic>>?> getDataByFarmRef(String ref) async {
-  //   final db = await instance.database;
-  //   final result = await db.query(
-  //     tableName,
-  //     where: '$farm_ref_number = ?',
-  //     whereArgs: [ref],
-  //   );
-  //   return result.isNotEmpty ? result : null;
-  // }
-  //
-  //
-  // Future<List<ContractorCertificateVerificationModel>>? getPendingData()async{
-  //   final db = await instance.database;
-  //   int s = 0;
-  //   final result = await db.query(
-  //     tableName,
-  //     where: '$submission_status = ?',
-  //     whereArgs: [s],
-  //   );
-  //   return result.isNotEmpty
-  //       ? result.map((json) => ContractorCertificateVerificationModel.fromJson(json)).toList()
-  //       : [];
-  // }
-  //
-  // Future<List<ContractorCertificateVerificationModel>>? getSubmittedData()async{
-  //   final db = await instance.database;
-  //   int s = 1;
-  //   final result = await db.query(
-  //     tableName,
-  //     where: '$submission_status = ?',
-  //     whereArgs: [s],
-  //   );
-  //   return result.isNotEmpty
-  //       ? result.map((json) => ContractorCertificateVerificationModel.fromJson(json)).toList()
-  //       : [];
-  // }
-  //
-  // Future<List<Map<String, dynamic>>> getDataByStatus(int status)async{
-  //   final db = await instance.database;
-  //   final result = await db.query(
-  //     tableName,
-  //     where: '$submission_status = ?',
-  //     whereArgs: [status],
-  //   );
-  //   return result;
-  // }
-
-
   Future<List<ActivityModel>> getAllActivityWithMainActivityList(List<String> mainActivityList) async {
     final db = await instance.database;
 
@@ -199,14 +151,6 @@ class ActivityDatabaseHelper {
         ? result.map((json) => activityFromJsonM(jsonEncode(json))).toList()
         : [];
   }
-
-  // Future<List<ContractorCertificateVerificationModel>> getAllDataWithLimitAndStatus(int limit, int status) async {
-  //   final db = await instance.database;
-  //   final result = await db.query(tableName, limit: limit, where: '$status = ?', whereArgs: [status]);
-  //   return result.isNotEmpty
-  //       ? result.map((json) => ContractorCertificateVerificationModel.fromJson(json)).toList()
-  //       : [];
-  // }
 
   Future<int> deleteAll() async {
     final db = await instance.database;

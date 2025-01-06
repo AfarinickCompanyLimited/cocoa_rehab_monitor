@@ -254,6 +254,7 @@ class HomeController extends GetxController {
         var response = await DioSingleton.instance.post(
             URLs.baseUrl + URLs.versionCheck,
             data: {'version': Build.buildNumber.toString()});
+        print("THE RESPONSE IS: ${response.data}");
         if (response.data['status'] == 1) {
           print('VERSION CHECKING COMPLETE');
 
@@ -350,6 +351,7 @@ class HomeController extends GetxController {
       generalCocoaRehabApiInterface.loadRegionContractors(),
       generalCocoaRehabApiInterface.loadActivities(),
       generalCocoaRehabApiInterface.loadFarms(),
+      generalCocoaRehabApiInterface.loadJobOrderFarms(),
       generalCocoaRehabApiInterface.loadRegionDistricts(),
       // generalCocoaRehabApiInterface.loadRehabAssistants(),
       // generalCocoaRehabApiInterface.loadFarmStatus(),
