@@ -112,7 +112,7 @@ class UserInfoApiInterface {
         print('THE LOGIN RESPONSE STATUS::: ${response.data['status']}');
 
         if (response.data['status'] == RequestStatus.True) {
-          var data = response.data['data'];
+          var data = response.data;
           print('THE LOGIN RESPONSE DATA::: $data');
 
           CmUser userInfo = CmUser(
