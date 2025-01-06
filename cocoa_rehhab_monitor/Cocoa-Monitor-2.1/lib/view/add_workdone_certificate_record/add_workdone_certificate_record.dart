@@ -8,6 +8,7 @@ import '../../controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 import '../../controller/model/activity_model.dart';
+import '../../controller/model/job_order_farms_model.dart';
 import '../global_components/custom_button.dart';
 import '../global_components/round_icon_button.dart';
 import '../global_components/text_input_decoration.dart';
@@ -273,13 +274,13 @@ class _AddContractorCertificateRecordState
                                 height: 5,
                               ),
 
-                              DropdownSearch<AssignedFarm>(
+                              DropdownSearch<JobOrderFarmModel>(
                                 popupProps: PopupProps.modalBottomSheet(
                                     showSelectedItems: true,
                                     showSearchBox: true,
                                     title: const Padding(
                                       padding:
-                                          EdgeInsets.symmetric(vertical: 15),
+                                      EdgeInsets.symmetric(vertical: 15),
                                       child: Center(
                                         child: Text(
                                           'Select farm reference number',
@@ -289,9 +290,9 @@ class _AddContractorCertificateRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (AssignedFarm s) => false,
+                                    disabledItemFn: (JobOrderFarmModel s) => false,
                                     modalBottomSheetProps:
-                                        ModalBottomSheetProps(
+                                    ModalBottomSheetProps(
                                       elevation: 6,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(
@@ -303,8 +304,8 @@ class _AddContractorCertificateRecordState
                                     searchFieldProps: TextFieldProps(
                                       decoration: InputDecoration(
                                         contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
+                                        const EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 15),
                                         enabledBorder: inputBorder,
                                         focusedBorder: inputBorderFocused,
                                         errorBorder: inputBorder,
@@ -328,21 +329,21 @@ class _AddContractorCertificateRecordState
                                 asyncItems: (String filter) async {
                                   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
                                   var response =
-                                      await addContractorCertificateRecordController
-                                         .globalController.database!.assignedFarmDao.findAllAssignedFarms();
+                                  await addContractorCertificateRecordController
+                                      .jobDb.getAllFarms();
                                   print("THE RESPONSE ::::::::::: $response");
                                   return response;
                                 },
-                                itemAsString: (AssignedFarm d) => d.farmReference.toString(),
+                                itemAsString: (JobOrderFarmModel d) => d.farmId.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                    activity == filter,
+                                activity == filter,
                                 onChanged: (val) {
                                   addContractorCertificateRecordController
-                                      .farmReferenceNumberTC!.text = val!.farmReference.toString();
-                                  addContractorCertificateRecordController.farmerNameTC!.text = val.farmername.toString();
-                                  addContractorCertificateRecordController.farmSizeTC!.text = val.farmSize.toString();
-                                  addContractorCertificateRecordController.communityTC!.text = val.location.toString();
+                                      .farmReferenceNumberTC!.text = val!.farmId.toString();
+                                  //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
+                                  // addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val..toString();
+                                  //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
                                   //

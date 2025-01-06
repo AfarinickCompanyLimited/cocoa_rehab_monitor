@@ -58,6 +58,7 @@ dependencies:
   location: 5.0.3
   map_launcher: ^2.4.0
   mime_type: ^1.0.0
+  mobile_scanner: ^3.5.7
   ndialog: ^4.2.0
   package_info_plus: ^4.1.0
   path_provider: ^2.0.11

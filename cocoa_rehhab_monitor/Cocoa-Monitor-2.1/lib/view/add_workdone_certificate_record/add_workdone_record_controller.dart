@@ -3,6 +3,7 @@
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
+import 'package:cocoa_monitor/controller/db/job_order_farms_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
@@ -64,6 +65,8 @@ class AddContractorCertificateRecordController extends GetxController {
   String? activity;
 
   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+
+  JobOrderFarmsDbFarmDatabaseHelper jobDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
 
   List<ActivityModel> subActivity = [];
 

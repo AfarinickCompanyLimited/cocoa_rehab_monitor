@@ -22,6 +22,7 @@ import 'package:ndialog/ndialog.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
+import '../../controller/db/job_order_farms_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/model/activity_model.dart';
 import '../../controller/model/contractor_certificate_of_workdone_verification_model.dart';
@@ -103,6 +104,8 @@ class AddContractorCertificateVerificationRecordController
   var selectedMonth = ''.obs;
   var selectedYear = ''.obs;
   var isLoadingLocation = false.obs;
+
+  JobOrderFarmsDbFarmDatabaseHelper jobDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
 
   PickedMedia? farmPhoto;
 

@@ -5,6 +5,7 @@ import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:cocoa_monitor/view/leave_request/leave_request.dart';
 import 'package:cocoa_monitor/view/saved_area_calculations/saved_area_calculations.dart';
+import 'package:cocoa_monitor/view/settings/settings.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,27 +36,25 @@ class MainDrawer extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        margin:
-                            EdgeInsets.only(right: appMainHorizontalPadding),
-                        child: CircleIconButton(
-                            icon: Builder(builder: (context) {
-                              return Icon(
-                                appIconClose,
-                                color: appColorButtonTextBlack,
-                                size: 15,
-                              );
-                            }),
-                            backgroundColor: Colors.white,
-                            hasShadow: false,
-                            onTap: () => Navigator.of(context).pop()),
-                      ),
-                    ),
+                    SizedBox(height: 10,),
+                    // Align(
+                    //   alignment: Alignment.topRight,
+                    //   child: Container(
+                    //     margin:
+                    //         EdgeInsets.only(right: appMainHorizontalPadding),
+                    //     child: CircleIconButton(
+                    //         icon: Builder(builder: (context) {
+                    //           return Icon(
+                    //             appIconClose,
+                    //             color: appColorButtonTextBlack,
+                    //             size: 15,
+                    //           );
+                    //         }),
+                    //         backgroundColor: Colors.white,
+                    //         hasShadow: false,
+                    //         onTap: () => Navigator.of(context).pop()),
+                    //   ),
+                    // ),
                     ListTile(
                       title: Row(
                         children: [
@@ -70,6 +69,22 @@ class MainDrawer extends StatelessWidget {
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                           ),
+                          //Spacer(),
+                          // Container(
+                          //   margin:
+                          //   EdgeInsets.only(right: appMainHorizontalPadding),
+                          //   child: CircleIconButton(
+                          //       icon: Builder(builder: (context) {
+                          //         return Icon(
+                          //           appIconClose,
+                          //           color: appColorButtonTextBlack,
+                          //           size: 15,
+                          //         );
+                          //       }),
+                          //       backgroundColor: Colors.white,
+                          //       hasShadow: false,
+                          //       onTap: () => Navigator.of(context).pop()),
+                          // ),
                         ],
                       ),
                     ),
@@ -178,9 +193,19 @@ class MainDrawer extends StatelessWidget {
                           transition: Transition.fadeIn);},
                     ),
                     const Divider(),
-                    SizedBox(
-                      height: 30,
-                    ),
+
+                    // ListTile(
+                    //   title: const Text(
+                    //     'Settings',
+                    //     style: TextStyle(fontWeight: FontWeight.w400),
+                    //   ),
+                    //   minLeadingWidth: 10,
+                    //   leading: appIconSignOut(color: AppColor.black, size: 25),
+                    //   onTap: () => Get.to(() => QRCodeScannerScreen(),
+                    //       transition: Transition.fadeIn),
+                    // ),
+                    // const Divider(),
+
                     ListTile(
                       title: const Text(
                         'Logout',

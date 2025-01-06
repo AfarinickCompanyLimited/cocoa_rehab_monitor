@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/model/activity_model.dart';
+import '../../controller/model/job_order_farms_model.dart';
 import '../global_components/image_field_card.dart';
 import '../utils/location_color.dart';
 import '../utils/pattern_validator.dart';
@@ -255,27 +256,101 @@ class _AddContractorCertificateVerificationRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              TextFormField(
-                                controller:
-                                    addContractorCertificateVerificationRecordController
-                                        .farmReferenceNumberTC,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
+                              DropdownSearch<JobOrderFarmModel>(
+                                popupProps: PopupProps.modalBottomSheet(
+                                    showSelectedItems: true,
+                                    showSearchBox: true,
+                                    title: const Padding(
+                                      padding:
+                                      EdgeInsets.symmetric(vertical: 15),
+                                      child: Center(
+                                        child: Text(
+                                          'Select farm reference number',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    disabledItemFn: (JobOrderFarmModel s) => false,
+                                    modalBottomSheetProps:
+                                    ModalBottomSheetProps(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(
+                                                  AppBorderRadius.md),
+                                              topRight: Radius.circular(
+                                                  AppBorderRadius.md))),
+                                    ),
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                        const EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 15),
+                                        enabledBorder: inputBorder,
+                                        focusedBorder: inputBorderFocused,
+                                        errorBorder: inputBorder,
+                                        focusedErrorBorder: inputBorderFocused,
+                                        filled: true,
+                                        fillColor: AppColor.xLightBackground,
+                                      ),
+                                    )),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
                                 ),
-                                keyboardType: TextInputType.url,
-                                textCapitalization:
-                                    TextCapitalization.characters,
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode: AutovalidateMode.always,
-                                validator:
-                                    FarmReferencePatternValidator.validate,
+                                asyncItems: (String filter) async {
+                                  // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
+                                  var response =
+                                  await addContractorCertificateVerificationRecordController
+                                      .jobDb.getAllFarms();
+                                  print("THE RESPONSE ::::::::::: $response");
+                                  return response;
+                                },
+                                itemAsString: (JobOrderFarmModel d) => d.farmId.toString(),
+                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                compareFn: (activity, filter) =>
+                                activity == filter,
+                                onChanged: (val) {
+                                  addContractorCertificateVerificationRecordController
+                                      .farmReferenceNumberTC!.text = val!.farmId.toString();
+                                  //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
+                                  // addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val..toString();
+                                  //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
+                                  // print(farmSizeTC
+                                  //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
+                                  //
+                                  // if (addContractorCertificateRecordController
+                                  //         .activity?.mainActivity ==
+                                  //     MainActivities.Maintenance) {
+                                  //   // addContractorCertificateRecordController
+                                  //   //     .activityCheck.value = true;
+                                  // }
+
+                                  // addContractorCertificateRecordController
+                                  //     .subActivity = Activity() as List<Activity>;
+                                  addContractorCertificateVerificationRecordController
+                                      .update();
+                                  // print(
+                                  //     ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
+                                },
+                                autoValidateMode: AutovalidateMode.always,
+                                validator: (item) {
+                                  if (item == null) {
+                                    return 'Farm reference is required';
+                                  } else {
+                                    return null;
+                                  }
+                                },
                               ),
                               const SizedBox(height: 20),
                               const Text(

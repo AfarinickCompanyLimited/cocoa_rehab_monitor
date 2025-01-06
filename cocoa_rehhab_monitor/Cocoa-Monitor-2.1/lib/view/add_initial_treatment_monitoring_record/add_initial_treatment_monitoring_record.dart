@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
+import 'package:cocoa_monitor/controller/model/job_order_farms_model.dart';
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm_from_server.dart';
 import 'package:cocoa_monitor/view/global_components/custom_button.dart';
 // import 'package:cocoa_monitor/view/global_components/image_field_card.dart';
@@ -299,7 +300,7 @@ class _AddInitialTreatmentMonitoringRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              DropdownSearch<AssignedFarm>(
+                              DropdownSearch<JobOrderFarmModel>(
                                 popupProps: PopupProps.modalBottomSheet(
                                     showSelectedItems: true,
                                     showSearchBox: true,
@@ -315,7 +316,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (AssignedFarm s) => false,
+                                    disabledItemFn: (JobOrderFarmModel s) => false,
                                     modalBottomSheetProps:
                                     ModalBottomSheetProps(
                                       elevation: 6,
@@ -355,19 +356,19 @@ class _AddInitialTreatmentMonitoringRecordState
                                   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
                                   var response =
                                   await addInitialTreatmentMonitoringRecordController
-                                      .globalController.database!.assignedFarmDao.findAllAssignedFarms();
+                                      .db.getAllFarms();
                                   print("THE RESPONSE ::::::::::: $response");
                                   return response;
                                 },
-                                itemAsString: (AssignedFarm d) => d.farmReference.toString(),
+                                itemAsString: (JobOrderFarmModel d) => d.farmId.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
                                 activity == filter,
                                 onChanged: (val) {
                                   addInitialTreatmentMonitoringRecordController
-                                      .farmReferenceNumberTC!.text = val!.farmReference.toString();
+                                      .farmReferenceNumberTC!.text = val!.farmId.toString();
                                   //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
-                                  addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val.farmSize.toString();
+                                 // addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val..toString();
                                   //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
