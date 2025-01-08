@@ -101,11 +101,11 @@ class JobOrderFarmsDbFarmDatabaseHelper {
     return count;
   }
 
-  Future<JobOrderFarmModel?> getFarmByCode(int code) async {
+  Future<JobOrderFarmModel?> getFarmByID(code) async {
     final db = await instance.database;
     final result = await db.query(
       tableName,
-      where: '$farmCode = ?',
+      where: '$farmId = ?',
       whereArgs: [code],
     );
     return result.isNotEmpty ? JobOrderFarmModel.fromJson(result.first) : null;

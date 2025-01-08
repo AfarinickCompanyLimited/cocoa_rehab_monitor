@@ -84,25 +84,9 @@ class ContractorCertificateModel {
     "submission_status": status,
     "district": district,
     "userid": userId,
+    "sector": sector,
     "farmer_name": farmerName,
     "rounds_of_weeding": roundsOfWeeding,
   };
 
-  Map<String, dynamic> toJsonOffline() => {
-    "uid": uid,
-    "current_year": currentYear,
-    "current_month": currentMonth,
-    "current_week": currrentWeek,
-    "activity": activity,
-    "reporting_date": reportingDate,
-    "farm_ref_number": farmRefNumber,
-    "farm_size_ha": farmSizeHa,
-    "community": community,
-    "contractor": contractor,
-    "submission_status": status,
-    "district": district,
-    "userid": userId,
-    "farmer_name": farmerName,
-    "rounds_of_weeding": roundsOfWeeding,
-  };
 }

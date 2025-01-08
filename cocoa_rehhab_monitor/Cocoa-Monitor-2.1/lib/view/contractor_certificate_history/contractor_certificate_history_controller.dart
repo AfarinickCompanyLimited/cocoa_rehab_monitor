@@ -1,3 +1,5 @@
+import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
@@ -8,6 +10,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
+import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 
 class ContractorCertificateHistoryController extends GetxController {
   BuildContext? contractorCertificateHistoryScreenContext;
@@ -21,6 +24,8 @@ class ContractorCertificateHistoryController extends GetxController {
   ContractorCertificateApiInterface contractorCertificateApiInterface =
       ContractorCertificateApiInterface();
 
+  ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
+
   TabController? tabController;
   var activeTabIndex = 0.obs;
 
@@ -29,8 +34,6 @@ class ContractorCertificateHistoryController extends GetxController {
   final PagingController<int, ContractorCertificate>
       submittedRecordsController = PagingController(firstPageKey: 0);
   final int _pageSize = 10;
-
-  // INITIALISE
 
   Future<void> fetchData(
       {required int status,

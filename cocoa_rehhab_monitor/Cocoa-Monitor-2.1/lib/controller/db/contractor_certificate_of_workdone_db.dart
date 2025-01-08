@@ -24,7 +24,7 @@ class ContractorCertificateDatabaseHelper {
   final String uid = 'uid';
   final String currentYear = 'current_year';
   final String currentMonth = 'current_month';
-  final String currentWeek = 'current_week';
+  final String currentWeek = 'currrent_week';
   final String activity = 'activity';
   final String reportingDate = 'reporting_date';
   final String farmRefNumber = 'farm_ref_number';
@@ -78,7 +78,7 @@ class ContractorCertificateDatabaseHelper {
 
   Future<int> saveData(ContractorCertificateModel contractorCertificateVerification) async {
     final db = await instance.database;
-    return await db.insert(tableName, contractorCertificateVerification.toJsonOffline());
+    return await db.insert(tableName, contractorCertificateVerification.toJson());
   }
 
   /// change toJson to toJsonOffline in-case this would be used offline
@@ -128,20 +128,11 @@ class ContractorCertificateDatabaseHelper {
         : [];
   }
 
-  Future<List<Map<String, dynamic>>> getDataByStatus(int status) async {
-    final db = await instance.database;
-    return await db.query(
-      tableName,
-      where: '$status = ?',
-      whereArgs: [status],
-    );
-  }
-
-  Future<List<ActivityModel>> getAllData() async {
+  Future<List<ContractorCertificateModel>> getAllData() async {
     final db = await instance.database;
     final result = await db.query(tableName);
 
-    return result.map((json) => ActivityModel.fromJson(json)).toList();
+    return result.map((json) => ContractorCertificateModel.fromJson(json)).toList();
   }
 
 

@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously, prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:cocoa_monitor/controller/global_controller.dart';
+import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_model.dart';
+import 'package:cocoa_monitor/controller/model/job_order_farms_model.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,7 @@ class EditContractorCertificateRecordController extends GetxController {
 
   final editContractorCertificateRecordFormKey = GlobalKey<FormState>();
 
-  ContractorCertificate? contractorCertificate;
+  ContractorCertificateModel? contractorCertificate;
   bool? isViewMode;
 
   HomeController homeController = Get.find();
@@ -53,7 +55,6 @@ class EditContractorCertificateRecordController extends GetxController {
   // Community? community = Community();
 
   RegionDistrict? regionDistrict = RegionDistrict();
-
 
   TextEditingController? sectorTC = TextEditingController();
 
@@ -89,7 +90,8 @@ class EditContractorCertificateRecordController extends GetxController {
 
   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-  JobOrderFarmsDbFarmDatabaseHelper jobDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
+  JobOrderFarmsDbFarmDatabaseHelper jobDb =
+      JobOrderFarmsDbFarmDatabaseHelper.instance;
 
   TextEditingController? farmerNameTC = TextEditingController();
 
@@ -97,9 +99,57 @@ class EditContractorCertificateRecordController extends GetxController {
 
   String? roundsOfWeeding;
 
-  List<String> listOfRoundsOfWeeding = ['1', '2', ];
+  List<String> listOfRoundsOfWeeding = [
+    '1',
+    '2',
+  ];
 
   List<String> sectorData = ['1', '2', '3', '4'];
+
+  JobOrderFarmModel? jobOrderFarmModel;
+
+  assignValues() async {
+    var sub_activity_strings = [];
+    var comAndSub = contractorCertificate!.community!.split(',');
+
+    for (int i = 1; i < comAndSub.length; i++) {
+      sub_activity_strings.add(comAndSub[i].trim());
+    }
+
+
+    List? contractorDataList = await globalController.database!.contractorDao
+        .findContractorById(contractorCertificate!.contractor!);
+    contractor = contractorDataList.first;
+    update();
+
+    roundsOfWeeding = contractorCertificate!.roundsOfWeeding!.toString();
+    //sectorTC?.text = contractorCertificate!.sector!.toString();
+    selectedWeek.value = contractorCertificate!.currrentWeek.toString();
+    selectedMonth.value = contractorCertificate!.currentMonth ?? '';
+    selectedYear.value = contractorCertificate!.currentYear ?? '';
+    farmerNameTC?.text = contractorCertificate!.farmerName ?? '';
+    communityTC?.text = comAndSub[0];
+    //farmReferenceNumberTC?.text = contractorCertificate!.farmRefNumber ?? '';
+    farmSizeTC?.text = contractorCertificate!.farmSizeHa.toString();
+    communityNameTC?.text = comAndSub[0];
+
+    for (var s in sub_activity_strings) {
+      // print("THE ACTIVITY CODE IS ${activityCode}");
+
+      var subActivities = await db.getActivityBySubActivity(s);
+
+      subActivities.forEach((act) {
+        if (!subActivities.contains(act)) {
+          subActivity.add(act);
+        }
+      });
+
+      print("THE ACTIVITY IS ------------------------- ${subActivity[0].toJson()}");
+
+      jobOrderFarmModel =
+          await jobDb.getFarmByID(contractorCertificate!.farmRefNumber!);
+    }
+  }
 
   // INITIALISE
   @override
@@ -107,65 +157,11 @@ class EditContractorCertificateRecordController extends GetxController {
     super.onInit();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-
-      var sub_activity_strings=[];
-      var comAndSub = contractorCertificate!.community!.split(',');
-
-      for(int i=1;i<comAndSub.length;i++){
-        sub_activity_strings.add(comAndSub[i].trim());
-      }
-
-      print("THE RECEIVED DATA ============= ${contractorCertificate!.toJson()}");
-
-      List? regionDistrictList = await globalController
-          .database!.regionDistrictDao
-          .findRegionDistrictByDistrictId(contractorCertificate!.district!);
-
-      print("THE REGION DISTRICT DATA ============= ${regionDistrictList.first}");
-
-      regionDistrict = regionDistrictList.first;
-      update();
-
-      List? contractorDataList = await globalController.database!.contractorDao
-          .findContractorById(contractorCertificate!.contractor!);
-      contractor = contractorDataList.first;
-      update();
-      // UserCurrentLocation? userCurrentLocation = UserCurrentLocation(
-      //     context: editContractorCertificateRecordScreenContext);
-      // userCurrentLocation.getUserLocation(
-      //     forceEnableLocation: true,
-      //     onLocationEnabled: (isEnabled, pos) {
-      //       if (isEnabled == true) {
-      //         locationData = pos!;
-      //         update();
-      //       }
-      //     });
-
-      selectedWeek.value = contractorCertificate!.currrentWeek ?? '';
-      selectedMonth.value = contractorCertificate!.currentMonth ?? '';
-      selectedYear.value = contractorCertificate!.currentYear ?? '';
-      farmReferenceNumberTC?.text = contractorCertificate!.farmRefNumber ?? '';
-      farmSizeTC?.text = contractorCertificate!.farmSizeHa.toString();
-      communityNameTC?.text = comAndSub[0];
-
-      for (var sub_activity in sub_activity_strings) {
-        // print("THE ACTIVITY CODE IS ${activityCode}");
-        var subActivities = await db.getActivityBySubActivity(sub_activity);
-        subActivity.addAll(subActivities);
-        print("THE SUB ACTIVITY IS ${subActivity}");
-      }
-
-      print("THE SUB ACTIVITY STRING IS ${sub_activity_strings}");
-
-      if (subActivity.isNotEmpty) {
-        activity = subActivity.first.mainActivity;
-      }
-      update();
-
       // List? communityDataList = await globalController.database!.communityDao
       //     .findCommunityById(contractorCertificate!.community!);
       // community = communityDataList.first;
       // update();
+      assignValues();
 
       Future.delayed(const Duration(seconds: 3), () async {
         update();

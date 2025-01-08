@@ -1,15 +1,15 @@
+import 'package:cocoa_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
+import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_model.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cocoa_monitor/controller/model/activity_model.dart';
 
-import '../../../controller/entity/cocoa_rehub_monitor/activity.dart';
-import '../../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
-
-class ContractorCertificateCard extends StatelessWidget {
-  final ContractorCertificate contractorCertificate;
+class ContractorCertificateCard extends StatefulWidget {
+  final ContractorCertificateModel contractorCertificate;
   final Function? onViewTap;
   final Function? onEditTap;
   final Function? onDeleteTap;
@@ -26,15 +26,35 @@ class ContractorCertificateCard extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<ContractorCertificateCard> createState() => _ContractorCertificateCardState();
+}
+
+class _ContractorCertificateCardState extends State<ContractorCertificateCard> {
+
+  fetchActivity()async{
+    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+
+    List<String> activityList = [];
+    widget.contractorCertificate.activity!.forEach((element) async {
+      activityList.add(element.toString());
+    });
+    var activities = await db.getAllActivityWithMainActivityList(activityList);
+
+    return activities;
+  }
+
+  GlobalController globalController = Get.find();
+
+
+
+  @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     // var height = MediaQuery.of(context).size.height;
 
-    GlobalController globalController = Get.find();
-
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppButtonProps.borderRadius),
@@ -53,7 +73,7 @@ class ContractorCertificateCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  '${contractorCertificate.farmRefNumber}',
+                  '${widget.contractorCertificate.farmRefNumber}',
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
@@ -110,7 +130,7 @@ class ContractorCertificateCard extends StatelessWidget {
                 );
               },
               future: globalController.database!.contractorDao
-                  .findContractorById(contractorCertificate.contractor!)),
+                  .findContractorById(widget.contractorCertificate.contractor!)),
           const SizedBox(height: 10),
           FutureBuilder(
             builder: (ctx, snapshot) {
@@ -123,13 +143,13 @@ class ContractorCertificateCard extends StatelessWidget {
                     ),
                   );
                 } else if (snapshot.hasData) {
-                  List<Activity> dataList = snapshot.data as List<Activity>;
+                  List<ActivityModel> dataList = snapshot.data as List<ActivityModel>;
 
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: dataList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      Activity activity = dataList[index];
+                      ActivityModel activity = dataList[index];
 
                       return Text(
                         "${activity.mainActivity ?? ''} / ${activity.subActivity ?? ''}",
@@ -148,12 +168,11 @@ class ContractorCertificateCard extends StatelessWidget {
                 child: Text('...'),
               );
             },
-            future: globalController.database!.activityDao
-                .findAllActivityWithCodeList(contractorCertificate.activity),
+            future: fetchActivity(),
           ),
           const SizedBox(height: 10),
           Text(
-            '${contractorCertificate.reportingDate ?? ''}',
+            '${widget.contractorCertificate.reportingDate ?? ''}',
             style: TextStyle(color: AppColor.lightText),
           ),
           /* FutureBuilder(
@@ -199,27 +218,27 @@ class ContractorCertificateCard extends StatelessWidget {
                   icon: appIconEye(color: Colors.white, size: 17),
                   size: 45,
                   backgroundColor: AppColor.primary,
-                  onTap: () => onViewTap!(),
+                  onTap: () => widget.onViewTap!(),
                 ),
               ),
-              if (allowEdit)
+              if (widget.allowEdit)
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: CircleIconButton(
                     icon: appIconEdit(color: Colors.white, size: 17),
                     size: 45,
                     backgroundColor: AppColor.black,
-                    onTap: () => onEditTap!(),
+                    onTap: () => widget.onEditTap!(),
                   ),
                 ),
-              if (allowDelete)
+              if (widget.allowDelete)
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: CircleIconButton(
                     icon: appIconTrash(color: Colors.white, size: 17),
                     size: 45,
                     backgroundColor: Colors.red,
-                    onTap: () => onDeleteTap!(),
+                    onTap: () => widget.onDeleteTap!(),
                   ),
                 ),
             ],

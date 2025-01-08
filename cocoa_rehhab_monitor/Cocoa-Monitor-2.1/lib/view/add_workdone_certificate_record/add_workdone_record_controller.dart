@@ -34,7 +34,7 @@ class AddContractorCertificateRecordController extends GetxController {
   GlobalController globalController = Get.find();
 
   ContractorCertificateApiInterface contractorCertificateApiInterface =
-  ContractorCertificateApiInterface();
+      ContractorCertificateApiInterface();
 
   final ImagePicker mediaPicker = ImagePicker();
 
@@ -50,6 +50,7 @@ class AddContractorCertificateRecordController extends GetxController {
   RegionDistrict? regionDistrict = RegionDistrict();
 
   TextEditingController? sectorTC = TextEditingController();
+  TextEditingController? districtTC = TextEditingController();
 
   Contractor? contractor = Contractor();
 
@@ -64,7 +65,8 @@ class AddContractorCertificateRecordController extends GetxController {
 
   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-  JobOrderFarmsDbFarmDatabaseHelper jobDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
+  JobOrderFarmsDbFarmDatabaseHelper jobDb =
+      JobOrderFarmsDbFarmDatabaseHelper.instance;
 
   List<ActivityModel> subActivity = [];
 
@@ -108,7 +110,10 @@ class AddContractorCertificateRecordController extends GetxController {
 
   List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
 
-  List<String> listOfRoundsOfWeeding = ['1', '2', ];
+  List<String> listOfRoundsOfWeeding = [
+    '1',
+    '2',
+  ];
 
   List<String> sectorData = ['1', '2', '3', '4'];
 
@@ -131,7 +136,8 @@ class AddContractorCertificateRecordController extends GetxController {
   var selectedMonth;
   var selectedYear;
 
-  ContractorCertificateDatabaseHelper contractorCertificateDatabaseHelper = ContractorCertificateDatabaseHelper.instance;
+  ContractorCertificateDatabaseHelper contractorCertificateDatabaseHelper =
+      ContractorCertificateDatabaseHelper.instance;
 
   // INITIALISE
   @override
@@ -149,7 +155,6 @@ class AddContractorCertificateRecordController extends GetxController {
       //         update();
       //       }
       //     });
-
     });
   }
 
@@ -178,27 +183,28 @@ class AddContractorCertificateRecordController extends GetxController {
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
     List<int> subActivityList =
-    subActivity.map((activity) => activity.code).cast<int>().toList();
+        subActivity.map((activity) => activity.code).cast<int>().toList();
 
-    ContractorCertificateModel contractorCertificate = ContractorCertificateModel(
-        uid: const Uuid().v4(),
-        currentYear: selectedYear,
-        currentMonth: selectedMonth,
-        currrentWeek: int.tryParse(selectedWeek),
-        reportingDate: formattedReportingDate,
-        activity: subActivityList,
-        farmerName: farmerNameTC!.text,
-        farmRefNumber: farmReferenceNumberTC!.text,
-        farmSizeHa: double.parse(farmSizeTC!.text),
-        community: com,
-        roundsOfWeeding: int.tryParse(roundsOfWeeding!),
-        sector: int.tryParse(sectorTC!.text),
-        contractor: contractor?.contractorId,
-        district: regionDistrict?.districtId,
-        status: SubmissionStatus.submitted,
-        userId: int.tryParse(
-          globalController.userInfo.value.userId!,
-        ));
+    ContractorCertificateModel contractorCertificate =
+        ContractorCertificateModel(
+            uid: const Uuid().v4(),
+            currentYear: selectedYear,
+            currentMonth: selectedMonth,
+            currrentWeek: int.tryParse(selectedWeek),
+            reportingDate: formattedReportingDate,
+            activity: subActivityList,
+            farmerName: farmerNameTC!.text,
+            farmRefNumber: farmReferenceNumberTC!.text,
+            farmSizeHa: double.parse(farmSizeTC!.text),
+            community: com,
+            roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+            sector: int.tryParse(sectorTC!.text),
+            contractor: contractor?.contractorId,
+            district: regionDistrict?.districtId,
+            status: SubmissionStatus.submitted,
+            userId: int.tryParse(
+              globalController.userInfo.value.userId!,
+            ));
 
     Map<String, dynamic> data = contractorCertificate.toJson();
     data.remove('main_activity');
@@ -268,27 +274,28 @@ class AddContractorCertificateRecordController extends GetxController {
     com += subActivityString;
 
     List<int> subActivityList =
-    subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
+        subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
 
-    ContractorCertificateModel contractorCertificate = ContractorCertificateModel(
-        uid: const Uuid().v4(),
-        currentYear: selectedYear,
-        currentMonth: selectedMonth,
-        currrentWeek: int.tryParse(selectedWeek),
-        reportingDate: formattedReportingDate,
-        activity: subActivityList,
-        farmerName: farmerNameTC!.text,
-        farmRefNumber: farmReferenceNumberTC!.text,
-        farmSizeHa: double.parse(farmSizeTC!.text),
-        community: com,
-        roundsOfWeeding: int.tryParse(roundsOfWeeding!),
-        sector: int.tryParse(sectorTC!.text),
-        contractor: contractor?.contractorId,
-        district: regionDistrict?.districtId,
-        status: SubmissionStatus.submitted,
-        userId: int.tryParse(
-          globalController.userInfo.value.userId!,
-        ));
+    ContractorCertificateModel contractorCertificate =
+        ContractorCertificateModel(
+            uid: const Uuid().v4(),
+            currentYear: selectedYear,
+            currentMonth: selectedMonth,
+            currrentWeek: int.tryParse(selectedWeek),
+            reportingDate: formattedReportingDate,
+            activity: subActivityList,
+            farmerName: farmerNameTC!.text,
+            farmRefNumber: farmReferenceNumberTC!.text,
+            farmSizeHa: double.parse(farmSizeTC!.text),
+            community: com,
+            roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+            sector: int.tryParse(sectorTC!.text),
+            contractor: contractor?.contractorId,
+            district: regionDistrict?.districtId,
+            status: SubmissionStatus.pending,
+            userId: int.tryParse(
+              globalController.userInfo.value.userId!,
+            ));
 
     Map<String, dynamic> data = contractorCertificate.toJson();
     print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
