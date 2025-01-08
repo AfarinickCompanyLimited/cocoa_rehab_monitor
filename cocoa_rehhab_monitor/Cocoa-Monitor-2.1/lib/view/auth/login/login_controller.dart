@@ -26,6 +26,8 @@ class LoginController extends GetxController {
 
   var otpVerificationID;
 
+  RxBool showPassword = false.obs;
+
   var loginScreenContext;
   // var firstName, lastName, username, phoneNumber;
   var phoneNumber, username, password, country, newPassword;

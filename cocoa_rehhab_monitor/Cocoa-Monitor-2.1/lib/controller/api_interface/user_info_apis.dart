@@ -112,8 +112,8 @@ class UserInfoApiInterface {
         print('THE LOGIN RESPONSE STATUS::: ${response.data['status']}');
 
         if (response.data['status'] == RequestStatus.True) {
-          var data = response.data;
-          print('THE LOGIN RESPONSE DATA::: $data');
+          var data = response.data["data"];
+          print('THE LOGIN RESPONSE DATA::: ${data}');
 
           CmUser userInfo = CmUser(
               userId: data['user_id'],
@@ -121,7 +121,7 @@ class UserInfoApiInterface {
               lastName: data["last_name"],
               group: data["group"],
               staffId: data["staff_id"],
-              sector: data["sector"]
+              sector: data["sector"].toString()
           );
 
           GlobalController indexController = Get.find();

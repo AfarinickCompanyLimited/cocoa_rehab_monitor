@@ -1,4 +1,3 @@
-import 'package:cocoa_monitor/view/auth/reset_password/reset_password.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +13,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   @override
   Widget build(BuildContext context) {
     LoginController loginController = Get.put(LoginController());
@@ -76,6 +74,10 @@ class _LoginState extends State<Login> {
                             TextFormField(
                               controller: loginController.phoneTextController,
                               decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.person,
+                                  color: AppColor.primary,
+                                ),
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 20),
                                 enabledBorder: inputBorder,
@@ -94,34 +96,60 @@ class _LoginState extends State<Login> {
                                       ? "username is required"
                                       : null,
                             ),
-                            SizedBox(height: 10,),
-                            Text("password"),
-                            TextFormField(
-                              obscureText: true,
-                              controller: loginController.passwordTextController,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 20),
-                                enabledBorder: inputBorder,
-                                focusedBorder: inputBorderFocused,
-                                errorBorder: inputBorder,
-                                focusedErrorBorder: inputBorderFocused,
-                                filled: true,
-                                fillColor: Colors.white,
-                                hintText: 'Enter your password',
-                                hintStyle: const TextStyle(
-                                    fontSize: 12, color: Colors.black54),
-                              ),
-                              //keyboardType: TextInputType.phone,
-                              validator: (String? value) =>
-                              value!.trim().isEmpty
-                                  ? "Password is required"
-                                  : null,
+                            SizedBox(
+                              height: 10,
                             ),
-                            SizedBox(height: 10,),
-                            TextButton(onPressed: (){
-                              Get.to(() => ResetPassword());
-                            }, child: Text("Reset Password"))
+                            Text("password"),
+                            Obx(
+                                  ()=> TextFormField(
+                                obscureText: loginController.showPassword.value,
+                                controller:
+                                    loginController.passwordTextController,
+                                decoration: InputDecoration(
+                                  suffixIcon: loginController.showPassword.value
+                                      ? IconButton(
+                                          onPressed: () {
+                                            loginController.showPassword.value = false;
+                                            loginController.update();
+                                          },
+                                          icon: Icon(Icons.visibility))
+                                      : IconButton(
+                                          onPressed: () {
+                                            loginController.showPassword.value = true;
+                                            loginController.update();
+                                          },
+                                          icon: Icon(Icons.visibility_off)),
+                                  prefixIcon: Icon(
+                                    Icons.lock,
+                                    color: AppColor.primary,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 20),
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorderFocused,
+                                  errorBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderFocused,
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  hintText: 'Enter your password',
+                                  hintStyle: const TextStyle(
+                                      fontSize: 12, color: Colors.black54),
+                                ),
+                                //keyboardType: TextInputType.phone,
+                                validator: (String? value) =>
+                                    value!.trim().isEmpty
+                                        ? "Password is required"
+                                        : null,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Get.to(() => ResetPassword());
+                                },
+                                child: Text("Reset Password"))
                           ],
                         ),
                       ),

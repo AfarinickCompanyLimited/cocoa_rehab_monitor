@@ -59,7 +59,7 @@ class URLs {
       '/api/v1/fetchpaymentdetailedreport/';
 
   static String modulesEndpoint = '/endpoint/v1/utils/get-app-modules';
-  static String lookupUserAccount = '/api/v1/auth/login/';
+  static String lookupUserAccount = '/api/v2/auth/login/';
   static String createAccount = '/endpoint/v1/user/create-account';
   static String resetPassword = '/api/v1/auth/reset-password/';
   static String changePassword = '/api/v1/auth/changepasword/';
