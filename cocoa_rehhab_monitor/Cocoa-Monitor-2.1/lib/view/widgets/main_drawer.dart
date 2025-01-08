@@ -1,18 +1,15 @@
 import 'package:cocoa_monitor/controller/api_interface/user_info_apis.dart';
 import 'package:cocoa_monitor/view/appraisal/appraisal.dart';
-import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:cocoa_monitor/view/leave_request/leave_request.dart';
 import 'package:cocoa_monitor/view/saved_area_calculations/saved_area_calculations.dart';
-import 'package:cocoa_monitor/view/settings/settings.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:cocoa_monitor/controller/constants.dart';
-
 import '../equipments/equipments.dart';
 import '../farms_status/farms_status.dart';
 

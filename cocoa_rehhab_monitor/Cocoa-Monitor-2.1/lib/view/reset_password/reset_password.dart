@@ -3,7 +3,6 @@ import 'package:cocoa_monitor/view/reset_password/reset_password_controller.dart
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../auth/reset_password/reset_password_controller.dart';
 import '../global_components/text_input_decoration.dart';
 
 class ResetPassword extends StatelessWidget {

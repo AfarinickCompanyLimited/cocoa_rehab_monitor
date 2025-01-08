@@ -4,9 +4,7 @@ import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
 import 'package:cocoa_monitor/controller/db/job_order_farms_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
@@ -78,33 +76,33 @@ class AddContractorCertificateRecordController extends GetxController {
 
   List<String> fr = [];
 
-  getDistinctActivity() {
-    activities.forEach((activity) {
-      if(!act.contains(activity.mainActivity)){
-        act.add(activity.mainActivity!);
-      }
-    });
-    print("THE ACTIVITY STRINGS ::::::::: ${act}");
-  }
-
-  getDistinctFarmRefs(){
-    farmRefs.forEach((f){
-      fr.add(f.farmReference!);
-    });
-  }
-
-  getFarmRefs()async{
-    farmRefs = await globalController.database!.assignedFarmDao.findAllAssignedFarms();
-  }
-
-  getActivity() async {
-    activities = await db.getAllActivityWithMainActivityList([
-      MainActivities.Maintenance,
-      MainActivities.Establishment,
-      MainActivities.InitialTreatment,
-    ]);
-    print("THE ACTIVITY ::::::::: ${activities[0].mainActivity}");
-  }
+  // getDistinctActivity() {
+  //   activities.forEach((activity) {
+  //     if(!act.contains(activity.mainActivity)){
+  //       act.add(activity.mainActivity!);
+  //     }
+  //   });
+  //   print("THE ACTIVITY STRINGS ::::::::: ${act}");
+  // }
+  //
+  // getDistinctFarmRefs(){
+  //   farmRefs.forEach((f){
+  //     fr.add(f.farmReference!);
+  //   });
+  // }
+  //
+  // getFarmRefs()async{
+  //   farmRefs = await globalController.database!.assignedFarmDao.findAllAssignedFarms();
+  // }
+  //
+  // getActivity() async {
+  //   activities = await db.getAllActivityWithMainActivityList([
+  //     MainActivities.Maintenance,
+  //     MainActivities.Establishment,
+  //     MainActivities.InitialTreatment,
+  //   ]);
+  //   print("THE ACTIVITY ::::::::: ${activities[0].mainActivity}");
+  // }
 
   String? roundsOfWeeding;
 
@@ -152,10 +150,6 @@ class AddContractorCertificateRecordController extends GetxController {
       //       }
       //     });
 
-      getFarmRefs();
-      getDistinctFarmRefs();
-      getActivity();
-      getDistinctActivity();
     });
   }
 
@@ -182,8 +176,6 @@ class AddContractorCertificateRecordController extends GetxController {
     globals.startWait(addContractorCertificateRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
-
-    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
     List<int> subActivityList =
     subActivity.map((activity) => activity.code).cast<int>().toList();
@@ -260,10 +252,6 @@ class AddContractorCertificateRecordController extends GetxController {
     globals.startWait(addContractorCertificateRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
-
-    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
-
-    // var code = await db.getActivityCodeByMainActivity(activity!);
 
     String subActivityString = '';
 

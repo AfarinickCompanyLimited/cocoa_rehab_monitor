@@ -3,19 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../controller/constants.dart';
-import '../../controller/entity/cocoa_rehub_monitor/activity.dart';
-import '../../controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
-import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 import '../../controller/model/activity_model.dart';
 import '../../controller/model/job_order_farms_model.dart';
 import '../global_components/custom_button.dart';
 import '../global_components/round_icon_button.dart';
 import '../global_components/text_input_decoration.dart';
-import '../utils/pattern_validator.dart';
 import '../utils/style.dart';
 import 'add_workdone_record_controller.dart';
-import 'farm_id_bottom_sheet.dart';
 
 class AddContractorCertificateRecord extends StatefulWidget {
   const AddContractorCertificateRecord({Key? key}) : super(key: key);
@@ -35,21 +30,11 @@ class _AddContractorCertificateRecordState
       Get.put(AddContractorCertificateRecordController());
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    addContractorCertificateRecordController.getActivity();
-    addContractorCertificateRecordController.getDistinctActivity();
-    addContractorCertificateRecordController.getFarmRefs();
-    addContractorCertificateRecordController.getDistinctFarmRefs();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    addContractorCertificateRecordController.getActivity();
-    addContractorCertificateRecordController.getDistinctActivity();
-    addContractorCertificateRecordController.getFarmRefs();
-    addContractorCertificateRecordController.getDistinctFarmRefs();
+    addContractorCertificateRecordController.sectorTC!.text =
+        addContractorCertificateRecordController
+            .globalController.userInfo.value.sector
+            .toString();
     int currentYear = DateTime.now().year;
     int startingYear = 2022;
     List<int> yearList =
@@ -267,6 +252,39 @@ class _AddContractorCertificateRecordState
                               ),
                               const SizedBox(height: 20),
                               const Text(
+                                'Sector',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                readOnly: true,
+                                controller:
+                                    addContractorCertificateRecordController
+                                        .sectorTC,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 15),
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorderFocused,
+                                  errorBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderFocused,
+                                  filled: true,
+                                  fillColor: AppColor.lightText,
+                                ),
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.words,
+                                textInputAction: TextInputAction.next,
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (String? value) =>
+                                    value!.trim().isEmpty
+                                        ? "Community is required"
+                                        : null,
+                              ),
+
+                              const SizedBox(height: 20),
+                              const Text(
                                 'Farm Reference Number',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
@@ -280,7 +298,7 @@ class _AddContractorCertificateRecordState
                                     showSearchBox: true,
                                     title: const Padding(
                                       padding:
-                                      EdgeInsets.symmetric(vertical: 15),
+                                          EdgeInsets.symmetric(vertical: 15),
                                       child: Center(
                                         child: Text(
                                           'Select farm reference number',
@@ -290,9 +308,10 @@ class _AddContractorCertificateRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (JobOrderFarmModel s) => false,
+                                    disabledItemFn: (JobOrderFarmModel s) =>
+                                        false,
                                     modalBottomSheetProps:
-                                    ModalBottomSheetProps(
+                                        ModalBottomSheetProps(
                                       elevation: 6,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(
@@ -304,8 +323,8 @@ class _AddContractorCertificateRecordState
                                     searchFieldProps: TextFieldProps(
                                       decoration: InputDecoration(
                                         contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            vertical: 4, horizontal: 15),
+                                            const EdgeInsets.symmetric(
+                                                vertical: 4, horizontal: 15),
                                         enabledBorder: inputBorder,
                                         focusedBorder: inputBorderFocused,
                                         errorBorder: inputBorder,
@@ -329,19 +348,24 @@ class _AddContractorCertificateRecordState
                                 asyncItems: (String filter) async {
                                   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
                                   var response =
-                                  await addContractorCertificateRecordController
-                                      .jobDb.getAllFarms();
+                                      await addContractorCertificateRecordController
+                                          .jobDb
+                                          .getAllFarms();
                                   print("THE RESPONSE ::::::::::: $response");
                                   return response;
                                 },
-                                itemAsString: (JobOrderFarmModel d) => d.farmId.toString(),
+                                itemAsString: (JobOrderFarmModel d) =>
+                                    d.farmId.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                activity == filter,
+                                    activity == filter,
                                 onChanged: (val) {
                                   addContractorCertificateRecordController
-                                      .farmReferenceNumberTC!.text = val!.farmId.toString();
-                                  //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
+                                      .farmReferenceNumberTC!
+                                      .text = val!.farmId.toString();
+                                  addContractorCertificateRecordController
+                                      .farmerNameTC!
+                                      .text = val.farmerName.toString();
                                   // addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val..toString();
                                   //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
                                   // print(farmSizeTC
@@ -449,8 +473,8 @@ class _AddContractorCertificateRecordState
                               ),
                               TextFormField(
                                 controller:
-                                addContractorCertificateRecordController
-                                    .farmerNameTC,
+                                    addContractorCertificateRecordController
+                                        .farmerNameTC,
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
@@ -467,9 +491,9 @@ class _AddContractorCertificateRecordState
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
                                 validator: (String? value) =>
-                                value!.trim().isEmpty
-                                    ? "Farmer name is required"
-                                    : null,
+                                    value!.trim().isEmpty
+                                        ? "Farmer name is required"
+                                        : null,
                               ),
                               const SizedBox(height: 20),
                               const Text(
@@ -635,38 +659,6 @@ class _AddContractorCertificateRecordState
                               //   },
                               // ),
 
-                              const SizedBox(height: 20),
-                              const Text(
-                                'Sector',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                readOnly: true,
-                                controller:
-                                addContractorCertificateRecordController
-                                    .sectorTC,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.lightText,
-                                ),
-                                keyboardType: TextInputType.text,
-                                textCapitalization: TextCapitalization.words,
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                value!.trim().isEmpty
-                                    ? "Community is required"
-                                    : null,
-                              ),
                               /* const Text(
                                 'Community',
                                 style: TextStyle(fontWeight: FontWeight.w500),
@@ -767,7 +759,7 @@ class _AddContractorCertificateRecordState
                                   }
                                 },
                               ),*/
-                              const SizedBox(height: 20),
+
                               const Text(
                                 'Activity',
                                 style: TextStyle(fontWeight: FontWeight.w500),
@@ -826,20 +818,29 @@ class _AddContractorCertificateRecordState
                                     fillColor: AppColor.xLightBackground,
                                   ),
                                 ),
-                                items: addContractorCertificateRecordController
-                                    .act,
-                                // asyncItems: (String filter) async {
-                                //   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
-                                //   var response =
-                                //       await addContractorCertificateRecordController
-                                //          .db.getAllActivityWithMainActivityList([
-                                //        MainActivities.Maintenance,
-                                //        MainActivities.Establishment,
-                                //        MainActivities.InitialTreatment,
-                                //       ]);
-                                //   print("THE RESPONSE ::::::::::: $response");
-                                //   return response;
-                                // },
+                                asyncItems: (String filter) async {
+                                  List<ActivityModel> activities = [];
+                                  List<String> act = [];
+
+                                  activities =
+                                      await addContractorCertificateRecordController
+                                          .db
+                                          .getAllActivityWithMainActivityList([
+                                    MainActivities.Maintenance,
+                                    MainActivities.Establishment,
+                                    MainActivities.InitialTreatment,
+                                  ]);
+
+                                  activities.forEach((activity) {
+                                    if (!act.contains(activity.mainActivity)) {
+                                      act.add(activity.mainActivity!);
+                                    }
+                                  });
+
+                                  //debugPrint("THE RESPONSE ::::::::::: $activities");
+
+                                  return act;
+                                },
                                 itemAsString: (String d) => d,
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>

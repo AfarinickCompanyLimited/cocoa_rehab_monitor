@@ -14,7 +14,6 @@ import '../../controller/model/activity_model.dart';
 import '../../controller/model/job_order_farms_model.dart';
 import '../global_components/image_field_card.dart';
 import '../utils/location_color.dart';
-import '../utils/pattern_validator.dart';
 import 'add_workdone_verification_record_controller.dart';
 
 class AddContractorCertificateVerificationRecord extends StatefulWidget {

@@ -1,27 +1,20 @@
 // ignore_for_file: avoid_print
 
 import 'dart:math';
-
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/model/job_order_farms_model.dart';
-// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm_from_server.dart';
 import 'package:cocoa_monitor/view/global_components/custom_button.dart';
-// import 'package:cocoa_monitor/view/global_components/image_field_card.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/view/global_components/text_input_decoration.dart';
-// import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
-import '../../controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import '../../controller/entity/cocoa_rehub_monitor/community.dart';
 import '../global_components/image_field_card.dart';
-import '../utils/pattern_validator.dart';
 import 'add_initial_treatment_monitoring_record_controller.dart';
 import 'components/initial_treatment_rehab_assistant_select.dart';
 

@@ -1,4 +1,3 @@
-import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_verification_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
