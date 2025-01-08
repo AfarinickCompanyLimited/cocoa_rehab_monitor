@@ -87,6 +87,7 @@ class EditContractorCertificateRecordController extends GetxController {
   var selectedWeek = ''.obs;
   var selectedMonth = ''.obs;
   var selectedYear = ''.obs;
+  String? roundsOfWeeding;
 
   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
@@ -96,8 +97,6 @@ class EditContractorCertificateRecordController extends GetxController {
   TextEditingController? farmerNameTC = TextEditingController();
 
   TextEditingController? communityTC = TextEditingController();
-
-  String? roundsOfWeeding;
 
   List<String> listOfRoundsOfWeeding = [
     '1',
@@ -116,14 +115,13 @@ class EditContractorCertificateRecordController extends GetxController {
       sub_activity_strings.add(comAndSub[i].trim());
     }
 
-
     List? contractorDataList = await globalController.database!.contractorDao
         .findContractorById(contractorCertificate!.contractor!);
     contractor = contractorDataList.first;
     update();
 
     roundsOfWeeding = contractorCertificate!.roundsOfWeeding!.toString();
-    //sectorTC?.text = contractorCertificate!.sector!.toString();
+    sectorTC?.text = globalController.userInfo.value.sector ?? '';
     selectedWeek.value = contractorCertificate!.currrentWeek.toString();
     selectedMonth.value = contractorCertificate!.currentMonth ?? '';
     selectedYear.value = contractorCertificate!.currentYear ?? '';
@@ -134,21 +132,23 @@ class EditContractorCertificateRecordController extends GetxController {
     communityNameTC?.text = comAndSub[0];
 
     for (var s in sub_activity_strings) {
-      // print("THE ACTIVITY CODE IS ${activityCode}");
-
       var subActivities = await db.getActivityBySubActivity(s);
+      print("subActivities $subActivities");
 
       subActivities.forEach((act) {
-        if (!subActivities.contains(act)) {
-          subActivity.add(act);
-        }
+        subActivity.add(act);
+        update();
+        // if (!subActivities.contains(act)) {
+        //   subActivity.add(act);
+        // }
       });
-
-      print("THE ACTIVITY IS ------------------------- ${subActivity[0].toJson()}");
-
-      jobOrderFarmModel =
-          await jobDb.getFarmByID(contractorCertificate!.farmRefNumber!);
+      print("subActivities $subActivity");
     }
+
+    jobOrderFarmModel =
+        await jobDb.getFarmByID(contractorCertificate!.farmRefNumber!);
+
+    update();
   }
 
   // INITIALISE

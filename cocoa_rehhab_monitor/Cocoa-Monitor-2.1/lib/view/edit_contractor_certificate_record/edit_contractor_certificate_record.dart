@@ -40,6 +40,15 @@ class _EditContractorCertificateRecordState
     // editContractorCertificateRecordController.assignValues();
   }
 
+  // getActivities() async {
+  //   var sub_activity_strings = [];
+  //   var comAndSub = contractorCertificate!.community!.split(',');
+  //
+  //   for (int i = 1; i < comAndSub.length; i++) {
+  //     sub_activity_strings.add(comAndSub[i].trim());
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
 
@@ -909,7 +918,7 @@ class _EditContractorCertificateRecordState
                                            vertical: 15),
                                        child: Center(
                                          child: Text(
-                                           'Select Sub Activity',
+                                           'Select Activities',
                                            style: TextStyle(
                                                fontWeight: FontWeight.w500),
                                          ),
@@ -957,6 +966,7 @@ class _EditContractorCertificateRecordState
                                  ),
                                  selectedItems: editContractorCertificateRecordController.subActivity,
                                  asyncItems: (String filter) async {
+                                   print("SUB ========== ${editContractorCertificateRecordController.subActivity}");
                                    var response =await editContractorCertificateRecordController
                                        .db
                                        .getAllData();
@@ -996,7 +1006,7 @@ class _EditContractorCertificateRecordState
                                  autoValidateMode: AutovalidateMode.always,
                                  validator: (items) {
                                    if (items == null || items.isEmpty) {
-                                     return 'Sub activity is required';
+                                     return 'Activities is required';
                                    } else {
                                      return null;
                                    }
@@ -1024,7 +1034,7 @@ class _EditContractorCertificateRecordState
                                          AppBorderRadius.sm),
                                    ),
                                  ),
-                                 // selectedItem: ,
+                                 selectedItem: widget.contractorCertificate.roundsOfWeeding.toString(),
                                  items: editContractorCertificateRecordController
                                      .listOfRoundsOfWeeding,
                                  dropdownDecoratorProps: DropDownDecoratorProps(
@@ -1117,6 +1127,7 @@ class _EditContractorCertificateRecordState
                                          fillColor: AppColor.xLightBackground,
                                        ),
                                      )),
+                                 selectedItem: editContractorCertificateRecordController.contractor,
                                  dropdownDecoratorProps: DropDownDecoratorProps(
                                    dropdownSearchDecoration: InputDecoration(
                                      contentPadding: const EdgeInsets.symmetric(
