@@ -25,6 +25,8 @@ class JobOrderFarmsDbFarmDatabaseHelper {
   static const String regionId = "region_id";
   static const String regionName = "region_name";
   static const String sector = "sector";
+  static const String location = "location";
+  static const String farmSize = "farm_size";
   static const String e1 = "E1";
   static const String e2 = "E2";
   static const String e3 = "E3";
@@ -62,6 +64,8 @@ class JobOrderFarmsDbFarmDatabaseHelper {
         $regionId TEXT NOT NULL,
         $regionName TEXT NOT NULL,
         $sector INTEGER NOT NULL,
+        $location TEXT NOT NULL,
+        $farmSize REAL NOT NULL,
         $e1 INTEGER NOT NULL,
         $e2 INTEGER NOT NULL,
         $e3 INTEGER NOT NULL,

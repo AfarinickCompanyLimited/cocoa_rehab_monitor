@@ -366,8 +366,8 @@ class _AddContractorCertificateRecordState
                                   addContractorCertificateRecordController
                                       .farmerNameTC!
                                       .text = val.farmerName.toString();
-                                  // addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val..toString();
-                                  //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
+                                  addContractorCertificateRecordController.farmSizeTC!.text = val.farmSize.toString();
+                                  addContractorCertificateRecordController.communityTC!.text = val.location.toString();
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
                                   //

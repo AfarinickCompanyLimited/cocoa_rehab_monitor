@@ -184,7 +184,7 @@ class AddContractorCertificateRecordController extends GetxController {
         uid: const Uuid().v4(),
         currentYear: selectedYear,
         currentMonth: selectedMonth,
-        currrentWeek: selectedWeek,
+        currrentWeek: int.tryParse(selectedWeek),
         reportingDate: formattedReportingDate,
         activity: subActivityList,
         farmerName: farmerNameTC!.text,
@@ -274,7 +274,7 @@ class AddContractorCertificateRecordController extends GetxController {
         uid: const Uuid().v4(),
         currentYear: selectedYear,
         currentMonth: selectedMonth,
-        currrentWeek: selectedWeek,
+        currrentWeek: int.tryParse(selectedWeek),
         reportingDate: formattedReportingDate,
         activity: subActivityList,
         farmerName: farmerNameTC!.text,
@@ -293,8 +293,8 @@ class AddContractorCertificateRecordController extends GetxController {
     Map<String, dynamic> data = contractorCertificate.toJson();
     print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
 
-    data.remove('main_activity');
-    data.remove('submission_status');
+    // data.remove('main_activity');
+    // data.remove('submission_status');
 
     // final contractorCertificateDao =
     //     globalController.database!.contractorCertificateDao;

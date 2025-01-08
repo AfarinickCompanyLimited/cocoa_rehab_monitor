@@ -78,20 +78,21 @@ class ContractorCertificateDatabaseHelper {
 
   Future<int> saveData(ContractorCertificateModel contractorCertificateVerification) async {
     final db = await instance.database;
-    return await db.insert(tableName, contractorCertificateVerification.toJson());
+    return await db.insert(tableName, contractorCertificateVerification.toJsonOffline());
   }
 
-  Future<int> bulkInsertData(List<ContractorCertificateModel> allData) async {
-    final db = await instance.database;
-    int count = 0;
-    await db.transaction((txn) async {
-      for (final data in allData) {
-        await txn.insert(tableName, data.toJson());
-        count++;
-      }
-    });
-    return count;
-  }
+  /// change toJson to toJsonOffline in-case this would be used offline
+  // Future<int> bulkInsertData(List<ContractorCertificateModel> allData) async {
+  //   final db = await instance.database;
+  //   int count = 0;
+  //   await db.transaction((txn) async {
+  //     for (final data in allData) {
+  //       await txn.insert(tableName, data.toJson());
+  //       count++;
+  //     }
+  //   });
+  //   return count;
+  // }
 
   Future<List<Map<String, dynamic>>?> getDataByFarmRef(String ref) async {
     final db = await instance.database;

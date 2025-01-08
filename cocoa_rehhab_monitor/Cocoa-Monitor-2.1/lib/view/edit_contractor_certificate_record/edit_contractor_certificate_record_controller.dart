@@ -12,6 +12,7 @@ import 'package:location/location.dart';
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/constants.dart';
 import '../../controller/db/activity_db.dart';
+import '../../controller/db/job_order_farms_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
 import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
@@ -53,6 +54,9 @@ class EditContractorCertificateRecordController extends GetxController {
 
   RegionDistrict? regionDistrict = RegionDistrict();
 
+
+  TextEditingController? sectorTC = TextEditingController();
+
   TextEditingController? farmSizeTC = TextEditingController();
   TextEditingController? farmReferenceNumberTC = TextEditingController();
   TextEditingController? communityNameTC = TextEditingController();
@@ -84,6 +88,18 @@ class EditContractorCertificateRecordController extends GetxController {
   var selectedYear = ''.obs;
 
   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+
+  JobOrderFarmsDbFarmDatabaseHelper jobDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
+
+  TextEditingController? farmerNameTC = TextEditingController();
+
+  TextEditingController? communityTC = TextEditingController();
+
+  String? roundsOfWeeding;
+
+  List<String> listOfRoundsOfWeeding = ['1', '2', ];
+
+  List<String> sectorData = ['1', '2', '3', '4'];
 
   // INITIALISE
   @override

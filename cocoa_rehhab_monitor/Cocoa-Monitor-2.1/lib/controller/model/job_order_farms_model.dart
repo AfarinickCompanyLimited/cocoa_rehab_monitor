@@ -12,6 +12,8 @@ class JobOrderFarmModel {
   final String districtName;
   final String regionId;
   final String regionName;
+  final String location;
+  final double farmSize;
   final int sector;
   final int e1;
   final int e2;
@@ -29,6 +31,7 @@ class JobOrderFarmModel {
   final int t7;
 
   JobOrderFarmModel({
+    required this.location,required this.farmSize,
     required this.farmCode,
     required this.farmId,
     required this.farmerName,
@@ -63,6 +66,8 @@ class JobOrderFarmModel {
       districtName: json['district_name'],
       regionId: json['region_id'],
       regionName: json['region_name'],
+      location: json['location'],
+      farmSize: json['farm_size'],
       sector: json['sector'],
       e1: json['E1'],
       e2: json['E2'],
@@ -92,6 +97,8 @@ class JobOrderFarmModel {
       'region_id': regionId,
       'region_name': regionName,
       'sector': sector,
+      'location': location,
+      'farm_size': farmSize,
       'E1': e1,
       'E2': e2,
       'E3': e3,
