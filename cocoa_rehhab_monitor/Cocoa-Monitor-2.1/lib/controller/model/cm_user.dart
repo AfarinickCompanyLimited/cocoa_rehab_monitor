@@ -15,7 +15,7 @@ class CmUser {
     this.userId,
     this.group,
     this.staffId,
-    
+    this.sector,
   });
 
   String? firstName;
@@ -23,6 +23,7 @@ class CmUser {
   String? userId;
   String? group;
   String? staffId;
+  String? sector;
 
 
   factory CmUser.fromJson(Map<String, dynamic> json) => CmUser(
@@ -31,6 +32,7 @@ class CmUser {
     userId: json["user_id"],
     group: json["group"],
     staffId: json["staff_id"],
+    sector: json["sector"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -39,5 +41,6 @@ class CmUser {
     "user_id": userId,
     "group": group,
     "staff_id": staffId,
+    "sector": sector,
   };
 }

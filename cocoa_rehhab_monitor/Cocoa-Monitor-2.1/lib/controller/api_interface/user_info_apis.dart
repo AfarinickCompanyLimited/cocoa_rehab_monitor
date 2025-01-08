@@ -120,7 +120,9 @@ class UserInfoApiInterface {
               firstName: data['first_name'],
               lastName: data["last_name"],
               group: data["group"],
-              staffId: data["staff_id"]);
+              staffId: data["staff_id"],
+              sector: data["sector"]
+          );
 
           GlobalController indexController = Get.find();
           await saveUserDataToSharedPrefs(userInfo);
