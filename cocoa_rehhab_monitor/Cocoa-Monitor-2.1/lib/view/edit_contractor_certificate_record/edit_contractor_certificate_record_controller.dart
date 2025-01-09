@@ -10,10 +10,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/constants.dart';
 import '../../controller/db/activity_db.dart';
+import '../../controller/db/contractor_certificate_of_workdone_db.dart';
 import '../../controller/db/job_order_farms_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
@@ -107,6 +109,9 @@ class EditContractorCertificateRecordController extends GetxController {
 
   JobOrderFarmModel? jobOrderFarmModel;
 
+  ContractorCertificateDatabaseHelper contractorCertificateDatabaseHelper =
+      ContractorCertificateDatabaseHelper.instance;
+
   assignValues() async {
     var sub_activity_strings = [];
     var comAndSub = contractorCertificate!.community!.split('-');
@@ -120,7 +125,7 @@ class EditContractorCertificateRecordController extends GetxController {
     contractor = contractorDataList.first;
     update();
 
-    roundsOfWeeding = contractorCertificate!.roundsOfWeeding!.toString();
+    roundsOfWeeding = contractorCertificate!.roundsOfWeeding.toString();
     sectorTC?.text = globalController.userInfo.value.sector ?? '';
     selectedWeek.value = contractorCertificate!.currrentWeek.toString();
     selectedMonth.value = contractorCertificate!.currentMonth ?? '';
@@ -144,7 +149,7 @@ class EditContractorCertificateRecordController extends GetxController {
       });
 
     }
-    activity = subActivity[0].mainActivity;
+    activity = comAndSub[2];
     print("subActivities $subActivity");
 
     jobOrderFarmModel =
@@ -247,54 +252,133 @@ class EditContractorCertificateRecordController extends GetxController {
   // ==============================================================================
   // START OFFLINE SAVE MONITORING RECORD
   // ==============================================================================
+//   handleSaveOfflineMonitoringRecord() async {
+// //    globals.startWait(editContractorCertificateRecordScreenContext);
+//     DateTime now = DateTime.now();
+//     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
+//
+//     List<int> subActivityList =
+//         subActivity.map((activity) => activity.code).cast<int>().toList();
+//
+//     var code = await db.getActivityCodeByMainActivity(activity!);
+//
+//     ContractorCertificate contractorCertificateData = ContractorCertificate(
+//         uid: contractorCertificate?.uid,
+//         currentYear: selectedYear.value,
+//         currentMonth: selectedMonth.value,
+//         currrentWeek: selectedWeek.value,
+//         reportingDate: formattedReportingDate,
+//         mainActivity: code,
+//         activity: subActivityList,
+//         status: SubmissionStatus.pending,
+//         farmRefNumber: farmReferenceNumberTC!.text,
+//         farmSizeHa: double.parse(farmSizeTC!.text),
+//         community: communityNameTC!.text,
+//         contractor: contractor?.contractorId,
+//         district: regionDistrict?.districtId,
+//         userId: int.tryParse(globalController.userInfo.value.userId!));
+//
+//     Map<String, dynamic> data = contractorCertificateData.toJson();
+//     data.remove('main_activity');
+//     data.remove('submission_status');
+//
+//     print('THIS IS Contractor Certificate DETAILS:::: $data');
+//
+//     final contractorCertificateDao =
+//         globalController.database!.contractorCertificateDao;
+//     await contractorCertificateDao
+//         .updateContractorCertificate(contractorCertificateData);
+//
+//     globals.endWait(editContractorCertificateRecordScreenContext);
+//
+//     // Get.back();
+//     Get.back(result: {
+//       'contractorCertificate': contractorCertificateData,
+//       'submitted': false
+//     });
+//     globals.showSecondaryDialog(
+//         context: homeController.homeScreenContext,
+//         content: const Text(
+//           'Certificate record saved',
+//           style: TextStyle(fontSize: 13),
+//           textAlign: TextAlign.center,
+//         ),
+//         status: AlertDialogStatus.success,
+//         okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+//   }
+
   handleSaveOfflineMonitoringRecord() async {
+    // isSaveButtonDisabled.value = false;
+
     globals.startWait(editContractorCertificateRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
+    String subActivityString = '';
+
+    for (int i = 0; i < subActivity.length; i++) {
+      subActivityString += subActivity[i].subActivity!;
+      if (i < subActivity.length - 1) {
+        subActivityString += ', ';
+      }
+    }
+
+    var com = '';
+    com += communityTC!.text;
+    com += '-';
+    com += subActivityString;
+    com += '- ';
+    com += activity!;
+    com += '- ';
+    com += contractor!.contractorName!;
+
     List<int> subActivityList =
-        subActivity.map((activity) => activity.code).cast<int>().toList();
+    subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
 
-    var code = await db.getActivityCodeByMainActivity(activity!);
-
-    ContractorCertificate contractorCertificateData = ContractorCertificate(
-        uid: contractorCertificate?.uid,
+    ContractorCertificateModel contractorCertificate =
+    ContractorCertificateModel(
+        uid: const Uuid().v4(),
         currentYear: selectedYear.value,
         currentMonth: selectedMonth.value,
-        currrentWeek: selectedWeek.value,
+        currrentWeek: int.tryParse(selectedWeek.value),
         reportingDate: formattedReportingDate,
-        mainActivity: code,
         activity: subActivityList,
-        status: SubmissionStatus.pending,
+        farmerName: farmerNameTC!.text,
         farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
-        community: communityNameTC!.text,
+        community: com,
+        roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+        sector: int.tryParse(sectorTC!.text),
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
-        userId: int.tryParse(globalController.userInfo.value.userId!));
+        status: SubmissionStatus.pending,
+        userId: int.tryParse(
+          globalController.userInfo.value.userId!,
+        ));
 
-    Map<String, dynamic> data = contractorCertificateData.toJson();
-    data.remove('main_activity');
-    data.remove('submission_status');
+    Map<String, dynamic> data = contractorCertificate.toJson();
+    print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
 
-    print('THIS IS Contractor Certificate DETAILS:::: $data');
+    // data.remove('main_activity');
+    // data.remove('submission_status');
 
-    final contractorCertificateDao =
-        globalController.database!.contractorCertificateDao;
-    await contractorCertificateDao
-        .updateContractorCertificate(contractorCertificateData);
+    // final contractorCertificateDao =
+    //     globalController.database!.contractorCertificateDao;
+    // await contractorCertificateDao
+    //     .insertContractorCertificate(contractorCertificate);
+
+    await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
 
     globals.endWait(editContractorCertificateRecordScreenContext);
 
-    // Get.back();
     Get.back(result: {
-      'contractorCertificate': contractorCertificateData,
+      'contractorCertificate': contractorCertificate,
       'submitted': false
     });
     globals.showSecondaryDialog(
         context: homeController.homeScreenContext,
         content: const Text(
-          'Certificate record saved',
+          'Certificate saved',
           style: TextStyle(fontSize: 13),
           textAlign: TextAlign.center,
         ),

@@ -35,7 +35,7 @@ class ContractorCertificateDatabaseHelper {
   final String district = 'district';
   final String userId = 'userid';
   final String farmerName = 'farmer_name';
-  final String roundsOfWeeding = 'rounds_of_weeding';
+  final String roundsOfWeeding = 'weeding_rounds';
   final String subActivityString = 'sub_activity_string';
   final String mainActivity = 'main_activity';
   final String sector = 'sector';

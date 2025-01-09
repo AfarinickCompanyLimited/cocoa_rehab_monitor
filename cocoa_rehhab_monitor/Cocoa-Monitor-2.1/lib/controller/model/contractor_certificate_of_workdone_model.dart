@@ -66,7 +66,7 @@ class ContractorCertificateModel {
         district: json["district"],
         userId: json["userid"],
         farmerName: json["farmer_name"],
-        roundsOfWeeding: json["rounds_of_weeding"],
+        roundsOfWeeding: json["weeding_rounds"],
       );
 
   Map<String, dynamic> toJson() => {

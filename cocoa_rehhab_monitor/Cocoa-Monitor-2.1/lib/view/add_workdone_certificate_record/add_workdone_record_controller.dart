@@ -317,7 +317,9 @@ class AddContractorCertificateRecordController extends GetxController {
     //     globalController.database!.contractorCertificateDao;
     // await contractorCertificateDao
     //     .insertContractorCertificate(contractorCertificate);
-
+    ///Delete the data
+    await contractorCertificateDatabaseHelper.deleteData(contractorCertificate.uid!);
+    /// insert the new data
     await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
 
     globals.endWait(addContractorCertificateRecordScreenContext);
