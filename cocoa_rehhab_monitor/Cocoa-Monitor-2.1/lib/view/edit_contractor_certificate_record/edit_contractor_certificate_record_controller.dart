@@ -125,7 +125,7 @@ class EditContractorCertificateRecordController extends GetxController {
     contractor = contractorDataList.first;
     update();
 
-    roundsOfWeeding = contractorCertificate!.roundsOfWeeding.toString();
+    roundsOfWeeding = contractorCertificate!.weedingRounds.toString();
     sectorTC?.text = globalController.userInfo.value.sector ?? '';
     selectedWeek.value = contractorCertificate!.currrentWeek.toString();
     selectedMonth.value = contractorCertificate!.currentMonth ?? '';
@@ -347,7 +347,7 @@ class EditContractorCertificateRecordController extends GetxController {
         farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: com,
-        roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+        weedingRounds: int.tryParse(roundsOfWeeding!),
         sector: int.tryParse(sectorTC!.text),
         contractor: contractor?.contractorId,
         district: regionDistrict?.districtId,
@@ -367,6 +367,10 @@ class EditContractorCertificateRecordController extends GetxController {
     // await contractorCertificateDao
     //     .insertContractorCertificate(contractorCertificate);
 
+    /// delete the data
+    await contractorCertificateDatabaseHelper.deleteData(contractorCertificate.uid!);
+
+    /// insert the new data
     await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
 
     globals.endWait(editContractorCertificateRecordScreenContext);

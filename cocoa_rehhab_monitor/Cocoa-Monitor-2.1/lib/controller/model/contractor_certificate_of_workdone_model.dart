@@ -25,7 +25,6 @@ class ContractorCertificateModel {
     this.district,
     this.userId,
     this.farmerName,
-    this.roundsOfWeeding,
     this.weedingRounds,
     this.sector,
   });
@@ -46,7 +45,6 @@ class ContractorCertificateModel {
   final int? weedingRounds;
   final String? farmerName;
   final int? sector;
-  int? roundsOfWeeding;
   int? status;
 
   factory ContractorCertificateModel.fromJson(Map<String, dynamic> json) =>
@@ -66,7 +64,7 @@ class ContractorCertificateModel {
         district: json["district"],
         userId: json["userid"],
         farmerName: json["farmer_name"],
-        roundsOfWeeding: json["weeding_rounds"],
+        weedingRounds: json["weeding_rounds"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,6 +83,6 @@ class ContractorCertificateModel {
         "userid": userId,
         "sector": sector,
         "farmer_name": farmerName,
-        "weeding_rounds": roundsOfWeeding,
+        "weeding_rounds": weedingRounds,
       };
 }

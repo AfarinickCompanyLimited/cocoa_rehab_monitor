@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
@@ -10,7 +11,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import '../../db/contractor_certificate_of_workdone_verification_db.dart';
 import '../../entity/cocoa_rehub_monitor/contractor_certificate.dart';
 import '../../model/contractor_certificate_of_workdone_model.dart';
@@ -21,68 +22,142 @@ class ContractorCertificateApiInterface {
 // ===================================================================================
 // START ADD WORK DONE BY CONTRACTOR CERTIFICATE
 // ===================================================================================
-  saveContractorCertificate(
-      ContractorCertificateModel contractorCertificate, data) async {
-    ContractorCertificateDatabaseHelper db = ContractorCertificateDatabaseHelper.instance;
-    // final contractorCertificateDao =
-    //     indexController.database!.contractorCertificateDao;
+//   saveContractorCertificate(
+//       ContractorCertificateModel contractorCertificate, data) async {
+//     ContractorCertificateDatabaseHelper db =
+//         ContractorCertificateDatabaseHelper.instance;
+//
+//     Dio? dio = Dio();
+//     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+//         (HttpClient dioClient) {
+//       dioClient.badCertificateCallback =
+//           ((X509Certificate cert, String host, int port) => true);
+//       return dioClient;
+//     };
+//     if (await ConnectionVerify.connectionIsAvailable()) {
+//       print("THE DATA IS HERE HERE HERE HERE HERE: $data");
+//       try {
+//         // var response = await dio.post('https://dcbf-154-160-21-151.eu.ngrok.io' + URLs.saveObMonitoring, data: data);
+//         var response = await dio
+//             .post(URLs.baseUrl + URLs.saveContractorCertificate, data: data);
+//         // print("THE RESPONSE IS HERE: " + response.data);
+//         if (response.data['status'] == RequestStatus.True) {
+//           db.saveData(contractorCertificate);
+//           return {
+//             'status': response.data['status'],
+//             'connectionAvailable': true,
+//             'msg': response.data['msg']
+//           };
+//         } else if (response.data['status'] == RequestStatus.Exist) {
+//           return {
+//             'status': response.data['status'],
+//             'connectionAvailable': true,
+//             'msg': response.data['msg'],
+//           };
+//         } else {
+//           // personnel.status = SubmissionStatus.pending;
+//           // personnelDao.insertPersonnel(personnel);
+//           return {
+//             'status': response.data['status'],
+//             'connectionAvailable': true,
+//             'msg': response.data['msg'],
+//           };
+//         }
+//       } catch (e, stackTrace) {
+//         debugPrint(e.toString());
+//         FirebaseCrashlytics.instance.recordError(e, stackTrace);
+//         FirebaseCrashlytics.instance.log('saveContractorCertificate');
+//         print("THE ERROR IS HERE: " + e.toString());
+//
+//         // personnel.status = SubmissionStatus.pending;
+//         // personnelDao.insertPersonnel(personnel);
+//         return {
+//           'status': RequestStatus.False,
+//           'connectionAvailable': true,
+//           'msg':
+//               'There was an error submitting your request. Kindly contact your supervisor',
+//         };
+//       }
+//     } else {
+//       contractorCertificate.status = SubmissionStatus.pending;
+//       db.saveData(contractorCertificate);
+//       return {
+//         'status': RequestStatus.NoInternet,
+//         'connectionAvailable': false,
+//         'msg': 'Data saved locally. Sync when you have internet connection',
+//       };
+//     }
+//   }
 
-    Dio? dio = Dio();
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient dioClient) {
-      dioClient.badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => true);
-      return dioClient;
-    };
+
+
+
+  saveContractorCertificate(
+      ContractorCertificateModel contractorCertificate, Map<String, dynamic> data) async {
+    ContractorCertificateDatabaseHelper db =
+        ContractorCertificateDatabaseHelper.instance;
+
     if (await ConnectionVerify.connectionIsAvailable()) {
+      print("THE DATA IS HERE HERE HERE HERE HERE: ${data["farm_ref_number"].runtimeType}");
       try {
-        // var response = await dio.post('https://dcbf-154-160-21-151.eu.ngrok.io' + URLs.saveObMonitoring, data: data);
-        var response = await dio
-            .post(URLs.baseUrl + URLs.saveContractorCertificate, data: data);
-        // print("THE RESPONSE IS HERE: " + response.data);
-        if (response.data['status'] == RequestStatus.True) {
-          db
-              .saveData(contractorCertificate);
-          return {
-            'status': response.data['status'],
-            'connectionAvailable': true,
-            'msg': response.data['msg']
-          };
-        } else if (response.data['status'] == RequestStatus.Exist) {
-          return {
-            'status': response.data['status'],
-            'connectionAvailable': true,
-            'msg': response.data['msg'],
-          };
+        final url = Uri.parse(URLs.baseUrl + URLs.saveContractorCertificate);
+        final response = await http.post(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(data),
+        );
+
+        print("THE RESPONSE IS HERE: ${response.body}");
+
+        if (response.statusCode == 200) {
+          final responseData = jsonDecode(response.body);
+          if (responseData['status'] == RequestStatus.True) {
+            db.saveData(contractorCertificate);
+            return {
+              'status': responseData['status'],
+              'connectionAvailable': true,
+              'msg': responseData['msg'],
+            };
+          } else if (responseData['status'] == RequestStatus.Exist) {
+            return {
+              'status': responseData['status'],
+              'connectionAvailable': true,
+              'msg': responseData['msg'],
+            };
+          } else {
+            return {
+              'status': responseData['status'],
+              'connectionAvailable': true,
+              'msg': responseData['msg'],
+            };
+          }
         } else {
-          // personnel.status = SubmissionStatus.pending;
-          // personnelDao.insertPersonnel(personnel);
+          print("Response failed with status code: ${response.statusCode}");
           return {
-            'status': response.data['status'],
+            'status': RequestStatus.False,
             'connectionAvailable': true,
-            'msg': response.data['msg'],
+            'msg':
+            'There was an error submitting your request. Kindly contact your supervisor',
           };
         }
       } catch (e, stackTrace) {
         debugPrint(e.toString());
         FirebaseCrashlytics.instance.recordError(e, stackTrace);
         FirebaseCrashlytics.instance.log('saveContractorCertificate');
-        print("THE ERROR IS HERE: " + e.toString());
+        print("THE ERROR IS HERE: $e");
 
-
-        // personnel.status = SubmissionStatus.pending;
-        // personnelDao.insertPersonnel(personnel);
         return {
           'status': RequestStatus.False,
           'connectionAvailable': true,
           'msg':
-              'There was an error submitting your request. Kindly contact your supervisor',
+          'There was an error submitting your request. Kindly contact your supervisor',
         };
       }
     } else {
       contractorCertificate.status = SubmissionStatus.pending;
-      db
-          .saveData(contractorCertificate);
+      db.saveData(contractorCertificate);
       return {
         'status': RequestStatus.NoInternet,
         'connectionAvailable': false,
@@ -90,6 +165,7 @@ class ContractorCertificateApiInterface {
       };
     }
   }
+
 // ===================================================================================
 // END ADD  WORK DONE BY CONTRACTOR CERTIFICATE
 // ===================================================================================
@@ -150,7 +226,6 @@ class ContractorCertificateApiInterface {
         print(e);
         FirebaseCrashlytics.instance.recordError(e, stackTrace);
         FirebaseCrashlytics.instance.log('updateContractorCertificate');
-
 
         // personnel.status = SubmissionStatus.pending;
         // personnelDao.insertPersonnel(personnel);
@@ -220,7 +295,6 @@ class ContractorCertificateApiInterface {
         print('JJKJJK:::::${response.data['status']}');
 
         if (response.data['status'] == RequestStatus.True) {
-
           // /// initialise the database
           // ContractorCertificateDatabaseHelper dbHelper = ContractorCertificateDatabaseHelper.instance;
           //
@@ -256,9 +330,9 @@ class ContractorCertificateApiInterface {
         }
       } catch (e, stackTrace) {
         print('ERROR REPORT $e');
-    FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('saveContractorCertificateVerification');
-
+        FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        FirebaseCrashlytics.instance
+            .log('saveContractorCertificateVerification');
 
         // personnel.status = SubmissionStatus.pending;
         // personnelDao.insertPersonnel(personnel);
@@ -271,8 +345,10 @@ class ContractorCertificateApiInterface {
       }
     } else {
       contractorCertificateVerification.status = SubmissionStatus.pending;
+
       /// initialise the database
-      ContractorCertificateVerificationDatabaseHelper dbHelper = ContractorCertificateVerificationDatabaseHelper.instance;
+      ContractorCertificateVerificationDatabaseHelper dbHelper =
+          ContractorCertificateVerificationDatabaseHelper.instance;
 
       /// save the data offline
       await dbHelper.saveData(contractorCertificateVerification);
@@ -343,10 +419,9 @@ class ContractorCertificateApiInterface {
           };
         }
       } catch (e, stackTrace) {
-    FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('updateContractorCertificateVerification');
-
-    
+        FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        FirebaseCrashlytics.instance
+            .log('updateContractorCertificateVerification');
 
         // personnel.status = SubmissionStatus.pending;
         // personnelDao.insertPersonnel(personnel);

@@ -1,4 +1,3 @@
-import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
@@ -10,7 +9,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../controller/api_interface/cocoa_rehab/contractor_certificate_apis.dart';
 import '../../controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
-import '../../controller/model/contractor_certificate_of_workdone_model.dart';
 
 class ContractorCertificateHistoryController extends GetxController {
   BuildContext? contractorCertificateHistoryScreenContext;

@@ -1,7 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
-import '../model/activity_model.dart';
 import '../model/contractor_certificate_of_workdone_model.dart';
 
 class ContractorCertificateDatabaseHelper {
@@ -147,6 +145,16 @@ class ContractorCertificateDatabaseHelper {
     return result.isNotEmpty
         ? result.map((json) => ContractorCertificateModel.fromJson(json)).toList()
         : [];
+  }
+
+  Future<int> updateData(ContractorCertificateModel contractorCertificate) async {
+    final db = await instance.database;
+    return await db.update(
+      tableName,
+      contractorCertificate.toJson(),
+      where: '$uid = ?',
+      whereArgs: [contractorCertificate.uid],
+    );
   }
 
   Future<int> deleteData(String id) async {

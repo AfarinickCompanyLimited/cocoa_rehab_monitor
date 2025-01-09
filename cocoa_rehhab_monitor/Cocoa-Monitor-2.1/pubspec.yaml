@@ -50,6 +50,7 @@ dependencies:
   fluttertoast: ^8.0.9
   get: ^4.6.5
   google_maps_flutter: ^2.0.4
+  http: ^0.13.6
   http_parser: ^4.0.2
   image_picker: ^0.8.6
   infinite_scroll_pagination: ^3.2.0

@@ -1,4 +1,3 @@
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/contractor_certificate.dart';
 import 'package:cocoa_monitor/controller/model/contractor_certificate_of_workdone_model.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -1083,7 +1082,7 @@ class _EditContractorCertificateRecordState
                                     ),
                                   ),
                                   selectedItem: widget
-                                      .contractorCertificate.roundsOfWeeding
+                                      .contractorCertificate.weedingRounds
                                       .toString(),
                                   items:
                                       editContractorCertificateRecordController

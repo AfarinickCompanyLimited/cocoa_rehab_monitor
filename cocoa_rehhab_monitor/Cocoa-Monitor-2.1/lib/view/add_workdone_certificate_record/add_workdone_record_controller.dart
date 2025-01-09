@@ -202,7 +202,7 @@ class AddContractorCertificateRecordController extends GetxController {
             farmRefNumber: farmReferenceNumberTC!.text,
             farmSizeHa: double.parse(farmSizeTC!.text),
             community: com,
-            roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+            weedingRounds: int.tryParse(roundsOfWeeding!),
             sector: int.tryParse(sectorTC!.text),
             contractor: contractor?.contractorId,
             district: regionDistrict?.districtId,
@@ -215,8 +215,22 @@ class AddContractorCertificateRecordController extends GetxController {
     data.remove('main_activity');
     data.remove('submission_status');
 
+    print("UID TYPE::::: ${contractorCertificate.uid.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.currentYear.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.currentMonth.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.currrentWeek.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.sector.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.farmRefNumber.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.farmerName.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.farmSizeHa.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.community.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.activity.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.weedingRounds.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.contractor.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.district.runtimeType}");
+    print("DATA TYPE::::: ${contractorCertificate.userId.runtimeType}");
+
     data["community"] = communityTC!.text;
-    data["district"] = 0;
 
     print('THIS IS Contractor Certificate DETAILS:::: $data');
 
@@ -298,7 +312,7 @@ class AddContractorCertificateRecordController extends GetxController {
             farmRefNumber: farmReferenceNumberTC!.text,
             farmSizeHa: double.parse(farmSizeTC!.text),
             community: com,
-            roundsOfWeeding: int.tryParse(roundsOfWeeding!),
+            weedingRounds: int.tryParse(roundsOfWeeding!),
             sector: int.tryParse(sectorTC!.text),
             contractor: contractor?.contractorId,
             district: regionDistrict?.districtId,
@@ -309,6 +323,7 @@ class AddContractorCertificateRecordController extends GetxController {
 
     Map<String, dynamic> data = contractorCertificate.toJson();
     print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
+    print('THIS IS UUID :::: ${contractorCertificate.uid}');
 
     // data.remove('main_activity');
     // data.remove('submission_status');
@@ -318,7 +333,7 @@ class AddContractorCertificateRecordController extends GetxController {
     // await contractorCertificateDao
     //     .insertContractorCertificate(contractorCertificate);
     ///Delete the data
-    await contractorCertificateDatabaseHelper.deleteData(contractorCertificate.uid!);
+    //await contractorCertificateDatabaseHelper.deleteData(contractorCertificate.uid!);
     /// insert the new data
     await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
 
