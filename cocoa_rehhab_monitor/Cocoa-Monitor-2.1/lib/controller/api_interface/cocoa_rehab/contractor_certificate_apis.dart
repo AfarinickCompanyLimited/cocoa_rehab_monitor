@@ -39,6 +39,7 @@ class ContractorCertificateApiInterface {
         // var response = await dio.post('https://dcbf-154-160-21-151.eu.ngrok.io' + URLs.saveObMonitoring, data: data);
         var response = await dio
             .post(URLs.baseUrl + URLs.saveContractorCertificate, data: data);
+        // print("THE RESPONSE IS HERE: " + response.data);
         if (response.data['status'] == RequestStatus.True) {
           db
               .saveData(contractorCertificate);
@@ -66,6 +67,7 @@ class ContractorCertificateApiInterface {
         debugPrint(e.toString());
         FirebaseCrashlytics.instance.recordError(e, stackTrace);
         FirebaseCrashlytics.instance.log('saveContractorCertificate');
+        print("THE ERROR IS HERE: " + e.toString());
 
 
         // personnel.status = SubmissionStatus.pending;

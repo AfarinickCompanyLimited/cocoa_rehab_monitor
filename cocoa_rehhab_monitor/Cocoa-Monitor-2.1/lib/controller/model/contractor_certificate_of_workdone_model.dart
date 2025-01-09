@@ -85,6 +85,6 @@ class ContractorCertificateModel {
         "userid": userId,
         "sector": sector,
         "farmer_name": farmerName,
-        "rounds_of_weeding": roundsOfWeeding,
+        "weeding_rounds": roundsOfWeeding,
       };
 }

@@ -179,9 +179,11 @@ class AddContractorCertificateRecordController extends GetxController {
     com += subActivityString;
     com += '- ';
     com += activity!;
+    com += '- ';
+    com += contractor!.contractorName!;
 
 
-    globals.startWait(addContractorCertificateRecordScreenContext);
+     globals.startWait(addContractorCertificateRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
@@ -214,6 +216,7 @@ class AddContractorCertificateRecordController extends GetxController {
     data.remove('submission_status');
 
     data["community"] = communityTC!.text;
+    data["district"] = 0;
 
     print('THIS IS Contractor Certificate DETAILS:::: $data');
 
