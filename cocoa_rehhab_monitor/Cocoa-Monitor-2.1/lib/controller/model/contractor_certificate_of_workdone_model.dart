@@ -8,11 +8,9 @@ ContractorCertificateModel contractorCertificateFromJson(String str) =>
 String contractorCertificateToJson(ContractorCertificateModel data) =>
     json.encode(data.toJson());
 
-
-
 @entity
 class ContractorCertificateModel {
-  ContractorCertificateModel( {
+  ContractorCertificateModel({
     this.uid,
     this.currentYear,
     this.currentMonth,
@@ -28,7 +26,8 @@ class ContractorCertificateModel {
     this.userId,
     this.farmerName,
     this.roundsOfWeeding,
-    this.weedingRounds, this.sector,
+    this.weedingRounds,
+    this.sector,
   });
 
   @primaryKey
@@ -57,7 +56,7 @@ class ContractorCertificateModel {
         currentMonth: json["current_month"],
         currrentWeek: json["currrent_week"],
         activity:
-        json["activity"] != null ? List<int>.from(json["activity"]) : [],
+            json["activity"] != null ? List<int>.from(json["activity"]) : [],
         reportingDate: json["reporting_date"],
         farmRefNumber: json["farm_ref_number"],
         farmSizeHa: json["farm_size_ha"],
@@ -71,22 +70,21 @@ class ContractorCertificateModel {
       );
 
   Map<String, dynamic> toJson() => {
-    "uid": uid,
-    "current_year": currentYear,
-    "current_month": currentMonth,
-    "currrent_week": currrentWeek,
-    "activity": activity,
-    "reporting_date": reportingDate,
-    "farm_ref_number": farmRefNumber,
-    "farm_size_ha": farmSizeHa,
-    "community": community,
-    "contractor": contractor,
-    "submission_status": status,
-    "district": district,
-    "userid": userId,
-    "sector": sector,
-    "farmer_name": farmerName,
-    "rounds_of_weeding": roundsOfWeeding,
-  };
-
+        "uid": uid,
+        "current_year": currentYear,
+        "current_month": currentMonth,
+        "currrent_week": currrentWeek,
+        "activity": activity,
+        "reporting_date": reportingDate,
+        "farm_ref_number": farmRefNumber,
+        "farm_size_ha": farmSizeHa,
+        "community": community,
+        "contractor": contractor,
+        "submission_status": status,
+        "district": district,
+        "userid": userId,
+        "sector": sector,
+        "farmer_name": farmerName,
+        "rounds_of_weeding": roundsOfWeeding,
+      };
 }

@@ -5,55 +5,55 @@ JobOrderFarmModel jobOrderFarmFromJson(String str) => JobOrderFarmModel.fromJson
 String jobOrderFarmToJson(JobOrderFarmModel data) => json.encode(data.toJson());
 
 class JobOrderFarmModel {
-  final int farmCode;
-  final String farmId;
-  final String farmerName;
-  final int districtId;
-  final String districtName;
-  final String regionId;
-  final String regionName;
-  final String location;
-  final double farmSize;
-  final int sector;
-  final int e1;
-  final int e2;
-  final int e3;
-  final int e4;
-  final int e6;
-  final int e7;
-  final int m3;
-  final int r1;
-  final int r2;
-  final int r4;
-  final int t1;
-  final int t2;
-  final int t5;
-  final int t7;
+  final int? farmCode;
+  final String? farmId;
+  final String? farmerName;
+  final int? districtId;
+  final String? districtName;
+  final String? regionId;
+  final String? regionName;
+  final String? location;
+  final double? farmSize;
+  final int? sector;
+  final int? e1;
+  final int? e2;
+  final int? e3;
+  final int? e4;
+  final int? e6;
+  final int? e7;
+  final int? m3;
+  final int? r1;
+  final int? r2;
+  final int? r4;
+  final int? t1;
+  final int? t2;
+  final int? t5;
+  final int? t7;
 
   JobOrderFarmModel({
-    required this.location,required this.farmSize,
-    required this.farmCode,
-    required this.farmId,
-    required this.farmerName,
-    required this.districtId,
-    required this.districtName,
-    required this.regionId,
-    required this.regionName,
-    required this.sector,
-    required this.e1,
-    required this.e2,
-    required this.e3,
-    required this.e4,
-    required this.e6,
-    required this.e7,
-    required this.m3,
-    required this.r1,
-    required this.r2,
-    required this.r4,
-    required this.t1,
-    required this.t2,
-    required this.t5,
-    required this.t7,
+    this.location, this.farmSize,
+    this.farmCode,
+    this.farmId,
+    this.farmerName,
+    this.districtId,
+    this.districtName,
+    this.regionId,
+    this.regionName,
+    this.sector,
+    this.e1,
+    this.e2,
+    this.e3,
+    this.e4,
+    this.e6,
+    this.e7,
+    this.m3,
+    this.r1,
+    this.r2,
+    this.r4,
+    this.t1,
+    this.t2,
+    this.t5,
+    this.t7,
   });
 
   // Factory method to create a Farm object from JSON

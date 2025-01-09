@@ -697,121 +697,121 @@ class _AddContractorCertificateRecordState
                                 },
                               ),*/
 
-                              // const Text(
-                              //   'Activity',
-                              //   style: TextStyle(fontWeight: FontWeight.w500),
-                              // ),
-                              // const SizedBox(
-                              //   height: 5,
-                              // ),
-                              // DropdownSearch<String>(
-                              //   popupProps: PopupProps.modalBottomSheet(
-                              //       showSelectedItems: true,
-                              //       showSearchBox: true,
-                              //       title: const Padding(
-                              //         padding:
-                              //             EdgeInsets.symmetric(vertical: 15),
-                              //         child: Center(
-                              //           child: Text(
-                              //             'Select Activity',
-                              //             style: TextStyle(
-                              //                 fontWeight: FontWeight.w500),
-                              //           ),
-                              //         ),
-                              //       ),
-                              //       disabledItemFn: (String s) => false,
-                              //       modalBottomSheetProps:
-                              //           ModalBottomSheetProps(
-                              //         elevation: 6,
-                              //         shape: RoundedRectangleBorder(
-                              //             borderRadius: BorderRadius.only(
-                              //                 topLeft: Radius.circular(
-                              //                     AppBorderRadius.md),
-                              //                 topRight: Radius.circular(
-                              //                     AppBorderRadius.md))),
-                              //       ),
-                              //       searchFieldProps: TextFieldProps(
-                              //         decoration: InputDecoration(
-                              //           contentPadding:
-                              //               const EdgeInsets.symmetric(
-                              //                   vertical: 4, horizontal: 15),
-                              //           enabledBorder: inputBorder,
-                              //           focusedBorder: inputBorderFocused,
-                              //           errorBorder: inputBorder,
-                              //           focusedErrorBorder: inputBorderFocused,
-                              //           filled: true,
-                              //           fillColor: AppColor.xLightBackground,
-                              //         ),
-                              //       )),
-                              //   dropdownDecoratorProps: DropDownDecoratorProps(
-                              //     dropdownSearchDecoration: InputDecoration(
-                              //       contentPadding: const EdgeInsets.symmetric(
-                              //           vertical: 4, horizontal: 15),
-                              //       enabledBorder: inputBorder,
-                              //       focusedBorder: inputBorderFocused,
-                              //       errorBorder: inputBorder,
-                              //       focusedErrorBorder: inputBorderFocused,
-                              //       filled: true,
-                              //       fillColor: AppColor.xLightBackground,
-                              //     ),
-                              //   ),
-                              //   asyncItems: (String filter) async {
-                              //     List<ActivityModel> activities = [];
-                              //     List<String> act = [];
-                              //
-                              //     activities =
-                              //         await addContractorCertificateRecordController
-                              //             .db
-                              //             .getAllActivityWithMainActivityList([
-                              //       MainActivities.Maintenance,
-                              //       MainActivities.Establishment,
-                              //       MainActivities.InitialTreatment,
-                              //     ]);
-                              //
-                              //     activities.forEach((activity) {
-                              //       if (!act.contains(activity.mainActivity)) {
-                              //         act.add(activity.mainActivity!);
-                              //       }
-                              //     });
-                              //
-                              //     //debugPrint("THE RESPONSE ::::::::::: $activities");
-                              //
-                              //     return act;
-                              //   },
-                              //   itemAsString: (String d) => d,
-                              //   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                              //   compareFn: (activity, filter) =>
-                              //       activity == filter,
-                              //   onChanged: (val) {
-                              //     addContractorCertificateRecordController
-                              //         .activity = val!;
-                              //     // print(
-                              //     //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
-                              //     //
-                              //     // if (addContractorCertificateRecordController
-                              //     //         .activity?.mainActivity ==
-                              //     //     MainActivities.Maintenance) {
-                              //     //   // addContractorCertificateRecordController
-                              //     //   //     .activityCheck.value = true;
-                              //     // }
-                              //
-                              //     // addContractorCertificateRecordController
-                              //     //     .subActivity = Activity() as List<Activity>;
-                              //     addContractorCertificateRecordController
-                              //         .update();
-                              //     // print(
-                              //     //     ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
-                              //   },
-                              //   autoValidateMode: AutovalidateMode.always,
-                              //   validator: (item) {
-                              //     if (item == null) {
-                              //       return 'Activity is required';
-                              //     } else {
-                              //       return null;
-                              //     }
-                              //   },
-                              // ),
-                              // const SizedBox(height: 20),
+                              const Text(
+                                'Activity',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              DropdownSearch<String>(
+                                popupProps: PopupProps.modalBottomSheet(
+                                    showSelectedItems: true,
+                                    showSearchBox: true,
+                                    title: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      child: Center(
+                                        child: Text(
+                                          'Select Activity',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                    disabledItemFn: (String s) => false,
+                                    modalBottomSheetProps:
+                                        ModalBottomSheetProps(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(
+                                                  AppBorderRadius.md),
+                                              topRight: Radius.circular(
+                                                  AppBorderRadius.md))),
+                                    ),
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 4, horizontal: 15),
+                                        enabledBorder: inputBorder,
+                                        focusedBorder: inputBorderFocused,
+                                        errorBorder: inputBorder,
+                                        focusedErrorBorder: inputBorderFocused,
+                                        filled: true,
+                                        fillColor: AppColor.xLightBackground,
+                                      ),
+                                    )),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
+                                ),
+                                asyncItems: (String filter) async {
+                                  List<ActivityModel> activities = [];
+                                  List<String> act = [];
+
+                                  activities =
+                                      await addContractorCertificateRecordController
+                                          .db
+                                          .getAllActivityWithMainActivityList([
+                                    MainActivities.Maintenance,
+                                    MainActivities.Establishment,
+                                    MainActivities.InitialTreatment,
+                                  ]);
+
+                                  activities.forEach((activity) {
+                                    if (!act.contains(activity.mainActivity)) {
+                                      act.add(activity.mainActivity!);
+                                    }
+                                  });
+
+                                  //debugPrint("THE RESPONSE ::::::::::: $activities");
+
+                                  return act;
+                                },
+                                itemAsString: (String d) => d,
+                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                compareFn: (activity, filter) =>
+                                    activity == filter,
+                                onChanged: (val) {
+                                  addContractorCertificateRecordController
+                                      .activity = val!;
+                                  // print(
+                                  //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
+                                  //
+                                  // if (addContractorCertificateRecordController
+                                  //         .activity?.mainActivity ==
+                                  //     MainActivities.Maintenance) {
+                                  //   // addContractorCertificateRecordController
+                                  //   //     .activityCheck.value = true;
+                                  // }
+
+                                  // addContractorCertificateRecordController
+                                  //     .subActivity = Activity() as List<Activity>;
+                                  addContractorCertificateRecordController
+                                      .update();
+                                  // print(
+                                  //     ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
+                                },
+                                autoValidateMode: AutovalidateMode.always,
+                                validator: (item) {
+                                  if (item == null) {
+                                    return 'Activity is required';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              const SizedBox(height: 20),
 
                               const Text(
                                 'Activities',
@@ -877,15 +877,12 @@ class _AddContractorCertificateRecordState
                                   ),
                                 ),
                                 asyncItems: (String filter) async {
-                                  var response =await addContractorCertificateRecordController
-                                      .db
-                                      .getAllData();
-                                  // var response =
-                                  //     await addContractorCertificateRecordController
-                                  //         .db
-                                  //         .getSubActivityByMainActivity(
-                                  //             addContractorCertificateRecordController
-                                  //                 .activity!);
+                                  var response =
+                                      await addContractorCertificateRecordController
+                                          .db
+                                          .getSubActivityByMainActivity(
+                                              addContractorCertificateRecordController
+                                                  .activity!);
 
                                   return response;
                                 },

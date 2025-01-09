@@ -109,7 +109,7 @@ class EditContractorCertificateRecordController extends GetxController {
 
   assignValues() async {
     var sub_activity_strings = [];
-    var comAndSub = contractorCertificate!.community!.split(',');
+    var comAndSub = contractorCertificate!.community!.split('-');
 
     for (int i = 1; i < comAndSub.length; i++) {
       sub_activity_strings.add(comAndSub[i].trim());
@@ -142,8 +142,10 @@ class EditContractorCertificateRecordController extends GetxController {
         //   subActivity.add(act);
         // }
       });
-      print("subActivities $subActivity");
+
     }
+    activity = subActivity[0].mainActivity;
+    print("subActivities $subActivity");
 
     jobOrderFarmModel =
         await jobDb.getFarmByID(contractorCertificate!.farmRefNumber!);

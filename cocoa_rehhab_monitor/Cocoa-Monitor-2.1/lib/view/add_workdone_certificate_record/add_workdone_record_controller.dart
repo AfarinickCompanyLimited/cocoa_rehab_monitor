@@ -175,8 +175,11 @@ class AddContractorCertificateRecordController extends GetxController {
 
     var com = '';
     com += communityTC!.text;
-    com += ', ';
+    com += '-';
     com += subActivityString;
+    com += '- ';
+    com += activity!;
+
 
     globals.startWait(addContractorCertificateRecordScreenContext);
     DateTime now = DateTime.now();
@@ -270,8 +273,12 @@ class AddContractorCertificateRecordController extends GetxController {
 
     var com = '';
     com += communityTC!.text;
-    com += ', ';
+    com += '-';
     com += subActivityString;
+    com += '- ';
+    com += activity!;
+    com += '- ';
+    com += contractor!.contractorName!;
 
     List<int> subActivityList =
         subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
