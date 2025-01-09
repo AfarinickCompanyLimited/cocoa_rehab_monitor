@@ -361,8 +361,8 @@ class _AddInitialTreatmentMonitoringRecordState
                                   addInitialTreatmentMonitoringRecordController
                                       .farmReferenceNumberTC!.text = val!.farmId.toString();
                                   //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
-                                 // addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val..toString();
-                                  //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
+                                 addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val.farmSize.toString();
+                                  addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
                                   //
@@ -390,6 +390,39 @@ class _AddInitialTreatmentMonitoringRecordState
                                 },
                               ),
 
+                              const SizedBox(height: 20),
+
+                              const Text(
+                                'Community',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller:
+                                addInitialTreatmentMonitoringRecordController
+                                    .communityTC,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 15),
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorderFocused,
+                                  errorBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderFocused,
+                                  filled: true,
+                                  fillColor: AppColor.lightText,
+                                ),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                textInputAction: TextInputAction.next,
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (String? value) =>
+                                value!.trim().isEmpty
+                                    ? "Farm size is required"
+                                    : null,
+                              ),
                               const SizedBox(height: 20),
 
                               const Text(
@@ -780,104 +813,104 @@ class _AddInitialTreatmentMonitoringRecordState
                               //   },
                               // ),
 
-                              const Text(
-                                'Community',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              DropdownSearch<Community>(
-                                popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    itemBuilder: (context, item, selected) {
-                                      return ListTile(
-                                        title: Text(item.community.toString(),
-                                            style: selected
-                                                ? TextStyle(
-                                                    color: AppColor.primary)
-                                                : const TextStyle()),
-                                        subtitle: Text(
-                                          item.operationalArea.toString(),
-                                        ),
-                                      );
-                                    },
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select community',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    disabledItemFn: (Community s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
-                                      ),
-                                    )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                ),
-                                asyncItems: (String filter) async {
-                                  var response =
-                                      await addInitialTreatmentMonitoringRecordController
-                                          .globalController
-                                          .database!
-                                          .communityDao
-                                          .findAllCommunity();
-                                  return response;
-                                },
-                                itemAsString: (Community d) =>
-                                    d.community ?? '',
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (d, filter) =>
-                                    d.community == filter.community,
-                                onChanged: (val) {
-                                  addInitialTreatmentMonitoringRecordController
-                                      .community = val;
-                                },
-
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null) {
-                                    return 'Community is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
+                              // const Text(
+                              //   'Community',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // DropdownSearch<Community>(
+                              //   popupProps: PopupProps.modalBottomSheet(
+                              //       showSelectedItems: true,
+                              //       showSearchBox: true,
+                              //       itemBuilder: (context, item, selected) {
+                              //         return ListTile(
+                              //           title: Text(item.community.toString(),
+                              //               style: selected
+                              //                   ? TextStyle(
+                              //                       color: AppColor.primary)
+                              //                   : const TextStyle()),
+                              //           subtitle: Text(
+                              //             item.operationalArea.toString(),
+                              //           ),
+                              //         );
+                              //       },
+                              //       title: const Padding(
+                              //         padding:
+                              //             EdgeInsets.symmetric(vertical: 15),
+                              //         child: Center(
+                              //           child: Text(
+                              //             'Select community',
+                              //             style: TextStyle(
+                              //                 fontWeight: FontWeight.w500),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       disabledItemFn: (Community s) => false,
+                              //       modalBottomSheetProps:
+                              //           ModalBottomSheetProps(
+                              //         elevation: 6,
+                              //         shape: RoundedRectangleBorder(
+                              //             borderRadius: BorderRadius.only(
+                              //                 topLeft: Radius.circular(
+                              //                     AppBorderRadius.md),
+                              //                 topRight: Radius.circular(
+                              //                     AppBorderRadius.md))),
+                              //       ),
+                              //       searchFieldProps: TextFieldProps(
+                              //         decoration: InputDecoration(
+                              //           contentPadding:
+                              //               const EdgeInsets.symmetric(
+                              //                   vertical: 4, horizontal: 15),
+                              //           enabledBorder: inputBorder,
+                              //           focusedBorder: inputBorderFocused,
+                              //           errorBorder: inputBorder,
+                              //           focusedErrorBorder: inputBorderFocused,
+                              //           filled: true,
+                              //           fillColor: AppColor.xLightBackground,
+                              //         ),
+                              //       )),
+                              //   dropdownDecoratorProps: DropDownDecoratorProps(
+                              //     dropdownSearchDecoration: InputDecoration(
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           vertical: 4, horizontal: 15),
+                              //       enabledBorder: inputBorder,
+                              //       focusedBorder: inputBorderFocused,
+                              //       errorBorder: inputBorder,
+                              //       focusedErrorBorder: inputBorderFocused,
+                              //       filled: true,
+                              //       fillColor: AppColor.xLightBackground,
+                              //     ),
+                              //   ),
+                              //   asyncItems: (String filter) async {
+                              //     var response =
+                              //         await addInitialTreatmentMonitoringRecordController
+                              //             .globalController
+                              //             .database!
+                              //             .communityDao
+                              //             .findAllCommunity();
+                              //     return response;
+                              //   },
+                              //   itemAsString: (Community d) =>
+                              //       d.community ?? '',
+                              //   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                              //   compareFn: (d, filter) =>
+                              //       d.community == filter.community,
+                              //   onChanged: (val) {
+                              //     addInitialTreatmentMonitoringRecordController
+                              //         .community = val;
+                              //   },
+                              //
+                              //   autoValidateMode: AutovalidateMode.always,
+                              //   validator: (item) {
+                              //     if (item == null) {
+                              //       return 'Community is required';
+                              //     } else {
+                              //       return null;
+                              //     }
+                              //   },
+                              // ),
 
                               const SizedBox(height: 20),
 

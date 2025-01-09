@@ -67,6 +67,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   // RegionDistrict? regionDistrict = RegionDistrict();
 
   TextEditingController? farmSizeTC = TextEditingController();
+  TextEditingController? communityTC = TextEditingController();
   TextEditingController? farmLocationTC = TextEditingController();
   TextEditingController? cocoaSeedlingsAliveTC = TextEditingController();
   TextEditingController? plantainSeedlingsAliveTC = TextEditingController();
