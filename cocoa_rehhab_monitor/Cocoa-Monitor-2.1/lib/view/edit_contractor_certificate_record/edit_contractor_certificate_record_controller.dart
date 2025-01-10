@@ -182,67 +182,91 @@ class EditContractorCertificateRecordController extends GetxController {
   handleAddMonitoringRecord() async {
     // isButtonDisabled.value = false;
 
+    String subActivityString = '';
+
+    for (int i = 0; i < subActivity.length; i++) {
+      subActivityString += subActivity[i].subActivity!;
+      if (i < subActivity.length - 1) {
+        subActivityString += ', ';
+      }
+    }
+
+    var com = '';
+    com += communityTC!.text;
+    com += '-';
+    com += subActivityString;
+    com += '- ';
+    com += activity!;
+    com += '- ';
+    com += contractor!.contractorName!;
+
+
     globals.startWait(editContractorCertificateRecordScreenContext);
     DateTime now = DateTime.now();
     String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
     List<int> subActivityList =
-        subActivity.map((activity) => activity.code).cast<int>().toList();
+    subActivity.map((activity) => activity.code).cast<int>().toList();
 
-    var code = await db.getActivityCodeByMainActivity(activity!);
-
-    ContractorCertificate contractorCertificateData = ContractorCertificate(
-        uid: contractorCertificate?.uid,
+    ContractorCertificateModel contractorCertificate =
+    ContractorCertificateModel(
+        uid: const Uuid().v4(),
         currentYear: selectedYear.value,
         currentMonth: selectedMonth.value,
-        currrentWeek: selectedWeek.value,
+        currrentWeek: int.tryParse(selectedWeek.value),
         reportingDate: formattedReportingDate,
-        mainActivity: code,
         activity: subActivityList,
+        farmerName: farmerNameTC!.text,
         farmRefNumber: farmReferenceNumberTC!.text,
         farmSizeHa: double.parse(farmSizeTC!.text),
-        community: communityNameTC!.text,
+        community: com,
+        weedingRounds: int.tryParse(roundsOfWeeding!),
+        sector: int.tryParse(sectorTC!.text),
         contractor: contractor?.contractorId,
         district: globalController.userInfo.value.district,
         status: SubmissionStatus.submitted,
-        userId: int.tryParse(globalController.userInfo.value.userId!));
+        userId: int.tryParse(
+          globalController.userInfo.value.userId!,
+        ));
 
-    Map<String, dynamic> data = contractorCertificateData.toJson();
+    Map<String, dynamic> data = contractorCertificate.toJson();
     data.remove('main_activity');
     data.remove('submission_status');
 
+    data["community"] = communityTC!.text;
+
     print('THIS IS Contractor Certificate DETAILS:::: $data');
 
-    // var postResult = await contractorCertificateApiInterface
-    //     .saveContractorCertificate(contractorCertificateData, data);
-    //
-    // globals.endWait(editContractorCertificateRecordScreenContext);
-    //
-    // if (postResult['status'] == RequestStatus.True ||
-    //     postResult['status'] == RequestStatus.Exist ||
-    //     postResult['status'] == RequestStatus.NoInternet) {
-    //   Get.back(
-    //       result: {'contractorCertificate': contractorCertificateData, 'submitted': true});
-    //
-    //   globals.showSecondaryDialog(
-    //       context: homeController.homeScreenContext,
-    //       content: Text(
-    //         postResult['msg'],
-    //         style: const TextStyle(fontSize: 13),
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       status: AlertDialogStatus.success,
-    //       okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    // } else if (postResult['status'] == RequestStatus.False) {
-    //   globals.showSecondaryDialog(
-    //       context: editContractorCertificateRecordScreenContext,
-    //       content: Text(
-    //         postResult['msg'],
-    //         style: const TextStyle(fontSize: 13),
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       status: AlertDialogStatus.error);
-    // }
+    var postResult = await contractorCertificateApiInterface
+        .saveContractorCertificate(contractorCertificate, data);
+    globals.endWait(editContractorCertificateRecordScreenContext);
+
+    if (postResult['status'] == RequestStatus.True ||
+        postResult['status'] == RequestStatus.Exist ||
+        postResult['status'] == RequestStatus.NoInternet) {
+      Get.back(result: {
+        'contractorCertificate': contractorCertificate,
+        'submitted': true
+      });
+      globals.showSecondaryDialog(
+          context: homeController.homeScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.success,
+          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    } else if (postResult['status'] == RequestStatus.False) {
+      globals.showSecondaryDialog(
+          context: editContractorCertificateRecordScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.error);
+    }
   }
 
   // ==============================================================================
@@ -335,7 +359,7 @@ class EditContractorCertificateRecordController extends GetxController {
     List<int> subActivityList =
     subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
 
-    ContractorCertificateModel contractorCertificate =
+    ContractorCertificateModel contractorCert =
     ContractorCertificateModel(
         uid: const Uuid().v4(),
         currentYear: selectedYear.value,
@@ -356,7 +380,7 @@ class EditContractorCertificateRecordController extends GetxController {
           globalController.userInfo.value.userId!,
         ));
 
-    Map<String, dynamic> data = contractorCertificate.toJson();
+    Map<String, dynamic> data = contractorCert.toJson();
     print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
 
     // data.remove('main_activity');
@@ -368,15 +392,15 @@ class EditContractorCertificateRecordController extends GetxController {
     //     .insertContractorCertificate(contractorCertificate);
 
     /// delete the data
-    await contractorCertificateDatabaseHelper.deleteData(contractorCertificate.uid!);
+    await contractorCertificateDatabaseHelper.deleteData(contractorCertificate!.uid!);
 
     /// insert the new data
-    await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
+    await contractorCertificateDatabaseHelper.saveData(contractorCert);
 
     globals.endWait(editContractorCertificateRecordScreenContext);
 
     Get.back(result: {
-      'contractorCertificate': contractorCertificate,
+      'contractorCertificate': contractorCert,
       'submitted': false
     });
     globals.showSecondaryDialog(

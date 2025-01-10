@@ -14,15 +14,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../controller/entity/cocoa_rehub_monitor/community.dart';
+import '../../controller/model/activity_model.dart';
 import '../global_components/image_field_card.dart';
 import 'add_initial_treatment_monitoring_record_controller.dart';
 import 'components/initial_treatment_rehab_assistant_select.dart';
 
 class AddInitialTreatmentMonitoringRecord extends StatefulWidget {
-  final String allMonitorings;
-  const AddInitialTreatmentMonitoringRecord(
-      {Key? key, required this.allMonitorings})
-      : super(key: key);
+  //final String allMonitorings;
+  const AddInitialTreatmentMonitoringRecord({
+    Key? key,
+    //required this.allMonitorings
+  }) : super(key: key);
 
   @override
   State<AddInitialTreatmentMonitoringRecord> createState() =>
@@ -79,21 +81,26 @@ class _AddInitialTreatmentMonitoringRecordState
                           width: 12,
                         ),
                         Expanded(
-                          child: Text(
-                              widget.allMonitorings ==
-                                      AllMonitorings.InitialTreatment
-                                  ? 'New IT Monitoring Record'
-                                  : widget.allMonitorings ==
-                                          AllMonitorings.Establishment
-                                      ? 'New Establishment Record'
-                                      : widget.allMonitorings ==
-                                              AllMonitorings.Maintenance
-                                          ? 'New Maintenance Record'
-                                          : '',
+                          child: Text("Activity reporting",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColor.black)),
+                          // Text(
+                          //     widget.allMonitorings ==
+                          //             AllMonitorings.InitialTreatment
+                          //         ? 'New IT Monitoring Record'
+                          //         : widget.allMonitorings ==
+                          //                 AllMonitorings.Establishment
+                          //             ? 'New Establishment Record'
+                          //             : widget.allMonitorings ==
+                          //                     AllMonitorings.Maintenance
+                          //                 ? 'New Maintenance Record'
+                          //                 : '',
+                          //     style: TextStyle(
+                          //         fontSize: 16,
+                          //         fontWeight: FontWeight.w600,
+                          //         color: AppColor.black)),
                         ),
                       ],
                     ),
@@ -117,7 +124,7 @@ class _AddInitialTreatmentMonitoringRecordState
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const Text(
-                                'Monitoring Date',
+                                'Completion Date',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(
@@ -152,6 +159,46 @@ class _AddInitialTreatmentMonitoringRecordState
                                 onSaved: (val) =>
                                     addInitialTreatmentMonitoringRecordController
                                         .monitoringDateTC?.text = val!,
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              const Text(
+                                'Reporting Date',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              DateTimePicker(
+                                controller:
+                                addInitialTreatmentMonitoringRecordController
+                                    .reportingDateTC,
+                                type: DateTimePickerType.date,
+                                initialDate: DateTime.now(),
+                                dateMask: 'yyyy-MM-dd',
+                                firstDate: DateTime(1600),
+                                lastDate: DateTime.now(),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 15),
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorderFocused,
+                                  errorBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderFocused,
+                                  filled: true,
+                                  fillColor: AppColor.xLightBackground,
+                                ),
+                                onChanged: (val) =>
+                                addInitialTreatmentMonitoringRecordController
+                                    .reportingDateTC?.text = val,
+                                validator: (String? value) =>
+                                value!.trim().isEmpty
+                                    ? "Reporting date is required"
+                                    : null,
+                                onSaved: (val) =>
+                                addInitialTreatmentMonitoringRecordController
+                                    .reportingDateTC?.text = val!,
                               ),
 
                               const SizedBox(height: 20),
@@ -299,7 +346,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                     showSearchBox: true,
                                     title: const Padding(
                                       padding:
-                                      EdgeInsets.symmetric(vertical: 15),
+                                          EdgeInsets.symmetric(vertical: 15),
                                       child: Center(
                                         child: Text(
                                           'Select farm reference number',
@@ -309,9 +356,10 @@ class _AddInitialTreatmentMonitoringRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (JobOrderFarmModel s) => false,
+                                    disabledItemFn: (JobOrderFarmModel s) =>
+                                        false,
                                     modalBottomSheetProps:
-                                    ModalBottomSheetProps(
+                                        ModalBottomSheetProps(
                                       elevation: 6,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(
@@ -323,8 +371,8 @@ class _AddInitialTreatmentMonitoringRecordState
                                     searchFieldProps: TextFieldProps(
                                       decoration: InputDecoration(
                                         contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            vertical: 4, horizontal: 15),
+                                            const EdgeInsets.symmetric(
+                                                vertical: 4, horizontal: 15),
                                         enabledBorder: inputBorder,
                                         focusedBorder: inputBorderFocused,
                                         errorBorder: inputBorder,
@@ -348,21 +396,46 @@ class _AddInitialTreatmentMonitoringRecordState
                                 asyncItems: (String filter) async {
                                   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
                                   var response =
-                                  await addInitialTreatmentMonitoringRecordController
-                                      .db.getAllFarms();
+                                      await addInitialTreatmentMonitoringRecordController
+                                          .jobOrderDb
+                                          .getAllFarms();
                                   print("THE RESPONSE ::::::::::: $response");
                                   return response;
                                 },
-                                itemAsString: (JobOrderFarmModel d) => d.farmId.toString(),
+                                itemAsString: (JobOrderFarmModel d) =>
+                                    d.farmId.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                activity == filter,
+                                    activity == filter,
                                 onChanged: (val) {
                                   addInitialTreatmentMonitoringRecordController
-                                      .farmReferenceNumberTC!.text = val!.farmId.toString();
+                                      .farmReferenceNumberTC!
+                                      .text = val!.farmId.toString();
                                   //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
-                                 addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val.farmSize.toString();
-                                  addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
+                                  addInitialTreatmentMonitoringRecordController
+                                      .farmSizeTC!
+                                      .text = val.farmSize.toString();
+                                  addInitialTreatmentMonitoringRecordController
+                                      .communityTC!
+                                      .text = val.location.toString();
+
+                                  if (addInitialTreatmentMonitoringRecordController
+                                          .isDoneEqually.value.isNotEmpty &&
+                                      addInitialTreatmentMonitoringRecordController
+                                          .numberInGroupTC!.text.isNotEmpty) {
+                                    double area = double.tryParse(
+                                        addInitialTreatmentMonitoringRecordController
+                                            .farmSizeTC!.text)! /
+                                        int.tryParse(
+                                            addInitialTreatmentMonitoringRecordController
+                                                .numberInGroupTC!
+                                                .text)!;
+                                    addInitialTreatmentMonitoringRecordController
+                                        .rehabAssistants
+                                        .forEach((ra) {
+                                      ra.areaCovered!.text = area.toString();
+                                    });
+                                  }
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
                                   //
@@ -401,8 +474,8 @@ class _AddInitialTreatmentMonitoringRecordState
                               ),
                               TextFormField(
                                 controller:
-                                addInitialTreatmentMonitoringRecordController
-                                    .communityTC,
+                                    addInitialTreatmentMonitoringRecordController
+                                        .communityTC,
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
@@ -419,9 +492,9 @@ class _AddInitialTreatmentMonitoringRecordState
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
                                 validator: (String? value) =>
-                                value!.trim().isEmpty
-                                    ? "Farm size is required"
-                                    : null,
+                                    value!.trim().isEmpty
+                                        ? "Farm size is required"
+                                        : null,
                               ),
                               const SizedBox(height: 20),
 
@@ -434,8 +507,8 @@ class _AddInitialTreatmentMonitoringRecordState
                               ),
                               TextFormField(
                                 controller:
-                                addInitialTreatmentMonitoringRecordController
-                                    .farmSizeTC,
+                                    addInitialTreatmentMonitoringRecordController
+                                        .farmSizeTC,
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
@@ -452,55 +525,55 @@ class _AddInitialTreatmentMonitoringRecordState
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
                                 validator: (String? value) =>
-                                value!.trim().isEmpty
-                                    ? "Farm size is required"
-                                    : null,
-                              ),
-                              const SizedBox(height: 20),
-
-                              const Text(
-                                'Area Covered (in hectares)',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller:
-                                    addInitialTreatmentMonitoringRecordController
-                                        .areaCoveredTC,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
-                                ),
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode: AutovalidateMode.always,
-                                onChanged: (value) {
-                                  // addInitialTreatmentMonitoringRecordController
-                                  //     .areaCoveredTC?.text = value;
-                                  addInitialTreatmentMonitoringRecordController
-                                      .numberInGroupTC
-                                      ?.clear();
-                                  addInitialTreatmentMonitoringRecordController
-                                      .clearRehabAssistantsToDefault();
-                                  addInitialTreatmentMonitoringRecordController
-                                      .updateAreaCovered();
-                                  addInitialTreatmentMonitoringRecordController
-                                      .update();
-                                },
-                                validator: (String? value) =>
                                     value!.trim().isEmpty
-                                        ? "Area covered is required"
+                                        ? "Farm size is required"
                                         : null,
                               ),
-                              const SizedBox(height: 20),
+
+
+                              // const Text(
+                              //   'Area Covered (in hectares)',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // TextFormField(
+                              //   controller:
+                              //       addInitialTreatmentMonitoringRecordController
+                              //           .areaCoveredTC,
+                              //   decoration: InputDecoration(
+                              //     contentPadding: const EdgeInsets.symmetric(
+                              //         vertical: 15, horizontal: 15),
+                              //     enabledBorder: inputBorder,
+                              //     focusedBorder: inputBorderFocused,
+                              //     errorBorder: inputBorder,
+                              //     focusedErrorBorder: inputBorderFocused,
+                              //     filled: true,
+                              //     fillColor: AppColor.xLightBackground,
+                              //   ),
+                              //   keyboardType: TextInputType.number,
+                              //   textInputAction: TextInputAction.next,
+                              //   autovalidateMode: AutovalidateMode.always,
+                              //   onChanged: (value) {
+                              //     // addInitialTreatmentMonitoringRecordController
+                              //     //     .areaCoveredTC?.text = value;
+                              //     addInitialTreatmentMonitoringRecordController
+                              //         .numberInGroupTC
+                              //         ?.clear();
+                              //     addInitialTreatmentMonitoringRecordController
+                              //         .clearRehabAssistantsToDefault();
+                              //     addInitialTreatmentMonitoringRecordController
+                              //         .updateAreaCovered();
+                              //     addInitialTreatmentMonitoringRecordController
+                              //         .update();
+                              //   },
+                              //   validator: (String? value) =>
+                              //       value!.trim().isEmpty
+                              //           ? "Area covered is required"
+                              //           : null,
+                              // ),
+                              // const SizedBox(height: 20),
 
                               // const Text(
                               //   'Farm Location',
@@ -534,151 +607,151 @@ class _AddInitialTreatmentMonitoringRecordState
 
                               // const SizedBox(height: 20),
 
-                              const Text(
-                                'Number of Cocoa Seedlings Alive ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                  controller:
-                                      addInitialTreatmentMonitoringRecordController
-                                          .cocoaSeedlingsAliveTC,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  textInputAction: TextInputAction.next,
-                                  autovalidateMode: AutovalidateMode.always,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return "Number of cocoa seedlings alive is required";
-                                    }
-                                    int? intValue = int.tryParse(value);
-                                    if (intValue == null) {
-                                      return "$value is not a valid number";
-                                    }
-                                    return null;
-                                  }),
+                              // const Text(
+                              //   'Number of Cocoa Seedlings Alive ',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // TextFormField(
+                              //     controller:
+                              //         addInitialTreatmentMonitoringRecordController
+                              //             .cocoaSeedlingsAliveTC,
+                              //     decoration: InputDecoration(
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           vertical: 15, horizontal: 15),
+                              //       enabledBorder: inputBorder,
+                              //       focusedBorder: inputBorderFocused,
+                              //       errorBorder: inputBorder,
+                              //       focusedErrorBorder: inputBorderFocused,
+                              //       filled: true,
+                              //       fillColor: AppColor.xLightBackground,
+                              //     ),
+                              //     keyboardType: TextInputType.number,
+                              //     inputFormatters: [
+                              //       FilteringTextInputFormatter.digitsOnly
+                              //     ],
+                              //     textInputAction: TextInputAction.next,
+                              //     autovalidateMode: AutovalidateMode.always,
+                              //     validator: (String? value) {
+                              //       if (value!.isEmpty) {
+                              //         return "Number of cocoa seedlings alive is required";
+                              //       }
+                              //       int? intValue = int.tryParse(value);
+                              //       if (intValue == null) {
+                              //         return "$value is not a valid number";
+                              //       }
+                              //       return null;
+                              //     }),
+                              //
+                              // const SizedBox(height: 20),
+                              //
+                              // const Text(
+                              //   'Number of Plantain Seedlings Alive ',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // TextFormField(
+                              //     controller:
+                              //         addInitialTreatmentMonitoringRecordController
+                              //             .plantainSeedlingsAliveTC,
+                              //     decoration: InputDecoration(
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           vertical: 15, horizontal: 15),
+                              //       enabledBorder: inputBorder,
+                              //       focusedBorder: inputBorderFocused,
+                              //       errorBorder: inputBorder,
+                              //       focusedErrorBorder: inputBorderFocused,
+                              //       filled: true,
+                              //       fillColor: AppColor.xLightBackground,
+                              //     ),
+                              //     keyboardType: TextInputType.number,
+                              //     inputFormatters: [
+                              //       FilteringTextInputFormatter.digitsOnly
+                              //     ],
+                              //     textInputAction: TextInputAction.next,
+                              //     autovalidateMode: AutovalidateMode.always,
+                              //     validator: (String? value) {
+                              //       if (value!.isEmpty) {
+                              //         return "Number of plantain seedlings alive is required";
+                              //       }
+                              //       int? intValue = int.tryParse(value);
+                              //       if (intValue == null) {
+                              //         return "$value is not a valid number";
+                              //       }
+                              //       return null;
+                              //     }),
 
-                              const SizedBox(height: 20),
+                              //const SizedBox(height: 20),
 
-                              const Text(
-                                'Number of Plantain Seedlings Alive ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                  controller:
-                                      addInitialTreatmentMonitoringRecordController
-                                          .plantainSeedlingsAliveTC,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  textInputAction: TextInputAction.next,
-                                  autovalidateMode: AutovalidateMode.always,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return "Number of plantain seedlings alive is required";
-                                    }
-                                    int? intValue = int.tryParse(value);
-                                    if (intValue == null) {
-                                      return "$value is not a valid number";
-                                    }
-                                    return null;
-                                  }),
-
-                              const SizedBox(height: 20),
-
-                              const Text(
-                                'Name of CHED TA',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller:
-                                    addInitialTreatmentMonitoringRecordController
-                                        .cHEDTATC,
-                                textCapitalization: TextCapitalization.words,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
-                                ),
-                                maxLines: null,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "CHED TA name is required"
-                                        : null,
-                              ),
-                              const SizedBox(height: 20),
-
-                              const Text(
-                                'CHED TA Contact Number',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller:
-                                    addInitialTreatmentMonitoringRecordController
-                                        .cHEDTAContactTC,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
-                                ),
-                                textInputAction: TextInputAction.next,
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.phone,
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                    value!.trim().isEmpty ||
-                                            value.trim().length != 10
-                                        ? "Enter a valid phone number"
-                                        : null,
-                              ),
-                              const SizedBox(height: 20),
+                              // const Text(
+                              //   'Name of CHED TA',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // TextFormField(
+                              //   controller:
+                              //       addInitialTreatmentMonitoringRecordController
+                              //           .cHEDTATC,
+                              //   textCapitalization: TextCapitalization.words,
+                              //   decoration: InputDecoration(
+                              //     contentPadding: const EdgeInsets.symmetric(
+                              //         vertical: 15, horizontal: 15),
+                              //     enabledBorder: inputBorder,
+                              //     focusedBorder: inputBorderFocused,
+                              //     errorBorder: inputBorder,
+                              //     focusedErrorBorder: inputBorderFocused,
+                              //     filled: true,
+                              //     fillColor: AppColor.xLightBackground,
+                              //   ),
+                              //   maxLines: null,
+                              //   keyboardType: TextInputType.name,
+                              //   textInputAction: TextInputAction.next,
+                              //   autovalidateMode: AutovalidateMode.always,
+                              //   validator: (String? value) =>
+                              //       value!.trim().isEmpty
+                              //           ? "CHED TA name is required"
+                              //           : null,
+                              // ),
+                              // const SizedBox(height: 20),
+                              //
+                              // const Text(
+                              //   'CHED TA Contact Number',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // TextFormField(
+                              //   controller:
+                              //       addInitialTreatmentMonitoringRecordController
+                              //           .cHEDTAContactTC,
+                              //   decoration: InputDecoration(
+                              //     contentPadding: const EdgeInsets.symmetric(
+                              //         vertical: 15, horizontal: 15),
+                              //     enabledBorder: inputBorder,
+                              //     focusedBorder: inputBorderFocused,
+                              //     errorBorder: inputBorder,
+                              //     focusedErrorBorder: inputBorderFocused,
+                              //     filled: true,
+                              //     fillColor: AppColor.xLightBackground,
+                              //   ),
+                              //   textInputAction: TextInputAction.next,
+                              //   textCapitalization: TextCapitalization.words,
+                              //   keyboardType: TextInputType.phone,
+                              //   autovalidateMode: AutovalidateMode.always,
+                              //   validator: (String? value) =>
+                              //       value!.trim().isEmpty ||
+                              //               value.trim().length != 10
+                              //           ? "Enter a valid phone number"
+                              //           : null,
+                              // ),
+                              // const SizedBox(height: 20),
 
                               // const Text(
                               //   'Community',
@@ -914,38 +987,38 @@ class _AddInitialTreatmentMonitoringRecordState
 
                               const SizedBox(height: 20),
 
-                              const Text(
-                                'Operational Area',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller:
-                                    addInitialTreatmentMonitoringRecordController
-                                        .operationalAreaTC,
-                                textCapitalization: TextCapitalization.words,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
-                                  enabledBorder: inputBorder,
-                                  focusedBorder: inputBorderFocused,
-                                  errorBorder: inputBorder,
-                                  focusedErrorBorder: inputBorderFocused,
-                                  filled: true,
-                                  fillColor: AppColor.xLightBackground,
-                                ),
-                                maxLines: null,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Operational area is required"
-                                        : null,
-                              ),
-                              const SizedBox(height: 20),
+                              // const Text(
+                              //   'Operational Area',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // TextFormField(
+                              //   controller:
+                              //       addInitialTreatmentMonitoringRecordController
+                              //           .operationalAreaTC,
+                              //   textCapitalization: TextCapitalization.words,
+                              //   decoration: InputDecoration(
+                              //     contentPadding: const EdgeInsets.symmetric(
+                              //         vertical: 15, horizontal: 15),
+                              //     enabledBorder: inputBorder,
+                              //     focusedBorder: inputBorderFocused,
+                              //     errorBorder: inputBorder,
+                              //     focusedErrorBorder: inputBorderFocused,
+                              //     filled: true,
+                              //     fillColor: AppColor.xLightBackground,
+                              //   ),
+                              //   maxLines: null,
+                              //   keyboardType: TextInputType.text,
+                              //   textInputAction: TextInputAction.next,
+                              //   autovalidateMode: AutovalidateMode.always,
+                              //   validator: (String? value) =>
+                              //       value!.trim().isEmpty
+                              //           ? "Operational area is required"
+                              //           : null,
+                              // ),
+                              // const SizedBox(height: 20),
 
                               const Text(
                                 'Activity',
@@ -954,8 +1027,7 @@ class _AddInitialTreatmentMonitoringRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-
-                              DropdownSearch<Activity>(
+                              DropdownSearch<String>(
                                 popupProps: PopupProps.modalBottomSheet(
                                     showSelectedItems: true,
                                     showSearchBox: true,
@@ -970,7 +1042,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (Activity s) => false,
+                                    disabledItemFn: (String s) => false,
                                     modalBottomSheetProps:
                                         ModalBottomSheetProps(
                                       elevation: 6,
@@ -1007,38 +1079,33 @@ class _AddInitialTreatmentMonitoringRecordState
                                   ),
                                 ),
                                 asyncItems: (String filter) async {
-                                  // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
-                                  var response =
+                                  List<ActivityModel> activities = [];
+                                  List<String> act = [];
+
+                                  activities =
                                       await addInitialTreatmentMonitoringRecordController
-                                          .globalController
-                                          .database!
-                                          .activityDao
-                                          .findAllActivityWithMainActivityList([
-                                    widget.allMonitorings ==
-                                            AllMonitorings.Establishment
-                                        ? MainActivities.Establishment
-                                        : widget.allMonitorings ==
-                                                AllMonitorings.InitialTreatment
-                                            ? MainActivities.InitialTreatment
-                                            : widget.allMonitorings ==
-                                                    AllMonitorings.Maintenance
-                                                ? MainActivities.Maintenance
-                                                : '',
+                                          .db
+                                          .getAllActivityWithMainActivityList([
+                                    MainActivities.Maintenance,
+                                    MainActivities.Establishment,
+                                    MainActivities.InitialTreatment,
                                   ]);
-                                  return response;
+
+                                  activities.forEach((activity) {
+                                    if (!act.contains(activity.mainActivity)) {
+                                      act.add(activity.mainActivity!);
+                                    }
+                                  });
+
+                                  return act;
                                 },
-                                itemAsString: (Activity d) =>
-                                    d.mainActivity!.toString(),
+                                itemAsString: (String d) => d,
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                    activity.mainActivity ==
-                                    filter.mainActivity,
+                                    activity == filter,
                                 onChanged: (val) {
                                   addInitialTreatmentMonitoringRecordController
                                       .activity = val!;
-                                  addInitialTreatmentMonitoringRecordController
-                                      .subActivity = Activity();
-
                                   addInitialTreatmentMonitoringRecordController
                                       .update();
                                 },
@@ -1054,13 +1121,13 @@ class _AddInitialTreatmentMonitoringRecordState
                               const SizedBox(height: 20),
 
                               const Text(
-                                'Sub Activity',
+                                'Sub activity',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(
                                 height: 5,
                               ),
-                              DropdownSearch<Activity>(
+                              DropdownSearch<ActivityModel>(
                                 popupProps: PopupProps.modalBottomSheet(
                                     showSelectedItems: true,
                                     showSearchBox: true,
@@ -1069,13 +1136,13 @@ class _AddInitialTreatmentMonitoringRecordState
                                           EdgeInsets.symmetric(vertical: 15),
                                       child: Center(
                                         child: Text(
-                                          'Select Sub Activity',
+                                          'Select sub activity',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (Activity s) => false,
+                                    disabledItemFn: (ActivityModel s) => false,
                                     modalBottomSheetProps:
                                         ModalBottomSheetProps(
                                       elevation: 6,
@@ -1114,20 +1181,18 @@ class _AddInitialTreatmentMonitoringRecordState
                                 asyncItems: (String filter) async {
                                   var response =
                                       await addInitialTreatmentMonitoringRecordController
-                                          .globalController
-                                          .database!
-                                          .activityDao
-                                          .findSubActivities(
+                                          .db
+                                          .getSubActivityByMainActivity(
                                               addInitialTreatmentMonitoringRecordController
-                                                      .activity.mainActivity ??
-                                                  '');
+                                                  .activity!);
+
                                   return response;
                                 },
-                                itemAsString: (Activity d) =>
-                                    d.subActivity!.toString(),
+                                itemAsString: (ActivityModel d) =>
+                                    d.subActivity.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                    activity.subActivity == filter.subActivity,
+                                    activity == filter,
                                 onChanged: (val) {
                                   addInitialTreatmentMonitoringRecordController
                                       .subActivity = val!;
@@ -1137,13 +1202,12 @@ class _AddInitialTreatmentMonitoringRecordState
                                 autoValidateMode: AutovalidateMode.always,
                                 validator: (item) {
                                   if (item == null) {
-                                    return 'Sub activity is required';
+                                    return 'Activity is required';
                                   } else {
                                     return null;
                                   }
                                 },
                               ),
-
                               const SizedBox(height: 20),
 
                               /**
@@ -1307,56 +1371,32 @@ class _AddInitialTreatmentMonitoringRecordState
                                   }),
                                */
 
-                              const Text(
-                                'General Remarks',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                  controller:
-                                      addInitialTreatmentMonitoringRecordController
-                                          .remarksTC,
-                                  textCapitalization:
-                                      TextCapitalization.sentences,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                  maxLines: null,
-                                  textInputAction: TextInputAction.done),
 
-                              const SizedBox(height: 20),
 
-                              const Text(
-                                'Picture of Farm',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              GetBuilder(
-                                  init:
-                                      addInitialTreatmentMonitoringRecordController,
-                                  builder: (context) {
-                                    return ImageFieldCard(
-                                      // onTap: () => addInitialTreatmentMonitoringRecordController.chooseMediaSource(),
-                                      // onTap: () => addInitialTreatmentMonitoringRecordController.pickMedia(source: 1, imageToSet: PersonnelImageData.personnelImage),
-                                      onTap: () =>
-                                          addInitialTreatmentMonitoringRecordController
-                                              .pickMedia(source: 1),
-                                      image:
-                                          addInitialTreatmentMonitoringRecordController
-                                              .farmPhoto?.file,
-                                    );
-                                  }),
+                              // const SizedBox(height: 20),
+                              //
+                              // const Text(
+                              //   'Picture of Farm',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // GetBuilder(
+                              //     init:
+                              //         addInitialTreatmentMonitoringRecordController,
+                              //     builder: (context) {
+                              //       return ImageFieldCard(
+                              //         // onTap: () => addInitialTreatmentMonitoringRecordController.chooseMediaSource(),
+                              //         // onTap: () => addInitialTreatmentMonitoringRecordController.pickMedia(source: 1, imageToSet: PersonnelImageData.personnelImage),
+                              //         onTap: () =>
+                              //             addInitialTreatmentMonitoringRecordController
+                              //                 .pickMedia(source: 1),
+                              //         image:
+                              //             addInitialTreatmentMonitoringRecordController
+                              //                 .farmPhoto?.file,
+                              //       );
+                              //     }),
 
                               // GetBuilder(
                               //     init:
@@ -1389,10 +1429,8 @@ class _AddInitialTreatmentMonitoringRecordState
                               //           : Container();
                               //     }),
 
-                              const SizedBox(height: 20),
-
                               const Text(
-                                'Was The Activity Done By A Contractor',
+                                'Was The Activity Done By A Group',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(
@@ -1432,87 +1470,81 @@ class _AddInitialTreatmentMonitoringRecordState
                                 },
                                 onChanged: (val) {
                                   addInitialTreatmentMonitoringRecordController
-                                      .isContractor.value = val!;
+                                      .isCompletedByGroup.value = val!;
                                   addInitialTreatmentMonitoringRecordController
-                                      .isCompletedByGroup.value = '';
-
+                                      .areaCoveredRx.value = '';
                                   addInitialTreatmentMonitoringRecordController
-                                      .clearAllRehabAssistants();
-
+                                      .clearRehabAssistantsToDefault();
                                   addInitialTreatmentMonitoringRecordController
                                       .numberInGroupTC
                                       ?.clear();
-                                  addInitialTreatmentMonitoringRecordController
-                                      .contractorNameTC
-                                      ?.clear();
-                                  // addInitialTreatmentMonitoringRecordController.areaCoveredRx.value = '';
                                   addInitialTreatmentMonitoringRecordController
                                       .update();
                                 },
                               ),
 
-                              GetBuilder(
-                                init:
-                                    addInitialTreatmentMonitoringRecordController,
-                                builder: (ctx) {
-                                  return addInitialTreatmentMonitoringRecordController
-                                              .isContractor.value ==
-                                          YesNo.yes
-                                      ? Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            const Text(
-                                              'Name of Contractor',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            TextFormField(
-                                              controller:
-                                                  addInitialTreatmentMonitoringRecordController
-                                                      .contractorNameTC,
-                                              textCapitalization:
-                                                  TextCapitalization.words,
-                                              decoration: InputDecoration(
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 15,
-                                                        horizontal: 15),
-                                                enabledBorder: inputBorder,
-                                                focusedBorder:
-                                                    inputBorderFocused,
-                                                errorBorder: inputBorder,
-                                                focusedErrorBorder:
-                                                    inputBorderFocused,
-                                                filled: true,
-                                                fillColor:
-                                                    AppColor.xLightBackground,
-                                              ),
-                                              maxLines: null,
-                                              keyboardType: TextInputType.name,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              autovalidateMode:
-                                                  AutovalidateMode.always,
-                                              validator: (String? value) => value!
-                                                      .trim()
-                                                      .isEmpty
-                                                  ? "Contractor name is required"
-                                                  : null,
-                                            ),
-                                          ],
-                                        )
-                                      : Container();
-                                },
-                              ),
-                              const SizedBox(height: 20),
+                              // GetBuilder(
+                              //   init:
+                              //       addInitialTreatmentMonitoringRecordController,
+                              //   builder: (ctx) {
+                              //     return addInitialTreatmentMonitoringRecordController
+                              //                 .isContractor.value ==
+                              //             YesNo.yes
+                              //         ? Column(
+                              //             mainAxisSize: MainAxisSize.min,
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.start,
+                              //             children: [
+                              //               const SizedBox(
+                              //                 height: 20,
+                              //               ),
+                              //               const Text(
+                              //                 'Name of Contractor',
+                              //                 style: TextStyle(
+                              //                     fontWeight: FontWeight.w500),
+                              //               ),
+                              //               const SizedBox(
+                              //                 height: 5,
+                              //               ),
+                              //               TextFormField(
+                              //                 controller:
+                              //                     addInitialTreatmentMonitoringRecordController
+                              //                         .contractorNameTC,
+                              //                 textCapitalization:
+                              //                     TextCapitalization.words,
+                              //                 decoration: InputDecoration(
+                              //                   contentPadding:
+                              //                       const EdgeInsets.symmetric(
+                              //                           vertical: 15,
+                              //                           horizontal: 15),
+                              //                   enabledBorder: inputBorder,
+                              //                   focusedBorder:
+                              //                       inputBorderFocused,
+                              //                   errorBorder: inputBorder,
+                              //                   focusedErrorBorder:
+                              //                       inputBorderFocused,
+                              //                   filled: true,
+                              //                   fillColor:
+                              //                       AppColor.xLightBackground,
+                              //                 ),
+                              //                 maxLines: null,
+                              //                 keyboardType: TextInputType.name,
+                              //                 textInputAction:
+                              //                     TextInputAction.next,
+                              //                 autovalidateMode:
+                              //                     AutovalidateMode.always,
+                              //                 validator: (String? value) => value!
+                              //                         .trim()
+                              //                         .isEmpty
+                              //                     ? "Contractor name is required"
+                              //                     : null,
+                              //               ),
+                              //             ],
+                              //           )
+                              //         : Container();
+                              //   },
+                              // ),
+                              // const SizedBox(height: 20),
 
                               // const Text(
                               //   'Task Status',
@@ -1561,105 +1593,101 @@ class _AddInitialTreatmentMonitoringRecordState
 
                               // const SizedBox(height: 20),
 
-                              GetBuilder(
-                                init:
-                                    addInitialTreatmentMonitoringRecordController,
-                                builder: (ctx) {
-                                  return addInitialTreatmentMonitoringRecordController
-                                              .isContractor.value ==
-                                          YesNo.no
-                                      ? Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            const Text(
-                                              'Was The Activity Done By A Group',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            DropdownSearch<String>(
-                                              popupProps: PopupProps.menu(
-                                                  showSelectedItems: true,
-                                                  disabledItemFn: (String s) =>
-                                                      false,
-                                                  fit: FlexFit.loose,
-                                                  menuProps: MenuProps(
-                                                      elevation: 6,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              AppBorderRadius
-                                                                  .sm))),
-                                              items:
-                                                  addInitialTreatmentMonitoringRecordController
-                                                      .yesNoItems,
-                                              dropdownDecoratorProps:
-                                                  DropDownDecoratorProps(
-                                                dropdownSearchDecoration:
-                                                    InputDecoration(
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 4,
-                                                          horizontal: 15),
-                                                  enabledBorder: inputBorder,
-                                                  focusedBorder:
-                                                      inputBorderFocused,
-                                                  errorBorder: inputBorder,
-                                                  focusedErrorBorder:
-                                                      inputBorderFocused,
-                                                  filled: true,
-                                                  fillColor:
-                                                      AppColor.xLightBackground,
-                                                ),
-                                              ),
-                                              autoValidateMode:
-                                                  AutovalidateMode.always,
-                                              validator: (item) {
-                                                if (item == null) {
-                                                  return "field is required";
-                                                } else {
-                                                  return null;
-                                                }
-                                              },
-                                              onChanged: (val) {
-                                                addInitialTreatmentMonitoringRecordController
-                                                    .isCompletedByGroup
-                                                    .value = val!;
-                                                addInitialTreatmentMonitoringRecordController
-                                                    .areaCoveredRx.value = '';
-                                                addInitialTreatmentMonitoringRecordController
-                                                    .clearRehabAssistantsToDefault();
-                                                addInitialTreatmentMonitoringRecordController
-                                                    .numberInGroupTC
-                                                    ?.clear();
-                                                addInitialTreatmentMonitoringRecordController
-                                                    .update();
-                                              },
-                                            ),
-                                          ],
-                                        )
-                                      : Container();
-                                },
-                              ),
-                              const SizedBox(height: 20),
+                              // GetBuilder(
+                              //   init:
+                              //       addInitialTreatmentMonitoringRecordController,
+                              //   builder: (ctx) {
+                              //     return addInitialTreatmentMonitoringRecordController
+                              //                 .isContractor.value ==
+                              //             YesNo.no
+                              //         ? Column(
+                              //             mainAxisSize: MainAxisSize.min,
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.start,
+                              //             children: [
+                              //               const SizedBox(
+                              //                 height: 20,
+                              //               ),
+                              //               const Text(
+                              //                 'Was The Activity Done By A Group',
+                              //                 style: TextStyle(
+                              //                     fontWeight: FontWeight.w500),
+                              //               ),
+                              //               const SizedBox(
+                              //                 height: 5,
+                              //               ),
+                              //               DropdownSearch<String>(
+                              //                 popupProps: PopupProps.menu(
+                              //                     showSelectedItems: true,
+                              //                     disabledItemFn: (String s) =>
+                              //                         false,
+                              //                     fit: FlexFit.loose,
+                              //                     menuProps: MenuProps(
+                              //                         elevation: 6,
+                              //                         borderRadius:
+                              //                             BorderRadius.circular(
+                              //                                 AppBorderRadius
+                              //                                     .sm))),
+                              //                 items:
+                              //                     addInitialTreatmentMonitoringRecordController
+                              //                         .yesNoItems,
+                              //                 dropdownDecoratorProps:
+                              //                     DropDownDecoratorProps(
+                              //                   dropdownSearchDecoration:
+                              //                       InputDecoration(
+                              //                     contentPadding:
+                              //                         const EdgeInsets
+                              //                                 .symmetric(
+                              //                             vertical: 4,
+                              //                             horizontal: 15),
+                              //                     enabledBorder: inputBorder,
+                              //                     focusedBorder:
+                              //                         inputBorderFocused,
+                              //                     errorBorder: inputBorder,
+                              //                     focusedErrorBorder:
+                              //                         inputBorderFocused,
+                              //                     filled: true,
+                              //                     fillColor:
+                              //                         AppColor.xLightBackground,
+                              //                   ),
+                              //                 ),
+                              //                 autoValidateMode:
+                              //                     AutovalidateMode.always,
+                              //                 validator: (item) {
+                              //                   if (item == null) {
+                              //                     return "field is required";
+                              //                   } else {
+                              //                     return null;
+                              //                   }
+                              //                 },
+                              //                 onChanged: (val) {
+                              //                   addInitialTreatmentMonitoringRecordController
+                              //                       .isCompletedByGroup
+                              //                       .value = val!;
+                              //                   addInitialTreatmentMonitoringRecordController
+                              //                       .areaCoveredRx.value = '';
+                              //                   addInitialTreatmentMonitoringRecordController
+                              //                       .clearRehabAssistantsToDefault();
+                              //                   addInitialTreatmentMonitoringRecordController
+                              //                       .numberInGroupTC
+                              //                       ?.clear();
+                              //                   addInitialTreatmentMonitoringRecordController
+                              //                       .update();
+                              //                 },
+                              //               ),
+                              //             ],
+                              //           )
+                              //         : Container();
+                              //   },
+                              // ),
 
                               GetBuilder(
                                 init:
                                     addInitialTreatmentMonitoringRecordController,
                                 builder: (ctx) {
                                   if (addInitialTreatmentMonitoringRecordController
-                                              .isContractor.value ==
-                                          YesNo.no &&
-                                      addInitialTreatmentMonitoringRecordController
-                                              .isCompletedByGroup.value ==
-                                          YesNo.yes) {
+                                          .isCompletedByGroup.value ==
+                                      YesNo.yes) {
                                     return Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
@@ -1738,6 +1766,119 @@ class _AddInitialTreatmentMonitoringRecordState
                                             //   return null;
                                             // }
                                             ),
+                                        const SizedBox(height: 20),
+                                        const Text(
+                                          'Was The Activity Done Equally',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        DropdownSearch<String>(
+                                          popupProps: PopupProps.menu(
+                                              showSelectedItems: true,
+                                              disabledItemFn: (String s) =>
+                                                  false,
+                                              fit: FlexFit.loose,
+                                              menuProps: MenuProps(
+                                                  elevation: 6,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          AppBorderRadius.sm))),
+                                          items:
+                                              addInitialTreatmentMonitoringRecordController
+                                                  .yesNoItems,
+                                          dropdownDecoratorProps:
+                                              DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 4,
+                                                      horizontal: 15),
+                                              enabledBorder: inputBorder,
+                                              focusedBorder: inputBorderFocused,
+                                              errorBorder: inputBorder,
+                                              focusedErrorBorder:
+                                                  inputBorderFocused,
+                                              filled: true,
+                                              fillColor:
+                                                  AppColor.xLightBackground,
+                                            ),
+                                          ),
+                                          autoValidateMode:
+                                              AutovalidateMode.always,
+                                          validator: (item) {
+                                            if (item == null) {
+                                              return "field is required";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                          onChanged: (val) {
+                                            addInitialTreatmentMonitoringRecordController
+                                                .isDoneEqually.value = val!;
+                                            print(addInitialTreatmentMonitoringRecordController.isDoneEqually.value);
+
+                                            if (addInitialTreatmentMonitoringRecordController
+                                                .numberInGroupTC!
+                                                .text
+                                                .isEmpty) {
+                                              addInitialTreatmentMonitoringRecordController
+                                                  .globals
+                                                  .showSnackBar(
+                                                title: "Required action",
+                                                message:
+                                                    "Please input the number of people in the group to proceed",
+                                              );
+                                              return;
+                                            }
+
+                                            if (addInitialTreatmentMonitoringRecordController
+                                                    .isDoneEqually ==
+                                                YesNo.yes) {
+                                              double area = double.tryParse(
+                                                      addInitialTreatmentMonitoringRecordController
+                                                          .farmSizeTC!.text)! /
+                                                  int.tryParse(
+                                                      addInitialTreatmentMonitoringRecordController
+                                                          .numberInGroupTC!
+                                                          .text)!;
+                                              addInitialTreatmentMonitoringRecordController
+                                                  .rehabAssistants
+                                                  .forEach((ra) {
+                                                ra.areaCovered!.text =
+                                                    area.toString();
+                                              });
+                                            }
+
+                                            if(addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value == YesNo.no){
+                                              addInitialTreatmentMonitoringRecordController
+                                                  .rehabAssistants
+                                                  .forEach((ra) {
+                                                ra.areaCovered!.text =
+                                                    addInitialTreatmentMonitoringRecordController
+                                                        .farmSizeTC!.text;
+                                              });
+                                            }
+                                            // addInitialTreatmentMonitoringRecordController
+                                            //     .isCompletedByGroup.value = '';
+                                            //
+                                            // addInitialTreatmentMonitoringRecordController
+                                            //     .clearAllRehabAssistants();
+
+                                            // addInitialTreatmentMonitoringRecordController
+                                            //     .numberInGroupTC
+                                            //     ?.clear();
+                                            // addInitialTreatmentMonitoringRecordController
+                                            //     .contractorNameTC
+                                            //     ?.clear();
+                                            // addInitialTreatmentMonitoringRecordController.areaCoveredRx.value = '';
+                                            addInitialTreatmentMonitoringRecordController
+                                                .update();
+                                          },
+                                        ),
                                       ],
                                     );
                                   } else {
@@ -1772,7 +1913,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                                 fontWeight: FontWeight.w600,
                                                 color: AppColor.black)),
                                         Text(
-                                            'Select rehab assistants and their respective area covered',
+                                            'Select rehab assistants and their respective area covered (if applicable)',
                                             style: TextStyle(
                                                 fontSize: 13,
                                                 color: AppColor.black)),
@@ -1825,70 +1966,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                           },
                                         ),
                                         const SizedBox(height: 20),
-                                        /*  Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                addInitialTreatmentMonitoringRecordController
-                                                    .rehabAssistants
-                                                    .add(InitialTreatmentRehabAssistantSelection(
-                                                        index: RxInt(
-                                                            addInitialTreatmentMonitoringRecordController
-                                                                    .rehabAssistants
-                                                                    .length +
-                                                                1)));
-                                              },
-                                              behavior: HitTestBehavior.opaque,
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10.0),
-                                                  child: Text(
-                                                    'Tap To Add Another Rehab Assistants',
-                                                    overflow: TextOverflow.clip,
-                                                    style: TextStyle(
-                                                        color: tmtColorPrimary,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            // GestureDetector(
-                                            //   onTap: () {
-                                            //     homeController
-                                            //         .usePolygonDrawingTool();
-                                            //   },
-                                            //   behavior:
-                                            //       HitTestBehavior.opaque,
-                                            //   child: Align(
-                                            //     alignment:
-                                            //         Alignment.bottomRight,
-                                            //     child: Padding(
-                                            //       padding:
-                                            //           const EdgeInsets
-                                            //                   .symmetric(
-                                            //               horizontal:
-                                            //                   10.0),
-                                            //       child: Text(
-                                            //         'Area Tool',
-                                            //         style: TextStyle(
-                                            //             color:
-                                            //                 tmtColorPrimary,
-                                            //             fontWeight:
-                                            //                 FontWeight
-                                            //                     .bold),
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),*/
+
                                       ],
                                     );
                                   } else {
@@ -1897,23 +1975,11 @@ class _AddInitialTreatmentMonitoringRecordState
                                 },
                               ),
 
-                              const SizedBox(height: 20),
-
-                              const Divider(),
-
                               GetBuilder(
                                 init:
                                     addInitialTreatmentMonitoringRecordController,
                                 builder: (ctx) {
-                                  final isCompletedByGroup =
-                                      addInitialTreatmentMonitoringRecordController
-                                          .isCompletedByGroup;
-                                  if (isCompletedByGroup.value == YesNo.no &&
-                                      addInitialTreatmentMonitoringRecordController
-                                              .isContractor.value ==
-                                          YesNo.no) {
-                                    // addInitialTreatmentMonitoringRecordController
-                                    //     .clearRehabAssistants();
+                                  if (addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value == YesNo.no) {
                                     return Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
@@ -1969,14 +2035,14 @@ class _AddInitialTreatmentMonitoringRecordState
                                                     Alignment.bottomRight,
                                                 child: Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       horizontal: 10.0),
                                                   child: Padding(
                                                     padding: const EdgeInsets
-                                                            .symmetric(
+                                                        .symmetric(
                                                         vertical: 12),
                                                     child: Text(
-                                                      'Tap To Add Another Rehab Assistants',
+                                                      'Tap to add another rehab assistant',
                                                       overflow:
                                                           TextOverflow.clip,
                                                       style: TextStyle(
@@ -2469,9 +2535,34 @@ class _AddInitialTreatmentMonitoringRecordState
                               //             )
                               //           : Container();
                               //     }),
+                              const Text(
+                                'General Remarks',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                  controller:
+                                  addInitialTreatmentMonitoringRecordController
+                                      .remarksTC,
+                                  textCapitalization:
+                                  TextCapitalization.sentences,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 15),
+                                    enabledBorder: inputBorder,
+                                    focusedBorder: inputBorderFocused,
+                                    errorBorder: inputBorder,
+                                    focusedErrorBorder: inputBorderFocused,
+                                    filled: true,
+                                    fillColor: AppColor.xLightBackground,
+                                  ),
+                                  maxLines: null,
+                                  textInputAction: TextInputAction.done),
 
                               const SizedBox(
-                                height: 30,
+                                height: 20,
                               ),
 
                               Row(
@@ -2517,7 +2608,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                       // ),
                                     ),
                                   ),
-                                  const SizedBox(width: 20),
+
                                   Expanded(
                                     child: CustomButton(
                                       isFullWidth: true,
@@ -2562,7 +2653,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                 ],
                               ),
 
-                              const SizedBox(height: 30),
+                              const SizedBox(height: 20),
                             ],
                           ),
                         ),

@@ -814,7 +814,7 @@ class _AddContractorCertificateRecordState
                               const SizedBox(height: 20),
 
                               const Text(
-                                'Activities',
+                                'Sub activity',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(
@@ -830,7 +830,7 @@ class _AddContractorCertificateRecordState
                                               vertical: 15),
                                           child: Center(
                                             child: Text(
-                                              'Select Activities',
+                                              'Select sub activity',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500),
                                             ),

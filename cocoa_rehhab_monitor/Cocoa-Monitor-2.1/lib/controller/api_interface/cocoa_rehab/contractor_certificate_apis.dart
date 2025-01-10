@@ -98,7 +98,6 @@ class ContractorCertificateApiInterface {
         ContractorCertificateDatabaseHelper.instance;
 
     if (await ConnectionVerify.connectionIsAvailable()) {
-      print("THE DATA IS HERE HERE HERE HERE HERE: ${data["farm_ref_number"].runtimeType}");
       try {
         final url = Uri.parse(URLs.baseUrl + URLs.saveContractorCertificate);
         final response = await http.post(
@@ -108,8 +107,6 @@ class ContractorCertificateApiInterface {
           },
           body: jsonEncode(data),
         );
-
-        print("THE RESPONSE IS HERE: ${response.body}");
 
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);

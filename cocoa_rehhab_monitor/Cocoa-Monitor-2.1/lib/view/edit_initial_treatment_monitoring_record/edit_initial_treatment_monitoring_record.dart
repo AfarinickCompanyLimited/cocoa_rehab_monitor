@@ -30,13 +30,14 @@ import 'edit_initial_treatment_monitoring_record_controller.dart';
 class EditInitialTreatmentMonitoringRecord extends StatefulWidget {
   final InitialTreatmentMonitor monitor;
   final bool isViewMode;
-  final String allMonitorings;
+  //final String allMonitorings;
 
   const EditInitialTreatmentMonitoringRecord(
       {Key? key,
       required this.monitor,
       required this.isViewMode,
-      required this.allMonitorings})
+      // required this.allMonitorings
+      })
       : super(key: key);
 
   @override
@@ -105,32 +106,38 @@ class _EditMonitoringRecordState
                           width: 12,
                         ),
                         Expanded(
-                          child: Text(
-                              widget.isViewMode
-                                  ? widget.allMonitorings ==
-                                          AllMonitorings.InitialTreatment
-                                      ? 'Edit IT Monitoring Record'
-                                      : widget.allMonitorings ==
-                                              AllMonitorings.Establishment
-                                          ? 'Edit Establishment Record'
-                                          : widget.allMonitorings ==
-                                                  AllMonitorings.Maintenance
-                                              ? 'Edit Maintenance Record'
-                                              : ''
-                                  : widget.allMonitorings ==
-                                          AllMonitorings.InitialTreatment
-                                      ? 'Edit IT Monitoring Record'
-                                      : widget.allMonitorings ==
-                                              AllMonitorings.Establishment
-                                          ? 'Edit Establishment Record'
-                                          : widget.allMonitorings ==
-                                                  AllMonitorings.Maintenance
-                                              ? 'Edit Maintenance Record'
-                                              : '',
+                          child: Text(widget.isViewMode
+                                      ? "Edit activity reporting record": "View activity reporting record",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColor.black)),
+                          // child: Text(
+                          //     widget.isViewMode
+                          //         ? widget.allMonitorings ==
+                          //                 AllMonitorings.InitialTreatment
+                          //             ? 'Edit IT Monitoring Record'
+                          //             : widget.allMonitorings ==
+                          //                     AllMonitorings.Establishment
+                          //                 ? 'Edit Establishment Record'
+                          //                 : widget.allMonitorings ==
+                          //                         AllMonitorings.Maintenance
+                          //                     ? 'Edit Maintenance Record'
+                          //                     : ''
+                          //         : widget.allMonitorings ==
+                          //                 AllMonitorings.InitialTreatment
+                          //             ? 'Edit IT Monitoring Record'
+                          //             : widget.allMonitorings ==
+                          //                     AllMonitorings.Establishment
+                          //                 ? 'Edit Establishment Record'
+                          //                 : widget.allMonitorings ==
+                          //                         AllMonitorings.Maintenance
+                          //                     ? 'Edit Maintenance Record'
+                          //                     : '',
+                          //     style: TextStyle(
+                          //         fontSize: 16,
+                          //         fontWeight: FontWeight.w600,
+                          //         color: AppColor.black)),
                         ),
                       ],
                     ),

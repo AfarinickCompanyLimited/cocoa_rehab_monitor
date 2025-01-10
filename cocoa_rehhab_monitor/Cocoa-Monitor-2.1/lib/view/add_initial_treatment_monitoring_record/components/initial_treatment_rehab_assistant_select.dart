@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, avoid_print
 
+import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
 import 'package:cocoa_monitor/view/add_initial_treatment_monitoring_record/add_initial_treatment_monitoring_record_controller.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
@@ -220,7 +221,7 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                       () => TextFormField(
                         controller: areaCovered,
                         readOnly: addInitialTreatmentMonitoringRecordController
-                                .areaCoveredRx.isEmpty
+                                .isDoneEqually.value==YesNo.no
                             ? false
                             : true,
                         keyboardType: TextInputType.number,
@@ -232,7 +233,8 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                           errorBorder: inputBorder,
                           focusedErrorBorder: inputBorderFocused,
                           filled: true,
-                          fillColor: AppColor.xLightBackground,
+                          fillColor: addInitialTreatmentMonitoringRecordController
+                              .isDoneEqually.value==YesNo.yes?AppColor.lightText:AppColor.xLightBackground,
                         ),
                         textAlign: TextAlign.center,
                         onTap: () {

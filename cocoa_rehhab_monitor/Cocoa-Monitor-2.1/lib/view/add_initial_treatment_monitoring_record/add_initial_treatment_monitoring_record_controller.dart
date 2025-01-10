@@ -11,6 +11,7 @@ import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_trea
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm_from_server.dart';
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/monitor.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
+import 'package:cocoa_monitor/controller/model/activity_model.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:cocoa_monitor/controller/model/picked_media.dart';
@@ -26,6 +27,7 @@ import 'package:location/location.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../controller/db/activity_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/community.dart';
 // import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
 import 'components/initial_treatment_rehab_assistant_select.dart';
@@ -41,7 +43,9 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   GlobalController globalController = Get.find();
 
-  JobOrderFarmsDbFarmDatabaseHelper db = JobOrderFarmsDbFarmDatabaseHelper.instance;
+  ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+
+  JobOrderFarmsDbFarmDatabaseHelper jobOrderDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
 
   OutbreakFarmApiInterface outbreakFarmApiInterface =
       OutbreakFarmApiInterface();
@@ -76,6 +80,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   TextEditingController? areaCoveredTC = TextEditingController();
   TextEditingController? remarksTC = TextEditingController();
+  TextEditingController? numberOfPeopleInGroup = TextEditingController();
   TextEditingController? numberOfRAAssignedTC = TextEditingController();
   TextEditingController? cHEDTATC = TextEditingController();
   TextEditingController? contractorNameTC = TextEditingController();
@@ -87,6 +92,9 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   TextEditingController? monitoringDateTC = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+
+  TextEditingController? reportingDateTC = TextEditingController();
+
   TextEditingController? fuelPurchasedDateTC = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   TextEditingController? fuelDateTC = TextEditingController(
@@ -102,11 +110,13 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   var taskStatus;
   var isContractor = ''.obs;
   var isCompletedByGroup = ''.obs;
+  var isDoneEqually = ''.obs;
 
   PickedMedia? farmPhoto;
   OutbreakFarmFromServer farm = OutbreakFarmFromServer();
-  Activity activity = Activity();
-  Activity subActivity = Activity();
+  // Activity activity = Activity();
+  ActivityModel subActivity = ActivityModel();
+  String? activity;
 
   List<InitialTreatmentRehabAssistantSelection> rehabAssistants =
       [InitialTreatmentRehabAssistantSelection(index: RxInt(1))].obs;
@@ -256,6 +266,9 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
     globals.startWait(addMonitoringRecordScreenContext);
 
+    /// Fetch the activity using the main activity
+    List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
+
     List<Ra> ras = rehabAssistants
         .map((InitialTreatmentRehabAssistantSelection e) => Ra(
             rehabAsistant: e.rehabAssistant?.rehabCode,
@@ -294,7 +307,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       //     locationData!.accuracy!.truncateToDecimalPlaces(2).toString()),
       // staffContact: phoneTC!.text.trim(),
       // farmTblForeignkey: farm.farmId,
-      mainActivity: activity.code,
+      mainActivity: act.first.code,
       activity: subActivity.code,
       noRehabAssistants: rehabAssistants.length,
       // originalFarmSize: farm.farmArea,
@@ -442,6 +455,9 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
     globals.startWait(addMonitoringRecordScreenContext);
 
+    /// Fetch the activity using the main activity
+    List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
+
     List<Ra> ras = rehabAssistants
         .map((InitialTreatmentRehabAssistantSelection e) => Ra(
             rehabAsistant: e.rehabAssistant?.rehabCode,
@@ -480,7 +496,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       //     locationData!.accuracy!.truncateToDecimalPlaces(2).toString()),
       // staffContact: phoneTC!.text.trim(),
       // farmTblForeignkey: farm.farmId,
-      mainActivity: activity.code,
+      mainActivity: act.first.code,
       activity: subActivity.code,
       noRehabAssistants: rehabAssistants.length,
       // originalFarmSize: farm.farmArea,

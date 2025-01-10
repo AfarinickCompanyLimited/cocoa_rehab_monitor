@@ -12,11 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AllMomitoringsMenuOptionsBottomSheet extends StatelessWidget {
-  final String allMonitorings;
+  //final String allMonitorings;
 
   const AllMomitoringsMenuOptionsBottomSheet({
     Key? key,
-    required this.allMonitorings,
+    //required this.allMonitorings,
   }) : super(key: key);
 
   @override
@@ -61,19 +61,27 @@ class AllMomitoringsMenuOptionsBottomSheet extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppPadding.horizontal),
             child: Center(
-              child: Text(
-                allMonitorings == AllMonitorings.InitialTreatment
-                    ? 'Initial Treatment'
-                    : allMonitorings == AllMonitorings.Establishment
-                        ? 'Establishment'
-                        : allMonitorings == AllMonitorings.Maintenance
-                            ? 'Maintenance'
-                            : '',
+              child:
+              Text(
+                "Activity reporting",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                     color: AppColor.black),
               ),
+              // Text(
+              //   allMonitorings == AllMonitorings.InitialTreatment
+              //       ? 'Initial Treatment'
+              //       : allMonitorings == AllMonitorings.Establishment
+              //           ? 'Establishment'
+              //           : allMonitorings == AllMonitorings.Maintenance
+              //               ? 'Maintenance'
+              //               : '',
+              //   style: TextStyle(
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 16,
+              //       color: AppColor.black),
+              // ),
             ),
           ),
           const SizedBox(
@@ -182,7 +190,7 @@ class AllMomitoringsMenuOptionsBottomSheet extends StatelessWidget {
                     Get.back();
                     Get.to(
                         () => AddInitialTreatmentMonitoringRecord(
-                              allMonitorings: allMonitorings,
+                              //allMonitorings: allMonitorings,
                             ),
                         transition: Transition.topLevel);
                   },
@@ -197,7 +205,7 @@ class AllMomitoringsMenuOptionsBottomSheet extends StatelessWidget {
                     Get.back();
                     Get.to(
                         () => InitialTreatmentMonitoringHistory(
-                              allMonitorings: allMonitorings,
+                              //allMonitorings: allMonitorings,
                             ),
                         transition: Transition.topLevel);
                   },

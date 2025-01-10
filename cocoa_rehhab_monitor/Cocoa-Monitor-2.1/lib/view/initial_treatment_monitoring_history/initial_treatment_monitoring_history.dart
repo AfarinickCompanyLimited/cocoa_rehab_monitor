@@ -13,11 +13,11 @@ import 'components/initial_treatment_monitoring_card.dart';
 import 'initial_treatment_monitoring_history_controller.dart';
 
 class InitialTreatmentMonitoringHistory extends StatefulWidget {
-  final String allMonitorings;
+  //final String allMonitorings;
 
   const InitialTreatmentMonitoringHistory({
     Key? key,
-    required this.allMonitorings,
+    //required this.allMonitorings,
   }) : super(key: key);
 
   @override
@@ -215,8 +215,8 @@ class _InitialTreatmentMonitoringHistoryState
                                             EditInitialTreatmentMonitoringRecord(
                                               monitor: monitor,
                                               isViewMode: true,
-                                              allMonitorings:
-                                                  widget.allMonitorings,
+                                              // allMonitorings:
+                                              //     widget.allMonitorings,
                                             ),
                                         transition: Transition.fadeIn),
                                     onEditTap: () => Get.to(
@@ -224,8 +224,8 @@ class _InitialTreatmentMonitoringHistoryState
                                             EditInitialTreatmentMonitoringRecord(
                                               monitor: monitor,
                                               isViewMode: false,
-                                              allMonitorings:
-                                                  widget.allMonitorings,
+                                              // allMonitorings:
+                                              //     widget.allMonitorings,
                                             ),
                                         transition: Transition.fadeIn),
                                     onDeleteTap: () =>
@@ -283,8 +283,8 @@ class _InitialTreatmentMonitoringHistoryState
                                               EditInitialTreatmentMonitoringRecord(
                                                 monitor: monitor,
                                                 isViewMode: true,
-                                                allMonitorings:
-                                                    widget.allMonitorings,
+                                                // allMonitorings:
+                                                //     widget.allMonitorings,
                                               ),
                                           transition: Transition.fadeIn),
                                       onEditTap: () {
@@ -293,8 +293,8 @@ class _InitialTreatmentMonitoringHistoryState
                                                     EditInitialTreatmentMonitoringRecord(
                                                       monitor: monitor,
                                                       isViewMode: false,
-                                                      allMonitorings:
-                                                          widget.allMonitorings,
+                                                      // allMonitorings:
+                                                      //     widget.allMonitorings,
                                                     ),
                                                 transition: Transition.fadeIn)
                                             ?.then((data) {
@@ -436,14 +436,14 @@ class _InitialTreatmentMonitoringHistoryState
                               () => EditInitialTreatmentMonitoringRecord(
                                     monitor: monitor,
                                     isViewMode: true,
-                                    allMonitorings: widget.allMonitorings,
+                                   // allMonitorings: widget.allMonitorings,
                                   ),
                               transition: Transition.fadeIn),
                           onEditTap: () => Get.to(
                               () => EditInitialTreatmentMonitoringRecord(
                                     monitor: monitor,
                                     isViewMode: false,
-                                    allMonitorings: widget.allMonitorings,
+                                   // allMonitorings: widget.allMonitorings,
                                   ),
                               transition: Transition.fadeIn),
                           onDeleteTap: () =>

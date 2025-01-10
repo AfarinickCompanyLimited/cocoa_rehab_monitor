@@ -316,7 +316,7 @@ class AddContractorCertificateRecordController extends GetxController {
         sector: int.tryParse(sectorTC!.text),
         contractor: contractor?.contractorId,
         district: globalController.userInfo.value.district,
-        status: SubmissionStatus.submitted,
+        status: SubmissionStatus.pending,
         userId: int.tryParse(
           globalController.userInfo.value.userId!,
         ));
