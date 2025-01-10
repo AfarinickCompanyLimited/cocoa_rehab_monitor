@@ -1094,38 +1094,66 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                       Row(
                         children: [
-                          Spacer(),
-                          MenuCard2(
-                            image: 'assets/images/cocoa_monitor/chainsaw.png',
-                            label: 'Initial\nTreatment',
-                            onTap: () => homeController.showMenuOptions(
-                                AllMomitoringsMenuOptionsBottomSheet(
-                              allMonitorings: AllMonitorings.InitialTreatment,
-                            )),
-                            // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
-                          ),
-                          Spacer(),
-                          MenuCard2(
-                            image:
-                                'assets/images/cocoa_monitor/binoculars.png',
-                            label: 'Maintenance',
-                            onTap: () => homeController.showMenuOptions(
-                                AllMomitoringsMenuOptionsBottomSheet(
-                              allMonitorings: AllMonitorings.Maintenance,
-                            )),
-                            // onTap: () => homeController.showMenuOptions('Maintenance', HomeMenuItem.Monitoring),
-                          ),
-                          Spacer(),
-                          MenuCard2(
-                            image: 'assets/images/cocoa_monitor/cocoa.png',
-                            label: 'Establishment',
-                            onTap: () => homeController.showMenuOptions(
-                                AllMomitoringsMenuOptionsBottomSheet(
-                              allMonitorings: AllMonitorings.Establishment,
-                            )),
-                            // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
-                          ),
-                          Spacer(),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: ()=>homeController.showMenuOptions(
+                                      AllMomitoringsMenuOptionsBottomSheet(
+                                    //allMonitorings: AllMonitorings.InitialTreatment,
+                                  )),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 8),
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.blueGrey.shade100),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset("assets/images/activity.png", ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      'Activity Reporting',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12,
+                                          color: AppColor.black),
+                                    ),
+                                  ],
+                                )),
+                            ),
+                          )
+                          // Spacer(),
+                          // MenuCard3(
+                          //   image: 'assets/images/cocoa_monitor/chainsaw.png',
+                          //   label: 'Initial\nTreatment',
+                          //   onTap: () => homeController.showMenuOptions(
+                          //       AllMomitoringsMenuOptionsBottomSheet(
+                          //     allMonitorings: AllMonitorings.InitialTreatment,
+                          //   )),
+                          //   // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                          // ),
+                          // Spacer(),
+                          // MenuCard2(
+                          //   image:
+                          //       'assets/images/cocoa_monitor/binoculars.png',
+                          //   label: 'Maintenance',
+                          //   onTap: () => homeController.showMenuOptions(
+                          //       AllMomitoringsMenuOptionsBottomSheet(
+                          //     allMonitorings: AllMonitorings.Maintenance,
+                          //   )),
+                          //   // onTap: () => homeController.showMenuOptions('Maintenance', HomeMenuItem.Monitoring),
+                          // ),
+                          // Spacer(),
+                          // MenuCard2(
+                          //   image: 'assets/images/cocoa_monitor/cocoa.png',
+                          //   label: 'Establishment',
+                          //   onTap: () => homeController.showMenuOptions(
+                          //       AllMomitoringsMenuOptionsBottomSheet(
+                          //     allMonitorings: AllMonitorings.Establishment,
+                          //   )),
+                          //   // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
+                          // ),
+                          // Spacer(),
                         ],
                       ),
 

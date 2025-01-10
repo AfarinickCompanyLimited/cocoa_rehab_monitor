@@ -99,122 +99,122 @@ class HomeController extends GetxController {
     });
   }
 
-  setTitle() {
-    switch (check.value) {
-      case 0:
-        title.value = 'Initial Treatment';
-        break;
-      case 1:
-        title.value = 'Maintenance';
-        break;
-      case 2:
-        title.value = 'Establishment';
-        break;
-      case 3:
-        title.value = 'Contractor\'s Certificate';
-        break;
-      case 4:
-        title.value = 'Farm Mapping';
-        break;
-      case 5:
-        title.value = 'Verification Form';
-        break;
-      case 6:
-        title.value = 'Rehab Assistant';
-    }
-  }
-
-  navigateToPageForAddingData() {
-    switch (check.value) {
-        /// initial treatment
-      case 0:
-        Get.to(() => AddInitialTreatmentMonitoringRecord(
-              allMonitorings: AllMonitorings.InitialTreatment,
-            ));
-        break;
-        /// maintenance
-      case 1:
-        Get.to(() => AddInitialTreatmentMonitoringRecord(
-              allMonitorings: AllMonitorings.Maintenance,
-            ));
-        break;
-        /// Establishment
-      case 2:
-        Get.to(() => AddInitialTreatmentMonitoringRecord(
-              allMonitorings: AllMonitorings.Establishment,
-            ));
-        break;
-        /// contractor's certificate
-      case 3:
-        Get.to(() => AddContractorCertificateRecord(
-        ));
-        break;
-        /// map farms
-      case 4:
-        Get.to(() => MapNewFarm(
-        ));
-        break;
-        /// verification form
-      case 5:
-        Get.to(() => AddContractorCertificateVerificationRecord());
-        break;
-        /// rehab assistant
-      case 6: Get.to(() => AddPersonnel());
-        break;
-    }
-  }
-
-  String getGreetings() {
-    var hour = DateTime.now().hour;
-
-    if (hour < 12) {
-      return 'Good Morning';
-    } else if (hour < 17) {
-      return 'Good Afternoon';
-    } else {
-      return 'Good Evening';
-    }
-  }
-
-  navigateToPageForHistory() {
-    switch (check.value) {
-    /// initial treatment
-      case 0:
-        Get.to(() => InitialTreatmentMonitoringHistory(
-          allMonitorings: AllMonitorings.InitialTreatment,
-        ));
-        break;
-    /// maintenance
-      case 1:
-        Get.to(() => InitialTreatmentMonitoringHistory(
-          allMonitorings: AllMonitorings.Maintenance,
-        ));
-        break;
-    /// Establishment
-      case 2:
-        Get.to(() => InitialTreatmentMonitoringHistory(
-          allMonitorings: AllMonitorings.Establishment,
-        ));
-        break;
-    /// contractor's certificate
-      case 3:
-        Get.to(() => ContractorCertificateHistory(
-        ));
-        break;
-    /// map farms
-      case 4:
-        Get.to(() => MapFarmHistory(
-        ));
-        break;
-    /// verification form
-      case 5:
-        Get.to(() => CertificateVerificationHistory());
-        break;
-    /// rehab assistant
-      case 6: Get.to(() => PersonnelHistory());
-      break;
-    }
-  }
+  // setTitle() {
+  //   switch (check.value) {
+  //     case 0:
+  //       title.value = 'Initial Treatment';
+  //       break;
+  //     case 1:
+  //       title.value = 'Maintenance';
+  //       break;
+  //     case 2:
+  //       title.value = 'Establishment';
+  //       break;
+  //     case 3:
+  //       title.value = 'Contractor\'s Certificate';
+  //       break;
+  //     case 4:
+  //       title.value = 'Farm Mapping';
+  //       break;
+  //     case 5:
+  //       title.value = 'Verification Form';
+  //       break;
+  //     case 6:
+  //       title.value = 'Rehab Assistant';
+  //   }
+  // }
+  //
+  // navigateToPageForAdd  ingData() {
+  //   switch (check.value) {
+  //       /// initial treatment
+  //     case 0:
+  //       Get.to(() => AddInitialTreatmentMonitoringRecord(
+  //            // allMonitorings: AllMonitorings.InitialTreatment,
+  //           ));
+  //       break;
+  //       /// maintenance
+  //     case 1:
+  //       Get.to(() => AddInitialTreatmentMonitoringRecord(
+  //            // allMonitorings: AllMonitorings.Maintenance,
+  //           ));
+  //       break;
+  //       /// Establishment
+  //     case 2:
+  //       Get.to(() => AddInitialTreatmentMonitoringRecord(
+  //             //allMonitorings: AllMonitorings.Establishment,
+  //           ));
+  //       break;
+  //       /// contractor's certificate
+  //     case 3:
+  //       Get.to(() => AddContractorCertificateRecord(
+  //       ));
+  //       break;
+  //       /// map farms
+  //     case 4:
+  //       Get.to(() => MapNewFarm(
+  //       ));
+  //       break;
+  //       /// verification form
+  //     case 5:
+  //       Get.to(() => AddContractorCertificateVerificationRecord());
+  //       break;
+  //       /// rehab assistant
+  //     case 6: Get.to(() => AddPersonnel());
+  //       break;
+  //   }
+  // }
+  //
+  // String getGreetings() {
+  //   var hour = DateTime.now().hour;
+  //
+  //   if (hour < 12) {
+  //     return 'Good Morning';
+  //   } else if (hour < 17) {
+  //     return 'Good Afternoon';
+  //   } else {
+  //     return 'Good Evening';
+  //   }
+  // }
+  //
+  // navigateToPageForHistory() {
+  //   switch (check.value) {
+  //   /// initial treatment
+  //     case 0:
+  //       Get.to(() => InitialTreatmentMonitoringHistory(
+  //         allMonitorings: AllMonitorings.InitialTreatment,
+  //       ));
+  //       break;
+  //   /// maintenance
+  //     case 1:
+  //       Get.to(() => InitialTreatmentMonitoringHistory(
+  //         allMonitorings: AllMonitorings.Maintenance,
+  //       ));
+  //       break;
+  //   /// Establishment
+  //     case 2:
+  //       Get.to(() => InitialTreatmentMonitoringHistory(
+  //         allMonitorings: AllMonitorings.Establishment,
+  //       ));
+  //       break;
+  //   /// contractor's certificate
+  //     case 3:
+  //       Get.to(() => ContractorCertificateHistory(
+  //       ));
+  //       break;
+  //   /// map farms
+  //     case 4:
+  //       Get.to(() => MapFarmHistory(
+  //       ));
+  //       break;
+  //   /// verification form
+  //     case 5:
+  //       Get.to(() => CertificateVerificationHistory());
+  //       break;
+  //   /// rehab assistant
+  //     case 6: Get.to(() => PersonnelHistory());
+  //     break;
+  //   }
+  // }
 
   void navigateToAlertScreen() async {
     SharedPreferences? prefs = ShareP.preferences;
