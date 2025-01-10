@@ -121,7 +121,8 @@ class UserInfoApiInterface {
               lastName: data["last_name"],
               group: data["group"],
               staffId: data["staff_id"],
-              sector: data["sector"].toString()
+              sector: data["sector"].toString(),
+              district: data["district"]
           );
 
           GlobalController indexController = Get.find();
