@@ -203,7 +203,7 @@ class EditContractorCertificateRecordController extends GetxController {
         farmSizeHa: double.parse(farmSizeTC!.text),
         community: communityNameTC!.text,
         contractor: contractor?.contractorId,
-        district: regionDistrict?.districtId,
+        district: globalController.userInfo.value.district,
         status: SubmissionStatus.submitted,
         userId: int.tryParse(globalController.userInfo.value.userId!));
 
@@ -350,7 +350,7 @@ class EditContractorCertificateRecordController extends GetxController {
         weedingRounds: int.tryParse(roundsOfWeeding!),
         sector: int.tryParse(sectorTC!.text),
         contractor: contractor?.contractorId,
-        district: regionDistrict?.districtId,
+        district: globalController.userInfo.value.district,
         status: SubmissionStatus.pending,
         userId: int.tryParse(
           globalController.userInfo.value.userId!,
