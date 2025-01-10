@@ -235,6 +235,7 @@ flutter:
     - assets/images/cocoa_monitor/af_logo.png
     - assets/images/cocoa_monitor/k_logo.png
     - assets/icon/knife.svg
+    - assets/images/activity.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
