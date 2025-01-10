@@ -215,20 +215,20 @@ class AddContractorCertificateRecordController extends GetxController {
     data.remove('main_activity');
     data.remove('submission_status');
 
-    print("UID TYPE::::: ${contractorCertificate.uid.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.currentYear.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.currentMonth.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.currrentWeek.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.sector.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.farmRefNumber.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.farmerName.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.farmSizeHa.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.community.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.activity.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.weedingRounds.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.contractor.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.district.runtimeType}");
-    print("DATA TYPE::::: ${contractorCertificate.userId.runtimeType}");
+    // print("UID TYPE::::: ${contractorCertificate.uid.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.currentYear.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.currentMonth.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.currrentWeek.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.sector.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.farmRefNumber.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.farmerName.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.farmSizeHa.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.community.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.activity.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.weedingRounds.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.contractor.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.district.runtimeType}");
+    // print("DATA TYPE::::: ${contractorCertificate.userId.runtimeType}");
 
     data["community"] = communityTC!.text;
 
@@ -301,25 +301,25 @@ class AddContractorCertificateRecordController extends GetxController {
         subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
 
     ContractorCertificateModel contractorCertificate =
-        ContractorCertificateModel(
-            uid: const Uuid().v4(),
-            currentYear: selectedYear,
-            currentMonth: selectedMonth,
-            currrentWeek: int.tryParse(selectedWeek),
-            reportingDate: formattedReportingDate,
-            activity: subActivityList,
-            farmerName: farmerNameTC!.text,
-            farmRefNumber: farmReferenceNumberTC!.text,
-            farmSizeHa: double.parse(farmSizeTC!.text),
-            community: com,
-            weedingRounds: int.tryParse(roundsOfWeeding!),
-            sector: int.tryParse(sectorTC!.text),
-            contractor: contractor?.contractorId,
-            district: regionDistrict?.districtId,
-            status: SubmissionStatus.pending,
-            userId: int.tryParse(
-              globalController.userInfo.value.userId!,
-            ));
+    ContractorCertificateModel(
+        uid: const Uuid().v4(),
+        currentYear: selectedYear,
+        currentMonth: selectedMonth,
+        currrentWeek: int.tryParse(selectedWeek),
+        reportingDate: formattedReportingDate,
+        activity: subActivityList,
+        farmerName: farmerNameTC!.text,
+        farmRefNumber: farmReferenceNumberTC!.text,
+        farmSizeHa: double.parse(farmSizeTC!.text),
+        community: com,
+        weedingRounds: int.tryParse(roundsOfWeeding!),
+        sector: int.tryParse(sectorTC!.text),
+        contractor: contractor?.contractorId,
+        district: globalController.userInfo.value.district,
+        status: SubmissionStatus.submitted,
+        userId: int.tryParse(
+          globalController.userInfo.value.userId!,
+        ));
 
     Map<String, dynamic> data = contractorCertificate.toJson();
     print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
