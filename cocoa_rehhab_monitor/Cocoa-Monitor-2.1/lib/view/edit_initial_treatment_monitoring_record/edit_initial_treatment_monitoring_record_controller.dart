@@ -25,6 +25,7 @@ import 'package:location/location.dart';
 import 'package:ndialog/ndialog.dart';
 
 import '../../controller/entity/cocoa_rehub_monitor/community.dart';
+import '../../controller/model/activity_data_model.dart';
 import 'components/initial_treatment_rehab_assistant_select.dart';
 
 class EditInitialTreatmentMonitoringRecordController extends GetxController {
