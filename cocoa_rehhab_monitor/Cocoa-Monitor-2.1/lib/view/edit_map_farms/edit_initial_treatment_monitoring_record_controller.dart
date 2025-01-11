@@ -9,7 +9,7 @@
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm_from_server.dart';
 // // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/monitor.dart';
-// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
+// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant_model.dart';
 // import 'package:cocoa_monitor/controller/global_controller.dart';
 // import 'package:cocoa_monitor/view/global_components/globals.dart';
 // import 'package:cocoa_monitor/view/home/home_controller.dart';
