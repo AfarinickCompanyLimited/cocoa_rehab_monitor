@@ -1478,6 +1478,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                   addInitialTreatmentMonitoringRecordController
                                       .numberInGroupTC
                                       ?.clear();
+
                                   addInitialTreatmentMonitoringRecordController
                                       .update();
                                 },
@@ -1727,14 +1728,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                               FilteringTextInputFormatter
                                                   .digitsOnly
                                             ],
-                                            // const TextInputType
-                                            //         .numberWithOptions(
-                                            //     signed: true, decimal: false),
-                                            // inputFormatters: <
-                                            //     TextInputFormatter>[
-                                            //   FilteringTextInputFormatter
-                                            //       .digitsOnly
-                                            // ],
+
                                             textInputAction:
                                                 TextInputAction.next,
                                             validator: (String? value) => value!
@@ -1753,18 +1747,6 @@ class _AddInitialTreatmentMonitoringRecordState
                                                   .update();
                                               FocusScope.of(context).unfocus();
                                             }
-                                            // (String? value) {
-                                            //   if (value == null ||
-                                            //       value.isEmpty) {
-                                            //     return "Number of people in the group required";
-                                            //   }
-                                            //   int? intValue =
-                                            //       int.tryParse(value);
-                                            //   if (intValue == null) {
-                                            //     return "$value is not a valid number";
-                                            //   }
-                                            //   return null;
-                                            // }
                                             ),
                                         const SizedBox(height: 20),
                                         const Text(
@@ -1852,29 +1834,6 @@ class _AddInitialTreatmentMonitoringRecordState
                                                     area.toString();
                                               });
                                             }
-
-                                            if(addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value == YesNo.no){
-                                              addInitialTreatmentMonitoringRecordController
-                                                  .rehabAssistants
-                                                  .forEach((ra) {
-                                                ra.areaCovered!.text =
-                                                    addInitialTreatmentMonitoringRecordController
-                                                        .farmSizeTC!.text;
-                                              });
-                                            }
-                                            // addInitialTreatmentMonitoringRecordController
-                                            //     .isCompletedByGroup.value = '';
-                                            //
-                                            // addInitialTreatmentMonitoringRecordController
-                                            //     .clearAllRehabAssistants();
-
-                                            // addInitialTreatmentMonitoringRecordController
-                                            //     .numberInGroupTC
-                                            //     ?.clear();
-                                            // addInitialTreatmentMonitoringRecordController
-                                            //     .contractorNameTC
-                                            //     ?.clear();
-                                            // addInitialTreatmentMonitoringRecordController.areaCoveredRx.value = '';
                                             addInitialTreatmentMonitoringRecordController
                                                 .update();
                                           },
@@ -1923,7 +1882,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                                     addInitialTreatmentMonitoringRecordController
                                                         .numberInGroupTC!
                                                         .text) ??
-                                                0;
+                                                1;
                                             final rehabAssistants =
                                                 addInitialTreatmentMonitoringRecordController
                                                     .rehabAssistants;
@@ -1979,6 +1938,16 @@ class _AddInitialTreatmentMonitoringRecordState
                                 init:
                                     addInitialTreatmentMonitoringRecordController,
                                 builder: (ctx) {
+                                  // if(addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value == YesNo.no){
+                                  //   print("LENGTH ${addInitialTreatmentMonitoringRecordController.rehabAssistants.first.areaCovered?.text}");
+                                  //   /// activate the readonly property of the textfield
+                                  //   addInitialTreatmentMonitoringRecordController.isDoneEqually.value = YesNo.yes;
+                                  //   addInitialTreatmentMonitoringRecordController
+                                  //       .rehabAssistants
+                                  //       .first.areaCovered!.text =
+                                  //       addInitialTreatmentMonitoringRecordController
+                                  //           .farmSizeTC!.text;
+                                  // }
                                   if (addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value == YesNo.no) {
                                     return Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -1999,97 +1968,92 @@ class _AddInitialTreatmentMonitoringRecordState
                                                 fontSize: 13,
                                                 color: AppColor.black)),
                                         Obx(
-                                          () => Column(
-                                              children: List.generate(
-                                                  addInitialTreatmentMonitoringRecordController
-                                                      .rehabAssistants
-                                                      .length, (i) {
-                                            return addInitialTreatmentMonitoringRecordController
-                                                .rehabAssistants[i];
-                                          })),
+                                          () => addInitialTreatmentMonitoringRecordController
+                                                .rehabAssistants.first
                                         ),
                                         const SizedBox(height: 30),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              highlightColor: Colors.green,
-                                              // customBorder: ,
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-
-                                              onTap: () {
-                                                addInitialTreatmentMonitoringRecordController
-                                                    .rehabAssistants
-                                                    .add(InitialTreatmentRehabAssistantSelection(
-                                                        index: RxInt(
-                                                            addInitialTreatmentMonitoringRecordController
-                                                                    .rehabAssistants
-                                                                    .length +
-                                                                1)));
-                                              },
-                                              // behavior: HitTestBehavior.opaque,
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10.0),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 12),
-                                                    child: Text(
-                                                      'Tap to add another rehab assistant',
-                                                      overflow:
-                                                          TextOverflow.clip,
-                                                      style: TextStyle(
-                                                          color:
-                                                              tmtColorPrimary,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            // GestureDetector(
-                                            //   onTap: () {
-                                            //     homeController
-                                            //         .usePolygonDrawingTool();
-                                            //   },
-                                            //   behavior:
-                                            //       HitTestBehavior.opaque,
-                                            //   child: Align(
-                                            //     alignment:
-                                            //         Alignment.bottomRight,
-                                            //     child: Padding(
-                                            //       padding:
-                                            //           const EdgeInsets
-                                            //                   .symmetric(
-                                            //               horizontal:
-                                            //                   10.0),
-                                            //       child: Text(
-                                            //         'Area Tool',
-                                            //         style: TextStyle(
-                                            //             color:
-                                            //                 tmtColorPrimary,
-                                            //             fontWeight:
-                                            //                 FontWeight
-                                            //                     .bold),
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
+                                        // Row(
+                                        //   mainAxisAlignment:
+                                        //       MainAxisAlignment.spaceBetween,
+                                        //   children: [
+                                        //     InkWell(
+                                        //       highlightColor: Colors.green,
+                                        //       // customBorder: ,
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(20),
+                                        //
+                                        //       onTap: () {
+                                        //         addInitialTreatmentMonitoringRecordController
+                                        //             .rehabAssistants
+                                        //             .add(InitialTreatmentRehabAssistantSelection(
+                                        //                 index: RxInt(
+                                        //                     addInitialTreatmentMonitoringRecordController
+                                        //                             .rehabAssistants
+                                        //                             .length +
+                                        //                         1)));
+                                        //       },
+                                        //       // behavior: HitTestBehavior.opaque,
+                                        //       child: Align(
+                                        //         alignment:
+                                        //             Alignment.bottomRight,
+                                        //         child: Padding(
+                                        //           padding: const EdgeInsets
+                                        //               .symmetric(
+                                        //               horizontal: 10.0),
+                                        //           child: Padding(
+                                        //             padding: const EdgeInsets
+                                        //                 .symmetric(
+                                        //                 vertical: 12),
+                                        //             child: Text(
+                                        //               'Tap to add another rehab assistant',
+                                        //               overflow:
+                                        //                   TextOverflow.clip,
+                                        //               style: TextStyle(
+                                        //                   color:
+                                        //                       tmtColorPrimary,
+                                        //                   fontWeight:
+                                        //                       FontWeight.bold),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //     // GestureDetector(
+                                        //     //   onTap: () {
+                                        //     //     homeController
+                                        //     //         .usePolygonDrawingTool();
+                                        //     //   },
+                                        //     //   behavior:
+                                        //     //       HitTestBehavior.opaque,
+                                        //     //   child: Align(
+                                        //     //     alignment:
+                                        //     //         Alignment.bottomRight,
+                                        //     //     child: Padding(
+                                        //     //       padding:
+                                        //     //           const EdgeInsets
+                                        //     //                   .symmetric(
+                                        //     //               horizontal:
+                                        //     //                   10.0),
+                                        //     //       child: Text(
+                                        //     //         'Area Tool',
+                                        //     //         style: TextStyle(
+                                        //     //             color:
+                                        //     //                 tmtColorPrimary,
+                                        //     //             fontWeight:
+                                        //     //                 FontWeight
+                                        //     //                     .bold),
+                                        //     //       ),
+                                        //     //     ),
+                                        //     //   ),
+                                        //     // ),
+                                        //   ],
+                                        // ),
                                       ],
                                     );
                                   } else {
                                     return Container();
                                   }
+
                                 },
                               ),
 
@@ -2535,6 +2499,7 @@ class _AddInitialTreatmentMonitoringRecordState
                               //             )
                               //           : Container();
                               //     }),
+                              SizedBox(height: 20,),
                               const Text(
                                 'General Remarks',
                                 style: TextStyle(fontWeight: FontWeight.w500),
