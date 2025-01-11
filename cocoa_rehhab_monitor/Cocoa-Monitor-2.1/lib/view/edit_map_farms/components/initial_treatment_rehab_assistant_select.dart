@@ -1,6 +1,6 @@
 // // ignore_for_file: must_be_immutable
 
-// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
+// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant_model.dart';
 // import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 // import 'package:cocoa_monitor/view/global_components/text_input_decoration.dart';
 // import 'package:cocoa_monitor/view/utils/style.dart';
