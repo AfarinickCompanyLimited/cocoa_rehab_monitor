@@ -1,6 +1,6 @@
 // import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/personnel_assignment_apis.dart';
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/personnel_assignment.dart';
-// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
+// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant_model.dart';
 // import 'package:cocoa_monitor/controller/global_controller.dart';
 // import 'package:cocoa_monitor/view/global_components/globals.dart';
 // import 'package:cocoa_monitor/view/home/home_controller.dart';
