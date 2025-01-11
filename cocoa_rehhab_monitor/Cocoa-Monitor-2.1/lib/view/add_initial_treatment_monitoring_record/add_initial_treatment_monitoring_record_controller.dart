@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/outbreak_farm_apis.dart';
 import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/activity_data_db.dart';
 import 'package:cocoa_monitor/controller/db/job_order_farms_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
@@ -30,6 +31,8 @@ import 'package:uuid/uuid.dart';
 import '../../controller/db/activity_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/community.dart';
 // import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
+import '../../controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
+import '../../controller/model/activity_data_model.dart';
 import 'components/initial_treatment_rehab_assistant_select.dart';
 
 class AddInitialTreatmentMonitoringRecordController extends GetxController {
@@ -45,7 +48,8 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
-  JobOrderFarmsDbFarmDatabaseHelper jobOrderDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
+  JobOrderFarmsDbFarmDatabaseHelper jobOrderDb =
+      JobOrderFarmsDbFarmDatabaseHelper.instance;
 
   OutbreakFarmApiInterface outbreakFarmApiInterface =
       OutbreakFarmApiInterface();
@@ -112,6 +116,8 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   var isCompletedByGroup = ''.obs;
   var isDoneEqually = ''.obs;
 
+  InitialTreatmentMonitorDatabaseHelper initDb = InitialTreatmentMonitorDatabaseHelper.instance;
+
   PickedMedia? farmPhoto;
   OutbreakFarmFromServer farm = OutbreakFarmFromServer();
   // Activity activity = Activity();
@@ -123,8 +129,11 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   void clearRehabAssistantsToDefault() {
     rehabAssistants.clear();
-    rehabAssistants
-        .add(InitialTreatmentRehabAssistantSelection(index: RxInt(1)));
+    rehabAssistants.add(InitialTreatmentRehabAssistantSelection(
+      index: RxInt(rehabAssistants.length + 1),
+      // areaCovered: TextEditingController(text: '0.0'),
+      // rehabAssistant: RehabAssistant(),
+    ));
   }
 
   void clearAllRehabAssistants() {
@@ -208,11 +217,6 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   // START ADD MONITORING RECORD
   // ==============================================================================
   handleAddMonitoringRecord() async {
-    // if (farmPhoto == null) {
-    //   globals.showSnackBar(
-    //       title: 'Alert', message: 'Kindly add a picture of the farm');
-    //   return;
-    // }
 
     var areaCovered = 0.0;
 
@@ -240,31 +244,18 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
         return;
       }
     }
-
-    // UserCurrentLocation? userCurrentLocation =
-    //     UserCurrentLocation(context: addMonitoringRecordScreenContext);
-    // isButtonDisabled.value = true;
-
-    // userCurrentLocation.getUserLocation(
-    //     forceEnableLocation: true,
-    //     onLocationEnabled: (isEnabled, position) async {
-    //       if (isEnabled == true) {
-    //         if (position!.accuracy! <= MaxLocationAccuracy.max) {
-    //           locationData = position;
-
-    //           isButtonDisabled.value = false;
-
-    Uint8List? pictureOfFarm;
-    if (farmPhoto?.file != null) {
-      final bytes = await io.File(farmPhoto!.path!).readAsBytes();
-      // pictureOfFarm = base64Encode(bytes);
-      pictureOfFarm = bytes;
-    } else {
-      pictureOfFarm =
-          Uint8List(0); // Assign empty Uint8List when pictureOfFarm is null
-    }
-
-    globals.startWait(addMonitoringRecordScreenContext);
+   //
+   //  Uint8List? pictureOfFarm;
+   //  if (farmPhoto?.file != null) {
+   //    final bytes = await io.File(farmPhoto!.path!).readAsBytes();
+   //    // pictureOfFarm = base64Encode(bytes);
+   //    pictureOfFarm = bytes;
+   //  } else {
+   //    pictureOfFarm =
+   //        Uint8List(0); // Assign empty Uint8List when pictureOfFarm is null
+   //  }
+   //
+   // // globals.startWait(addMonitoringRecordScreenContext);
 
     /// Fetch the activity using the main activity
     List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
@@ -275,62 +266,23 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
             areaCoveredHa: double.parse(e.areaCovered?.text ?? '0')))
         .toList();
 
-    // FuelOil fuelOil = FuelOil(
-    //     datePurchased: fuelPurchasedDateTC!.text,
-    //     date: fuelDateTC!.text,
-    //     nameOperatorReceiving: fuelReceivingOperatorTC!.text.trim(),
-    //     quantityLtr: double.parse(fuelQuantityLtrTC!.text.isNotEmpty
-    //         ? fuelQuantityLtrTC!.text.trim()
-    //         : '0.0'),
-    //     qtyPurchased: double.parse(
-    //         fuelQuantityPurchasedTC!.text.isNotEmpty
-    //             ? fuelQuantityPurchasedTC!.text.trim()
-    //             : '0.0'),
-    //     redOilLtr: double.parse(fuelRedOilLtrTC!.text.isNotEmpty
-    //         ? fuelRedOilLtrTC!.text.trim()
-    //         : '0.0'),
-    //     engineOilLtr: double.parse(fuelEngineOilLtrTC!.text.isNotEmpty
-    //         ? fuelEngineOilLtrTC!.text.trim()
-    //         : '0.0'),
-    //     area: double.parse(fuelAreaTC!.text.isNotEmpty
-    //         ? fuelAreaTC!.text.trim()
-    //         : '0.0'),
-    //     remarks: fuelRemarksTC!.text.trim());
-
-    InitialTreatmentMonitor monitor = InitialTreatmentMonitor(
+    InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
       uid: const Uuid().v4(),
       agent: globalController.userInfo.value.userId,
-      monitoringDate: monitoringDateTC!.text,
-      // lat: locationData?.latitude ,
-      // lng: locationData?.longitude,
-      // accuracy: double.parse(
-      //     locationData!.accuracy!.truncateToDecimalPlaces(2).toString()),
-      // staffContact: phoneTC!.text.trim(),
-      // farmTblForeignkey: farm.farmId,
+      completionDate: monitoringDateTC!.text,
+      reportingDate: reportingDateTC!.text,
       mainActivity: act.first.code,
       activity: subActivity.code,
       noRehabAssistants: rehabAssistants.length,
-      // originalFarmSize: farm.farmArea,
       areaCoveredHa: areaCovered,
-      // jobStatus: taskStatus,
       remark: remarksTC!.text,
-      currentFarmPic: pictureOfFarm,
       status: SubmissionStatus.submitted,
       ras: jsonEncode(ras),
-      // fuelOil: jsonEncode(fuelOil)
       farmRefNumber: farmReferenceNumberTC!.text,
-      ///farmSizeHa: double.parse(farmSizeTC!.text),
-      cocoaSeedlingsAlive: int.tryParse(cocoaSeedlingsAliveTC!.text),
-      plantainSeedlingsAlive: int.tryParse(plantainSeedlingsAliveTC!.text),
-      nameOfChedTa: cHEDTATC!.text,
-      contactOfChedTa: cHEDTAContactTC!.text,
-      // community: jsonEncode(community),
-      community: community?.communityId,
-
-      operationalArea: operationalAreaTC!.text,
-      contractorName: contractorNameTC?.text ?? "",
+      farmSizeHa: double.parse(farmSizeTC!.text),
+      community: communityTC!.text,
       numberOfPeopleInGroup: int.tryParse(numberInGroupTC!.text.trim()),
-      completedByContractor: isContractor.value,
+      groupWork: isCompletedByGroup.value,
     );
 
     Map<String, dynamic> data = monitor.toJson();
@@ -345,52 +297,34 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     // data["fuel_oil"] = fuelOil.toJson();
     // data["staff_contact"] = "0248823823";
     print('DATADATADATA ;;; $data');
-    var postResult =
-        await outbreakFarmApiInterface.saveMonitoring(monitor, data);
-    globals.endWait(addMonitoringRecordScreenContext);
+    // var postResult =
+       //  await outbreakFarmApiInterface.saveMonitoring(monitor, data);
+    // globals.endWait(addMonitoringRecordScreenContext);
+    //
+    // if (postResult['status'] == RequestStatus.True ||
+    //     postResult['status'] == RequestStatus.Exist ||
+    //     postResult['status'] == RequestStatus.NoInternet) {
+    //   Get.back();
+    //   globals.showSecondaryDialog(
+    //       context: homeController.homeScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.success,
+    //       okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    // } else if (postResult['status'] == RequestStatus.False) {
+    //   globals.showSecondaryDialog(
+    //       context: addMonitoringRecordScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.error);
+    // } else {}
 
-    if (postResult['status'] == RequestStatus.True ||
-        postResult['status'] == RequestStatus.Exist ||
-        postResult['status'] == RequestStatus.NoInternet) {
-      Get.back();
-      globals.showSecondaryDialog(
-          context: homeController.homeScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.success,
-          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    } else if (postResult['status'] == RequestStatus.False) {
-      globals.showSecondaryDialog(
-          context: addMonitoringRecordScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.error);
-    } else {}
-    // }
-    // else {
-    //   isButtonDisabled.value = false;
-    //   globals.showSnackBar(
-    //       title: 'Alert',
-    //       message:
-    //           'Your location accuracy is too low. It must not be greater than ${MaxLocationAccuracy.max} meters');
-    //   locationData = position;
-    //   update();
-    // }
-    // }
-    //  else {
-    //   isButtonDisabled.value = false;
-    //   globals.showSnackBar(
-    //       title: 'Alert',
-    //       message:
-    //           'Operation could not be completed. Turn on your location and try again');
-    // }
-    // });
   }
   // ==============================================================================
   // END ADD MONITORING RECORD
@@ -433,25 +367,12 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       }
     }
 
-    // UserCurrentLocation? userCurrentLocation =
-    //     UserCurrentLocation(context: addMonitoringRecordScreenContext);
-    // isSaveButtonDisabled.value = true;
-
-    // userCurrentLocation.getUserLocation(
-    //     forceEnableLocation: true,
-    //     onLocationEnabled: (isEnabled, position) async {
-    //       if (isEnabled == true) {
-    //         if (position!.accuracy! <= MaxLocationAccuracy.max) {
-    //           locationData = position;
-
-    //           isSaveButtonDisabled.value = false;
-
-    Uint8List? pictureOfFarm;
-    if (farmPhoto?.file != null) {
-      final bytes = await io.File(farmPhoto!.path!).readAsBytes();
-      // pictureOfFarm = base64Encode(bytes);
-      pictureOfFarm = bytes;
-    }
+    // Uint8List? pictureOfFarm;
+    // if (farmPhoto?.file != null) {
+    //   final bytes = await io.File(farmPhoto!.path!).readAsBytes();
+    //   // pictureOfFarm = base64Encode(bytes);
+    //   pictureOfFarm = bytes;
+    // }
 
     globals.startWait(addMonitoringRecordScreenContext);
 
@@ -464,81 +385,38 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
             areaCoveredHa: double.parse(e.areaCovered?.text ?? '0')))
         .toList();
 
-    // FuelOil fuelOil = FuelOil(
-    //     datePurchased: fuelPurchasedDateTC!.text,
-    //     date: fuelDateTC!.text,
-    //     nameOperatorReceiving: fuelReceivingOperatorTC!.text.trim(),
-    //     quantityLtr: double.parse(fuelQuantityLtrTC!.text.isNotEmpty
-    //         ? fuelQuantityLtrTC!.text.trim()
-    //         : '0.0'),
-    //     qtyPurchased: double.parse(
-    //         fuelQuantityPurchasedTC!.text.isNotEmpty
-    //             ? fuelQuantityPurchasedTC!.text.trim()
-    //             : '0.0'),
-    //     redOilLtr: double.parse(fuelRedOilLtrTC!.text.isNotEmpty
-    //         ? fuelRedOilLtrTC!.text.trim()
-    //         : '0.0'),
-    //     engineOilLtr: double.parse(fuelEngineOilLtrTC!.text.isNotEmpty
-    //         ? fuelEngineOilLtrTC!.text.trim()
-    //         : '0.0'),
-    //     area: double.parse(fuelAreaTC!.text.isNotEmpty
-    //         ? fuelAreaTC!.text.trim()
-    //         : '0.0'),
-    //     remarks: fuelRemarksTC!.text.trim());
-
-    InitialTreatmentMonitor monitor = InitialTreatmentMonitor(
+    InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
       uid: const Uuid().v4(),
       agent: globalController.userInfo.value.userId,
-      monitoringDate: monitoringDateTC!.text,
-      // lat: locationData!.latitude,
-      // lng: locationData!.longitude,
-      // accuracy: double.parse(
-      //     locationData!.accuracy!.truncateToDecimalPlaces(2).toString()),
-      // staffContact: phoneTC!.text.trim(),
-      // farmTblForeignkey: farm.farmId,
+      completionDate: monitoringDateTC!.text,
+      reportingDate: reportingDateTC!.text,
       mainActivity: act.first.code,
       activity: subActivity.code,
       noRehabAssistants: rehabAssistants.length,
-      // originalFarmSize: farm.farmArea,
-      areaCoveredHa: areaCovered, //double.parse(areaCoveredTC!.text),
-      // jobStatus: taskStatus,
+      areaCoveredHa: areaCovered,
       remark: remarksTC!.text,
-      currentFarmPic: pictureOfFarm,
-      status: SubmissionStatus.pending,
+      status: SubmissionStatus.submitted,
       ras: jsonEncode(ras),
-      // fuelOil: jsonEncode(fuelOil)
       farmRefNumber: farmReferenceNumberTC!.text,
       farmSizeHa: double.parse(farmSizeTC!.text),
-      cocoaSeedlingsAlive: int.tryParse(cocoaSeedlingsAliveTC!.text),
-      plantainSeedlingsAlive: int.tryParse(plantainSeedlingsAliveTC!.text),
-      nameOfChedTa: cHEDTATC!.text,
-      contactOfChedTa: cHEDTAContactTC!.text,
-      // community: jsonEncode(community),
-      community: community?.communityId,
-
-      operationalArea: operationalAreaTC!.text,
-      contractorName: contractorNameTC!.text,
+      community: communityTC!.text,
       numberOfPeopleInGroup: int.tryParse(numberInGroupTC!.text.trim()),
       groupWork: isCompletedByGroup.value,
-      completedByContractor: isContractor.value,
-      areaCoveredRx: areaCoveredRx.value,
     );
 
     Map<String, dynamic> data = monitor.toJson();
-    data.remove('ras');
+    //data.remove('ras');
     data.remove('staff_contact');
     data.remove('main_activity');
     data.remove('submission_status');
     // data["rehab_assistants"] = jsonEncode(ras);
-    data["rehab_assistants"] = ras.map((e) => e.toJson()).toList();
+    //data["rehab_assistants"] = ras.map((e) => e.toJson()).toList();
     // data["fuel_oil"] = jsonEncode(fuelOil);
     // data["fuel_oil"] = fuelOil.toJson();
 
     print('THIS IS MONITOR DETAILS:::: $data');
 
-    final initialTreatmentMonitorDao =
-        globalController.database!.initialTreatmentMonitorDao;
-    await initialTreatmentMonitorDao.insertInitialTreatmentMonitor(monitor);
+    await initDb.saveData(monitor);
 
     globals.endWait(addMonitoringRecordScreenContext);
 
