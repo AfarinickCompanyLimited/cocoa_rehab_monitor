@@ -1,5 +1,5 @@
 // import 'package:cocoa_monitor/controller/constants.dart';
-// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
+// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant_model.dart';
 // import 'package:cocoa_monitor/view/global_components/text_input_decoration.dart';
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/farm_status.dart';
 // import 'package:cocoa_monitor/controller/global_controller.dart';
