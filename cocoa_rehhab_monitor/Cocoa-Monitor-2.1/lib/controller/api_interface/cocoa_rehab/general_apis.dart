@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/activity_db.dart';
+import 'package:cocoa_monitor/controller/db/rehab_assistant_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/assigned_farm.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/assigned_outbreak.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/cocoa_age_class.dart';
@@ -29,6 +30,7 @@ import 'package:get/get.dart';
 
 import '../../../view/global_components/globals.dart';
 import '../../db/job_order_farms_db.dart';
+import '../../model/rehab_assistant_model.dart';
 import '../../utils/dio_singleton_instance.dart';
 
 typedef OnOperationCompletedCallback = Function();
@@ -343,14 +345,8 @@ class GeneralCocoaRehabApiInterface {
   // ==============================================================================
 
   Future loadRehabAssistants() async {
-    final rehabAssistantDao = indexController.database!.rehabAssistantDao;
-    // Dio? dio = Dio();
-    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-    //     (HttpClient dioClient) {
-    //   dioClient.badCertificateCallback =
-    //       ((X509Certificate cert, String host, int port) => true);
-    //   return dioClient;
-    // };
+
+    RehabAssistantDatabaseHelper db = RehabAssistantDatabaseHelper.instance;
 
     if (await ConnectionVerify.connectionIsAvailable()) {
       try {
@@ -361,11 +357,11 @@ class GeneralCocoaRehabApiInterface {
         if (response.data['status'] == true && response.data['data'] != null) {
           List resultList = response.data['data'];
 
-          List<RehabAssistant> farmList = resultList.map((e) {
-            return rehabAssistantFromJson(jsonEncode(e));
+          List<RehabAssistantModel> farmList = resultList.map((e) {
+            return rehabAssistantFromJsonModel(jsonEncode(e));
           }).toList();
-          await rehabAssistantDao.deleteAllRehabAssistants();
-          await rehabAssistantDao.bulkInsertRehabAssistants(farmList);
+        await db.deleteAll();
+        await db.bulkInsertData(farmList);
           debugPrint(
               'LOADING REHAB ASSISTANTS TO LOCAL DB SHOULD BE SUCCESSFUL ::: ${response.data?['status']}');
 
