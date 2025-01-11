@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-InitialTreatmentMonitor monitorRecordFromJson(String str) =>
-    InitialTreatmentMonitor.fromJson(json.decode(str));
+InitialTreatmentMonitorModel monitorRecordFromJson(String str) =>
+    InitialTreatmentMonitorModel.fromJson(json.decode(str));
 
-String monitorRecordToJson(InitialTreatmentMonitor data) =>
+String monitorRecordToJson(InitialTreatmentMonitorModel data) =>
     json.encode(data.toJson());
 
-class InitialTreatmentMonitor {
-  InitialTreatmentMonitor({
+class InitialTreatmentMonitorModel {
+  InitialTreatmentMonitorModel({
     this.uid,
     this.agent,
     this.activity,
@@ -24,6 +24,7 @@ class InitialTreatmentMonitor {
     this.community,
     this.numberOfPeopleInGroup,
     this.groupWork,
+    this.sector,
   });
 
   String? uid;
@@ -39,12 +40,13 @@ class InitialTreatmentMonitor {
   int? status;
   String? farmRefNumber;
   double? farmSizeHa;
-  int? community;
+  String? community;
   int? numberOfPeopleInGroup;
   String? groupWork;
+  int? sector;
 
-  factory InitialTreatmentMonitor.fromJson(Map<String, dynamic> json) =>
-      InitialTreatmentMonitor(
+  factory InitialTreatmentMonitorModel.fromJson(Map<String, dynamic> json) =>
+      InitialTreatmentMonitorModel(
         uid: json["uid"],
         agent: json["agent"],
         activity: json["activity"],
@@ -60,6 +62,7 @@ class InitialTreatmentMonitor {
         community: json["community"],
         numberOfPeopleInGroup: json["number_of_people_in_group"],
         groupWork: json["groupWork"],
+        sector: json["sector"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,6 +70,7 @@ class InitialTreatmentMonitor {
     "agent": agent,
     "main_activity": activity,
     "monitoring_date": completionDate,
+    "reporting_date": reportingDate,
     "no_rehab_assistants": noRehabAssistants,
     "area_covered_ha": areaCoveredHa,
     "remark": remark,
@@ -77,6 +81,8 @@ class InitialTreatmentMonitor {
     "community": community,
     "number_of_people_in_group": numberOfPeopleInGroup,
     "groupWork": groupWork,
+    "sector": sector,
+
   };
 }
 
