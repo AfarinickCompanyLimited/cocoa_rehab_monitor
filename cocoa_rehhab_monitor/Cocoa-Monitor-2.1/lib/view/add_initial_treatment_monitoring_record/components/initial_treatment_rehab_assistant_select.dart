@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, avoid_print
 
 import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/rehab_assistant_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
 import 'package:cocoa_monitor/view/add_initial_treatment_monitoring_record/add_initial_treatment_monitoring_record_controller.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
@@ -10,11 +11,13 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/model/rehab_assistant_model.dart';
+
 class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
   RxInt? index = 0.obs;
   TextEditingController? areaCovered;
 
-  RehabAssistant? rehabAssistant;
+  RehabAssistantModel? rehabAssistant;
 
   InitialTreatmentRehabAssistantSelection(
       {Key? key, this.index, this.areaCovered, this.rehabAssistant})
@@ -29,6 +32,19 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
         ? areaCovered
         : areaCovered?.text =
             addInitialTreatmentMonitoringRecordController.areaCoveredRx.value;
+    addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value ==
+            YesNo.no
+        ? areaCovered?.text =
+            addInitialTreatmentMonitoringRecordController.farmSizeTC!.text
+        : areaCovered;
+    addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value ==
+            YesNo.no
+        ? addInitialTreatmentMonitoringRecordController.isDoneEqually.value ==
+            YesNo.yes
+        : addInitialTreatmentMonitoringRecordController.isDoneEqually.value ==
+            YesNo.no;
+
+    RehabAssistantDatabaseHelper db = RehabAssistantDatabaseHelper.instance;
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -65,7 +81,6 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                           onTap: () {
                             if (addInitialTreatmentMonitoringRecordController
                                 .numberInGroupTC!.text.isEmpty) {
-                             
                               addInitialTreatmentMonitoringRecordController
                                   .rehabAssistants
                                   .removeAt(index!.value - 1);
@@ -108,7 +123,7 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    DropdownSearch<RehabAssistant>(
+                    DropdownSearch<RehabAssistantModel>(
                       popupProps: PopupProps.modalBottomSheet(
                           showSelectedItems: true,
                           showSearchBox: true,
@@ -132,7 +147,7 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                               ),
                             ),
                           ),
-                          disabledItemFn: (RehabAssistant s) => false,
+                          disabledItemFn: (RehabAssistantModel s) => false,
                           modalBottomSheetProps: ModalBottomSheetProps(
                             elevation: 6,
                             shape: RoundedRectangleBorder(
@@ -169,14 +184,11 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
 
                       asyncItems: (String filter) async {
                         var response =
-                            await addInitialTreatmentMonitoringRecordController
-                                .globalController.database!.rehabAssistantDao
-                                .findAllRehabAssistants();
+                            await db.getAllData();
                         return response;
                       },
 
-                      itemAsString: (RehabAssistant d) =>
-                          d.rehabName!.toString(),
+                      itemAsString: (RehabAssistantModel d) => d.rehabName ?? "",
                       // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                       compareFn: (rehabAssistant, filter) =>
                           rehabAssistant.rehabName == filter.rehabName,
@@ -221,7 +233,8 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                       () => TextFormField(
                         controller: areaCovered,
                         readOnly: addInitialTreatmentMonitoringRecordController
-                                .isDoneEqually.value==YesNo.no
+                                    .isDoneEqually.value ==
+                                YesNo.no
                             ? false
                             : true,
                         keyboardType: TextInputType.number,
@@ -233,8 +246,12 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                           errorBorder: inputBorder,
                           focusedErrorBorder: inputBorderFocused,
                           filled: true,
-                          fillColor: addInitialTreatmentMonitoringRecordController
-                              .isDoneEqually.value==YesNo.yes?AppColor.lightText:AppColor.xLightBackground,
+                          fillColor:
+                              addInitialTreatmentMonitoringRecordController
+                                          .isDoneEqually.value ==
+                                      YesNo.yes
+                                  ? AppColor.lightText
+                                  : AppColor.xLightBackground,
                         ),
                         textAlign: TextAlign.center,
                         onTap: () {
