@@ -107,16 +107,3 @@ class RehabAssistant {
         "rehab_code": rehabCode,
       };
 }
-
-// Future<Uint8List?> fixImageBug({img}) async {
-//   final fixedImageBytes = await FlutterImageCompress.compressWithFile(
-//     img ?? '',
-//     rotate: 0,
-//     quality: 100,
-//     keepExif: false,
-//     autoCorrectionAngle: true,
-//     format: CompressFormat.jpeg,
-//   );
-
-//   return fixedImageBytes;
-// }
