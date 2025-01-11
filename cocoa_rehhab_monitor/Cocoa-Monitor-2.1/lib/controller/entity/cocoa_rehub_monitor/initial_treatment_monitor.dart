@@ -105,7 +105,7 @@ class InitialTreatmentMonitor {
         lng: json["lng"].toDouble(),
         accuracy: json["accuracy"],
         currentFarmPic: json["current_farm_pic"],
-        ras: jsonEncode(List<Ra>.from(json["ras"].map((x) => Ra.fromJson(x)))),
+       // ras: jsonEncode(List<Ra>.from(json["ras"].map((x) => Ra.fromJson(x)))),
         // fuelOil: jsonEncode(FuelOil.fromJson(json["fuel_oil"])),
         status: json["submission_status"],
         farmRefNumber: json["farm_ref_number"],
@@ -207,22 +207,22 @@ class InitialTreatmentMonitor {
 //     };
 // }
 
-class Ra {
-  Ra({
-    this.rehabAsistant,
-    this.areaCoveredHa,
-  });
-
-  int? rehabAsistant;
-  double? areaCoveredHa;
-
-  factory Ra.fromJson(Map<String, dynamic> json) => Ra(
-        rehabAsistant: json["rehab_asistant"],
-        areaCoveredHa: json["area_covered_ha"].toDouble(),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "rehab_asistant": rehabAsistant,
-        "area_covered_ha": areaCoveredHa,
-      };
-}
+// class Ra {
+//   Ra({
+//     this.rehabAsistant,
+//     this.areaCoveredHa,
+//   });
+//
+//   int? rehabAsistant;
+//   double? areaCoveredHa;
+//
+//   factory Ra.fromJson(Map<String, dynamic> json) => Ra(
+//         rehabAsistant: json["rehab_asistant"],
+//         areaCoveredHa: json["area_covered_ha"].toDouble(),
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//         "rehab_asistant": rehabAsistant,
+//         "area_covered_ha": areaCoveredHa,
+//       };
+// }
