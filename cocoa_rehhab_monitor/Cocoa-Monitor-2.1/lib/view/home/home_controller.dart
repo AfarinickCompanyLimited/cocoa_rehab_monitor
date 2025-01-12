@@ -259,8 +259,8 @@ class HomeController extends GetxController {
           print('VERSION CHECKING COMPLETE');
 
           prefs?.remove(SharedPref.activationTimestamp);
-          //await generalCocoaRehabApiInterface.loadAssignedOutbreaks();
-          //await generalCocoaRehabApiInterface.loadAssignedFarms();
+          await generalCocoaRehabApiInterface.loadAssignedOutbreaks();
+          await generalCocoaRehabApiInterface.loadAssignedFarms();
 
           //await loadPaginatedRehabAssistants();
           await syncData();
@@ -347,12 +347,12 @@ class HomeController extends GetxController {
      globals.startWait(homeScreenContext);
      }
     var futures = await Future.wait([
-      // generalCocoaRehabApiInterface.loadPaginatedRehabAssistants(),
-      // generalCocoaRehabApiInterface.loadRegionContractors(),
-      // generalCocoaRehabApiInterface.loadActivities(),
-      // generalCocoaRehabApiInterface.loadFarms(),
-      // generalCocoaRehabApiInterface.loadJobOrderFarms(),
-      // generalCocoaRehabApiInterface.loadRegionDistricts(),
+     // generalCocoaRehabApiInterface.loadPaginatedRehabAssistants(),
+      generalCocoaRehabApiInterface.loadRegionContractors(),
+      generalCocoaRehabApiInterface.loadActivities(),
+      generalCocoaRehabApiInterface.loadFarms(),
+      generalCocoaRehabApiInterface.loadJobOrderFarms(),
+      generalCocoaRehabApiInterface.loadRegionDistricts(),
       generalCocoaRehabApiInterface.loadRehabAssistants(),
       // generalCocoaRehabApiInterface.loadFarmStatus(),
       // generalCocoaRehabApiInterface.loadAssignedFarms(),
@@ -360,9 +360,9 @@ class HomeController extends GetxController {
       // generalCocoaRehabApiInterface.loadCocoaAgeClass(),
       //generalCocoaRehabApiInterface.loadCommunities(),
       // generalCocoaRehabApiInterface.loadAssignedOutbreaks(),
-      // generalCocoaRehabApiInterface.loadOutbreakFarmsFromServer(),
-      // generalCocoaRehabApiInterface.loadEquipments(),
-      // userInfoApiInterface.setUserFirebaseNotificationToken()
+      generalCocoaRehabApiInterface.loadOutbreakFarmsFromServer(),
+      generalCocoaRehabApiInterface.loadEquipments(),
+      userInfoApiInterface.setUserFirebaseNotificationToken()
     ]).catchError((error) {
       print('ERROR ERROR ERROR ::: $error');
       throw (error);
