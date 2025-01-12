@@ -357,11 +357,11 @@ class GeneralCocoaRehabApiInterface {
         if (response.data['status'] == true && response.data['data'] != null) {
           List resultList = response.data['data'];
 
-          List<RehabAssistantModel> farmList = resultList.map((e) {
-            return rehabAssistantFromJsonModel(jsonEncode(e));
+          List<RehabAssistantModel> rList = resultList.map((e) {
+            return RehabAssistantModel.fromJson(e);
           }).toList();
         await db.deleteAll();
-        await db.bulkInsertData(farmList);
+        await db.bulkInsertData(rList);
           debugPrint(
               'LOADING REHAB ASSISTANTS TO LOCAL DB SHOULD BE SUCCESSFUL ::: ${response.data?['status']}');
 
