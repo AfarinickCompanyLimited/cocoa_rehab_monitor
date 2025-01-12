@@ -84,6 +84,7 @@ class InitialTreatmentMonitorModel {
     "sector": sector,
 
   };
+
 }
 
 class Ra {
