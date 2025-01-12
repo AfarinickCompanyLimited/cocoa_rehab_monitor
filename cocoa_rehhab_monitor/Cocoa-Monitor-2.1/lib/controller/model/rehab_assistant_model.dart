@@ -3,7 +3,7 @@ import 'dart:convert';
 class RehabAssistantModel {
   RehabAssistantModel({
     this.rehabCode,
-    this.rehabName,
+    required this.rehabName,
     this.districtId,
     this.districtName,
     this.regionId,
@@ -22,7 +22,7 @@ class RehabAssistantModel {
   });
 
   final int? rehabCode;
-  final String? rehabName;
+  final String rehabName;
   final int? districtId;
   final String? districtName;
   final String? regionId;
