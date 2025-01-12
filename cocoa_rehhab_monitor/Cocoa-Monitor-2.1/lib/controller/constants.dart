@@ -34,7 +34,7 @@ class URLs {
 
   static String saveContractorCertificateVerification =
       '/api/v1/saveverificationfarms/';
-  static String saveAllMonitorings = '/api/v1/savenewmaintenanceform/';
+  static String saveAllMonitorings = '/api/v1/saveactivityreport/';
   static String assignPersonnel = '/api/v1/saverehabasssignment/';
   static String updateFirebaseToken = '/api/v1/updatefirebase/';
   static String loadFarmStatus = '/api/v1/fetchfarmstatus/';
