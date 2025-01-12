@@ -1,3 +1,4 @@
+import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../model/activity_data_model.dart';
@@ -105,6 +106,31 @@ class InitialTreatmentMonitorDatabaseHelper {
       whereArgs: [data.uid],
     );
   }
+
+  Future<List<InitialTreatmentMonitorModel>> getSubmittedData() async {
+    final db = await instance.database;
+    final result = await db.query(
+      tableName,
+      where: '$status = ?',
+      whereArgs: [SubmissionStatus.submitted],
+    );
+    return result.isNotEmpty
+        ? result.map((json) => InitialTreatmentMonitorModel.fromJson(json)).toList()
+        : [];
+  }
+
+  Future<List<InitialTreatmentMonitorModel>> getPendingData() async {
+    final db = await instance.database;
+    final result = await db.query(
+      tableName,
+      where: '$status = ?',
+      whereArgs: [SubmissionStatus.pending],
+    );
+    return result.isNotEmpty
+        ? result.map((json) => InitialTreatmentMonitorModel.fromJson(json)).toList()
+        : [];
+  }
+
 
   Future<int> deleteData(String id) async {
     final db = await instance.database;
