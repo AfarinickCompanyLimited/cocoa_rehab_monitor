@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cocoa_monitor/controller/constants.dart';
+import 'package:cocoa_monitor/controller/db/activity_data_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_fuel.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm.dart';
@@ -12,6 +13,8 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
+
+import '../../model/activity_data_model.dart';
 
 class OutbreakFarmApiInterface {
   GlobalController indexController = Get.find();
@@ -192,9 +195,8 @@ class OutbreakFarmApiInterface {
 // ===================================================================================
 // START ADD MONITORING
 // ===================================================================================
-  saveMonitoring(InitialTreatmentMonitor monitor, data) async {
-    final initialTreatmentMonitorDao =
-        indexController.database!.initialTreatmentMonitorDao;
+  saveMonitoring(InitialTreatmentMonitorModel monitor, data) async {
+final db = InitialTreatmentMonitorDatabaseHelper.instance;
     Dio? dio = Dio();
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient dioClient) {
@@ -208,16 +210,13 @@ class OutbreakFarmApiInterface {
         var response =
             await dio.post(URLs.baseUrl + URLs.saveAllMonitorings, data: data);
         if (response.data['status'] == RequestStatus.True) {
-          initialTreatmentMonitorDao.insertInitialTreatmentMonitor(monitor);
+          db.saveData(monitor);
           return {
             'status': response.data['status'],
             'connectionAvailable': true,
             'msg': response.data['msg']
           };
         } else if (response.data['status'] == RequestStatus.Exist) {
-          initialTreatmentMonitorDao
-              .updateInitialTreatmentMonitorSubmissionStatusByUID(
-                  SubmissionStatus.submitted, monitor.uid!);
           return {
             'status': response.data['status'],
             'connectionAvailable': true,
@@ -254,7 +253,7 @@ class OutbreakFarmApiInterface {
       }
     } else {
       monitor.status = SubmissionStatus.pending;
-      initialTreatmentMonitorDao.insertInitialTreatmentMonitor(monitor);
+      db.saveData(monitor);
       return {
         'status': RequestStatus.NoInternet,
         'connectionAvailable': false,
