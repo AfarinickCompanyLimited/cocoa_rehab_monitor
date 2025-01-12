@@ -69,7 +69,7 @@ class InitialTreatmentMonitorModel {
     "uid": uid,
     "agent": agent,
     "main_activity": mainActivity,
-    //"activity": activity,
+    "activity": activity,
     "completion_date": completionDate,
     "reporting_date": reportingDate,
     "no_rehab_assistants": noRehabAssistants,
@@ -83,7 +83,27 @@ class InitialTreatmentMonitorModel {
     "number_of_people_in_group": numberOfPeopleInGroup,
     "group_work": groupWork,
     "sector": sector,
+  };
 
+
+  Map<String, dynamic> toJsonOnline() => {
+    "uid": uid,
+    "agent": agent,
+    "main_activity": mainActivity,
+    "activity": activity,
+    "completed_date": completionDate,
+    "reporting_date": reportingDate,
+    "no_rehab_assistants": noRehabAssistants,
+    "area_covered_ha": areaCoveredHa,
+    "remark": remark,
+    "ras": ras,
+    "submission_status": status,
+    "farm_ref_number": farmRefNumber,
+    "farm_size_ha": farmSizeHa,
+    "community": community,
+    "number_of_people_in_group": numberOfPeopleInGroup,
+    "groupWork": groupWork,
+    "sector": sector,
   };
 
 }
