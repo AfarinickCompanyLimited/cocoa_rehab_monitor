@@ -61,7 +61,7 @@ class InitialTreatmentMonitorModel {
         farmSizeHa: json["farm_size_ha"],
         community: json["community"],
         numberOfPeopleInGroup: json["number_of_people_in_group"],
-        groupWork: json["groupWork"],
+        groupWork: json["group_work"],
         sector: json["sector"],
       );
 
