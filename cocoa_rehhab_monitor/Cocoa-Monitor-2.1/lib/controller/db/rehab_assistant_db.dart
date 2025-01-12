@@ -20,7 +20,7 @@ class RehabAssistantDatabaseHelper {
   // Table and Column Definitions
   static const String tableName = "rehab_assistant";
 
-  final String id = 'id';
+
   final String rehabName = 'rehab_name';
   final String rehabCode = 'rehab_code';
   final String phoneNumber = 'phone_number';
@@ -41,6 +41,7 @@ class RehabAssistantDatabaseHelper {
   final String regionId = 'region_id';
   final String regionName = 'region_name';
   final String staffId = 'staff_id';
+  final String po = 'po';
 
   Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
@@ -56,7 +57,6 @@ class RehabAssistantDatabaseHelper {
   Future<void> _createDB(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $tableName (
-        $id INTEGER PRIMARY KEY AUTOINCREMENT,
         $rehabName TEXT,
         $rehabCode INTEGER,
         $phoneNumber TEXT,
@@ -76,7 +76,8 @@ class RehabAssistantDatabaseHelper {
         $designation TEXT,
         $regionId TEXT,
         $regionName TEXT,
-        $staffId TEXT
+        $staffId TEXT,
+        $po TEXT
       )
     ''');
   }
@@ -96,7 +97,7 @@ class RehabAssistantDatabaseHelper {
     final db = await instance.database;
     final result = await db.query(
       tableName,
-      where: '$id = ?',
+      where: '$this.id = ?',
       whereArgs: [id],
     );
     return result.isNotEmpty
@@ -104,19 +105,21 @@ class RehabAssistantDatabaseHelper {
         : null;
   }
 
-  Future<int> updateData(RehabAssistantModel data) async {
+  Future<RehabAssistantModel?> getRehabAssistantByRehabCode(code) async {
     final db = await instance.database;
-    return await db.update(
+    final result = await db.query(
       tableName,
-      data.toJson(),
-      where: '$id = ?',
-      whereArgs: [data.id],
+      where: '$rehabCode = ?',
+      whereArgs: [code],
     );
+    return result.isNotEmpty
+        ? RehabAssistantModel.fromJson(result.first)
+        : null;
   }
 
   Future<int> deleteData(int id) async {
     final db = await instance.database;
-    return await db.delete(tableName, where: '$id = ?', whereArgs: [id]);
+    return await db.delete(tableName, where: '$this.id = ?', whereArgs: [id]);
   }
 
   Future<int> deleteAll() async {
@@ -129,9 +132,7 @@ class RehabAssistantDatabaseHelper {
     int count = 0;
     await db.transaction((txn) async {
       for (final data in allData) {
-        // Convert the model to a Map
         final dataMap = data.toJson();
-
         await txn.insert(tableName, dataMap);
         count++;
       }
