@@ -1,3 +1,4 @@
+import 'package:cocoa_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm_from_server.dart';
@@ -7,8 +8,11 @@ import 'package:cocoa_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/model/activity_data_model.dart';
+import '../../../controller/model/activity_model.dart';
+
 class InitialTreatmentMonitoringCard extends StatelessWidget {
-  final InitialTreatmentMonitor monitor;
+  final InitialTreatmentMonitorModel monitor;
   final Function? onViewTap;
   final Function? onEditTap;
   final Function? onDeleteTap;
@@ -27,13 +31,12 @@ class InitialTreatmentMonitoringCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    // var height = MediaQuery.of(context).size.height;
 
-    GlobalController globalController = Get.find();
+    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppButtonProps.borderRadius),
@@ -137,50 +140,49 @@ class InitialTreatmentMonitoringCard extends StatelessWidget {
             color: AppColor.black.withOpacity(0.3),
           ),
           const SizedBox(height: 8),
-          FutureBuilder(
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      '${snapshot.error} occurred',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  );
-                } else if (snapshot.hasData) {
-                  List<Activity> dataList = snapshot.data as List<Activity>;
-
-                  return Column(
-                    children: [
-                      Text(
-                          "${dataList.first.mainActivity ?? ''} / ${dataList.first.subActivity ?? ''}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: AppColor.black)),
-                      const Text(
-                        "Completed Task",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
-                    ],
-                  );
-                }
-              }
-
-              // Displaying LoadingSpinner to indicate waiting state
-              return const Center(
-                child: Text('...'),
-              );
-            },
-            future: globalController.database!.activityDao
-                .findActivityByCode(monitor.activity!),
-          ),
-          const SizedBox(height: 10),
-          Text(monitor.monitoringDate ?? '',
-              style: TextStyle(color: AppColor.lightText)),
-          const SizedBox(height: 20),
+          // FutureBuilder(
+          //   builder: (ctx, snapshot) {
+          //     if (snapshot.connectionState == ConnectionState.done) {
+          //       if (snapshot.hasError) {
+          //         return Center(
+          //           child: Text(
+          //             '${snapshot.error} occurred',
+          //             style: const TextStyle(fontSize: 18),
+          //           ),
+          //         );
+          //       } else if (snapshot.hasData) {
+          //         List<ActivityModel> dataList = snapshot.data as List<ActivityModel>;
+          //
+          //         return Column(
+          //           children: [
+          //             Text(
+          //                 "${dataList.first.mainActivity ?? ''} / ${dataList.first.subActivity ?? ''}",
+          //                 style: TextStyle(
+          //                     fontWeight: FontWeight.w600,
+          //                     color: AppColor.black)),
+          //             const Text(
+          //               "Completed Task",
+          //               style: TextStyle(
+          //                   fontSize: 13,
+          //                   fontWeight: FontWeight.w600,
+          //                   color: Colors.white),
+          //             ),
+          //           ],
+          //         );
+          //       }
+          //     }
+          //
+          //     // Displaying LoadingSpinner to indicate waiting state
+          //     return const Center(
+          //       child: Text('...'),
+          //     );
+          //   },
+          //   future: db.getActivityByCode(monitor.activity ?? -1),
+          // ),
+          // const SizedBox(height: 10),
+          // Text(monitor.completionDate ?? '',
+          //     style: TextStyle(color: AppColor.lightText)),
+          // const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
