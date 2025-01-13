@@ -25,22 +25,22 @@ class _IssueTabScreenState extends State<IssueTabScreen>
 
   @override
   void initState() {
-    submitIssueTabScreenController.pendingRecordsController
-        .addPageRequestListener((pageKey) {
-      submitIssueTabScreenController.fetchData(
-          status: SubmissionStatus.pending,
-          pageKey: pageKey,
-          controller: submitIssueTabScreenController.pendingRecordsController);
-    });
-
-    submitIssueTabScreenController.submittedRecordsController
-        .addPageRequestListener((pageKey) {
-      submitIssueTabScreenController.fetchData(
-          status: SubmissionStatus.submitted,
-          pageKey: pageKey,
-          controller:
-              submitIssueTabScreenController.submittedRecordsController);
-    });
+    // submitIssueTabScreenController.pendingRecordsController
+    //     .addPageRequestListener((pageKey) {
+    //   submitIssueTabScreenController.fetchData(
+    //       status: SubmissionStatus.pending,
+    //       pageKey: pageKey,
+    //       controller: submitIssueTabScreenController.pendingRecordsController);
+    // });
+    //
+    // submitIssueTabScreenController.submittedRecordsController
+    //     .addPageRequestListener((pageKey) {
+    //   submitIssueTabScreenController.fetchData(
+    //       status: SubmissionStatus.submitted,
+    //       pageKey: pageKey,
+    //       controller:
+    //           submitIssueTabScreenController.submittedRecordsController);
+    // });
 
     submitIssueTabScreenController.tabController =
         TabController(length: 2, vsync: this);

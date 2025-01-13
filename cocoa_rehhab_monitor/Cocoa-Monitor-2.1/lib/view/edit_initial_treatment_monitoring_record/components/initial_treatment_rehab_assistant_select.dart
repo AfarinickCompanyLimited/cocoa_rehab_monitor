@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cocoa_monitor/controller/db/rehab_assistant_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/view/global_components/text_input_decoration.dart';
@@ -8,12 +9,13 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/model/rehab_assistant_model.dart';
 import '../edit_initial_treatment_monitoring_record_controller.dart';
 
 class InitialTreatmentRehabAssistantSelect extends StatelessWidget {
   RxInt? index = 0.obs;
   TextEditingController? areaCovered;
-  RehabAssistant? rehabAssistant;
+  RehabAssistantModel? rehabAssistant;
   String? areaHa;
   final bool? isViewMode;
   InitialTreatmentRehabAssistantSelect(
@@ -120,7 +122,7 @@ class InitialTreatmentRehabAssistantSelect extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    DropdownSearch<RehabAssistant>(
+                    DropdownSearch<RehabAssistantModel>(
                       popupProps: PopupProps.modalBottomSheet(
                           showSelectedItems: true,
                           showSearchBox: true,
@@ -144,7 +146,7 @@ class InitialTreatmentRehabAssistantSelect extends StatelessWidget {
                               ),
                             ),
                           ),
-                          disabledItemFn: (RehabAssistant s) => false,
+                          disabledItemFn: (RehabAssistantModel s) => false,
                           modalBottomSheetProps: ModalBottomSheetProps(
                             elevation: 6,
                             shape: RoundedRectangleBorder(
@@ -179,14 +181,13 @@ class InitialTreatmentRehabAssistantSelect extends StatelessWidget {
                         ),
                       ),
                       asyncItems: (String filter) async {
+                        final db = RehabAssistantDatabaseHelper.instance;
                         var response =
-                            await editInitialTreatmentMonitoringRecordController
-                                .globalController.database!.rehabAssistantDao
-                                .findAllRehabAssistants();
+                            await db.getAllData();
                         return response;
                       },
-                      itemAsString: (RehabAssistant d) =>
-                          d.rehabName!.toString(),
+                      itemAsString: (RehabAssistantModel d) =>
+                          d.rehabName.toString(),
                       // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                       compareFn: (rehabAssistant, filter) =>
                           rehabAssistant.rehabName == filter.rehabName,
