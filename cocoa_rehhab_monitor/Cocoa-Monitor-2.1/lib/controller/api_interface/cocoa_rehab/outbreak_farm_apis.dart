@@ -13,7 +13,7 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import '../../model/activity_data_model.dart';
 
 class OutbreakFarmApiInterface {
@@ -195,72 +195,148 @@ class OutbreakFarmApiInterface {
 // ===================================================================================
 // START ADD MONITORING
 // ===================================================================================
-  saveMonitoring(InitialTreatmentMonitorModel monitor, data) async {
-final db = InitialTreatmentMonitorDatabaseHelper.instance;
-    Dio? dio = Dio();
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient dioClient) {
-      dioClient.badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => true);
-      return dioClient;
-    };
+
+  Future<Map<String, dynamic>> saveMonitoring(
+      InitialTreatmentMonitorModel monitor, Map<String, dynamic> data) async {
+    final db = InitialTreatmentMonitorDatabaseHelper.instance;
+
     if (await ConnectionVerify.connectionIsAvailable()) {
       try {
-        // var response = await dio.post('https://dcbf-154-160-21-151.eu.ngrok.io' + URLs.saveObMonitoring, data: data);
-        var response =
-            await dio.post(URLs.baseUrl + URLs.saveAllMonitorings, data: data);
-        if (response.data['status'] == RequestStatus.True) {
-          db.saveData(monitor);
-          return {
-            'status': response.data['status'],
-            'connectionAvailable': true,
-            'msg': response.data['msg']
-          };
-        } else if (response.data['status'] == RequestStatus.Exist) {
-          return {
-            'status': response.data['status'],
-            'connectionAvailable': true,
-            'msg': response.data['msg'],
-          };
+        final uri = Uri.parse(URLs.baseUrl + URLs.saveAllMonitorings);
+
+        final response = await http.post(
+          uri,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: jsonEncode(data),
+        );
+
+        if (response.statusCode == 200) {
+          final responseData = jsonDecode(response.body);
+
+          if (responseData['status'] == RequestStatus.True) {
+            await db.saveData(monitor);
+            return {
+              'status': responseData['status'],
+              'connectionAvailable': true,
+              'msg': responseData['msg']
+            };
+          } else if (responseData['status'] == RequestStatus.Exist) {
+            return {
+              'status': responseData['status'],
+              'connectionAvailable': true,
+              'msg': responseData['msg'],
+            };
+          } else {
+            print('ERROR ON1 ${responseData['status']}');
+            print('ERROR ON1B ${responseData['msg']}');
+
+            return {
+              'status': responseData['status'],
+              'connectionAvailable': true,
+              'msg': responseData['msg'],
+            };
+          }
         } else {
-          // personnel.status = SubmissionStatus.pending;
-          // personnelDao.insertPersonnel(personnel);
-
-          print('ERROR ON1 ${response.data['status']}');
-          print('ERROR ON1B ${response.data['msg']}');
-
+          print('HTTP ERROR: ${response.body}');
           return {
-            'status': response.data['status'],
+            'status': RequestStatus.False,
             'connectionAvailable': true,
-            'msg': response.data['msg'],
+            'msg': 'Error occurred during the request. Try again later.',
           };
         }
       } catch (e, stackTrace) {
-
-    FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        FirebaseCrashlytics.instance.recordError(e, stackTrace);
         FirebaseCrashlytics.instance.log('saveMonitoring');
 
-
-        print('ERROR ON SAVE INITIAL TREATMENT$e');
-        // personnel.status = SubmissionStatus.pending;
-        // personnelDao.insertPersonnel(personnel);
+        print('ERROR ON SAVE INITIAL TREATMENT: $e');
         return {
           'status': RequestStatus.False,
           'connectionAvailable': true,
           'msg':
-              'There was an error submitting your request. Kindly contact your supervisor',
+          'There was an error submitting your request. Kindly contact your supervisor',
         };
       }
     } else {
       monitor.status = SubmissionStatus.pending;
-      db.saveData(monitor);
+      await db.saveData(monitor);
+
       return {
         'status': RequestStatus.NoInternet,
         'connectionAvailable': false,
-        'msg': 'Data saved locally. Sync when you have internet connection',
+        'msg': 'Data saved locally. Sync when you have an internet connection',
       };
     }
   }
+
+//   saveMonitoring(InitialTreatmentMonitorModel monitor, data) async {
+// final db = InitialTreatmentMonitorDatabaseHelper.instance;
+//     Dio? dio = Dio();
+//     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+//         (HttpClient dioClient) {
+//       dioClient.badCertificateCallback =
+//           ((X509Certificate cert, String host, int port) => true);
+//       return dioClient;
+//     };
+//     if (await ConnectionVerify.connectionIsAvailable()) {
+//       try {
+//         // var response = await dio.post('https://dcbf-154-160-21-151.eu.ngrok.io' + URLs.saveObMonitoring, data: data);
+//         var response =
+//             await dio.post(URLs.baseUrl + URLs.saveAllMonitorings, data: data);
+//         if (response.data['status'] == RequestStatus.True) {
+//           db.saveData(monitor);
+//           return {
+//             'status': response.data['status'],
+//             'connectionAvailable': true,
+//             'msg': response.data['msg']
+//           };
+//         } else if (response.data['status'] == RequestStatus.Exist) {
+//           return {
+//             'status': response.data['status'],
+//             'connectionAvailable': true,
+//             'msg': response.data['msg'],
+//           };
+//         } else {
+//           // personnel.status = SubmissionStatus.pending;
+//           // personnelDao.insertPersonnel(personnel);
+//
+//           print('ERROR ON1 ${response.data['status']}');
+//           print('ERROR ON1B ${response.data['msg']}');
+//
+//           return {
+//             'status': response.data['status'],
+//             'connectionAvailable': true,
+//             'msg': response.data['msg'],
+//           };
+//         }
+//       } catch (e, stackTrace) {
+//
+//     FirebaseCrashlytics.instance.recordError(e, stackTrace);
+//         FirebaseCrashlytics.instance.log('saveMonitoring');
+//
+//
+//         print('ERROR ON SAVE INITIAL TREATMENT$e');
+//         // personnel.status = SubmissionStatus.pending;
+//         // personnelDao.insertPersonnel(personnel);
+//         return {
+//           'status': RequestStatus.False,
+//           'connectionAvailable': true,
+//           'msg':
+//               'There was an error submitting your request. Kindly contact your supervisor',
+//         };
+//       }
+//     } else {
+//       monitor.status = SubmissionStatus.pending;
+//       db.saveData(monitor);
+//       return {
+//         'status': RequestStatus.NoInternet,
+//         'connectionAvailable': false,
+//         'msg': 'Data saved locally. Sync when you have internet connection',
+//       };
+//     }
+//   }
 // ===================================================================================
 // END ADD MONITORING
 // ===================================================================================
