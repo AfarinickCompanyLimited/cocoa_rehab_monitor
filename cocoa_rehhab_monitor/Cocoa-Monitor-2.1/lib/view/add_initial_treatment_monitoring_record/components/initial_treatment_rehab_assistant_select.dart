@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, avoid_print
 
+import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/general_apis.dart';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/rehab_assistant_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
@@ -185,6 +186,7 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                       asyncItems: (String filter) async {
                         var response =
                             await db.getAllData();
+                        print("REHAB RESPONSE ++++++ $response");
                         return response;
                       },
 
