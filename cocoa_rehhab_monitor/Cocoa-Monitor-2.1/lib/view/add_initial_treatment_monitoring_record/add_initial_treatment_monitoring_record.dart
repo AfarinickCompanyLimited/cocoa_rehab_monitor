@@ -1127,13 +1127,14 @@ class _AddInitialTreatmentMonitoringRecordState
                               const SizedBox(
                                 height: 5,
                               ),
-                              DropdownSearch<ActivityModel>(
-                                popupProps: PopupProps.modalBottomSheet(
+                              DropdownSearch<ActivityModel>.multiSelection(
+                                popupProps:
+                                PopupPropsMultiSelection.modalBottomSheet(
                                     showSelectedItems: true,
                                     showSearchBox: true,
                                     title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 15),
                                       child: Center(
                                         child: Text(
                                           'Select sub activity',
@@ -1142,9 +1143,10 @@ class _AddInitialTreatmentMonitoringRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (ActivityModel s) => false,
+                                    disabledItemFn: (ActivityModel s) =>
+                                    false,
                                     modalBottomSheetProps:
-                                        ModalBottomSheetProps(
+                                    ModalBottomSheetProps(
                                       elevation: 6,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(
@@ -1156,14 +1158,17 @@ class _AddInitialTreatmentMonitoringRecordState
                                     searchFieldProps: TextFieldProps(
                                       decoration: InputDecoration(
                                         contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
+                                        const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                            horizontal: 15),
                                         enabledBorder: inputBorder,
                                         focusedBorder: inputBorderFocused,
                                         errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
+                                        focusedErrorBorder:
+                                        inputBorderFocused,
                                         filled: true,
-                                        fillColor: AppColor.xLightBackground,
+                                        fillColor:
+                                        AppColor.xLightBackground,
                                       ),
                                     )),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
@@ -1180,11 +1185,11 @@ class _AddInitialTreatmentMonitoringRecordState
                                 ),
                                 asyncItems: (String filter) async {
                                   var response =
-                                      await addInitialTreatmentMonitoringRecordController
-                                          .db
-                                          .getSubActivityByMainActivity(
-                                              addInitialTreatmentMonitoringRecordController
-                                                  .activity!);
+                                  await addInitialTreatmentMonitoringRecordController
+                                      .db
+                                      .getSubActivityByMainActivity(
+                                      addInitialTreatmentMonitoringRecordController
+                                          .activity!);
 
                                   return response;
                                 },
@@ -1192,17 +1197,32 @@ class _AddInitialTreatmentMonitoringRecordState
                                     d.subActivity.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
-                                    activity == filter,
-                                onChanged: (val) {
+                                activity.subActivity == filter.subActivity,
+                                onChanged: (vals) {
                                   addInitialTreatmentMonitoringRecordController
-                                      .subActivity = val!;
+                                      .subActivityList = vals;
+
+                                  // if (addContractorCertificateRecordController
+                                  //             .subActivity.length ==
+                                  //         1 &&
+                                  //     addContractorCertificateRecordController
+                                  //             .subActivity[0].subActivity
+                                  //             .toString()
+                                  //             .toUpperCase() ==
+                                  //         "weeding of replanted farms"
+                                  //             .toUpperCase()) {
+                                  //
+                                  //   // addContractorCertificateRecordController
+                                  //   //     .subActivityCheck.value = true;
+                                  // }
+
                                   addInitialTreatmentMonitoringRecordController
                                       .update();
                                 },
                                 autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null) {
-                                    return 'Activity is required';
+                                validator: (items) {
+                                  if (items == null || items.isEmpty) {
+                                    return 'Sub activity is required';
                                   } else {
                                     return null;
                                   }

@@ -122,7 +122,8 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   PickedMedia? farmPhoto;
   OutbreakFarmFromServer farm = OutbreakFarmFromServer();
   // Activity activity = Activity();
-  ActivityModel subActivity = ActivityModel();
+  //ActivityModel subActivity = ActivityModel();
+  List<ActivityModel> subActivityList = [];
   String? activity;
 
   List<InitialTreatmentRehabAssistantSelection> rehabAssistants =
@@ -245,6 +246,24 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
         return;
       }
     }
+    var com = "";
+    com += communityTC!.text;
+    com += ",";
+    com += activity!;
+    com += ",";
+    List<int> codes = [];
+
+    var subActivityString = "";
+
+    subActivityList.forEach((element) {
+      codes.add(element.code!);
+      subActivityString += element.code.toString();
+      subActivityString += ",";
+      com += element.subActivity!;
+      com += "#";
+    });
+
+
    //
    //  Uint8List? pictureOfFarm;
    //  if (farmPhoto?.file != null) {
@@ -257,12 +276,8 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
    //  }
    //
 
-    var com = "";
-    com += communityTC!.text;
-    com += ",";
-    com += activity!;
-    com += ",";
-    com += subActivity.subActivity!;
+
+    //com += subActivity.subActivity!;
     com += "-";
 
    globals.startWait(addMonitoringRecordScreenContext);
@@ -284,7 +299,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       completionDate: monitoringDateTC!.text,
       reportingDate: reportingDateTC!.text,
       mainActivity: act.first.code,
-      activity: subActivity.code,
+        activity: subActivityString,
       noRehabAssistants: rehabAssistants.length,
       areaCoveredHa: areaCovered,
       remark: remarksTC!.text,
@@ -299,11 +314,13 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     );
 
     Map<String, dynamic> data = monitor.toJsonOnline();
+    Map<String, dynamic> dataOffline = monitor.toJsonOnline();
     data.remove('ras');
     //data.remove('staff_contact');
     //data.remove('main_activity');
     data.remove('submission_status');
     data["community"] = communityTC!.text;
+    dataOffline["activity"] = subActivityString;
     //data.remove("areaCoveredRx");
     // data["rehab_assistants"] = jsonEncode(ras);
     data["rehab_assistants"] = ras.map((e) => e.toJson()).toList();
@@ -313,7 +330,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     // data["staff_contact"] = "0248823823";
     print('DATADATADATA ;;; $data');
     var postResult =
-         await outbreakFarmApiInterface.saveMonitoring(monitor, data);
+         await outbreakFarmApiInterface.saveMonitoring(dataOffline, data);
     globals.endWait(addMonitoringRecordScreenContext);
 
     if (postResult['status'] == RequestStatus.True ||
@@ -382,26 +399,34 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       }
     }
 
-    // Uint8List? pictureOfFarm;
-    // if (farmPhoto?.file != null) {
-    //   final bytes = await io.File(farmPhoto!.path!).readAsBytes();
-    //   // pictureOfFarm = base64Encode(bytes);
-    //   pictureOfFarm = bytes;
-    // }
-
     var com = "";
-     com += communityTC!.text;
-     com += ",";
-     com += activity!;
-     com += ",";
-     com += subActivity.subActivity!;
-     com += "-";
+    com += communityTC!.text;
+    com += ",";
+    com += activity!;
+    com += ",";
+    List<int> codes = [];
 
-    globals.startWait(addMonitoringRecordScreenContext);
+    var subActivityString = "";
+
+    int index = 0;
+    subActivityList.forEach((element) {
+      codes.add(element.code!);
+      print("CODE ::::: ${element.code}");
+      subActivityString += codes[index].toString();
+      subActivityString += ",";
+      com += element.subActivity!;
+      com += "#";
+
+      index++;
+    });
+    com += "-";
+
+    print("SUB ACTIVITY :::::: $subActivityList");
+
+   globals.startWait(addMonitoringRecordScreenContext);
 
     /// Fetch the activity using the main activity
     List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
-
 
     List<Ra> ras = [];
     for(InitialTreatmentRehabAssistantSelection r in rehabAssistants){
@@ -417,7 +442,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       completionDate: monitoringDateTC!.text,
       reportingDate: reportingDateTC!.text,
       mainActivity: act.first.code,
-      activity: subActivity.code,
+      activity: subActivityString,
       noRehabAssistants: rehabAssistants.length,
       areaCoveredHa: areaCovered,
       remark: remarksTC!.text,
@@ -432,6 +457,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     );
 
     Map<String, dynamic> data = monitor.toJson();
+    Map<String, dynamic> dataOffline = monitor.toJson();
     //data.remove('ras');
     data.remove('staff_contact');
     data.remove('main_activity');
@@ -443,20 +469,20 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     // data["fuel_oil"] = fuelOil.toJson();
 
     print('THIS IS MONITOR DETAILS:::: $data');
-
-    await initDb.saveData(monitor);
-
+    //
+    await initDb.saveData(dataOffline);
+    //
     globals.endWait(addMonitoringRecordScreenContext);
-
+    //
     Get.back();
     globals.showSecondaryDialog(
-        context: homeController.homeScreenContext,
+         context: homeController.homeScreenContext,
         content: const Text(
-          'Monitoring record saved',
+           'Monitoring record saved',
           style: TextStyle(fontSize: 13),
-          textAlign: TextAlign.center,
-        ),
-        status: AlertDialogStatus.success,
+           textAlign: TextAlign.center,
+         ),
+         status: AlertDialogStatus.success,
         okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
     // }
     //  else {
