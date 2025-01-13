@@ -111,6 +111,7 @@ class ContractorCertificateApiInterface {
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
           if (responseData['status'] == RequestStatus.True) {
+
             db.saveData(contractorCertificate);
             return {
               'status': responseData['status'],
