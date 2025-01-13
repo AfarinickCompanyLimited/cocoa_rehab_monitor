@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/outbreak_farm_apis.dart';
 import 'package:cocoa_monitor/controller/constants.dart';
-import 'package:cocoa_monitor/controller/db/activity_data_db.dart';
+import 'package:cocoa_monitor/controller/db/initail_activity_db.dart';
 import 'package:cocoa_monitor/controller/db/job_order_farms_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
@@ -13,6 +13,7 @@ import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_far
 // import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/monitor.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/controller/model/activity_model.dart';
+import 'package:cocoa_monitor/controller/model/rehab_assistant_model.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:cocoa_monitor/controller/model/picked_media.dart';
@@ -255,16 +256,27 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
    //        Uint8List(0); // Assign empty Uint8List when pictureOfFarm is null
    //  }
    //
-   // // globals.startWait(addMonitoringRecordScreenContext);
+
+    var com = "";
+    com += communityTC!.text;
+    com += ",";
+    com += activity!;
+    com += ",";
+    com += subActivity.subActivity!;
+    com += "-";
+
+   globals.startWait(addMonitoringRecordScreenContext);
 
     /// Fetch the activity using the main activity
     List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
 
-    List<Ra> ras = rehabAssistants
-        .map((InitialTreatmentRehabAssistantSelection e) => Ra(
-            rehabAsistant: e.rehabAssistant?.rehabCode,
-            areaCoveredHa: double.parse(e.areaCovered?.text ?? '0')))
-        .toList();
+    List<Ra> ras = [];
+    for(InitialTreatmentRehabAssistantSelection r in rehabAssistants){
+      ras.add(Ra(
+          rehabAsistant: r.rehabAssistant?.rehabCode,
+          areaCoveredHa: double.parse(r.areaCovered?.text ?? '0')));
+      com += "{${r.rehabAssistant!.rehabName} & ${r.rehabAssistant!.rehabCode} & ${r.areaCovered!.text}}%";
+    }
 
     InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
       uid: const Uuid().v4(),
@@ -280,50 +292,53 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       ras: jsonEncode(ras),
       farmRefNumber: farmReferenceNumberTC!.text,
       farmSizeHa: double.parse(farmSizeTC!.text),
-      community: communityTC!.text,
+      community: com,
       numberOfPeopleInGroup: int.tryParse(numberInGroupTC!.text.trim()),
       groupWork: isCompletedByGroup.value,
+      sector: int.tryParse(globalController.userInfo.value.sector!)
     );
 
-    Map<String, dynamic> data = monitor.toJson();
+    Map<String, dynamic> data = monitor.toJsonOnline();
     data.remove('ras');
-    data.remove('staff_contact');
-    data.remove('main_activity');
+    //data.remove('staff_contact');
+    //data.remove('main_activity');
     data.remove('submission_status');
-    data.remove("areaCoveredRx");
+    data["community"] = communityTC!.text;
+    //data.remove("areaCoveredRx");
     // data["rehab_assistants"] = jsonEncode(ras);
     data["rehab_assistants"] = ras.map((e) => e.toJson()).toList();
+    print("Rehabtype::::::::: ${data["rehab_assistants"].runtimeType}");
     // data["fuel_oil"] = jsonEncode(fuelOil);
     // data["fuel_oil"] = fuelOil.toJson();
     // data["staff_contact"] = "0248823823";
     print('DATADATADATA ;;; $data');
-    // var postResult =
-       //  await outbreakFarmApiInterface.saveMonitoring(monitor, data);
-    // globals.endWait(addMonitoringRecordScreenContext);
-    //
-    // if (postResult['status'] == RequestStatus.True ||
-    //     postResult['status'] == RequestStatus.Exist ||
-    //     postResult['status'] == RequestStatus.NoInternet) {
-    //   Get.back();
-    //   globals.showSecondaryDialog(
-    //       context: homeController.homeScreenContext,
-    //       content: Text(
-    //         postResult['msg'],
-    //         style: const TextStyle(fontSize: 13),
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       status: AlertDialogStatus.success,
-    //       okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    // } else if (postResult['status'] == RequestStatus.False) {
-    //   globals.showSecondaryDialog(
-    //       context: addMonitoringRecordScreenContext,
-    //       content: Text(
-    //         postResult['msg'],
-    //         style: const TextStyle(fontSize: 13),
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       status: AlertDialogStatus.error);
-    // } else {}
+    var postResult =
+         await outbreakFarmApiInterface.saveMonitoring(monitor, data);
+    globals.endWait(addMonitoringRecordScreenContext);
+
+    if (postResult['status'] == RequestStatus.True ||
+        postResult['status'] == RequestStatus.Exist ||
+        postResult['status'] == RequestStatus.NoInternet) {
+      Get.back();
+      globals.showSecondaryDialog(
+          context: homeController.homeScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.success,
+          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    } else if (postResult['status'] == RequestStatus.False) {
+      globals.showSecondaryDialog(
+          context: addMonitoringRecordScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.error);
+    } else {}
 
   }
   // ==============================================================================
@@ -374,16 +389,27 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     //   pictureOfFarm = bytes;
     // }
 
+    var com = "";
+     com += communityTC!.text;
+     com += ",";
+     com += activity!;
+     com += ",";
+     com += subActivity.subActivity!;
+     com += "-";
+
     globals.startWait(addMonitoringRecordScreenContext);
 
     /// Fetch the activity using the main activity
     List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
 
-    List<Ra> ras = rehabAssistants
-        .map((InitialTreatmentRehabAssistantSelection e) => Ra(
-            rehabAsistant: e.rehabAssistant?.rehabCode,
-            areaCoveredHa: double.parse(e.areaCovered?.text ?? '0')))
-        .toList();
+
+    List<Ra> ras = [];
+    for(InitialTreatmentRehabAssistantSelection r in rehabAssistants){
+      ras.add(Ra(
+          rehabAsistant: r.rehabAssistant?.rehabCode,
+          areaCoveredHa: double.parse(r.areaCovered?.text ?? '0')));
+      com += "{${r.rehabAssistant!.rehabName} & ${r.rehabAssistant!.rehabCode} & ${r.areaCovered!.text}}%";
+    }
 
     InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
       uid: const Uuid().v4(),
@@ -395,20 +421,22 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       noRehabAssistants: rehabAssistants.length,
       areaCoveredHa: areaCovered,
       remark: remarksTC!.text,
-      status: SubmissionStatus.submitted,
+      status: SubmissionStatus.pending,
       ras: jsonEncode(ras),
       farmRefNumber: farmReferenceNumberTC!.text,
       farmSizeHa: double.parse(farmSizeTC!.text),
-      community: communityTC!.text,
+      community: com,
       numberOfPeopleInGroup: int.tryParse(numberInGroupTC!.text.trim()),
       groupWork: isCompletedByGroup.value,
+      sector: int.tryParse(globalController.userInfo.value.sector!),
     );
 
     Map<String, dynamic> data = monitor.toJson();
     //data.remove('ras');
     data.remove('staff_contact');
     data.remove('main_activity');
-    data.remove('submission_status');
+    data["group_work"] = isCompletedByGroup.value;
+    //data.remove('submission_status');
     // data["rehab_assistants"] = jsonEncode(ras);
     //data["rehab_assistants"] = ras.map((e) => e.toJson()).toList();
     // data["fuel_oil"] = jsonEncode(fuelOil);
