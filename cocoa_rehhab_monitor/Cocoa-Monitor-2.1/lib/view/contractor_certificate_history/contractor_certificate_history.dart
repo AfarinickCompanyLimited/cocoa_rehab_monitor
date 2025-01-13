@@ -168,7 +168,7 @@ class _ContractorCertificateHistoryState
                           future: contractorCertificateHistoryController
                               .db.getSubmittedData(),
                           builder: (ctx, snapshot) {
-                            return _buildListView(ctx, snapshot as AsyncSnapshot<List<ContractorCertificateModel>>);
+                            return _buildListView(false,ctx, snapshot as AsyncSnapshot<List<ContractorCertificateModel>>);
                           },
                         ),
                       ),
@@ -179,7 +179,7 @@ class _ContractorCertificateHistoryState
                           future: contractorCertificateHistoryController
                               .db.getPendingData(),
                           builder: (ctx, snapshot) {
-                            return _buildListView(ctx, snapshot as AsyncSnapshot<List<ContractorCertificateModel>>);
+                            return _buildListView(true,ctx, snapshot as AsyncSnapshot<List<ContractorCertificateModel>>);
                           },
                         ),
                       ),
@@ -195,6 +195,7 @@ class _ContractorCertificateHistoryState
   }
 
   Widget _buildListView(
+      bool edit,
       BuildContext ctx, AsyncSnapshot<List<ContractorCertificateModel>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return Center(
@@ -270,7 +271,7 @@ class _ContractorCertificateHistoryState
               );
             },
             allowDelete: true,
-            allowEdit: true,
+            allowEdit: edit,
           );
         },
         separatorBuilder: (ctx, index) {
