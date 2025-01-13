@@ -1,5 +1,7 @@
+import 'package:cocoa_monitor/controller/db/initail_activity_db.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
+import 'package:cocoa_monitor/controller/model/activity_data_model.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -29,54 +31,19 @@ class InitialTreatmentMonitoringHistoryController extends GetxController {
       submittedRecordsController = PagingController(firstPageKey: 0);
   final int _pageSize = 10;
 
+  InitialTreatmentMonitorDatabaseHelper db = InitialTreatmentMonitorDatabaseHelper.instance;
+
   // INITIALISE
 
-  Future<void> fetchData(
-      {required int status,
-      required int pageKey,
-      required PagingController controller,
-      }) async {
-    try {
-      final data = await globalController.database!.initialTreatmentMonitorDao
-          .findInitialTreatmentMonitorByStatusWithLimit(
-              status, _pageSize, pageKey * _pageSize);
-      final isLastPage = data.length < _pageSize;
-      if (isLastPage) {
-        controller.appendLastPage(data);
-      } else {
-        final nextPageKey = pageKey + 1;
-        controller.appendPage(data, nextPageKey);
-      }
-    } catch (error, stackTrace) {
-      controller.error = error;
-    FirebaseCrashlytics.instance.recordError(error, stackTrace);
-        FirebaseCrashlytics.instance.log('init treatment. fetchData');
-
-
-    }
+  Future<void> fetchData() async {
+    var d = await db.getAllData();
+    print("THE REHAB DATA === $d");
   }
 
-  confirmDeleteMonitoring(InitialTreatmentMonitor monitor) async {
-    globals.primaryConfirmDialog(
-        context: monitoringHistoryScreenContext,
-        title: 'Delete Record',
-        image: 'assets/images/cocoa_monitor/question.png',
-        content: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-              "This action is irreversible. Are you sure you want to delete this record?",
-              textAlign: TextAlign.center),
-        ),
-        cancelTap: () {
-          Get.back();
-        },
-        okayTap: () {
-          Get.back();
-          globalController.database!.initialTreatmentMonitorDao
-              .deleteInitialTreatmentMonitorByUID(monitor.uid!);
-          // update();
-          pendingRecordsController.itemList!.remove(monitor);
-          update(['pendingRecordsBuilder']);
-        });
-  }
+
+
+
+
+
+
 }
