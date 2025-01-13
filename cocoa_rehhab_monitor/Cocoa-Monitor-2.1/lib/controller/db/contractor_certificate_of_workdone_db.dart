@@ -129,7 +129,6 @@ class ContractorCertificateDatabaseHelper {
   Future<List<ContractorCertificateModel>> getAllData() async {
     final db = await instance.database;
     final result = await db.query(tableName);
-
     return result.map((json) => ContractorCertificateModel.fromJson(json)).toList();
   }
 
