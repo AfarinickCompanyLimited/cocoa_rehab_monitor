@@ -1,6 +1,7 @@
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
+import 'package:cocoa_monitor/controller/model/activity_data_model.dart';
 import 'package:cocoa_monitor/view/edit_initial_treatment_monitoring_record/edit_initial_treatment_monitoring_record.dart';
 import 'package:cocoa_monitor/view/global_components/round_icon_button.dart';
 import 'package:cocoa_monitor/view/utils/style.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../controller/db/initail_activity_db.dart';
 import 'components/initial_treatment_monitoring_card.dart';
 import 'initial_treatment_monitoring_history_controller.dart';
 
@@ -35,25 +37,6 @@ class _InitialTreatmentMonitoringHistoryState
 
   @override
   void initState() {
-    initialTreatmentMonitoringHistoryController.pendingRecordsController
-        .addPageRequestListener((pageKey) {
-      initialTreatmentMonitoringHistoryController.fetchData(
-        status: SubmissionStatus.pending,
-        pageKey: pageKey,
-        controller: initialTreatmentMonitoringHistoryController
-            .pendingRecordsController,
-      );
-    });
-
-    initialTreatmentMonitoringHistoryController.submittedRecordsController
-        .addPageRequestListener((pageKey) {
-      initialTreatmentMonitoringHistoryController.fetchData(
-          status: SubmissionStatus.submitted,
-          pageKey: pageKey,
-          controller: initialTreatmentMonitoringHistoryController
-              .submittedRecordsController);
-    });
-
     initialTreatmentMonitoringHistoryController.tabController =
         TabController(length: 2, vsync: this);
     initialTreatmentMonitoringHistoryController.tabController!.addListener(() {
@@ -61,6 +44,12 @@ class _InitialTreatmentMonitoringHistoryState
           initialTreatmentMonitoringHistoryController.tabController!.index;
     });
     super.initState();
+  }
+
+
+  Future<void> _refreshData() async {
+    setState(() {});
+    //await Future.delayed(const Duration(seconds: 1));
   }
 
   @override
@@ -77,6 +66,8 @@ class _InitialTreatmentMonitoringHistoryState
   Widget build(BuildContext context) {
     initialTreatmentMonitoringHistoryController.monitoringHistoryScreenContext =
         context;
+
+    initialTreatmentMonitoringHistoryController.fetchData();
 
     return Material(
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -115,7 +106,7 @@ class _InitialTreatmentMonitoringHistoryState
                           width: 12,
                         ),
                         Expanded(
-                          child: Text('All Monitoring History',
+                          child: Text('Activity Data History',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -196,178 +187,28 @@ class _InitialTreatmentMonitoringHistoryState
                     controller: initialTreatmentMonitoringHistoryController
                         .tabController,
                     children: [
-                      GetBuilder(
-                          init: initialTreatmentMonitoringHistoryController,
-                          builder: (ctx) {
-                            return PagedListView<int, InitialTreatmentMonitor>(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 20, top: 15),
-                              pagingController:
-                                  initialTreatmentMonitoringHistoryController
-                                      .submittedRecordsController,
-                              builderDelegate: PagedChildBuilderDelegate<
-                                  InitialTreatmentMonitor>(
-                                itemBuilder: (context, monitor, index) {
-                                  return InitialTreatmentMonitoringCard(
-                                    monitor: monitor,
-                                    onViewTap: () => Get.to(
-                                        () =>
-                                            EditInitialTreatmentMonitoringRecord(
-                                              monitor: monitor,
-                                              isViewMode: true,
-                                              // allMonitorings:
-                                              //     widget.allMonitorings,
-                                            ),
-                                        transition: Transition.fadeIn),
-                                    onEditTap: () => Get.to(
-                                        () =>
-                                            EditInitialTreatmentMonitoringRecord(
-                                              monitor: monitor,
-                                              isViewMode: false,
-                                              // allMonitorings:
-                                              //     widget.allMonitorings,
-                                            ),
-                                        transition: Transition.fadeIn),
-                                    onDeleteTap: () =>
-                                        initialTreatmentMonitoringHistoryController
-                                            .confirmDeleteMonitoring(monitor),
-                                    allowDelete: false,
-                                    allowEdit: false,
-                                  );
-                                },
-                                noItemsFoundIndicatorBuilder: (context) =>
-                                    Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AppPadding.horizontal),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(height: 50),
-                                      Image.asset(
-                                        'assets/images/cocoa_monitor/empty-box.png',
-                                        width: 60,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        "No data found",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(fontSize: 13),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                      GetBuilder(
-                          init: initialTreatmentMonitoringHistoryController,
-                          id: 'pendingRecordsBuilder',
-                          builder: (ctx) {
-                            return PagedListView<int, InitialTreatmentMonitor>(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 20, top: 15),
-                              pagingController:
-                                  initialTreatmentMonitoringHistoryController
-                                      .pendingRecordsController,
-                              builderDelegate: PagedChildBuilderDelegate<
-                                      InitialTreatmentMonitor>(
-                                  itemBuilder: (context, monitor, index) {
-                                    return InitialTreatmentMonitoringCard(
-                                      monitor: monitor,
-                                      onViewTap: () => Get.to(
-                                          () =>
-                                              EditInitialTreatmentMonitoringRecord(
-                                                monitor: monitor,
-                                                isViewMode: true,
-                                                // allMonitorings:
-                                                //     widget.allMonitorings,
-                                              ),
-                                          transition: Transition.fadeIn),
-                                      onEditTap: () {
-                                        Get.to(
-                                                () =>
-                                                    EditInitialTreatmentMonitoringRecord(
-                                                      monitor: monitor,
-                                                      isViewMode: false,
-                                                      // allMonitorings:
-                                                      //     widget.allMonitorings,
-                                                    ),
-                                                transition: Transition.fadeIn)
-                                            ?.then((data) {
-                                          if (data != null) {
-                                            var item = data['monitor'];
-                                            bool submitted = data['submitted'];
-
-                                            final index =
-                                                initialTreatmentMonitoringHistoryController
-                                                    .pendingRecordsController
-                                                    .itemList
-                                                    ?.indexWhere((p) =>
-                                                        p.uid == item.uid);
-                                            if (index != -1) {
-                                              if (submitted) {
-                                                initialTreatmentMonitoringHistoryController
-                                                    .pendingRecordsController
-                                                    .itemList!
-                                                    .remove(monitor);
-                                                initialTreatmentMonitoringHistoryController
-                                                    .update([
-                                                  'pendingRecordsBuilder'
-                                                ]);
-                                                initialTreatmentMonitoringHistoryController
-                                                    .submittedRecordsController
-                                                    .refresh();
-                                              } else {
-                                                initialTreatmentMonitoringHistoryController
-                                                    .pendingRecordsController
-                                                    .itemList![index!] = item;
-                                                initialTreatmentMonitoringHistoryController
-                                                    .update([
-                                                  'pendingRecordsBuilder'
-                                                ]);
-                                              }
-                                            }
-                                          }
-                                        });
-                                      },
-                                      onDeleteTap: () =>
-                                          initialTreatmentMonitoringHistoryController
-                                              .confirmDeleteMonitoring(monitor),
-                                      allowDelete: true,
-                                      allowEdit: true,
-                                    );
-                                  },
-                                  noItemsFoundIndicatorBuilder: (context) =>
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: AppPadding.horizontal),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(height: 50),
-                                            Image.asset(
-                                              'assets/images/cocoa_monitor/empty-box.png',
-                                              width: 60,
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              "No data found",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall
-                                                  ?.copyWith(fontSize: 13),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                            );
-                          }),
+                      RefreshIndicator(
+                        onRefresh: () =>
+                            _refreshData(),
+                        child: FutureBuilder(
+                          future: initialTreatmentMonitoringHistoryController
+                              .db.getSubmittedData(),
+                          builder: (ctx, snapshot) {
+                            return _buildListView(ctx, snapshot as AsyncSnapshot<List<InitialTreatmentMonitorModel>>);
+                          },
+                        ),
+                      ),
+                      RefreshIndicator(
+                        onRefresh: () =>
+                            _refreshData(),
+                        child: FutureBuilder(
+                          future: initialTreatmentMonitoringHistoryController
+                              .db.getPendingData(),
+                          builder: (ctx, snapshot) {
+                            return _buildListView(ctx, snapshot as AsyncSnapshot<List<InitialTreatmentMonitorModel>>);
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -397,100 +238,105 @@ class _InitialTreatmentMonitoringHistoryState
     );
   }
 
-  Widget personnelStream(
-      GlobalController globalController,
-      InitialTreatmentMonitoringHistoryController
-          initialTreatmentMonitoringHistoryController,
-      int status) {
-    final monitorDao = globalController.database!.initialTreatmentMonitorDao;
-    return StreamBuilder<List<InitialTreatmentMonitor>>(
-      stream: monitorDao.findInitialTreatmentMonitorByStatusStream(status),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<InitialTreatmentMonitor>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: Image.asset('assets/gif/loading2.gif', height: 60),
-          );
-        } else if (snapshot.connectionState == ConnectionState.active ||
-            snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Oops.. Something went wrong'));
-          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.only(left: 15, right: 15, bottom: 85),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // const SizedBox(height: 10,),
-                  ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        InitialTreatmentMonitor monitor = snapshot.data![index];
-                        return InitialTreatmentMonitoringCard(
-                          monitor: monitor,
-                          onViewTap: () => Get.to(
-                              () => EditInitialTreatmentMonitoringRecord(
-                                    monitor: monitor,
-                                    isViewMode: true,
-                                   // allMonitorings: widget.allMonitorings,
-                                  ),
-                              transition: Transition.fadeIn),
-                          onEditTap: () => Get.to(
-                              () => EditInitialTreatmentMonitoringRecord(
-                                    monitor: monitor,
-                                    isViewMode: false,
-                                   // allMonitorings: widget.allMonitorings,
-                                  ),
-                              transition: Transition.fadeIn),
-                          onDeleteTap: () =>
-                              initialTreatmentMonitoringHistoryController
-                                  .confirmDeleteMonitoring(monitor),
-                          allowDelete: status != SubmissionStatus.submitted,
-                          allowEdit: status != SubmissionStatus.submitted,
-                          // allowDelete: status == SubmissionStatus.submitted,
-                          // allowEdit: status == SubmissionStatus.submitted,
-                        );
-                      }),
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppPadding.horizontal),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 50),
-                    Image.asset(
-                      'assets/images/cocoa_monitor/empty-box.png',
-                      width: 80,
+
+  Widget _buildListView(
+      BuildContext ctx, AsyncSnapshot<List<InitialTreatmentMonitorModel>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: AppColor.primary,
+        ),
+      );
+    }
+
+    if (snapshot.hasError) {
+      return Center(
+        child: Text(
+          'Something went wrong: ${snapshot.error}',
+          style: TextStyle(color: Colors.red),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    if (snapshot.hasData) {
+      final data = snapshot.data!;
+
+      if (data.isEmpty) {
+        return Center(
+          child: Text(
+            'No records found',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        );
+      }
+
+      return ListView.separated(
+        itemBuilder: (ctx, index) {
+          return InitialTreatmentMonitoringCard(
+            monitor: data[index],
+            onViewTap: () => Get.to(
+                    () =>
+                    EditInitialTreatmentMonitoringRecord(
+                      monitor: data[index],
+                      isViewMode: true,
+                      // allMonitorings:
+                      //     widget.allMonitorings,
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "There is nothing to display here",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(fontSize: 13),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-        } else {
-          return Center(
-            child: Image.asset('assets/gif/loading2.gif', height: 60),
+                transition: Transition.fadeIn),
+            onEditTap: () {
+              Get.to(
+                      () =>
+                      EditInitialTreatmentMonitoringRecord(
+                        monitor: data[index],
+                        isViewMode: false,
+                        // allMonitorings:
+                        //     widget.allMonitorings,
+                      ),
+                  transition: Transition.fadeIn);
+            },
+            onDeleteTap: () =>
+               confirmDeleteMonitoring(data[index]),
+            allowDelete: true,
+            allowEdit: data[index].status==SubmissionStatus.pending,
           );
-        }
-      },
+        },
+        separatorBuilder: (ctx, index) {
+          return SizedBox(height: 10);
+        },
+        itemCount: data.length,
+      );
+    }
+
+    return Center(
+      child: Text(
+        'No data available.',
+        style: TextStyle(fontSize: 16, color: Colors.grey),
+      ),
     );
   }
+  confirmDeleteMonitoring(InitialTreatmentMonitorModel monitor) async {
+    initialTreatmentMonitoringHistoryController.globals.primaryConfirmDialog(
+        context: initialTreatmentMonitoringHistoryController.monitoringHistoryScreenContext,
+        title: 'Delete Record',
+        image: 'assets/images/cocoa_monitor/question.png',
+        content: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+              "This action is irreversible. Are you sure you want to delete this record?",
+              textAlign: TextAlign.center),
+        ),
+        cancelTap: () {
+          Get.back();
+        },
+        okayTap: () {
+          final db = InitialTreatmentMonitorDatabaseHelper.instance;
+          Get.back();
+          db.deleteData(monitor.uid!);
+          setState(() {
+
+          });
+        });
+  }
 }
+
