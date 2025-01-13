@@ -1112,7 +1112,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                     Image.asset("assets/images/activity.png", color: AppColor.black,),
                                     const SizedBox(width: 10),
                                     Text(
-                                      'Activity Reporting',
+                                      'Rehab assistant(RA) reporting',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 12,
