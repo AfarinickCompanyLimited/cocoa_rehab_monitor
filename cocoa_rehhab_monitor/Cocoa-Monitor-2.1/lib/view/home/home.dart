@@ -1109,7 +1109,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset("assets/images/activity.png", ),
+                                    Image.asset("assets/images/activity.png", color: AppColor.black,),
                                     const SizedBox(width: 10),
                                     Text(
                                       'Activity Reporting',
