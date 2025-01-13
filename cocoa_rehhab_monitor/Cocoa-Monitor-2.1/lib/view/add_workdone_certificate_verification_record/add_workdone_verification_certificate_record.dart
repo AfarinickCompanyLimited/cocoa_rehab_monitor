@@ -255,6 +255,7 @@ class _AddContractorCertificateVerificationRecordState
                               const SizedBox(
                                 height: 5,
                               ),
+
                               DropdownSearch<JobOrderFarmModel>(
                                 popupProps: PopupProps.modalBottomSheet(
                                     showSelectedItems: true,
@@ -271,7 +272,8 @@ class _AddContractorCertificateVerificationRecordState
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (JobOrderFarmModel s) => false,
+                                    disabledItemFn: (JobOrderFarmModel s) =>
+                                    false,
                                     modalBottomSheetProps:
                                     ModalBottomSheetProps(
                                       elevation: 6,
@@ -311,20 +313,25 @@ class _AddContractorCertificateVerificationRecordState
                                   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
                                   var response =
                                   await addContractorCertificateVerificationRecordController
-                                      .jobDb.getAllFarms();
+                                      .jobDb
+                                      .getAllFarms();
                                   print("THE RESPONSE ::::::::::: $response");
                                   return response;
                                 },
-                                itemAsString: (JobOrderFarmModel d) => d.farmId.toString(),
+                                itemAsString: (JobOrderFarmModel d) =>
+                                    d.farmId.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 compareFn: (activity, filter) =>
                                 activity == filter,
                                 onChanged: (val) {
                                   addContractorCertificateVerificationRecordController
-                                      .farmReferenceNumberTC!.text = val!.farmId.toString();
-                                  //addInitialTreatmentMonitoringRecordController.farmerNameTC!.text = val.farmername.toString();
-                                  // addInitialTreatmentMonitoringRecordController.farmSizeTC!.text = val..toString();
-                                  //addInitialTreatmentMonitoringRecordController.communityTC!.text = val.location.toString();
+                                      .farmReferenceNumberTC!
+                                      .text = val!.farmId.toString();
+                                  addContractorCertificateVerificationRecordController
+                                      .farmerNameTC!
+                                      .text = val.farmerName.toString();
+                                  addContractorCertificateVerificationRecordController.farmSizeTC!.text = val.farmSize.toString();
+                                  addContractorCertificateVerificationRecordController.communityNameTC!.text = val.location.toString();
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
                                   //
@@ -353,7 +360,7 @@ class _AddContractorCertificateVerificationRecordState
                               ),
                               const SizedBox(height: 20),
                               const Text(
-                                'Farm Size (in hectares)',
+                                'Farmer name',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(
@@ -361,9 +368,9 @@ class _AddContractorCertificateVerificationRecordState
                               ),
                               TextFormField(
                                 controller:
-                                    addContractorCertificateVerificationRecordController
-                                        .farmSizeTC,
-                                // readOnly: true,
+                                addContractorCertificateVerificationRecordController
+                                    .farmerNameTC,
+                                readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 15, horizontal: 15),
@@ -372,17 +379,48 @@ class _AddContractorCertificateVerificationRecordState
                                   errorBorder: inputBorder,
                                   focusedErrorBorder: inputBorderFocused,
                                   filled: true,
-                                  fillColor: AppColor.xLightBackground,
+                                  fillColor: AppColor.lightText,
                                 ),
                                 keyboardType: TextInputType.numberWithOptions(
                                     decimal: true),
-
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
                                 validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Farm size is required"
-                                        : null,
+                                value!.trim().isEmpty
+                                    ? "Farmer name is required"
+                                    : null,
+                              ),
+                              const SizedBox(height: 20),
+                              const Text(
+                                'Farm Size (in hectares)',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller:
+                                addContractorCertificateVerificationRecordController
+                                    .farmSizeTC,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 15),
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorderFocused,
+                                  errorBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderFocused,
+                                  filled: true,
+                                  fillColor: AppColor.lightText,
+                                ),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                textInputAction: TextInputAction.next,
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (String? value) =>
+                                value!.trim().isEmpty
+                                    ? "Farm size is required"
+                                    : null,
                               ),
                               const SizedBox(height: 20),
                               const Text(
@@ -393,9 +431,10 @@ class _AddContractorCertificateVerificationRecordState
                                 height: 5,
                               ),
                               TextFormField(
+                                readOnly: true,
                                 controller:
-                                    addContractorCertificateVerificationRecordController
-                                        .communityNameTC,
+                                addContractorCertificateVerificationRecordController
+                                    .communityNameTC,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 15, horizontal: 15),
@@ -404,116 +443,111 @@ class _AddContractorCertificateVerificationRecordState
                                   errorBorder: inputBorder,
                                   focusedErrorBorder: inputBorderFocused,
                                   filled: true,
-                                  fillColor: AppColor.xLightBackground,
+                                  fillColor: AppColor.lightText,
                                 ),
                                 keyboardType: TextInputType.text,
                                 textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
                                 validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Community is required"
-                                        : null,
+                                value!.trim().isEmpty
+                                    ? "Community is required"
+                                    : null,
                               ),
-                              const SizedBox(height: 20),
-                              const Text(
-                                'District',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              DropdownSearch<RegionDistrict>(
-                                popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    itemBuilder: (context, item, selected) {
-                                      return ListTile(
-                                        title: Text(
-                                            item.districtName.toString(),
-                                            style: selected
-                                                ? TextStyle(
-                                                    color: AppColor.primary)
-                                                : const TextStyle()),
-                                        subtitle: Text(
-                                          item.regionName.toString(),
-                                        ),
-                                      );
-                                    },
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select district',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    disabledItemFn: (RegionDistrict s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
-                                      ),
-                                    )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                ),
-                                asyncItems: (String filter) async {
-                                  var response =
-                                      await addContractorCertificateVerificationRecordController
-                                          .globalController
-                                          .database!
-                                          .regionDistrictDao
-                                          .findAllRegionDistrict();
-                                  return response;
-                                },
-                                itemAsString: (RegionDistrict d) =>
-                                    d.districtName ?? '',
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (d, filter) =>
-                                    d.districtName == filter.districtName,
-                                onChanged: (val) {
-                                  addContractorCertificateVerificationRecordController
-                                      .regionDistrict = val;
-                                },
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null) {
-                                    return 'District is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // DropdownSearch<RegionDistrict>(
+                              //   popupProps: PopupProps.modalBottomSheet(
+                              //       showSelectedItems: true,
+                              //       showSearchBox: true,
+                              //       itemBuilder: (context, item, selected) {
+                              //         return ListTile(
+                              //           title: Text(
+                              //               item.districtName.toString(),
+                              //               style: selected
+                              //                   ? TextStyle(
+                              //                       color: AppColor.primary)
+                              //                   : const TextStyle()),
+                              //           subtitle: Text(
+                              //             item.regionName.toString(),
+                              //           ),
+                              //         );
+                              //       },
+                              //       title: const Padding(
+                              //         padding:
+                              //             EdgeInsets.symmetric(vertical: 15),
+                              //         child: Center(
+                              //           child: Text(
+                              //             'Select district',
+                              //             style: TextStyle(
+                              //                 fontWeight: FontWeight.w500),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       disabledItemFn: (RegionDistrict s) => false,
+                              //       modalBottomSheetProps:
+                              //           ModalBottomSheetProps(
+                              //         elevation: 6,
+                              //         shape: RoundedRectangleBorder(
+                              //             borderRadius: BorderRadius.only(
+                              //                 topLeft: Radius.circular(
+                              //                     AppBorderRadius.md),
+                              //                 topRight: Radius.circular(
+                              //                     AppBorderRadius.md))),
+                              //       ),
+                              //       searchFieldProps: TextFieldProps(
+                              //         decoration: InputDecoration(
+                              //           contentPadding:
+                              //               const EdgeInsets.symmetric(
+                              //                   vertical: 4, horizontal: 15),
+                              //           enabledBorder: inputBorder,
+                              //           focusedBorder: inputBorderFocused,
+                              //           errorBorder: inputBorder,
+                              //           focusedErrorBorder: inputBorderFocused,
+                              //           filled: true,
+                              //           fillColor: AppColor.xLightBackground,
+                              //         ),
+                              //       )),
+                              //   dropdownDecoratorProps: DropDownDecoratorProps(
+                              //     dropdownSearchDecoration: InputDecoration(
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           vertical: 4, horizontal: 15),
+                              //       enabledBorder: inputBorder,
+                              //       focusedBorder: inputBorderFocused,
+                              //       errorBorder: inputBorder,
+                              //       focusedErrorBorder: inputBorderFocused,
+                              //       filled: true,
+                              //       fillColor: AppColor.xLightBackground,
+                              //     ),
+                              //   ),
+                              //   asyncItems: (String filter) async {
+                              //     var response =
+                              //         await addContractorCertificateVerificationRecordController
+                              //             .globalController
+                              //             .database!
+                              //             .regionDistrictDao
+                              //             .findAllRegionDistrict();
+                              //     return response;
+                              //   },
+                              //   itemAsString: (RegionDistrict d) =>
+                              //       d.districtName ?? '',
+                              //   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                              //   compareFn: (d, filter) =>
+                              //       d.districtName == filter.districtName,
+                              //   onChanged: (val) {
+                              //     addContractorCertificateVerificationRecordController
+                              //         .regionDistrict = val;
+                              //   },
+                              //   autoValidateMode: AutovalidateMode.always,
+                              //   validator: (item) {
+                              //     if (item == null) {
+                              //       return 'District is required';
+                              //     } else {
+                              //       return null;
+                              //     }
+                              //   },
+                              // ),
 
                               /* const Text(
                                 'Community',

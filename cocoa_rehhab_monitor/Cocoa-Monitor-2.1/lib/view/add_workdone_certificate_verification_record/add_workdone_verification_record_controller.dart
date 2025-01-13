@@ -105,6 +105,8 @@ class AddContractorCertificateVerificationRecordController
   var selectedYear = ''.obs;
   var isLoadingLocation = false.obs;
 
+  TextEditingController? farmerNameTC = TextEditingController();
+
   JobOrderFarmsDbFarmDatabaseHelper jobDb = JobOrderFarmsDbFarmDatabaseHelper.instance;
 
   PickedMedia? farmPhoto;
