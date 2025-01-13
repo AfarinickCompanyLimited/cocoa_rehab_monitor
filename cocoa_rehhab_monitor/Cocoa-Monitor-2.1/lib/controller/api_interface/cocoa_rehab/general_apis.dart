@@ -344,15 +344,65 @@ class GeneralCocoaRehabApiInterface {
   // =========================== START GET REHAB ASSISTANTS  ===============================
   // ==============================================================================
 
+  // Future loadRehabAssistants() async {
+  //   RehabAssistantDatabaseHelper db = RehabAssistantDatabaseHelper.instance;
+  //
+  //   if (await ConnectionVerify.connectionIsAvailable()) {
+  //     try {
+  //       var url = '${URLs.baseUrl}${URLs.loadRehabAssistants}';
+  //       print("THE ID IS: ${indexController.userInfo.value.userId}");
+  //       var response = await http.post(
+  //         Uri.parse(url),
+  //         body: jsonEncode({'userid': indexController.userInfo.value.userId}),
+  //         headers: {'Content-Type': 'application/json'},
+  //       );
+  //
+  //       print("loadRehabAssistants: ${response.body}");
+  //
+  //       if (response.statusCode == 200) {
+  //         var responseData = jsonDecode(response.body);
+  //
+  //         if (responseData['status'] == true && responseData['data'] != null) {
+  //           List resultList = responseData['data'];
+  //
+  //           List<RehabAssistantModel> rList = resultList.map((e) {
+  //             return RehabAssistantModel.fromJson(e);
+  //           }).toList();
+  //
+  //           await db.deleteAll();
+  //           await db.bulkInsertData(rList);
+  //           debugPrint(
+  //               'LOADING REHAB ASSISTANTS TO LOCAL DB SHOULD BE SUCCESSFUL ::: ${responseData['status']}');
+  //
+  //           return true;
+  //         } else {
+  //           debugPrint(
+  //               'RESPONSE DATA FAILED IN LOAD REHAB ASSISTANTS ::: ${responseData['status']}');
+  //         }
+  //       } else {
+  //         debugPrint(
+  //             'HTTP REQUEST FAILED WITH STATUS CODE ::: ${response.statusCode}');
+  //       }
+  //     } catch (e, stackTrace) {
+  //       print(' LOAD REHAB ASSISTANTS TO LOCAL DB ERROR ${e.toString()}');
+  //       FirebaseCrashlytics.instance.recordError(e, stackTrace);
+  //       FirebaseCrashlytics.instance.log('loadRehabAssistants');
+  //     }
+  //   }
+  // }
+
   Future loadRehabAssistants() async {
 
     RehabAssistantDatabaseHelper db = RehabAssistantDatabaseHelper.instance;
 
     if (await ConnectionVerify.connectionIsAvailable()) {
+      var url = '${URLs.baseUrl}${URLs.loadRehabAssistants} --- ${indexController.userInfo.value.userId}';
+      print("REHAB ASSISTANTS URL :::: $url");
       try {
         var response = await DioSingleton.instance.post(
             URLs.baseUrl + URLs.loadRehabAssistants,
             data: {'userid': indexController.userInfo.value.userId});
+        print("loadRehabAssistants: ${response.data}");
 
         if (response.data['status'] == true && response.data['data'] != null) {
           List resultList = response.data['data'];
@@ -372,6 +422,7 @@ class GeneralCocoaRehabApiInterface {
               'RESPONSE DATA FAILED IN LOAD REHAB ASSISTANTS ::: ${response.data?['status']}');
         }
       } catch (e, stackTrace) {
+        print("THE ERROR IS: ${e}");
         print(' LOAD REHAB ASSISTANTS TO LOCAL DB ERROR ${e.toString()}');
         FirebaseCrashlytics.instance.recordError(e, stackTrace);
         FirebaseCrashlytics.instance.log('loadRehabAssistants');

@@ -197,7 +197,7 @@ class OutbreakFarmApiInterface {
 // ===================================================================================
 
   Future<Map<String, dynamic>> saveMonitoring(
-      InitialTreatmentMonitorModel monitor, Map<String, dynamic> data) async {
+      Map<String, dynamic> d, Map<String, dynamic> data) async {
     final db = InitialTreatmentMonitorDatabaseHelper.instance;
 
     if (await ConnectionVerify.connectionIsAvailable()) {
@@ -217,7 +217,7 @@ class OutbreakFarmApiInterface {
           final responseData = jsonDecode(response.body);
 
           if (responseData['status'] == RequestStatus.True) {
-            await db.saveData(monitor);
+            await db.saveData(d);
             return {
               'status': responseData['status'],
               'connectionAvailable': true,
@@ -260,8 +260,8 @@ class OutbreakFarmApiInterface {
         };
       }
     } else {
-      monitor.status = SubmissionStatus.pending;
-      await db.saveData(monitor);
+      d["submission_status"] = SubmissionStatus.pending;
+      await db.saveData(d);
 
       return {
         'status': RequestStatus.NoInternet,

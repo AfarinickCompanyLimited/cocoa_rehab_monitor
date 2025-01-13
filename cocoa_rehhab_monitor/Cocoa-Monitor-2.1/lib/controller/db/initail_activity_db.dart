@@ -55,7 +55,7 @@ class InitialTreatmentMonitorDatabaseHelper {
       CREATE TABLE $tableName (
         $uid TEXT PRIMARY KEY,
         $agent TEXT,
-        $activity INTEGER,
+        $activity TEXT,
         $mainActivity INTEGER,
         $completionDate TEXT,
         $reportingDate TEXT,
@@ -74,9 +74,9 @@ class InitialTreatmentMonitorDatabaseHelper {
     ''');
   }
 
-  Future<int> saveData(InitialTreatmentMonitorModel data) async {
+  Future<int> saveData(Map<String, dynamic> data) async {
     final db = await instance.database;
-    return await db.insert(tableName, data.toJson());
+    return await db.insert(tableName, data);
   }
 
   Future<List<InitialTreatmentMonitorModel>> getAllData() async {

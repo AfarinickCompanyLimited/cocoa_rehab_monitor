@@ -43,55 +43,58 @@ class _EditInitialTreatmentMonitoringRecordState
   var names = [].obs;
   var areas = [].obs;
   var codes = [].obs;
+  var subActivity = [];
 
-  splitCommunity() {
+  void splitCommunity() {
     names.clear();
     areas.clear();
     codes.clear();
-    var c = widget.monitor!.community!.split(',');
-    print("THE SPLIT :::::::::::: $c");
 
-    // Handle the third part (assumed to contain the names and areas)
-    var firstItem = c[2].split('-')[0];
-    editInitialTreatmentMonitoringRecordController.ac.value = firstItem;// Extract the first word before '-'
-    var ras = c[2].replaceFirst('$firstItem-', '').split('%');
-    print("THE SPLIT RARA:::::::::::: $ras");
+    // Split the community string at ',' and extract the first part
+    var communityParts = widget.monitor!.community!.split(',');
+    if (communityParts.isNotEmpty) {
+      editInitialTreatmentMonitoringRecordController.communityTC?.text =
+      communityParts[0]; // Set the community text to the first part
+    }
 
-    // Extract names and areas dynamically
-    for (var item in ras) {
-      // Remove unwanted characters like {, }, and whitespace
-      var cleanedItem = item.replaceAll(RegExp(r'[{}]'), '').trim();
-      if (cleanedItem.isNotEmpty) {
-        var parts = cleanedItem.split('&').map((e) => e.trim()).toList();
-        print("""THE PARTS :::::::::::: $parts""");
-        if (parts.length == 3) {
-          names.add(parts[0]); // Name before '&'
-          codes.add(parts[1]); // Name before '&'
-          areas.add(double.parse(parts[2])); // Area after '&'
-        }
+    // Handle the dynamic extraction of names
+    if (communityParts.length > 1) {
+      var activityPart = communityParts[1];
+      var subActivityPart = communityParts[2];
+
+      // Add main activities (second part) as names
+      names.addAll(activityPart.split('#').map((e) => e.trim()));
+
+      // Add sub-activities (third part) dynamically if present
+      if (subActivityPart.contains('-')) {
+        var subActivities = subActivityPart.split('-')[1];
+        names.addAll(subActivities.split('#').map((e) => e.trim()));
       }
     }
 
-    print("NAMES :::::::::::: $names");
-    print("CODES :::::::::::: $codes");
-    print("AREAS :::::::::::: $areas");
-
-    int index = 1;
+    // Populate rehab assistants dynamically
     for (int i = 0; i < names.length; i++) {
-      editInitialTreatmentMonitoringRecordController.rehabAssistants
-          .add(InitialTreatmentRehabAssistantSelect(
-        index: RxInt(i + 1),
-        rehabAssistant: RehabAssistantModel(
-            rehabName: names[i], rehabCode: int.tryParse(codes[i])),
-        areaHa: areas[i].toString(),
-        isViewMode: widget.isViewMode,
-      ));
+      editInitialTreatmentMonitoringRecordController.rehabAssistants.add(
+        InitialTreatmentRehabAssistantSelect(
+          index: RxInt(i + 1),
+          rehabAssistant: RehabAssistantModel(
+            rehabName: names[i],
+            rehabCode: null, // Adjust as needed to extract codes if available
+          ),
+          areaHa: '0.0', // Placeholder for area, adjust as needed
+          isViewMode: widget.isViewMode,
+        ),
+      );
     }
 
+    // Set `isDoneEqually` based on the number of names
     editInitialTreatmentMonitoringRecordController.isDoneEqually.value =
-        names.length > 1 ? "Yes" : "No";
-    editInitialTreatmentMonitoringRecordController.communityTC?.text = c[0];
+    names.length > 1 ? "Yes" : "No";
+
+    print("COMMUNITY TEXT :::::::::::: ${editInitialTreatmentMonitoringRecordController.communityTC?.text}");
+    print("NAMES :::::::::::: $names");
   }
+
 
   @override
   void initState() {
@@ -1281,7 +1284,7 @@ class _EditInitialTreatmentMonitoringRecordState
                                   autoValidateMode: AutovalidateMode.always,
                                   validator: (item) {
                                     if (item == null) {
-                                      return 'Activity is required';
+                                      return 'Sub activity is required';
                                     } else {
                                       return null;
                                     }

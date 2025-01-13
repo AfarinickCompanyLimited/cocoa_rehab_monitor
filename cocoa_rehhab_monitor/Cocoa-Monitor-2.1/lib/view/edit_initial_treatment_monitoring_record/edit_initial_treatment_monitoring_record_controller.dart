@@ -159,6 +159,34 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
     }
   }
 
+  List<int> extractSubActivityCodes(String com) {
+    // Step 1: Split `com` using the `-` delimiter to isolate the main part
+    var mainPart = com.split('-').first;
+
+    // Step 2: Split the main part using `#` to isolate each sub-activity block
+    var subActivities = mainPart.split('#');
+
+    // Step 3: Extract the codes from each sub-activity block
+    List<int> subActivityCodes = [];
+    for (var subActivity in subActivities) {
+      // Each sub-activity block may have a comma-separated value like `code,subActivity`
+      var parts = subActivity.split(',');
+      if (parts.isNotEmpty) {
+        // Parse the first part (the code) to an integer and add it to the list
+        try {
+          int code = int.parse(parts.first);
+          subActivityCodes.add(code);
+        } catch (e) {
+          // Handle any parsing errors if necessary
+          print("Error parsing code: $e");
+        }
+      }
+    }
+
+    return subActivityCodes;
+  }
+
+
   final List<String> taskStatusItems = [
     TaskStatus.pending,
     TaskStatus.ongoing,
@@ -388,7 +416,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
         completionDate: monitoringDateTC!.text,
         reportingDate: reportingDateTC!.text,
         //mainActivity: act.first.code,
-        activity: subActivity.code,
+        // activity: subActivity.code,
         noRehabAssistants: rehabAssistants.length,
         areaCoveredHa: areaCovered,
         remark: remarksTC!.text,
@@ -415,33 +443,33 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
     // data["fuel_oil"] = fuelOil.toJson();
     // data["staff_contact"] = "0248823823";
     print('DATADATADATA ;;; $data');
-    var postResult =
-        await outbreakFarmApiInterface.saveMonitoring(monitor, data);
-    globals.endWait(editMonitoringRecordScreenContext);
-
-    if (postResult['status'] == RequestStatus.True ||
-        postResult['status'] == RequestStatus.Exist ||
-        postResult['status'] == RequestStatus.NoInternet) {
-      Get.back();
-      globals.showSecondaryDialog(
-          context: homeController.homeScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.success,
-          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    } else if (postResult['status'] == RequestStatus.False) {
-      globals.showSecondaryDialog(
-          context: editMonitoringRecordScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.error);
-    } else {}
+    // var postResult =
+    //     await outbreakFarmApiInterface.saveMonitoring(monitor, data);
+    // globals.endWait(editMonitoringRecordScreenContext);
+    //
+    // if (postResult['status'] == RequestStatus.True ||
+    //     postResult['status'] == RequestStatus.Exist ||
+    //     postResult['status'] == RequestStatus.NoInternet) {
+    //   Get.back();
+    //   globals.showSecondaryDialog(
+    //       context: homeController.homeScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.success,
+    //       okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    // } else if (postResult['status'] == RequestStatus.False) {
+    //   globals.showSecondaryDialog(
+    //       context: editMonitoringRecordScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.error);
+    // } else {}
   }
   // ==============================================================================
   // END ADD MONITORING RECORD
@@ -531,7 +559,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       completionDate: monitoringDateTC!.text,
       reportingDate: reportingDateTC!.text,
       mainActivity: act.first.code,
-      activity: subActivity.code,
+      // activity: subActivity.code,
       noRehabAssistants: rehabAssistants.length,
       areaCoveredHa: areaCovered,
       remark: remarksTC!.text,
