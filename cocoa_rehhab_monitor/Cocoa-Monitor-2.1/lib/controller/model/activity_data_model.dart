@@ -29,7 +29,7 @@ class InitialTreatmentMonitorModel {
 
   String? uid;
   String? agent;
-  int? activity;
+  String? activity;
   int? mainActivity;
   String? completionDate;
   String? reportingDate;
