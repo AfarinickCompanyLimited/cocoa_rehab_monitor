@@ -131,10 +131,25 @@ class InitialTreatmentMonitorDatabaseHelper {
         : [];
   }
 
+  Future<int> updateSubmissionStatus(InitialTreatmentMonitorModel data, int newStatus) async {
+    final db = await instance.database;
+    return await db.update(
+      tableName,
+      {status: newStatus},
+      where: '$uid = ?',
+      whereArgs: [data.uid],
+    );
+  }
+
 
   Future<int> deleteData(String id) async {
     final db = await instance.database;
     return await db.delete(tableName, where: '$uid = ?', whereArgs: [id]);
+  }
+
+  Future<int> delete(InitialTreatmentMonitorModel data) async {
+    final db = await instance.database;
+    return await db.delete(tableName, where: '$uid = ?', whereArgs: [data.uid]);
   }
 
   Future<int> deleteAll() async {
