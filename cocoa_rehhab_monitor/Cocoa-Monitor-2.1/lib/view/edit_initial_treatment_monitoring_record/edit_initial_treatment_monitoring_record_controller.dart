@@ -254,6 +254,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       numberOfRAAssignedTC?.text = monitor!.noRehabAssistants.toString();
       monitoringDateTC?.text = monitor!.completionDate ?? '';
       reportingDateTC?.text = monitor!.reportingDate ?? '';
+      print("THE MONITORING DATE :::::::::::: ${monitor!.reportingDate}");
       farmReferenceNumberTC?.text = monitor!.farmRefNumber ?? '';
       farmSizeTC?.text = monitor!.farmSizeHa.toString();
       activity = monitor!.activity!.toString();
@@ -417,7 +418,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
           "{${r.rehabAssistant!.rehabName} & ${r.rehabAssistant!.rehabCode} & ${r.areaCovered!.text}}%";
     }
 
-    InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
+    InitialTreatmentMonitorModel monitorr = InitialTreatmentMonitorModel(
         uid: const Uuid().v4(),
         agent: globalController.userInfo.value.userId,
         completionDate: monitoringDateTC!.text,
@@ -436,8 +437,8 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
         groupWork: isCompletedByGroup.value,
         sector: int.tryParse(globalController.userInfo.value.sector!));
 
-    Map<String, dynamic> data = monitor.toJsonOnline();
-    Map<String, dynamic> dataOffline = monitor.toJsonOnline();
+    Map<String, dynamic> data = monitorr.toJsonOnline();
+    Map<String, dynamic> dataOffline = monitorr.toJson();
     data.remove('ras');
     //data.remove('staff_contact');
     data.remove('main_activity');
@@ -454,22 +455,42 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
     // data["staff_contact"] = "0248823823";
     print('DATADATADATA ;;; $data');
     var postResult =
-        await outbreakFarmApiInterface.saveMonitoring(dataOffline, data);
+        await outbreakFarmApiInterface.saveMonitoring(dataOffline, data, true);
     globals.endWait(editMonitoringRecordScreenContext);
 
     if (postResult['status'] == RequestStatus.True ||
-        postResult['status'] == RequestStatus.Exist ||
         postResult['status'] == RequestStatus.NoInternet) {
-      Get.back();
-      globals.showSecondaryDialog(
-          context: homeController.homeScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.success,
-          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+      if ((postResult['msg'].trim() !=
+          "max threahold met;contact your MnE".trim())) {
+        final dbb = InitialTreatmentMonitorDatabaseHelper.instance;
+        print("THE UID :::::::::: ${monitor!.uid}");
+        dbb.deleteData(monitor!.uid!);
+        dbb.saveData(dataOffline);
+        globals.showSecondaryDialog(
+            context: homeController.homeScreenContext,
+            content: Text(
+              postResult['msg'],
+              style: const TextStyle(fontSize: 13),
+              textAlign: TextAlign.center,
+            ),
+            status: AlertDialogStatus.success,
+            okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+        Get.back();
+        Get.back();
+      } else {
+        Get.back();
+
+        globals.showSecondaryDialog(
+            context: homeController.homeScreenContext,
+            content: Text(
+              postResult['msg'],
+              style: const TextStyle(fontSize: 13),
+              textAlign: TextAlign.center,
+            ),
+            status: AlertDialogStatus.success,
+            okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+      }
+
     } else if (postResult['status'] == RequestStatus.False) {
       globals.showSecondaryDialog(
           context: editMonitoringRecordScreenContext,
@@ -479,7 +500,17 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
             textAlign: TextAlign.center,
           ),
           status: AlertDialogStatus.error);
-    } else {}
+    } else if (postResult['status'] == RequestStatus.Exist) {
+      globals.showSecondaryDialog(
+          context: homeController.homeScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.success,
+          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    }
   }
   // ==============================================================================
   // END ADD MONITORING RECORD
