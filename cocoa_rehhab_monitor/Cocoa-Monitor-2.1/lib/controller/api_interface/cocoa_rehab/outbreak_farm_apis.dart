@@ -215,28 +215,33 @@ class OutbreakFarmApiInterface {
 
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
+          print("THE RESPONSE DATA: ${responseData}");
 
-          if (responseData['status'] == RequestStatus.True) {
-            await db.saveData(d);
+          if (responseData.first['status'] == RequestStatus.True) {
+            if(responseData.first['msg'].trim() != "max threahold met;contact your MnE".trim()){
+              await db.saveData(d);
+              print("YEAh-YEAH");
+            }
+
             return {
-              'status': responseData['status'],
+              'status': responseData.first['status'],
               'connectionAvailable': true,
-              'msg': responseData['msg']
+              'msg': responseData.first['msg']
             };
-          } else if (responseData['status'] == RequestStatus.Exist) {
+          } else if (responseData.first['status'] == RequestStatus.Exist) {
             return {
-              'status': responseData['status'],
+              'status': responseData.first['status'],
               'connectionAvailable': true,
-              'msg': responseData['msg'],
+              'msg': responseData.first['msg'],
             };
           } else {
-            print('ERROR ON1 ${responseData['status']}');
-            print('ERROR ON1B ${responseData['msg']}');
+            // print('ERROR ON1 ${responseData['status']}');
+            // print('ERROR ON1B ${responseData['msg']}');
 
             return {
-              'status': responseData['status'],
+              'status': responseData.first['status'],
               'connectionAvailable': true,
-              'msg': responseData['msg'],
+              'msg': responseData.first['msg'],
             };
           }
         } else {
