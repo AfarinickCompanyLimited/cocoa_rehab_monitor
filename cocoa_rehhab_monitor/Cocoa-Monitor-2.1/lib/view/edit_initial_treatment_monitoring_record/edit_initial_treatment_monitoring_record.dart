@@ -43,58 +43,75 @@ class _EditInitialTreatmentMonitoringRecordState
   var names = [].obs;
   var areas = [].obs;
   var codes = [].obs;
-  var subActivity = [];
 
   void splitCommunity() {
+
+    print("DATATATATTATTATA=====${widget.monitor!.toJsonOnline()}");
+    // Clear existing data
     names.clear();
     areas.clear();
     codes.clear();
 
-    // Split the community string at ',' and extract the first part
+    // Split the community string at ',' and extract the required parts
     var communityParts = widget.monitor!.community!.split(',');
+    var subActivitiesCodes = widget.monitor!.activity!.split(',').where((e) => e.isNotEmpty).toList();
+
     if (communityParts.isNotEmpty) {
+      // Extract the main community text
       editInitialTreatmentMonitoringRecordController.communityTC?.text =
-      communityParts[0]; // Set the community text to the first part
-    }
+      communityParts[0];
 
-    // Handle the dynamic extraction of names
-    if (communityParts.length > 1) {
-      var activityPart = communityParts[1];
-      var subActivityPart = communityParts[2];
+      // Split the part containing names, codes, and areas
+      var rawDetails = communityParts[2].split('-')[1]; // Extract the part after '-'
+      var detailsList = rawDetails.split('%'); // Split by '%'
 
-      // Add main activities (second part) as names
-      names.addAll(activityPart.split('#').map((e) => e.trim()));
+      for (var detail in detailsList) {
+        // Remove any surrounding braces and split by '&'
+        var cleanDetail = detail.replaceAll(RegExp(r'[{}]'), '').split('&');
 
-      // Add sub-activities (third part) dynamically if present
-      if (subActivityPart.contains('-')) {
-        var subActivities = subActivityPart.split('-')[1];
-        names.addAll(subActivities.split('#').map((e) => e.trim()));
+        if (cleanDetail.length == 3) {
+          names.add(cleanDetail[0].trim());
+          codes.add(int.parse(cleanDetail[1].trim()));
+          areas.add(double.parse(cleanDetail[2].trim()));
+        }
       }
-    }
 
-    // Populate rehab assistants dynamically
-    for (int i = 0; i < names.length; i++) {
-      editInitialTreatmentMonitoringRecordController.rehabAssistants.add(
-        InitialTreatmentRehabAssistantSelect(
-          index: RxInt(i + 1),
-          rehabAssistant: RehabAssistantModel(
-            rehabName: names[i],
-            rehabCode: null, // Adjust as needed to extract codes if available
+      // Populate subActivityList from communityParts[2]
+      var c = communityParts[2].split("-")[0];
+      var c2 = c.split(",")[0].split("#").map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+      print("c2 :::::::::::: ${c2}");
+      for (int i=0; i<c2.length; i++) {
+        editInitialTreatmentMonitoringRecordController.subActivityList.add(
+          ActivityModel(code: int.tryParse(subActivitiesCodes[i]), mainActivity: "", subActivity: c2[i].trim()),
+        );
+      }
+
+      // Populate rehab assistants dynamically
+      for (int i = 0; i < names.length; i++) {
+        editInitialTreatmentMonitoringRecordController.rehabAssistants.add(
+          InitialTreatmentRehabAssistantSelect(
+            index: RxInt(i + 1),
+            rehabAssistant: RehabAssistantModel(
+              rehabName: names[i],
+              rehabCode: codes[i],
+            ),
+            areaHa: areas[i].toString(),
+            isViewMode: widget.isViewMode,
           ),
-          areaHa: '0.0', // Placeholder for area, adjust as needed
-          isViewMode: widget.isViewMode,
-        ),
-      );
+        );
+      }
+
+      // Set `isDoneEqually` based on the number of names
+      editInitialTreatmentMonitoringRecordController.isDoneEqually.value =
+      names.length > 1 ? "Yes" : "No";
+
+      // Print debug information
+      print("Names :::::::::::: $names");
+      print("Codes :::::::::::: $codes");
+      print("Areas :::::::::::: $areas");
+      print("COMMUNITY TEXT :::::::::::: ${editInitialTreatmentMonitoringRecordController.communityTC?.text}");
     }
-
-    // Set `isDoneEqually` based on the number of names
-    editInitialTreatmentMonitoringRecordController.isDoneEqually.value =
-    names.length > 1 ? "Yes" : "No";
-
-    print("COMMUNITY TEXT :::::::::::: ${editInitialTreatmentMonitoringRecordController.communityTC?.text}");
-    print("NAMES :::::::::::: $names");
   }
-
 
   @override
   void initState() {
@@ -1199,13 +1216,14 @@ class _EditInitialTreatmentMonitoringRecordState
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                DropdownSearch<ActivityModel>(
-                                  popupProps: PopupProps.modalBottomSheet(
+                                DropdownSearch<ActivityModel>.multiSelection(
+                                  popupProps:
+                                  PopupPropsMultiSelection.modalBottomSheet(
                                       showSelectedItems: true,
                                       showSearchBox: true,
                                       title: const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 15),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 15),
                                         child: Center(
                                           child: Text(
                                             'Select sub activity',
@@ -1215,9 +1233,9 @@ class _EditInitialTreatmentMonitoringRecordState
                                         ),
                                       ),
                                       disabledItemFn: (ActivityModel s) =>
-                                          false,
+                                      false,
                                       modalBottomSheetProps:
-                                          ModalBottomSheetProps(
+                                      ModalBottomSheetProps(
                                         elevation: 6,
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(
@@ -1229,29 +1247,23 @@ class _EditInitialTreatmentMonitoringRecordState
                                       searchFieldProps: TextFieldProps(
                                         decoration: InputDecoration(
                                           contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 4, horizontal: 15),
+                                          const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                              horizontal: 15),
                                           enabledBorder: inputBorder,
                                           focusedBorder: inputBorderFocused,
                                           errorBorder: inputBorder,
                                           focusedErrorBorder:
-                                              inputBorderFocused,
+                                          inputBorderFocused,
                                           filled: true,
-                                          fillColor: AppColor.xLightBackground,
+                                          fillColor:
+                                          AppColor.xLightBackground,
                                         ),
                                       )),
-                                  selectedItem: ActivityModel(
-                                      code: 0,
-                                      mainActivity: "",
-                                      subActivity: widget.monitor!.community!
-                                          .split(",")[2]
-                                          .split("-")[0]),
-                                  dropdownDecoratorProps:
-                                      DropDownDecoratorProps(
+                                  dropdownDecoratorProps: DropDownDecoratorProps(
                                     dropdownSearchDecoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 4, horizontal: 15),
+                                      contentPadding: const EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 15),
                                       enabledBorder: inputBorder,
                                       focusedBorder: inputBorderFocused,
                                       errorBorder: inputBorder,
@@ -1260,13 +1272,14 @@ class _EditInitialTreatmentMonitoringRecordState
                                       fillColor: AppColor.xLightBackground,
                                     ),
                                   ),
+                                  selectedItems: editInitialTreatmentMonitoringRecordController.subActivityList,
                                   asyncItems: (String filter) async {
                                     var response =
-                                        await editInitialTreatmentMonitoringRecordController
-                                            .db
-                                            .getSubActivityByMainActivity(
-                                                editInitialTreatmentMonitoringRecordController
-                                                    .activity!);
+                                    await editInitialTreatmentMonitoringRecordController
+                                        .db
+                                        .getSubActivityByMainActivity(
+                                        editInitialTreatmentMonitoringRecordController
+                                            .activity!);
 
                                     return response;
                                   },
@@ -1274,16 +1287,31 @@ class _EditInitialTreatmentMonitoringRecordState
                                       d.subActivity.toString(),
                                   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                   compareFn: (activity, filter) =>
-                                      activity == filter,
-                                  onChanged: (val) {
+                                  activity.subActivity == filter.subActivity,
+                                  onChanged: (vals) {
                                     editInitialTreatmentMonitoringRecordController
-                                        .subActivity = val!;
+                                        .subActivityList = vals;
+
+                                    // if (addContractorCertificateRecordController
+                                    //             .subActivity.length ==
+                                    //         1 &&
+                                    //     addContractorCertificateRecordController
+                                    //             .subActivity[0].subActivity
+                                    //             .toString()
+                                    //             .toUpperCase() ==
+                                    //         "weeding of replanted farms"
+                                    //             .toUpperCase()) {
+                                    //
+                                    //   // addContractorCertificateRecordController
+                                    //   //     .subActivityCheck.value = true;
+                                    // }
+
                                     editInitialTreatmentMonitoringRecordController
                                         .update();
                                   },
                                   autoValidateMode: AutovalidateMode.always,
-                                  validator: (item) {
-                                    if (item == null) {
+                                  validator: (items) {
+                                    if (items == null || items.isEmpty) {
                                       return 'Sub activity is required';
                                     } else {
                                       return null;
@@ -1997,7 +2025,7 @@ class _EditInitialTreatmentMonitoringRecordState
                                                             rehabName: names[i],
                                                             rehabCode:
                                                                 int.tryParse(
-                                                                    codes[i])),
+                                                                    codes[i].toString())),
                                                     areaHa: areas[i].toString(),
                                                     isViewMode:
                                                         widget.isViewMode,
