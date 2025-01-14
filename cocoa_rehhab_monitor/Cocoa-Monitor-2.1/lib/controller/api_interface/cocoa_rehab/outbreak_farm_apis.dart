@@ -197,7 +197,7 @@ class OutbreakFarmApiInterface {
 // ===================================================================================
 
   Future<Map<String, dynamic>> saveMonitoring(
-      Map<String, dynamic> d, Map<String, dynamic> data) async {
+      Map<String, dynamic> d, Map<String, dynamic> data, bool edit) async {
     final db = InitialTreatmentMonitorDatabaseHelper.instance;
 
     if (await ConnectionVerify.connectionIsAvailable()) {
@@ -216,13 +216,10 @@ class OutbreakFarmApiInterface {
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
           print("THE RESPONSE DATA: ${responseData}");
-
           if (responseData.first['status'] == RequestStatus.True) {
-            if(responseData.first['msg'].trim() != "max threahold met;contact your MnE".trim()){
+            if(!edit){
               await db.saveData(d);
-              print("YEAh-YEAH");
             }
-
             return {
               'status': responseData.first['status'],
               'connectionAvailable': true,
