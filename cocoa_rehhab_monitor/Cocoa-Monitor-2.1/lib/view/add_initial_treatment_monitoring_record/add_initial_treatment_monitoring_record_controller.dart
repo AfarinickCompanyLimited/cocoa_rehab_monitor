@@ -314,7 +314,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     );
 
     Map<String, dynamic> data = monitor.toJsonOnline();
-    Map<String, dynamic> dataOffline = monitor.toJsonOnline();
+    Map<String, dynamic> dataOffline = monitor.toJson();
     data.remove('ras');
     //data.remove('staff_contact');
     data.remove('main_activity');
@@ -330,8 +330,9 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     // data["fuel_oil"] = fuelOil.toJson();
     // data["staff_contact"] = "0248823823";
     print('DATA-DATA-DATA ;;; $data');
+
     var postResult =
-         await outbreakFarmApiInterface.saveMonitoring(dataOffline, data);
+         await outbreakFarmApiInterface.saveMonitoring(dataOffline, data, true);
     globals.endWait(addMonitoringRecordScreenContext);
 
     if (postResult['status'] == RequestStatus.True ||
