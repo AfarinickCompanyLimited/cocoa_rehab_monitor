@@ -291,6 +291,7 @@ class AddContractorCertificateVerificationRecordController
     data.remove('main_activity');
     data.remove('submission_status');
     data.remove('sub_activity_string');
+    data['district'] = globalController.userInfo.value.district;
     // print(
     // 'THIS IS Contractor CertificateONLINE UPDATE DETAILS::::${json.encode(data)}');
     print('THIS IS Contractor CertificateONLINE UPDATE DETAILS:::: $data');
@@ -584,10 +585,10 @@ class AddContractorCertificateVerificationRecordController
       img.Image? image = img.decodeImage(originalImageBytes);
 
       if (image != null) {
-        // Resize the image to 30% of the original dimensions
+        // Resize the image to 20% of the original dimensions
         img.Image resizedImage = img.copyResize(image,
-            width: (image.width * 0.3).toInt(),
-            height: (image.height * 0.3).toInt());
+            width: (image.width * 0.2).toInt(),
+            height: (image.height * 0.2).toInt());
 
         // Compress the resized image and save it to the same file path
         final compressedImageBytes = img.encodeJpg(resizedImage, quality: 70);
@@ -614,6 +615,7 @@ class AddContractorCertificateVerificationRecordController
       return null;
     }
   }
+
 
 
 //   pickMedia({int? source}) async {
