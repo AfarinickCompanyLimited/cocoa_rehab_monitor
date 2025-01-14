@@ -253,7 +253,8 @@ class _EditInitialTreatmentMonitoringRecordState
                                       editInitialTreatmentMonitoringRecordController
                                           .reportingDateTC,
                                   type: DateTimePickerType.date,
-                                  initialDate: DateTime.now(),
+                                  initialDate: DateTime.tryParse(
+                                      widget.monitor!.reportingDate!),
                                   dateMask: 'yyyy-MM-dd',
                                   firstDate: DateTime(1600),
                                   lastDate: DateTime.now(),
