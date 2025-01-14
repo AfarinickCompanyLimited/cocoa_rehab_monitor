@@ -317,18 +317,19 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     Map<String, dynamic> dataOffline = monitor.toJsonOnline();
     data.remove('ras');
     //data.remove('staff_contact');
-    //data.remove('main_activity');
+    data.remove('main_activity');
     data.remove('submission_status');
     data["community"] = communityTC!.text;
     dataOffline["activity"] = subActivityString;
+    data["activity"] = codes;
     //data.remove("areaCoveredRx");
     // data["rehab_assistants"] = jsonEncode(ras);
     data["rehab_assistants"] = ras.map((e) => e.toJson()).toList();
-    print("Rehabtype::::::::: ${data["rehab_assistants"].runtimeType}");
+    print("Rehab-type::::::::: ${data["rehab_assistants"].runtimeType}");
     // data["fuel_oil"] = jsonEncode(fuelOil);
     // data["fuel_oil"] = fuelOil.toJson();
     // data["staff_contact"] = "0248823823";
-    print('DATADATADATA ;;; $data');
+    print('DATA-DATA-DATA ;;; $data');
     var postResult =
          await outbreakFarmApiInterface.saveMonitoring(dataOffline, data);
     globals.endWait(addMonitoringRecordScreenContext);
