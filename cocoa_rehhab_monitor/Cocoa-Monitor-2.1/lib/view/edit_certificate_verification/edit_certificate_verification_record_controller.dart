@@ -156,21 +156,23 @@ class EditContractorCertificateVerificationRecordController
 
       update();
 
-      List? regionDistrictList = await globalController
-          .database!.regionDistrictDao
-          .findRegionDistrictByDistrictId(contractorCertificateVerification!.district!);
+      // List? regionDistrictList = await globalController
+      //     .database!.regionDistrictDao
+      //     .findRegionDistrictByDistrictId(contractorCertificateVerification!.district!);
 
-      regionDistrict = regionDistrictList.first;
+      // regionDistrict = regionDistrictList.first;
       update();
 
       if (contractorCertificateVerification!.contractor == null) {
         contractor = null;
+        print("NULL");
         update();
       } else {
         List<Contractor> contractorDataList = await globalController
             .database!.contractorDao
             .findContractorById(contractorCertificateVerification!.contractor!);
         contractor = contractorDataList.first;
+        print("CONTRACTOR IS: $contractor");
         update();
       }
 
@@ -336,6 +338,7 @@ class EditContractorCertificateVerificationRecordController
     data.remove('main_activity');
     data.remove('submission_status');
     data.remove('sub_activity_string');
+    data['district'] = globalController.userInfo.value.district;
 
     print('THIS IS Contractor Certificate DETAILS:::: ${data}');
 
@@ -612,10 +615,10 @@ class EditContractorCertificateVerificationRecordController
       img.Image? image = img.decodeImage(originalImageBytes);
 
       if (image != null) {
-        // Resize the image to 30% of the original dimensions
+        // Resize the image to 20% of the original dimensions
         img.Image resizedImage = img.copyResize(image,
-            width: (image.width * 0.3).toInt(),
-            height: (image.height * 0.3).toInt());
+            width: (image.width * 0.2).toInt(),
+            height: (image.height * 0.2).toInt());
 
         // Compress the resized image and save it to the same file path
         final compressedImageBytes = img.encodeJpg(resizedImage, quality: 70);
@@ -642,7 +645,6 @@ class EditContractorCertificateVerificationRecordController
       return null;
     }
   }
-
   // ===========================================
 // END PICK MEDIA
 // ==========================================
