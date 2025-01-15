@@ -45,8 +45,7 @@ class _EditInitialTreatmentMonitoringRecordState
   var codes = [].obs;
 
   void splitCommunity() {
-
-    print("DATATATATTATTATA=====${widget.monitor!.toJsonOnline()}");
+    //print("DATATATATTATTATA=====${widget.monitor!.toJsonOnline()}");
     // Clear existing data
     names.clear();
     areas.clear();
@@ -54,15 +53,19 @@ class _EditInitialTreatmentMonitoringRecordState
 
     // Split the community string at ',' and extract the required parts
     var communityParts = widget.monitor!.community!.split(',');
-    var subActivitiesCodes = widget.monitor!.activity!.split(',').where((e) => e.isNotEmpty).toList();
+    var subActivitiesCodes = widget.monitor!.activity!
+        .split(',')
+        .where((e) => e.isNotEmpty)
+        .toList();
 
     if (communityParts.isNotEmpty) {
       // Extract the main community text
       editInitialTreatmentMonitoringRecordController.communityTC?.text =
-      communityParts[0];
+          communityParts[0];
 
       // Split the part containing names, codes, and areas
-      var rawDetails = communityParts[2].split('-')[1]; // Extract the part after '-'
+      var rawDetails =
+          communityParts[2].split('-')[1]; // Extract the part after '-'
       var detailsList = rawDetails.split('%'); // Split by '%'
 
       for (var detail in detailsList) {
@@ -78,11 +81,19 @@ class _EditInitialTreatmentMonitoringRecordState
 
       // Populate subActivityList from communityParts[2]
       var c = communityParts[2].split("-")[0];
-      var c2 = c.split(",")[0].split("#").map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
-      print("c2 :::::::::::: ${c2}");
-      for (int i=0; i<c2.length; i++) {
+      var c2 = c
+          .split(",")[0]
+          .split("#")
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
+     // print("c2 :::::::::::: ${c2}");
+      for (int i = 0; i < c2.length; i++) {
         editInitialTreatmentMonitoringRecordController.subActivityList.add(
-          ActivityModel(code: int.tryParse(subActivitiesCodes[i]), mainActivity: "", subActivity: c2[i].trim()),
+          ActivityModel(
+              code: int.tryParse(subActivitiesCodes[i]),
+              mainActivity: "",
+              subActivity: c2[i].trim()),
         );
       }
 
@@ -103,13 +114,14 @@ class _EditInitialTreatmentMonitoringRecordState
 
       // Set `isDoneEqually` based on the number of names
       editInitialTreatmentMonitoringRecordController.isDoneEqually.value =
-      names.length > 1 ? "Yes" : "No";
+          names.length > 1 ? "Yes" : "No";
 
       // Print debug information
-      print("Names :::::::::::: $names");
-      print("Codes :::::::::::: $codes");
-      print("Areas :::::::::::: $areas");
-      print("COMMUNITY TEXT :::::::::::: ${editInitialTreatmentMonitoringRecordController.communityTC?.text}");
+      // print("Names :::::::::::: $names");
+      // print("Codes :::::::::::: $codes");
+      // print("Areas :::::::::::: $areas");
+      // print(
+      //     "COMMUNITY TEXT :::::::::::: ${editInitialTreatmentMonitoringRecordController.communityTC?.text}");
     }
   }
 
@@ -126,6 +138,11 @@ class _EditInitialTreatmentMonitoringRecordState
 
     editInitialTreatmentMonitoringRecordController
         .editMonitoringRecordScreenContext = context;
+
+    editInitialTreatmentMonitoringRecordController.monitoringDateTC =
+        TextEditingController(text: widget.monitor!.completionDate);
+    editInitialTreatmentMonitoringRecordController.reportingDateTC =
+        TextEditingController(text: widget.monitor!.reportingDate);
 
     splitCommunity();
 
@@ -1219,52 +1236,55 @@ class _EditInitialTreatmentMonitoringRecordState
                                 ),
                                 DropdownSearch<ActivityModel>.multiSelection(
                                   popupProps:
-                                  PopupPropsMultiSelection.modalBottomSheet(
-                                      showSelectedItems: true,
-                                      showSearchBox: true,
-                                      title: const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 15),
-                                        child: Center(
-                                          child: Text(
-                                            'Select sub activity',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
+                                      PopupPropsMultiSelection.modalBottomSheet(
+                                          showSelectedItems: true,
+                                          showSearchBox: true,
+                                          title: const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 15),
+                                            child: Center(
+                                              child: Text(
+                                                'Select sub activity',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      disabledItemFn: (ActivityModel s) =>
-                                      false,
-                                      modalBottomSheetProps:
-                                      ModalBottomSheetProps(
-                                        elevation: 6,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(
-                                                    AppBorderRadius.md),
-                                                topRight: Radius.circular(
-                                                    AppBorderRadius.md))),
-                                      ),
-                                      searchFieldProps: TextFieldProps(
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 4,
-                                              horizontal: 15),
-                                          enabledBorder: inputBorder,
-                                          focusedBorder: inputBorderFocused,
-                                          errorBorder: inputBorder,
-                                          focusedErrorBorder:
-                                          inputBorderFocused,
-                                          filled: true,
-                                          fillColor:
-                                          AppColor.xLightBackground,
-                                        ),
-                                      )),
-                                  dropdownDecoratorProps: DropDownDecoratorProps(
+                                          disabledItemFn: (ActivityModel s) =>
+                                              false,
+                                          modalBottomSheetProps:
+                                              ModalBottomSheetProps(
+                                            elevation: 6,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(
+                                                        AppBorderRadius.md),
+                                                    topRight: Radius.circular(
+                                                        AppBorderRadius.md))),
+                                          ),
+                                          searchFieldProps: TextFieldProps(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 4,
+                                                      horizontal: 15),
+                                              enabledBorder: inputBorder,
+                                              focusedBorder: inputBorderFocused,
+                                              errorBorder: inputBorder,
+                                              focusedErrorBorder:
+                                                  inputBorderFocused,
+                                              filled: true,
+                                              fillColor:
+                                                  AppColor.xLightBackground,
+                                            ),
+                                          )),
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
                                     dropdownSearchDecoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.symmetric(
-                                          vertical: 4, horizontal: 15),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 15),
                                       enabledBorder: inputBorder,
                                       focusedBorder: inputBorderFocused,
                                       errorBorder: inputBorder,
@@ -1273,14 +1293,16 @@ class _EditInitialTreatmentMonitoringRecordState
                                       fillColor: AppColor.xLightBackground,
                                     ),
                                   ),
-                                  selectedItems: editInitialTreatmentMonitoringRecordController.subActivityList,
+                                  selectedItems:
+                                      editInitialTreatmentMonitoringRecordController
+                                          .subActivityList,
                                   asyncItems: (String filter) async {
                                     var response =
-                                    await editInitialTreatmentMonitoringRecordController
-                                        .db
-                                        .getSubActivityByMainActivity(
-                                        editInitialTreatmentMonitoringRecordController
-                                            .activity!);
+                                        await editInitialTreatmentMonitoringRecordController
+                                            .db
+                                            .getSubActivityByMainActivity(
+                                                editInitialTreatmentMonitoringRecordController
+                                                    .activity!);
 
                                     return response;
                                   },
@@ -1288,7 +1310,8 @@ class _EditInitialTreatmentMonitoringRecordState
                                       d.subActivity.toString(),
                                   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                   compareFn: (activity, filter) =>
-                                  activity.subActivity == filter.subActivity,
+                                      activity.subActivity ==
+                                      filter.subActivity,
                                   onChanged: (vals) {
                                     editInitialTreatmentMonitoringRecordController
                                         .subActivityList = vals;
@@ -2024,9 +2047,10 @@ class _EditInitialTreatmentMonitoringRecordState
                                                     rehabAssistant:
                                                         RehabAssistantModel(
                                                             rehabName: names[i],
-                                                            rehabCode:
-                                                                int.tryParse(
-                                                                    codes[i].toString())),
+                                                            rehabCode: int
+                                                                .tryParse(codes[
+                                                                        i]
+                                                                    .toString())),
                                                     areaHa: areas[i].toString(),
                                                     isViewMode:
                                                         widget.isViewMode,
