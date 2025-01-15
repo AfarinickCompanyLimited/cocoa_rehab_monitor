@@ -99,8 +99,8 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
   TextEditingController? areaCoveredTC = TextEditingController();
   TextEditingController? remarksTC = TextEditingController();
   TextEditingController? numberOfRAAssignedTC = TextEditingController();
-  TextEditingController? monitoringDateTC = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  // TextEditingController? monitoringDateTC = TextEditingController(
+  //     text: );
   TextEditingController? fuelPurchasedDateTC = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   TextEditingController? fuelDateTC = TextEditingController(
@@ -227,6 +227,8 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
   //   communityTC?.text = c[0];
   // }
 
+  TextEditingController? monitoringDateTC;
+
   // INITIALISE
   @override
   void onInit() async {
@@ -258,6 +260,8 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       farmReferenceNumberTC?.text = monitor!.farmRefNumber ?? '';
       farmSizeTC?.text = monitor!.farmSizeHa.toString();
       activity = monitor!.activity!.toString();
+      // monitoringDateTC = TextEditingController(
+      //     text: monitor!.completionDate);
 
       List<ActivityModel> ls = await db.getMainActivityBySubActivity(ac.value);
       //subActivity = ls.first;
