@@ -215,7 +215,7 @@ class OutbreakFarmApiInterface {
 
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
-          print("THE RESPONSE DATA: ${responseData}");
+          //print("THE RESPONSE DATA: ${responseData}");
           if (responseData.first['status'] == RequestStatus.True) {
             if(!edit){
               await db.saveData(d);
@@ -242,18 +242,19 @@ class OutbreakFarmApiInterface {
             };
           }
         } else {
-          print('HTTP ERROR: ${response.body}');
+          final responseData = jsonDecode(response.body);
+          //print('HTTP ERROR: ${response.body}');
           return {
             'status': RequestStatus.False,
             'connectionAvailable': true,
-            'msg': 'Error occurred during the request. Try again later.',
+            'msg': responseData.first['msg'],
           };
         }
       } catch (e, stackTrace) {
         FirebaseCrashlytics.instance.recordError(e, stackTrace);
         FirebaseCrashlytics.instance.log('saveMonitoring');
 
-        print('ERROR ON SAVE INITIAL TREATMENT: $e');
+        //print('ERROR ON SAVE INITIAL TREATMENT: $e');
         return {
           'status': RequestStatus.False,
           'connectionAvailable': true,
