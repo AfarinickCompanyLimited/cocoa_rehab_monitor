@@ -259,7 +259,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       print("THE MONITORING DATE :::::::::::: ${monitor!.reportingDate}");
       farmReferenceNumberTC?.text = monitor!.farmRefNumber ?? '';
       farmSizeTC?.text = monitor!.farmSizeHa.toString();
-      activity = monitor!.activity!.toString();
+      activity = monitor!.community!.split(",")[1];
       // monitoringDateTC = TextEditingController(
       //     text: monitor!.completionDate);
 
@@ -407,6 +407,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       com += element.subActivity!;
       com += "#";
     });
+    com += "-";
 
     globals.startWait(editMonitoringRecordScreenContext);
 
@@ -458,43 +459,35 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
     // data["fuel_oil"] = fuelOil.toJson();
     // data["staff_contact"] = "0248823823";
     print('DATADATADATA ;;; $data');
+    print('DATADATADATA---OFFLINE ;;; $dataOffline');
     var postResult =
         await outbreakFarmApiInterface.saveMonitoring(dataOffline, data, true);
     globals.endWait(editMonitoringRecordScreenContext);
 
     if (postResult['status'] == RequestStatus.True ||
         postResult['status'] == RequestStatus.NoInternet) {
+
+
       if ((postResult['msg'].trim() !=
           "max threahold met;contact your MnE".trim())) {
         final dbb = InitialTreatmentMonitorDatabaseHelper.instance;
         print("THE UID :::::::::: ${monitor!.uid}");
         dbb.deleteData(monitor!.uid!);
         dbb.saveData(dataOffline);
-        globals.showSecondaryDialog(
-            context: homeController.homeScreenContext,
-            content: Text(
-              postResult['msg'],
-              style: const TextStyle(fontSize: 13),
-              textAlign: TextAlign.center,
-            ),
-            status: AlertDialogStatus.success,
-            okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-        Get.back();
-        Get.back();
-      } else {
-        Get.back();
-
-        globals.showSecondaryDialog(
-            context: homeController.homeScreenContext,
-            content: Text(
-              postResult['msg'],
-              style: const TextStyle(fontSize: 13),
-              textAlign: TextAlign.center,
-            ),
-            status: AlertDialogStatus.success,
-            okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
       }
 
+
+      Get.back();
+      Get.back();
+      globals.showSecondaryDialog(
+          context: homeController.homeScreenContext,
+          content: Text(
+            postResult['msg'],
+            style: const TextStyle(fontSize: 13),
+            textAlign: TextAlign.center,
+          ),
+          status: AlertDialogStatus.success,
+          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
     } else if (postResult['status'] == RequestStatus.False) {
       globals.showSecondaryDialog(
           context: editMonitoringRecordScreenContext,
@@ -557,6 +550,38 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       }
     }
 
+    var com = "";
+    com += communityTC!.text;
+    com += ",";
+    com += activity!;
+    com += ",";
+    List<int> codes = [];
+
+    var subActivityString = "";
+
+    subActivityList.forEach((element) {
+      codes.add(element.code!);
+      subActivityString += element.code.toString();
+      subActivityString += ",";
+      com += element.subActivity!;
+      com += "#";
+    });
+
+    //
+    //  Uint8List? pictureOfFarm;
+    //  if (farmPhoto?.file != null) {
+    //    final bytes = await io.File(farmPhoto!.path!).readAsBytes();
+    //    // pictureOfFarm = base64Encode(bytes);
+    //    pictureOfFarm = bytes;
+    //  } else {
+    //    pictureOfFarm =
+    //        Uint8List(0); // Assign empty Uint8List when pictureOfFarm is null
+    //  }
+    //
+
+    //com += subActivity.subActivity!;
+    com += "-";
+
     // UserCurrentLocation? userCurrentLocation =
     //     UserCurrentLocation(context: editMonitoringRecordScreenContext);
     // isSaveButtonDisabled.value = true;
@@ -612,7 +637,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       ras: jsonEncode(ras),
       farmRefNumber: farmReferenceNumberTC!.text,
       farmSizeHa: double.parse(farmSizeTC!.text),
-      community: communityTC!.text,
+      community: com,
       numberOfPeopleInGroup: int.tryParse(numberInGroupTC!.text.trim()),
       groupWork: isCompletedByGroup.value,
     );
