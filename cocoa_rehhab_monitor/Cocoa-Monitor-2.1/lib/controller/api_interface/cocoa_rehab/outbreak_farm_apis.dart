@@ -217,9 +217,9 @@ class OutbreakFarmApiInterface {
           final responseData = jsonDecode(response.body);
           //print("THE RESPONSE DATA: ${responseData}");
           if (responseData.first['status'] == RequestStatus.True) {
-            if(!edit){
+
               await db.saveData(d);
-            }
+
             return {
               'status': responseData.first['status'],
               'connectionAvailable': true,
@@ -243,7 +243,8 @@ class OutbreakFarmApiInterface {
           }
         } else {
           final responseData = jsonDecode(response.body);
-          //print('HTTP ERROR: ${response.body}');
+          print('HTTP ERROR: ${response.body}');
+          //print('HTTP ERROR MESSAGE : ${responseData.first['msg']}');
           return {
             'status': RequestStatus.False,
             'connectionAvailable': true,
@@ -254,7 +255,7 @@ class OutbreakFarmApiInterface {
         FirebaseCrashlytics.instance.recordError(e, stackTrace);
         FirebaseCrashlytics.instance.log('saveMonitoring');
 
-        //print('ERROR ON SAVE INITIAL TREATMENT: $e');
+        print('ERROR ON SAVE INITIAL TREATMENT: $e');
         return {
           'status': RequestStatus.False,
           'connectionAvailable': true,
