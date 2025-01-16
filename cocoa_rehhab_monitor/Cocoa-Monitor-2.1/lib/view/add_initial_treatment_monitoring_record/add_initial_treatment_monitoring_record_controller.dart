@@ -330,6 +330,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     // data["fuel_oil"] = fuelOil.toJson();
     // data["staff_contact"] = "0248823823";
     print('DATA-DATA-DATA ;;; $data');
+    print('DATADATADATA---OFFLINE ;;; $data');
 
     var postResult =
          await outbreakFarmApiInterface.saveMonitoring(dataOffline, data, true);
