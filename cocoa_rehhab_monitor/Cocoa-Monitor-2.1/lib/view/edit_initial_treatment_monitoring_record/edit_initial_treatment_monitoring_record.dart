@@ -45,7 +45,8 @@ class _EditInitialTreatmentMonitoringRecordState
   var codes = [].obs;
 
   void splitCommunity() {
-    //print("DATATATATTATTATA=====${widget.monitor!.toJsonOnline()}");
+
+    print("DATATATATTATTATA=====${widget.monitor!.toJsonOnline()}");
     // Clear existing data
     names.clear();
     areas.clear();
@@ -506,8 +507,8 @@ class _EditInitialTreatmentMonitoringRecordState
                                   itemAsString: (JobOrderFarmModel d) =>
                                       d.farmId.toString(),
                                   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                  compareFn: (activity, filter) =>
-                                      activity == filter,
+                                  compareFn: (JobOrderFarmModel, filter) =>
+                                  JobOrderFarmModel == filter,
                                   onChanged: (val) {
                                     editInitialTreatmentMonitoringRecordController
                                         .farmReferenceNumberTC!
