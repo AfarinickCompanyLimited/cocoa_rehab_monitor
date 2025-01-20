@@ -14,7 +14,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../../model/activity_data_model.dart';
 
 class OutbreakFarmApiInterface {
   GlobalController indexController = Get.find();
@@ -212,6 +211,7 @@ class OutbreakFarmApiInterface {
           },
           body: jsonEncode(data),
         );
+
 
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
