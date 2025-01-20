@@ -2,23 +2,17 @@
 
 import 'dart:io' as io;
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:cocoa_monitor/controller/api_interface/cocoa_rehab/outbreak_farm_apis.dart';
 import 'package:cocoa_monitor/controller/constants.dart';
 import 'package:cocoa_monitor/controller/db/initail_activity_db.dart';
 import 'package:cocoa_monitor/controller/db/job_order_farms_db.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/activity.dart';
-import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
 import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm_from_server.dart';
-// import 'package:cocoa_monitor/controller/entity/cocoa_rehub_monitor/monitor.dart';
 import 'package:cocoa_monitor/controller/global_controller.dart';
 import 'package:cocoa_monitor/controller/model/activity_model.dart';
-import 'package:cocoa_monitor/controller/model/rehab_assistant_model.dart';
 import 'package:cocoa_monitor/view/global_components/globals.dart';
 import 'package:cocoa_monitor/view/home/home_controller.dart';
 import 'package:cocoa_monitor/controller/model/picked_media.dart';
 import 'package:cocoa_monitor/view/utils/bytes_to_size.dart';
-// import 'package:cocoa_monitor/view/utils/double_value_trimmer.dart';
 import 'package:cocoa_monitor/view/utils/view_constants.dart';
 import 'package:cocoa_monitor/view/widgets/_media_source_dialog.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +22,8 @@ import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../controller/db/activity_db.dart';
 import '../../controller/entity/cocoa_rehub_monitor/community.dart';
-// import '../../controller/entity/cocoa_rehub_monitor/region_district.dart';
-import '../../controller/entity/cocoa_rehub_monitor/rehab_assistant.dart';
 import '../../controller/model/activity_data_model.dart';
 import 'components/initial_treatment_rehab_assistant_select.dart';
 
