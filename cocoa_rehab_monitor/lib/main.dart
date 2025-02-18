@@ -1,4 +1,5 @@
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cocoa_rehab_monitor/view/routes.dart' as route;
 import 'package:cocoa_rehab_monitor/view/utils/style.dart';
@@ -9,6 +10,8 @@ import 'controller/entity/cocoa_rehub_monitor/notification_data.dart';
 import 'controller/global_controller.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'firebase_options.dart';
 
 
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -67,16 +70,17 @@ void schedulePeriodicTask() {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //Workmanager().initialize(callbackDispatcher);
+  // await Firebase.initializeApp();
   
-  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // Pass all uncaught "fatal" errors from the framework to Crashlytics
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+ //  Pass all uncaught "fatal" errors from the framework to Crashlytics
  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  //   PlatformDispatcher.instance.onError = (error, stack) {
-  //     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  //     return true;
-  //   };
+ //
+ //  Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+ //    PlatformDispatcher.instance.onError = (error, stack) {
+ //      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+ //      return true;
+ //    };
 
   GlobalController indexController = Get.put(GlobalController());
   await indexController.buildAppDB();

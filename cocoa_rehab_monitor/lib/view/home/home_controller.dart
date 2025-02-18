@@ -326,8 +326,8 @@ class HomeController extends GetxController {
         }
       } catch (e, stackTrace) {
         print(e.toString());
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('checkAppVersionBeforeSync');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('checkAppVersionBeforeSync');
 
        // if (homeScreenContext.mounted) {
           globals.endWait(homeScreenContext);

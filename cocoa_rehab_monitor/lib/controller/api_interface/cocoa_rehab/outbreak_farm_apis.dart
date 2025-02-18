@@ -61,8 +61,8 @@ class OutbreakFarmApiInterface {
         }
       } catch (e, stackTrace) {
 
-    FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('saveOutbreakFarm');
+    // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+    //     FirebaseCrashlytics.instance.log('saveOutbreakFarm');
 
 
         // personnel.status = SubmissionStatus.pending;
@@ -137,8 +137,7 @@ class OutbreakFarmApiInterface {
         }
       } catch (e, stackTrace) {
 
-    FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('updateOutbreakFarm');
+  //     FirebaseCrashlytics.instance.log('updateOutbreakFarm');
 
 
         // personnel.status = SubmissionStatus.pending;
@@ -252,8 +251,8 @@ class OutbreakFarmApiInterface {
           };
         }
       } catch (e, stackTrace) {
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('saveMonitoring');
+        // FirebaseCrashlytics .instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('saveMonitoring');
 
         print('ERROR ON SAVE INITIAL TREATMENT: $e');
         return {
@@ -397,9 +396,9 @@ class OutbreakFarmApiInterface {
         }
       } catch (e, stackTrace) {
         print('ERROR ON UPDATE INITIAL TREATMENT ONLINE $e');
-
-    FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('updateMonitoring');
+    //
+    // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+    //     FirebaseCrashlytics.instance.log('updateMonitoring');
 
 
 

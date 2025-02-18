@@ -169,8 +169,8 @@ class GeneralCocoaRehabApiInterface {
       }
     } catch (e, stackTrace) {
       print(' LOAD REGION DISTRICTS TO LOCAL DB ERROR ${e.toString()}');
-      FirebaseCrashlytics.instance.recordError(e, stackTrace);
-      FirebaseCrashlytics.instance.log('loadRegionDistricts');
+      // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+      // FirebaseCrashlytics.instance.log('loadRegionDistricts');
     }
     // }
   }
@@ -231,8 +231,8 @@ class GeneralCocoaRehabApiInterface {
       }
     } catch (e, stackTrace) {
       print(' LOAD ACTIVITY TO LOCAL DB ERROR ${e.toString()}');
-      FirebaseCrashlytics.instance.recordError(e, stackTrace);
-      FirebaseCrashlytics.instance.log('loadActivities');
+      // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+      // FirebaseCrashlytics.instance.log('loadActivities');
     }
     // }
   }
@@ -286,8 +286,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(' LOAD FARMS TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadFarms');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadFarms');
       }
     }
   }
@@ -337,8 +337,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(' LOAD JOB ORDER FARMS TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadFarms');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadFarms');
       }
     }
   }
@@ -427,8 +427,8 @@ class GeneralCocoaRehabApiInterface {
       } catch (e, stackTrace) {
         print("THE ERROR IS: ${e}");
         print(' LOAD REHAB ASSISTANTS TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadRehabAssistants');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadRehabAssistants');
       }
     }
   }
@@ -526,8 +526,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(' LOAD FARM STATUS TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadFarmStatus');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadFarmStatus');
       }
     }
   }
@@ -576,8 +576,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(' LOAD ASSIGNED FARM TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadAssignedFarms');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadAssignedFarms');
       }
     }
   }
@@ -623,8 +623,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(' LOAD COCOA TYPE TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadCocoaTypes');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadCocoaTypes');
       }
     }
   }
@@ -671,8 +671,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(' LOAD COCOA AGE CLASS TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadCocoaAgeClass');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadCocoaAgeClass');
       }
     }
   }
@@ -723,8 +723,8 @@ class GeneralCocoaRehabApiInterface {
       }
     } catch (e, stackTrace) {
       print(' LOAD COMMUNITY TO LOCAL DB ERROR ${e.toString()}');
-      FirebaseCrashlytics.instance.recordError(e, stackTrace);
-      FirebaseCrashlytics.instance.log('loadCommunities');
+      // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+      // FirebaseCrashlytics.instance.log('loadCommunities');
     }
     // }
   }
@@ -776,8 +776,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(' LOAD ASSIGNED OUTBREAKS TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadAssignedOutbreaks');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadAssignedOutbreaks');
       }
     }
   }
@@ -821,8 +821,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(e);
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadOutbreakCSV');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadOutbreakCSV');
 
         return {
           'status': false,
@@ -885,8 +885,8 @@ class GeneralCocoaRehabApiInterface {
       } catch (e, stackTrace) {
         print(
             ' LOAD OUTBREAK FARMS FROM SERVER TO LOCAL DB ERROR ${e.toString()}');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('loadOutbreakFarmsFromServer');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('loadOutbreakFarmsFromServer');
       }
     }
   }
@@ -932,8 +932,8 @@ class GeneralCocoaRehabApiInterface {
       }
     } catch (e, stackTrace) {
       print(' LOAD EQUIPMENTS TO LOCAL DB ERROR ${e.toString()}');
-      FirebaseCrashlytics.instance.recordError(e, stackTrace);
-      FirebaseCrashlytics.instance.log('loadEquipments');
+      // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+      // FirebaseCrashlytics.instance.log('loadEquipments');
     }
     // }
   }
@@ -993,8 +993,8 @@ class GeneralCocoaRehabApiInterface {
               }
             } catch (e, stackTrace) {
               print(' SYNC USER LOCATION TO SERVER ERROR ${e.toString()}');
-              FirebaseCrashlytics.instance.recordError(e, stackTrace);
-              FirebaseCrashlytics.instance.log('syncUserLocation');
+              // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+              // FirebaseCrashlytics.instance.log('syncUserLocation');
             }
           } else {
             debugPrint("Limit is off ${item.inspectionDate.toString()}");
@@ -1086,8 +1086,8 @@ class GeneralCocoaRehabApiInterface {
         }
       } catch (e, stackTrace) {
         print(e);
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('submitIssue');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('submitIssue');
 
         return {
           'status': RequestStatus.False,

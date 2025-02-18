@@ -199,6 +199,7 @@ class AddContractorCertificateRecordController extends GetxController {
             reportingDate: formattedReportingDate,
             activity: subActivityList,
             farmerName: farmerNameTC!.text,
+
             farmRefNumber: farmReferenceNumberTC!.text,
             farmSizeHa: double.parse(farmSizeTC!.text),
             community: com,

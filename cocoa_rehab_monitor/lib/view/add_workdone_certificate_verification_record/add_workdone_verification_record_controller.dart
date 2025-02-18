@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 // import 'package:location/location.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:uuid/uuid.dart';
@@ -60,7 +61,7 @@ class AddContractorCertificateVerificationRecordController
   var isSaveButtonDisabled = false.obs;
   Contractor? contractor = Contractor();
 
-  Location? locationData;
+  LocationData? locationData;
 
   // Community? community = Community();
 
@@ -297,43 +298,43 @@ class AddContractorCertificateVerificationRecordController
     // 'THIS IS Contractor CertificateONLINE UPDATE DETAILS::::${json.encode(data)}');
     print('THIS IS Contractor CertificateONLINE UPDATE DETAILS:::: $data');
 
-    var postResult = await contractorCertificateApiInterface
-        .saveContractorCertificateVerification(
-            contractorCertificateVerification, data);
-    globals.endWait(addContractorCertificateVerificationRecordScreenContext);
-
-    if (postResult['status'] == RequestStatus.True ||
-        postResult['status'] == RequestStatus.Exist ||
-        postResult['status'] == RequestStatus.NoInternet) {
-      /// initialise the database
-      ContractorCertificateVerificationDatabaseHelper dbHelper = ContractorCertificateVerificationDatabaseHelper.instance;
-
-      /// save the data offline
-      await dbHelper.saveData(contractorCertificateVerification);
-
-      Get.back(result: {
-        'CertificateVerification': contractorCertificateVerification,
-        'submitted': true
-      });
-      globals.showSecondaryDialog(
-          context: homeController.homeScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.success,
-          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    } else if (postResult['status'] == RequestStatus.False) {
-      globals.showSecondaryDialog(
-          context: addContractorCertificateVerificationRecordScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.error);
-    }
+    // var postResult = await contractorCertificateApiInterface
+    //     .saveContractorCertificateVerification(
+    //         contractorCertificateVerification, data);
+    // globals.endWait(addContractorCertificateVerificationRecordScreenContext);
+    //
+    // if (postResult['status'] == RequestStatus.True ||
+    //     postResult['status'] == RequestStatus.Exist ||
+    //     postResult['status'] == RequestStatus.NoInternet) {
+    //   /// initialise the database
+    //   ContractorCertificateVerificationDatabaseHelper dbHelper = ContractorCertificateVerificationDatabaseHelper.instance;
+    //
+    //   /// save the data offline
+    //   await dbHelper.saveData(contractorCertificateVerification);
+    //
+    //   Get.back(result: {
+    //     'CertificateVerification': contractorCertificateVerification,
+    //     'submitted': true
+    //   });
+    //   globals.showSecondaryDialog(
+    //       context: homeController.homeScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.success,
+    //       okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    // } else if (postResult['status'] == RequestStatus.False) {
+    //   globals.showSecondaryDialog(
+    //       context: addContractorCertificateVerificationRecordScreenContext,
+    //       content: Text(
+    //         postResult['msg'],
+    //         style: const TextStyle(fontSize: 13),
+    //         textAlign: TextAlign.center,
+    //       ),
+    //       status: AlertDialogStatus.error);
+    // }
   }
   // ==============================================================================
   // END ADD MONITORING RECORD ONLINE UPDATE
@@ -679,14 +680,14 @@ class AddContractorCertificateVerificationRecordController
                     .complete(true); //Complete only if not completed
               }
 
-              locationData = pos as Location?;
+              locationData = pos;
               isLoadingLocation.value = false;
 
               print('UPDATE UPDATE UPDATE ${pos.accuracy}');
 
               update();
             } else {
-              locationData = pos as Location?;
+              locationData = pos;
 
               update();
               print('ACC ACC ACC ${pos.accuracy}');

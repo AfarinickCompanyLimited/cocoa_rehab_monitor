@@ -146,8 +146,8 @@ class ContractorCertificateApiInterface {
         }
       } catch (e, stackTrace) {
         debugPrint(e.toString());
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('saveContractorCertificate');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('saveContractorCertificate');
         print("THE ERROR IS HERE: $e");
 
         return {
@@ -226,8 +226,8 @@ class ContractorCertificateApiInterface {
         }
       } catch (e, stackTrace) {
         print(e);
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance.log('updateContractorCertificate');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance.log('updateContractorCertificate');
 
         // personnel.status = SubmissionStatus.pending;
         // personnelDao.insertPersonnel(personnel);
@@ -332,9 +332,9 @@ class ContractorCertificateApiInterface {
         }
       } catch (e, stackTrace) {
         print('ERROR REPORT $e');
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance
-            .log('saveContractorCertificateVerification');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance
+          //  .log('saveContractorCertificateVerification');
 
         // personnel.status = SubmissionStatus.pending;
         // personnelDao.insertPersonnel(personnel);
@@ -421,9 +421,9 @@ class ContractorCertificateApiInterface {
           };
         }
       } catch (e, stackTrace) {
-        FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        FirebaseCrashlytics.instance
-            .log('updateContractorCertificateVerification');
+        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        // FirebaseCrashlytics.instance
+        //     .log('updateContractorCertificateVerification');
 
         // personnel.status = SubmissionStatus.pending;
         // personnelDao.insertPersonnel(personnel);

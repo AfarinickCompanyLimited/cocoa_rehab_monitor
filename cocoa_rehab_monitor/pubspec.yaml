@@ -70,6 +70,7 @@ dependencies:
   syncfusion_flutter_datagrid_export: ^20.3.48
   syncfusion_flutter_xlsio: ^20.3.48
   share_plus: ^10.1.4
+  #firebase_core: ^3.11.0
 
 dev_dependencies:
   flutter_test:
