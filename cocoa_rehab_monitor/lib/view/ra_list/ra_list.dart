@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../controller/model/rehab_assistant_model.dart';
 import 'components/ra_list_card.dart';
 
 class RAList extends StatefulWidget {
@@ -123,7 +124,7 @@ class _RAListState extends State<RAList> with SingleTickerProviderStateMixin {
                 ),
                 const SizedBox(height: 8),
                 Expanded(
-                  child: FutureBuilder<List<RehabAssistant>>(
+                  child: FutureBuilder<List<RehabAssistantModel>>(
                     future: raListController.dataFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
