@@ -2556,23 +2556,37 @@ class _AddInitialTreatmentMonitoringRecordState
                                       verticalPadding: 0.0,
                                       horizontalPadding: 8.0,
                                       onTap: () async {
-                                        // if (!addInitialTreatmentMonitoringRecordController
-                                        //     .isSaveButtonDisabled.value) {
-                                        if (addInitialTreatmentMonitoringRecordController
-                                            .addMonitoringRecordFormKey
-                                            .currentState!
-                                            .validate()) {
-                                          addInitialTreatmentMonitoringRecordController
-                                              .handleSaveOfflineMonitoringRecord();
-                                        } else {
-                                          addInitialTreatmentMonitoringRecordController
-                                              .globals
-                                              .showSnackBar(
-                                                  title: 'Alert',
-                                                  message:
-                                                      'Kindly provide all required information');
+                                        bool notPass = false;
+                                        for(int i = 0; i < addInitialTreatmentMonitoringRecordController.rehabAssistants.length; i++){
+                                          for(int j = i+1; j < addInitialTreatmentMonitoringRecordController.rehabAssistants.length; j++){
+                                            if(addInitialTreatmentMonitoringRecordController.rehabAssistants[i].rehabAssistant!.rehabName == addInitialTreatmentMonitoringRecordController.rehabAssistants[j].rehabAssistant!.rehabName){
+                                              notPass = true;
+                                            }
+                                          }
                                         }
-                                        // }
+
+                                        if(!notPass){
+                                          if (addInitialTreatmentMonitoringRecordController
+                                              .addMonitoringRecordFormKey
+                                              .currentState!
+                                              .validate()) {
+                                            addInitialTreatmentMonitoringRecordController
+                                                .handleSaveOfflineMonitoringRecord();
+                                          } else {
+                                            addInitialTreatmentMonitoringRecordController
+                                                .globals
+                                                .showSnackBar(
+                                                title: 'Alert',
+                                                message:
+                                                'Kindly provide all required information');
+                                          }
+                                        }else{
+                                          addInitialTreatmentMonitoringRecordController.globals.showSnackBar(
+                                              title: 'Alert',
+                                              message:
+                                              'Rehab assistants cannot be the same',
+                                              duration: 5);
+                                        }
                                       },
                                       child:
                                           //  Obx(
@@ -2598,23 +2612,37 @@ class _AddInitialTreatmentMonitoringRecordState
                                       verticalPadding: 0.0,
                                       horizontalPadding: 8.0,
                                       onTap: () async {
-                                        // if (!addInitialTreatmentMonitoringRecordController
-                                        //     .isButtonDisabled.value) {
-                                        if (addInitialTreatmentMonitoringRecordController
-                                            .addMonitoringRecordFormKey
-                                            .currentState!
-                                            .validate()) {
-                                          addInitialTreatmentMonitoringRecordController
-                                              .handleAddMonitoringRecord();
-                                        } else {
-                                          addInitialTreatmentMonitoringRecordController
-                                              .globals
-                                              .showSnackBar(
-                                                  title: 'Alert',
-                                                  message:
-                                                      'Kindly provide all required information');
+                                        bool notPass = false;
+                                        for(int i = 0; i < addInitialTreatmentMonitoringRecordController.rehabAssistants.length; i++){
+                                          for(int j = i+1; j < addInitialTreatmentMonitoringRecordController.rehabAssistants.length; j++){
+                                            if(addInitialTreatmentMonitoringRecordController.rehabAssistants[i].rehabAssistant!.rehabName == addInitialTreatmentMonitoringRecordController.rehabAssistants[j].rehabAssistant!.rehabName){
+                                              notPass = true;
+                                            }
+                                          }
                                         }
-                                        // }
+
+                                        if(!notPass){
+                                          if (addInitialTreatmentMonitoringRecordController
+                                              .addMonitoringRecordFormKey
+                                              .currentState!
+                                              .validate()) {
+                                            addInitialTreatmentMonitoringRecordController
+                                                .handleAddMonitoringRecord();
+                                          } else {
+                                            addInitialTreatmentMonitoringRecordController
+                                                .globals
+                                                .showSnackBar(
+                                                title: 'Alert',
+                                                message:
+                                                'Kindly provide all required information');
+                                          }
+                                        }else{
+                                          addInitialTreatmentMonitoringRecordController.globals.showSnackBar(
+                                              title: 'Alert',
+                                              message:
+                                              'Rehab assistants cannot be the same',
+                                              duration: 5);
+                                        }
                                       },
                                       child:
                                           //  Obx(
