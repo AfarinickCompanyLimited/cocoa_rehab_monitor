@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 
 import 'package:cocoa_rehab_monitor/controller/constants.dart';
 
+import '../../../controller/model/rehab_assistant_model.dart';
+
 class RAListCard extends StatelessWidget {
-  final RehabAssistant rehabAssistant;
+  final RehabAssistantModel rehabAssistant;
   final Function? onTap;
   const RAListCard({Key? key, required this.rehabAssistant, this.onTap})
       : super(key: key);
