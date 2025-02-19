@@ -17,7 +17,8 @@ import 'package:cocoa_rehab_monitor/view/utils/location_color.dart';
 import 'add_workdone_verification_record_controller.dart';
 
 class AddContractorCertificateVerificationRecord extends StatefulWidget {
-  const AddContractorCertificateVerificationRecord({Key? key}) : super(key: key);
+  const AddContractorCertificateVerificationRecord({Key? key})
+    : super(key: key);
 
   @override
   State<AddContractorCertificateVerificationRecord> createState() =>
@@ -30,14 +31,16 @@ class _AddContractorCertificateVerificationRecordState
   Widget build(BuildContext context) {
     int currentYear = DateTime.now().year;
     int startingYear = 2022;
-    List<int> yearList =
-        List.generate((currentYear - startingYear) + 1, (index) {
+    List<int> yearList = List.generate((currentYear - startingYear) + 1, (
+      index,
+    ) {
       return startingYear + index;
     });
     // HomeController homeController = Get.find();
     AddContractorCertificateVerificationRecordController
-        addContractorCertificateVerificationRecordController =
-        Get.put(AddContractorCertificateVerificationRecordController());
+    addContractorCertificateVerificationRecordController = Get.put(
+      AddContractorCertificateVerificationRecordController(),
+    );
     addContractorCertificateVerificationRecordController
         .addContractorCertificateVerificationRecordScreenContext = context;
 
@@ -58,15 +61,19 @@ class _AddContractorCertificateVerificationRecordState
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: AppColor.lightText.withOpacity(0.5)))),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: AppColor.lightText.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top + 15,
-                        bottom: 10,
-                        left: AppPadding.horizontal,
-                        right: AppPadding.horizontal),
+                      top: MediaQuery.of(context).padding.top + 15,
+                      bottom: 10,
+                      left: AppPadding.horizontal,
+                      right: AppPadding.horizontal,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -76,15 +83,16 @@ class _AddContractorCertificateVerificationRecordState
                           backgroundColor: Colors.transparent,
                           onTap: () => Get.back(),
                         ),
-                        const SizedBox(
-                          width: 12,
-                        ),
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: Text('New Verification Form',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColor.black)),
+                          child: Text(
+                            'New Verification Form',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.black,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -94,15 +102,17 @@ class _AddContractorCertificateVerificationRecordState
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.only(
-                        left: AppPadding.horizontal,
-                        right: AppPadding.horizontal,
-                        bottom: AppPadding.vertical,
-                        top: 10),
+                      left: AppPadding.horizontal,
+                      right: AppPadding.horizontal,
+                      bottom: AppPadding.vertical,
+                      top: 10,
+                    ),
                     child: Column(
                       children: [
                         Form(
-                          key: addContractorCertificateVerificationRecordController
-                              .addContractorCertificateVerificationRecordFormKey,
+                          key:
+                              addContractorCertificateVerificationRecordController
+                                  .addContractorCertificateVerificationRecordFormKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -111,25 +121,29 @@ class _AddContractorCertificateVerificationRecordState
                                 'Current Year',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) => false,
-                                    fit: FlexFit.loose,
-                                    menuProps: MenuProps(
-                                        elevation: 6,
-                                        borderRadius: BorderRadius.circular(
-                                            AppBorderRadius.sm))),
-                                items: yearList
-                                    .map((year) => year.toString())
-                                    .toList(),
+                                  showSelectedItems: true,
+                                  disabledItemFn: (String s) => false,
+                                  fit: FlexFit.loose,
+                                  menuProps: MenuProps(
+                                    elevation: 6,
+                                    borderRadius: BorderRadius.circular(
+                                      AppBorderRadius.sm,
+                                    ),
+                                  ),
+                                ),
+                                items:
+                                    yearList
+                                        .map((year) => year.toString())
+                                        .toList(),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -148,7 +162,8 @@ class _AddContractorCertificateVerificationRecordState
                                 },
                                 onChanged: (val) {
                                   addContractorCertificateVerificationRecordController
-                                      .selectedYear.value = val!;
+                                      .selectedYear
+                                      .value = val!;
                                   addContractorCertificateVerificationRecordController
                                       .update();
                                 },
@@ -158,25 +173,28 @@ class _AddContractorCertificateVerificationRecordState
                                 'Current Month',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) => false,
-                                    fit: FlexFit.loose,
-                                    menuProps: MenuProps(
-                                        elevation: 6,
-                                        borderRadius: BorderRadius.circular(
-                                            AppBorderRadius.sm))),
+                                  showSelectedItems: true,
+                                  disabledItemFn: (String s) => false,
+                                  fit: FlexFit.loose,
+                                  menuProps: MenuProps(
+                                    elevation: 6,
+                                    borderRadius: BorderRadius.circular(
+                                      AppBorderRadius.sm,
+                                    ),
+                                  ),
+                                ),
                                 items:
                                     addContractorCertificateVerificationRecordController
                                         .listOfMonths,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -195,7 +213,8 @@ class _AddContractorCertificateVerificationRecordState
                                 },
                                 onChanged: (val) {
                                   addContractorCertificateVerificationRecordController
-                                      .selectedMonth.value = val!;
+                                      .selectedMonth
+                                      .value = val!;
                                   addContractorCertificateVerificationRecordController
                                       .update();
                                 },
@@ -205,25 +224,28 @@ class _AddContractorCertificateVerificationRecordState
                                 'Current Week',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) => false,
-                                    fit: FlexFit.loose,
-                                    menuProps: MenuProps(
-                                        elevation: 6,
-                                        borderRadius: BorderRadius.circular(
-                                            AppBorderRadius.sm))),
+                                  showSelectedItems: true,
+                                  disabledItemFn: (String s) => false,
+                                  fit: FlexFit.loose,
+                                  menuProps: MenuProps(
+                                    elevation: 6,
+                                    borderRadius: BorderRadius.circular(
+                                      AppBorderRadius.sm,
+                                    ),
+                                  ),
+                                ),
                                 items:
                                     addContractorCertificateVerificationRecordController
                                         .listOfWeeks,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -242,7 +264,8 @@ class _AddContractorCertificateVerificationRecordState
                                 },
                                 onChanged: (val) {
                                   addContractorCertificateVerificationRecordController
-                                      .selectedWeek.value = val!;
+                                      .selectedWeek
+                                      .value = val!;
                                   addContractorCertificateVerificationRecordController
                                       .update();
                                 },
@@ -252,55 +275,60 @@ class _AddContractorCertificateVerificationRecordState
                                 'Farm Reference Number',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
 
                               DropdownSearch<JobOrderFarmModel>(
                                 popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    title: const Padding(
-                                      padding:
-                                      EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select farm reference number',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                  showSelectedItems: true,
+                                  showSearchBox: true,
+                                  title: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    child: Center(
+                                      child: Text(
+                                        'Select farm reference number',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (JobOrderFarmModel s) =>
-                                    false,
-                                    modalBottomSheetProps:
-                                    ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
+                                  ),
+                                  disabledItemFn:
+                                      (JobOrderFarmModel s) => false,
+                                  modalBottomSheetProps: ModalBottomSheetProps(
+                                    elevation: 6,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
+                                        topRight: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                            horizontal: 15,
+                                          ),
+                                      enabledBorder: inputBorder,
+                                      focusedBorder: inputBorderFocused,
+                                      errorBorder: inputBorder,
+                                      focusedErrorBorder: inputBorderFocused,
+                                      filled: true,
+                                      fillColor: AppColor.xLightBackground,
+                                    ),
+                                  ),
+                                ),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -312,16 +340,17 @@ class _AddContractorCertificateVerificationRecordState
                                 asyncItems: (String filter) async {
                                   // var response = await addInitialTreatmentMonitoringRecordController.globalController.database!.activityDao.findAllMainActivity();
                                   var response =
-                                  await addContractorCertificateVerificationRecordController
-                                      .jobDb
-                                      .getAllFarms();
+                                      await addContractorCertificateVerificationRecordController
+                                          .jobDb
+                                          .getAllFarms();
                                   return response;
                                 },
-                                itemAsString: (JobOrderFarmModel d) =>
-                                    d.farmId.toString(),
+                                itemAsString:
+                                    (JobOrderFarmModel d) =>
+                                        d.farmId.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (activity, filter) =>
-                                activity == filter,
+                                compareFn:
+                                    (activity, filter) => activity == filter,
                                 onChanged: (val) {
                                   addContractorCertificateVerificationRecordController
                                       .farmReferenceNumberTC!
@@ -329,8 +358,12 @@ class _AddContractorCertificateVerificationRecordState
                                   addContractorCertificateVerificationRecordController
                                       .farmerNameTC!
                                       .text = val.farmerName.toString();
-                                  addContractorCertificateVerificationRecordController.farmSizeTC!.text = val.farmSize.toString();
-                                  addContractorCertificateVerificationRecordController.communityNameTC!.text = val.location.toString();
+                                  addContractorCertificateVerificationRecordController
+                                      .farmSizeTC!
+                                      .text = val.farmSize.toString();
+                                  addContractorCertificateVerificationRecordController
+                                      .communityNameTC!
+                                      .text = val.location.toString();
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
                                   //
@@ -362,17 +395,17 @@ class _AddContractorCertificateVerificationRecordState
                                 'Farmer name',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               TextFormField(
                                 controller:
-                                addContractorCertificateVerificationRecordController
-                                    .farmerNameTC,
+                                    addContractorCertificateVerificationRecordController
+                                        .farmerNameTC,
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                    vertical: 15,
+                                    horizontal: 15,
+                                  ),
                                   enabledBorder: inputBorder,
                                   focusedBorder: inputBorderFocused,
                                   errorBorder: inputBorder,
@@ -381,30 +414,32 @@ class _AddContractorCertificateVerificationRecordState
                                   fillColor: AppColor.lightText,
                                 ),
                                 keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                  decimal: true,
+                                ),
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                value!.trim().isEmpty
-                                    ? "Farmer name is required"
-                                    : null,
+                                validator:
+                                    (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Farmer name is required"
+                                            : null,
                               ),
                               const SizedBox(height: 20),
                               const Text(
                                 'Farm Size (in hectares)',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               TextFormField(
                                 controller:
-                                addContractorCertificateVerificationRecordController
-                                    .farmSizeTC,
+                                    addContractorCertificateVerificationRecordController
+                                        .farmSizeTC,
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                    vertical: 15,
+                                    horizontal: 15,
+                                  ),
                                   enabledBorder: inputBorder,
                                   focusedBorder: inputBorderFocused,
                                   errorBorder: inputBorder,
@@ -413,30 +448,32 @@ class _AddContractorCertificateVerificationRecordState
                                   fillColor: AppColor.lightText,
                                 ),
                                 keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                  decimal: true,
+                                ),
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                value!.trim().isEmpty
-                                    ? "Farm size is required"
-                                    : null,
+                                validator:
+                                    (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Farm size is required"
+                                            : null,
                               ),
                               const SizedBox(height: 20),
                               const Text(
                                 'Community',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               TextFormField(
                                 readOnly: true,
                                 controller:
-                                addContractorCertificateVerificationRecordController
-                                    .communityNameTC,
+                                    addContractorCertificateVerificationRecordController
+                                        .communityNameTC,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                    vertical: 15,
+                                    horizontal: 15,
+                                  ),
                                   enabledBorder: inputBorder,
                                   focusedBorder: inputBorderFocused,
                                   errorBorder: inputBorder,
@@ -448,10 +485,11 @@ class _AddContractorCertificateVerificationRecordState
                                 textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                value!.trim().isEmpty
-                                    ? "Community is required"
-                                    : null,
+                                validator:
+                                    (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Community is required"
+                                            : null,
                               ),
                               // const SizedBox(
                               //   height: 5,
@@ -653,52 +691,58 @@ class _AddContractorCertificateVerificationRecordState
                                 'Activity',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select Activity',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
+                                  showSelectedItems: true,
+                                  showSearchBox: true,
+                                  title: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    child: Center(
+                                      child: Text(
+                                        'Select Activity',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (String s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
+                                  ),
+                                  disabledItemFn: (String s) => false,
+                                  modalBottomSheetProps: ModalBottomSheetProps(
+                                    elevation: 6,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
+                                        topRight: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                            horizontal: 15,
+                                          ),
+                                      enabledBorder: inputBorder,
+                                      focusedBorder: inputBorderFocused,
+                                      errorBorder: inputBorder,
+                                      focusedErrorBorder: inputBorderFocused,
+                                      filled: true,
+                                      fillColor: AppColor.xLightBackground,
+                                    ),
+                                  ),
+                                ),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -708,9 +752,9 @@ class _AddContractorCertificateVerificationRecordState
                                   ),
                                 ),
                                 items: [
-                              "Establishment",
-                              "Initial Treatment",
-                              "Maintenance",
+                                  "Establishment",
+                                  "Initial Treatment",
+                                  "Maintenance",
                                 ],
                                 // asyncItems: (String filter) async {
                                 //   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
@@ -737,14 +781,12 @@ class _AddContractorCertificateVerificationRecordState
                                 //   // ]);
                                 //   return response;
                                 // },
-                                itemAsString: (String d) =>
-                                    d,
+                                itemAsString: (String d) => d,
                                 //filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
                                 // compareFn: (activity, filter) =>
                                 //     activity.mainActivity ==
                                 //     filter.mainActivity,
                                 onChanged: (val) {
-
                                   print("YESSSSS");
                                   addContractorCertificateVerificationRecordController
                                       .activity = val!;
@@ -770,56 +812,64 @@ class _AddContractorCertificateVerificationRecordState
                                 'Sub Activity',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<ActivityModel>.multiSelection(
                                 popupProps:
                                     PopupPropsMultiSelection.modalBottomSheet(
-                                        showSelectedItems: true,
-                                        showSearchBox: true,
-                                        title: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 15),
-                                          child: Center(
-                                            child: Text(
-                                              'Select Sub Activity',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500),
+                                      showSelectedItems: true,
+                                      showSearchBox: true,
+                                      title: const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 15,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Select Sub Activity',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ),
-                                        disabledItemFn: (ActivityModel s) => false,
-                                        modalBottomSheetProps:
-                                            ModalBottomSheetProps(
-                                          elevation: 6,
-                                          shape: RoundedRectangleBorder(
+                                      ),
+                                      disabledItemFn:
+                                          (ActivityModel s) => false,
+                                      modalBottomSheetProps:
+                                          ModalBottomSheetProps(
+                                            elevation: 6,
+                                            shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(
-                                                      AppBorderRadius.md),
-                                                  topRight: Radius.circular(
-                                                      AppBorderRadius.md))),
-                                        ),
-                                        searchFieldProps: TextFieldProps(
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 4,
-                                                    horizontal: 15),
-                                            enabledBorder: inputBorder,
-                                            focusedBorder: inputBorderFocused,
-                                            errorBorder: inputBorder,
-                                            focusedErrorBorder:
-                                                inputBorderFocused,
-                                            filled: true,
-                                            fillColor:
-                                                AppColor.xLightBackground,
+                                                topLeft: Radius.circular(
+                                                  AppBorderRadius.md,
+                                                ),
+                                                topRight: Radius.circular(
+                                                  AppBorderRadius.md,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        )),
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                vertical: 4,
+                                                horizontal: 15,
+                                              ),
+                                          enabledBorder: inputBorder,
+                                          focusedBorder: inputBorderFocused,
+                                          errorBorder: inputBorder,
+                                          focusedErrorBorder:
+                                              inputBorderFocused,
+                                          filled: true,
+                                          fillColor: AppColor.xLightBackground,
+                                        ),
+                                      ),
+                                    ),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -829,12 +879,14 @@ class _AddContractorCertificateVerificationRecordState
                                   ),
                                 ),
                                 asyncItems: (String filter) async {
-
-                                    ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
-                                    var response = await db.getSubActivityByMainActivity(
-                                      addContractorCertificateVerificationRecordController
-                                          .activity ?? ""
-                                    );
+                                  ActivityDatabaseHelper db =
+                                      ActivityDatabaseHelper.instance;
+                                  var response = await db
+                                      .getSubActivityByMainActivity(
+                                        addContractorCertificateVerificationRecordController
+                                                .activity ??
+                                            "",
+                                      );
 
                                   // var response =
                                   //     await addContractorCertificateVerificationRecordController
@@ -848,11 +900,14 @@ class _AddContractorCertificateVerificationRecordState
 
                                   return response;
                                 },
-                                itemAsString: (ActivityModel d) =>
-                                    d.subActivity!.toString(),
+                                itemAsString:
+                                    (ActivityModel d) =>
+                                        d.subActivity!.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (activity, filter) =>
-                                    activity.subActivity == filter.subActivity,
+                                compareFn:
+                                    (activity, filter) =>
+                                        activity.subActivity ==
+                                        filter.subActivity,
                                 onChanged: (vals) {
                                   addContractorCertificateVerificationRecordController
                                       .subActivity = vals;
@@ -873,25 +928,28 @@ class _AddContractorCertificateVerificationRecordState
                                 'Completed By',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) => false,
-                                    fit: FlexFit.loose,
-                                    menuProps: MenuProps(
-                                        elevation: 6,
-                                        borderRadius: BorderRadius.circular(
-                                            AppBorderRadius.sm))),
+                                  showSelectedItems: true,
+                                  disabledItemFn: (String s) => false,
+                                  fit: FlexFit.loose,
+                                  menuProps: MenuProps(
+                                    elevation: 6,
+                                    borderRadius: BorderRadius.circular(
+                                      AppBorderRadius.sm,
+                                    ),
+                                  ),
+                                ),
                                 items:
                                     addContractorCertificateVerificationRecordController
                                         .listOfStaff,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -910,7 +968,8 @@ class _AddContractorCertificateVerificationRecordState
                                 },
                                 onChanged: (val) {
                                   addContractorCertificateVerificationRecordController
-                                      .isCompletedBy.value = val!;
+                                      .isCompletedBy
+                                      .value = val!;
                                   addContractorCertificateVerificationRecordController
                                       .update();
                                 },
@@ -919,107 +978,88 @@ class _AddContractorCertificateVerificationRecordState
                               Obx(
                                 () =>
                                     addContractorCertificateVerificationRecordController
-                                                .isCompletedBy.value
+                                                .isCompletedBy
+                                                .value
                                                 .toString() ==
                                             'Contractor'
                                         ? Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(
-                                                height: 20,
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 20),
+                                            const Text(
+                                              'Contractor Name',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
                                               ),
-                                              const Text(
-                                                'Contractor Name',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              DropdownSearch<Contractor>(
-                                                popupProps:
-                                                    PopupProps.modalBottomSheet(
-                                                        showSelectedItems: true,
-                                                        showSearchBox: true,
-                                                        itemBuilder: (context,
-                                                            item, selected) {
-                                                          return ListTile(
-                                                            title: Text(
-                                                                item.contractorName
-                                                                    .toString(),
-                                                                style: selected
-                                                                    ? TextStyle(
-                                                                        color: AppColor
-                                                                            .primary)
-                                                                    : const TextStyle()),
-                                                          );
-                                                        },
-                                                        title: const Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 15),
-                                                          child: Center(
-                                                            child: Text(
-                                                              'Select contractor',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                          ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            DropdownSearch<Contractor>(
+                                              popupProps: PopupProps.modalBottomSheet(
+                                                showSelectedItems: true,
+                                                showSearchBox: true,
+                                                itemBuilder: (
+                                                  context,
+                                                  item,
+                                                  selected,
+                                                ) {
+                                                  return ListTile(
+                                                    title: Text(
+                                                      item.contractorName
+                                                          .toString(),
+                                                      style:
+                                                          selected
+                                                              ? TextStyle(
+                                                                color:
+                                                                    AppColor
+                                                                        .primary,
+                                                              )
+                                                              : const TextStyle(),
+                                                    ),
+                                                  );
+                                                },
+                                                title: const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 15,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Select contractor',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                disabledItemFn:
+                                                    (Contractor s) => false,
+                                                modalBottomSheetProps:
+                                                    ModalBottomSheetProps(
+                                                      elevation: 6,
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                AppBorderRadius
+                                                                    .md,
+                                                              ),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                AppBorderRadius
+                                                                    .md,
+                                                              ),
                                                         ),
-                                                        disabledItemFn:
-                                                            (Contractor s) =>
-                                                                false,
-                                                        modalBottomSheetProps:
-                                                            ModalBottomSheetProps(
-                                                          elevation: 6,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          AppBorderRadius
-                                                                              .md),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          AppBorderRadius
-                                                                              .md))),
-                                                        ),
-                                                        searchFieldProps:
-                                                            TextFieldProps(
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical: 4,
-                                                                    horizontal:
-                                                                        15),
-                                                            enabledBorder:
-                                                                inputBorder,
-                                                            focusedBorder:
-                                                                inputBorderFocused,
-                                                            errorBorder:
-                                                                inputBorder,
-                                                            focusedErrorBorder:
-                                                                inputBorderFocused,
-                                                            filled: true,
-                                                            fillColor: AppColor
-                                                                .xLightBackground,
-                                                          ),
-                                                        )),
-                                                dropdownDecoratorProps:
-                                                    DropDownDecoratorProps(
-                                                  dropdownSearchDecoration:
-                                                      InputDecoration(
+                                                      ),
+                                                    ),
+                                                searchFieldProps: TextFieldProps(
+                                                  decoration: InputDecoration(
                                                     contentPadding:
-                                                        const EdgeInsets
-                                                                .symmetric(
-                                                            vertical: 4,
-                                                            horizontal: 15),
+                                                        const EdgeInsets.symmetric(
+                                                          vertical: 4,
+                                                          horizontal: 15,
+                                                        ),
                                                     enabledBorder: inputBorder,
                                                     focusedBorder:
                                                         inputBorderFocused,
@@ -1027,45 +1067,73 @@ class _AddContractorCertificateVerificationRecordState
                                                     focusedErrorBorder:
                                                         inputBorderFocused,
                                                     filled: true,
-                                                    fillColor: AppColor
-                                                        .xLightBackground,
+                                                    fillColor:
+                                                        AppColor
+                                                            .xLightBackground,
                                                   ),
                                                 ),
-                                                asyncItems:
-                                                    (String filter) async {
-                                                  var response =
-                                                      await addContractorCertificateVerificationRecordController
-                                                          .globalController
-                                                          .database!
-                                                          .contractorDao
-                                                          .findAllContractors();
-                                                  return response;
-                                                },
-                                                itemAsString: (Contractor d) =>
-                                                    d.contractorName ?? '',
-                                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                                compareFn: (d, filter) =>
-                                                    d.contractorName ==
-                                                    filter.contractorName,
-                                                onChanged: (val) {
-                                                  addContractorCertificateVerificationRecordController
-                                                      .contractor = val;
-                                                  addContractorCertificateVerificationRecordController
-                                                      .update();
-                                                },
-
-                                                autoValidateMode:
-                                                    AutovalidateMode.always,
-                                                validator: (item) {
-                                                  if (item == null) {
-                                                    return 'Contractor name is required';
-                                                  } else {
-                                                    return null;
-                                                  }
-                                                },
                                               ),
-                                            ],
-                                          )
+                                              dropdownDecoratorProps:
+                                                  DropDownDecoratorProps(
+                                                    dropdownSearchDecoration:
+                                                        InputDecoration(
+                                                          contentPadding:
+                                                              const EdgeInsets.symmetric(
+                                                                vertical: 4,
+                                                                horizontal: 15,
+                                                              ),
+                                                          enabledBorder:
+                                                              inputBorder,
+                                                          focusedBorder:
+                                                              inputBorderFocused,
+                                                          errorBorder:
+                                                              inputBorder,
+                                                          focusedErrorBorder:
+                                                              inputBorderFocused,
+                                                          filled: true,
+                                                          fillColor:
+                                                              AppColor
+                                                                  .xLightBackground,
+                                                        ),
+                                                  ),
+                                              asyncItems: (
+                                                String filter,
+                                              ) async {
+                                                var response =
+                                                    await addContractorCertificateVerificationRecordController
+                                                        .globalController
+                                                        .database!
+                                                        .contractorDao
+                                                        .findAllContractors();
+                                                return response;
+                                              },
+                                              itemAsString:
+                                                  (Contractor d) =>
+                                                      d.contractorName ?? '',
+                                              // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                              compareFn:
+                                                  (d, filter) =>
+                                                      d.contractorName ==
+                                                      filter.contractorName,
+                                              onChanged: (val) {
+                                                addContractorCertificateVerificationRecordController
+                                                    .contractor = val;
+                                                addContractorCertificateVerificationRecordController
+                                                    .update();
+                                              },
+
+                                              autoValidateMode:
+                                                  AutovalidateMode.always,
+                                              validator: (item) {
+                                                if (item == null) {
+                                                  return 'Contractor name is required';
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        )
                                         : Container(),
                               ),
 
@@ -1073,54 +1141,58 @@ class _AddContractorCertificateVerificationRecordState
                                 'Picture of Farm',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
+                              const SizedBox(height: 5),
+                              GetBuilder(
+                                init:
+                                    addContractorCertificateVerificationRecordController,
+                                builder: (context) {
+                                  return ImageFieldCard(
+                                    // onTap: () => addInitialTreatmentMonitoringRecordController.chooseMediaSource(),
+                                    // onTap: () => addInitialTreatmentMonitoringRecordController.pickMedia(source: 1, imageToSet: PersonnelImageData.personnelImage),
+                                    onTap:
+                                        () =>
+                                            addContractorCertificateVerificationRecordController
+                                                .pickMedia(source: 1),
+                                    image:
+                                        addContractorCertificateVerificationRecordController
+                                            .farmPhoto
+                                            ?.file,
+                                  );
+                                },
                               ),
                               GetBuilder(
-                                  init:
-                                      addContractorCertificateVerificationRecordController,
-                                  builder: (context) {
-                                    return ImageFieldCard(
-                                      // onTap: () => addInitialTreatmentMonitoringRecordController.chooseMediaSource(),
-                                      // onTap: () => addInitialTreatmentMonitoringRecordController.pickMedia(source: 1, imageToSet: PersonnelImageData.personnelImage),
-                                      onTap: () =>
-                                          addContractorCertificateVerificationRecordController
-                                              .pickMedia(source: 1),
-                                      image:
-                                          addContractorCertificateVerificationRecordController
-                                              .farmPhoto?.file,
-                                    );
-                                  }),
-                              GetBuilder(
-                                  init:
-                                      addContractorCertificateVerificationRecordController,
-                                  builder: (ctx) {
-                                    return addContractorCertificateVerificationRecordController
-                                                .farmPhoto?.file ==
-                                            null
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 15.0, right: 15.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  'Picture of farm is required',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall!
-                                                      .copyWith(
-                                                          color:
-                                                              Colors.red[700]),
-                                                ),
-                                              ],
+                                init:
+                                    addContractorCertificateVerificationRecordController,
+                                builder: (ctx) {
+                                  return addContractorCertificateVerificationRecordController
+                                              .farmPhoto
+                                              ?.file ==
+                                          null
+                                      ? Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 15.0,
+                                          right: 15.0,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              'Picture of farm is required',
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall!.copyWith(
+                                                color: Colors.red[700],
+                                              ),
                                             ),
-                                          )
-                                        : Container();
-                                  }),
+                                          ],
+                                        ),
+                                      )
+                                      : Container();
+                                },
+                              ),
                               const SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment:
@@ -1134,53 +1206,56 @@ class _AddContractorCertificateVerificationRecordState
                                                   .locationData !=
                                               null
                                           ? Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.rectangle,
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  color: locationAccuracyColor(
-                                                      addContractorCertificateVerificationRecordController
-                                                          .locationData
-                                                          ?.accuracy)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  "Accuracy:  ${addContractorCertificateVerificationRecordController.locationData?.accuracy?.truncateToDecimalPlaces(2).toString() ?? 'null'}",
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16,
-                                                      color: Colors.white),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: locationAccuracyColor(
+                                                addContractorCertificateVerificationRecordController
+                                                    .locationData
+                                                    ?.accuracy,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(
+                                                8.0,
+                                              ),
+                                              child: Text(
+                                                "Accuracy:  ${addContractorCertificateVerificationRecordController.locationData?.accuracy?.truncateToDecimalPlaces(2).toString() ?? 'null'}",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: Colors.white,
                                                 ),
                                               ),
-                                            )
+                                            ),
+                                          )
                                           : Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.rectangle,
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  color: locationAccuracyColor(
-                                                      addContractorCertificateVerificationRecordController
-                                                          .locationData
-                                                          ?.accuracy)),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  "Location Data Empty",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      // fontSize: 16,
-                                                      color: Colors.white),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: locationAccuracyColor(
+                                                addContractorCertificateVerificationRecordController
+                                                    .locationData
+                                                    ?.accuracy,
+                                              ),
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Location Data Empty",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  // fontSize: 16,
+                                                  color: Colors.white,
                                                 ),
                                               ),
-                                            );
+                                            ),
+                                          );
                                     },
                                   ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
+                                  SizedBox(width: 4),
                                   Expanded(
                                     child: Obx(
                                       () => ElevatedButton(
@@ -1190,27 +1265,29 @@ class _AddContractorCertificateVerificationRecordState
                                         },
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
+                                            borderRadius: BorderRadius.circular(
+                                              20.0,
+                                            ),
                                           ),
                                         ),
                                         child:
                                             addContractorCertificateVerificationRecordController
-                                                    .isLoadingLocation.value
+                                                    .isLoadingLocation
+                                                    .value
                                                 ? const Text(
-                                                    'Saving Location...',
-                                                    overflow: TextOverflow.clip,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                : const Text(
-                                                    'Save Location',
-                                                    overflow: TextOverflow.clip,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                  'Saving Location...',
+                                                  overflow: TextOverflow.clip,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
                                                   ),
+                                                )
+                                                : const Text(
+                                                  'Save Location',
+                                                  overflow: TextOverflow.clip,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                       ),
                                     ),
                                   ),
@@ -1219,51 +1296,51 @@ class _AddContractorCertificateVerificationRecordState
                               const SizedBox(height: 20),
                               const Divider(),
                               GetBuilder(
-                                  init:
-                                      addContractorCertificateVerificationRecordController,
-                                  builder: (context) {
-                                    return addContractorCertificateVerificationRecordController
-                                                .locationData !=
-                                            null
-                                        ? Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 20),
-                                              Text(
-                                                'LOCATION',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 16,
-                                                    color: AppColor.black),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                'Lat : ${addContractorCertificateVerificationRecordController.locationData!.latitude}',
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              Text(
-                                                'Lng : ${addContractorCertificateVerificationRecordController.locationData!.longitude}',
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              Text(
-                                                'Accuracy : ${addContractorCertificateVerificationRecordController.locationData!.accuracy!.truncateToDecimalPlaces(2).toString()}',
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          )
-                                        : Container();
-                                  }),
-                              const SizedBox(
-                                height: 40,
+                                init:
+                                    addContractorCertificateVerificationRecordController,
+                                builder: (context) {
+                                  return addContractorCertificateVerificationRecordController
+                                              .locationData !=
+                                          null
+                                      ? Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(height: 20),
+                                          Text(
+                                            'LOCATION',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16,
+                                              color: AppColor.black,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            'Lat : ${addContractorCertificateVerificationRecordController.locationData!.latitude}',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Lng : ${addContractorCertificateVerificationRecordController.locationData!.longitude}',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Accuracy : ${addContractorCertificateVerificationRecordController.locationData!.accuracy!.truncateToDecimalPlaces(2).toString()}',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                      : Container();
+                                },
                               ),
+                              const SizedBox(height: 40),
                               Row(
                                 children: [
                                   Expanded(
@@ -1274,7 +1351,8 @@ class _AddContractorCertificateVerificationRecordState
                                       horizontalPadding: 8.0,
                                       onTap: () async {
                                         if (!addContractorCertificateVerificationRecordController
-                                            .isSaveButtonDisabled.value) {
+                                            .isSaveButtonDisabled
+                                            .value) {
                                           if (addContractorCertificateVerificationRecordController
                                               .addContractorCertificateVerificationRecordFormKey
                                               .currentState!
@@ -1285,21 +1363,24 @@ class _AddContractorCertificateVerificationRecordState
                                             addContractorCertificateVerificationRecordController
                                                 .globals
                                                 .showSnackBar(
-                                                    title: 'Alert',
-                                                    message:
-                                                        'Kindly provide all required information');
+                                                  title: 'Alert',
+                                                  message:
+                                                      'Kindly provide all required information',
+                                                );
                                           }
                                         }
                                       },
                                       child: Obx(
                                         () => Text(
                                           addContractorCertificateVerificationRecordController
-                                                  .isSaveButtonDisabled.value
+                                                  .isSaveButtonDisabled
+                                                  .value
                                               ? 'Please wait ...'
                                               : 'Save',
                                           style: TextStyle(
-                                              color: AppColor.white,
-                                              fontSize: 14),
+                                            color: AppColor.white,
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1324,24 +1405,26 @@ class _AddContractorCertificateVerificationRecordState
                                           addContractorCertificateVerificationRecordController
                                               .globals
                                               .showSnackBar(
-                                                  title: 'Alert',
-                                                  message:
-                                                      'Kindly provide all required information');
+                                                title: 'Alert',
+                                                message:
+                                                    'Kindly provide all required information',
+                                              );
                                         }
                                         // }
                                       },
                                       child:
-                                          // Obx(
-                                          //   () =>
-                                          Text(
+                                      // Obx(
+                                      //   () =>
+                                      Text(
                                         // addContractorCertificateRecordController
                                         //         .isButtonDisabled.value
                                         //     ? 'Please wait ...'
                                         //     :
                                         'Submit',
                                         style: TextStyle(
-                                            color: AppColor.white,
-                                            fontSize: 14),
+                                          color: AppColor.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                       // ),
                                     ),
@@ -1355,7 +1438,7 @@ class _AddContractorCertificateVerificationRecordState
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

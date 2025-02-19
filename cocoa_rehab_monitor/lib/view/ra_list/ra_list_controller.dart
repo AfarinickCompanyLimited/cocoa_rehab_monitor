@@ -35,35 +35,36 @@ class RAListController extends GetxController {
   final int _pageSize = 10;
 
   // INITIALISE
-
-  Future<void> fetchData(
-      {required String searchTerm,
-      required int pageKey,
-      required PagingController controller}) async {
-    try {
-      final data = searchTerm.trim().isEmpty
-          ? await globalController.database!.rehabAssistantDao
-              .findRehabAssistantsWithLimit(_pageSize, pageKey * _pageSize)
-          : await globalController.database!.rehabAssistantDao
-              .findRehabAssistantsWithSearchAndLimit(
-                  "%${searchTerm.trim()}%".toLowerCase(),
-                  _pageSize,
-                  pageKey * _pageSize);
-      final isLastPage = data.length < _pageSize;
-      if (isLastPage) {
-        controller.appendLastPage(data);
-      } else {
-        final nextPageKey = pageKey + 1;
-        controller.appendPage(data, nextPageKey);
-      }
-    } catch (error, stackTrace) {
-      controller.error = error;
-    FirebaseCrashlytics.instance.recordError(error, stackTrace);
-        FirebaseCrashlytics.instance.log('ra list. fetchData');
-
-
-    }
-  }
+  //
+  // Future<void> fetchData(
+  //     {required String searchTerm,
+  //     required int pageKey,
+  //     required PagingController controller}) async
+  // {
+  //   try {
+  //     final data = searchTerm.trim().isEmpty
+  //         ? await globalController.database!.rehabAssistantDao
+  //             .findRehabAssistantsWithLimit(_pageSize, pageKey * _pageSize)
+  //         : await globalController.database!.rehabAssistantDao
+  //             .findRehabAssistantsWithSearchAndLimit(
+  //                 "%${searchTerm.trim()}%".toLowerCase(),
+  //                 _pageSize,
+  //                 pageKey * _pageSize);
+  //     final isLastPage = data.length < _pageSize;
+  //     if (isLastPage) {
+  //       controller.appendLastPage(data);
+  //     } else {
+  //       final nextPageKey = pageKey + 1;
+  //       controller.appendPage(data, nextPageKey);
+  //     }
+  //   } catch (error, stackTrace) {
+  //     controller.error = error;
+  //   FirebaseCrashlytics.instance.recordError(error, stackTrace);
+  //       FirebaseCrashlytics.instance.log('ra list. fetchData');
+  //
+  //
+  //   }
+  // }
 
   viewRA(RehabAssistant rehabAssistant) {
     showModalBottomSheet<void>(
@@ -80,6 +81,29 @@ class RAListController extends GetxController {
       },
     );
   }
+
+  Future<List<RehabAssistant>>? dataFuture;
+
+  Future<List<RehabAssistant>> fetchData({String? searchTerm}) async {
+    List<RehabAssistant> data = await yourDataSource.fetchData();
+    if (searchTerm != null && searchTerm.isNotEmpty) {
+      data =
+          data
+              .where(
+                (ra) =>
+                    ra.rehabName!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                    ra.staffId!.contains(searchTerm),
+              )
+              .toList();
+    }
+    return data;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    dataFuture = fetchData();
+  }
 }
 
 class RehabAssistantRepository {
@@ -90,19 +114,26 @@ class RehabAssistantRepository {
   List<RehabAssistant> get rehabAssistantList => _filteredRehabAssistantList;
 
   Future<void> initializeData() async {
-    final rehabAssistantData = await globalController
-        .database!.rehabAssistantDao
-        .findAllRehabAssistants();
+    final rehabAssistantData =
+        await globalController.database!.rehabAssistantDao
+            .findAllRehabAssistants();
     _rehabAssistantList.addAll(rehabAssistantData);
     _filteredRehabAssistantList.addAll(rehabAssistantData);
   }
 
   void search(String rehabName) {
-    final filteredList = _rehabAssistantList
-        .where((rehab) =>
-            rehab.rehabName!.toLowerCase().contains(rehabName.toLowerCase()) ||
-            rehab.staffId!.toLowerCase().contains(rehabName.toLowerCase()))
-        .toList();
+    final filteredList =
+        _rehabAssistantList
+            .where(
+              (rehab) =>
+                  rehab.rehabName!.toLowerCase().contains(
+                    rehabName.toLowerCase(),
+                  ) ||
+                  rehab.staffId!.toLowerCase().contains(
+                    rehabName.toLowerCase(),
+                  ),
+            )
+            .toList();
     _filteredRehabAssistantList.clear();
     _filteredRehabAssistantList.addAll(filteredList);
   }
