@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../controller/db/rehab_assistant_db.dart';
+import '../../controller/model/rehab_assistant_model.dart';
 import 'components/ra_bottomsheet.dart';
 
 class RAListController extends GetxController {
@@ -66,7 +68,7 @@ class RAListController extends GetxController {
   //   }
   // }
 
-  viewRA(RehabAssistant rehabAssistant) {
+  viewRA(RehabAssistantModel rehabAssistant) {
     showModalBottomSheet<void>(
       elevation: 5,
       isScrollControlled: true,
@@ -82,16 +84,17 @@ class RAListController extends GetxController {
     );
   }
 
-  Future<List<RehabAssistant>>? dataFuture;
+  Future<List<RehabAssistantModel>>? dataFuture;
+  RehabAssistantDatabaseHelper db = RehabAssistantDatabaseHelper.instance;
 
-  Future<List<RehabAssistant>> fetchData({String? searchTerm}) async {
-    List<RehabAssistant> data = await yourDataSource.fetchData();
+  Future<List<RehabAssistantModel>> fetchData({String? searchTerm}) async {
+    List<RehabAssistantModel> data = await db.getAllData();
     if (searchTerm != null && searchTerm.isNotEmpty) {
       data =
           data
               .where(
                 (ra) =>
-                    ra.rehabName!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                    ra.rehabName.toLowerCase().contains(searchTerm.toLowerCase()) ||
                     ra.staffId!.contains(searchTerm),
               )
               .toList();
