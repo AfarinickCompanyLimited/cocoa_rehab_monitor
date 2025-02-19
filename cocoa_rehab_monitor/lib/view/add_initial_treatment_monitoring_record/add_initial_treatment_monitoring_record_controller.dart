@@ -224,19 +224,6 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
         return;
       }
 
-      for(int i = 0; i < rehabAssistants.length; i++){
-        for(int j = i+1; j < rehabAssistants.length; j++){
-          if(rehabAssistants[i].rehabAssistant!.rehabName == rehabAssistants[j].rehabAssistant!.rehabName){
-            globals.showSnackBar(
-                title: 'Alert',
-                message:
-                'Rehab assistants cannot be the same',
-                duration: 5);
-            return;
-          }
-        }
-      }
-
       // for(int i = 0; i < rehabAssistants.length; i++){
       //   if(rehabAssistants[i].rehabAssistant!.rehabName == rehabAssistants[i+1].rehabAssistant!.rehabName){
       //
@@ -396,20 +383,6 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
                 'Area covered by rehab assistants cannot be bigger than farm size',
             duration: 5);
         return;
-      }
-
-
-      for(int i = 0; i < rehabAssistants.length; i++){
-        for(int j = i+1; j < rehabAssistants.length; j++){
-          if(rehabAssistants[i].rehabAssistant!.rehabName == rehabAssistants[j].rehabAssistant!.rehabName){
-            globals.showSnackBar(
-                title: 'Alert',
-                message:
-                'Rehab assistants cannot be the same',
-                duration: 5);
-            return;
-          }
-        }
       }
 
     } else {
