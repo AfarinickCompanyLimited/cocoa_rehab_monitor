@@ -7,11 +7,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="955164c4-6b78-4f4e-b190-35fd3ea4e1d1" name="Changes" comment="m">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cocoa_rehab_monitor/lib/view/add_workdone_certificate_verification_record/add_workdone_verification_certificate_record.dart" beforeDir="false" afterPath="$PROJECT_DIR$/cocoa_rehab_monitor/lib/view/add_workdone_certificate_verification_record/add_workdone_verification_certificate_record.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cocoa_rehab_monitor/lib/view/add_workdone_certificate_verification_record/add_workdone_verification_record_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/cocoa_rehab_monitor/lib/view/add_workdone_certificate_verification_record/add_workdone_verification_record_controller.dart" afterDir="false" />
-    </list>
+    <list default="true" id="955164c4-6b78-4f4e-b190-35fd3ea4e1d1" name="Changes" comment="m" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -130,7 +126,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739960627026</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="m">
+      <option name="closed" value="true" />
+      <created>1739962367856</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1739962367856</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
