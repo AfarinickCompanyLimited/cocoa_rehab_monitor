@@ -6,8 +6,10 @@ import 'package:cocoa_rehab_monitor/controller/entity/cocoa_rehub_monitor/rehab_
 import 'package:cocoa_rehab_monitor/view/utils/style.dart';
 import 'package:flutter/material.dart';
 
+import '../../../controller/model/rehab_assistant_model.dart';
+
 class RABottomSheet extends StatelessWidget {
-  final RehabAssistant rehabAssistant;
+  final RehabAssistantModel rehabAssistant;
   const RABottomSheet({Key? key, required this.rehabAssistant})
       : super(key: key);
 
@@ -293,7 +295,7 @@ class RABottomSheet extends StatelessWidget {
                             fontWeight: FontWeight.w500, fontSize: 14),
                       ),
                       subtitle: SelectableText(
-                        '${rehabAssistant.poFirstName} ${rehabAssistant.poLastName}',
+                        '${rehabAssistant.rehabName} ${rehabAssistant.po}',
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 12),
                         toolbarOptions: const ToolbarOptions(
