@@ -315,7 +315,6 @@ class _AddContractorCertificateVerificationRecordState
                                   await addContractorCertificateVerificationRecordController
                                       .jobDb
                                       .getAllFarms();
-                                  print("THE RESPONSE ::::::::::: $response");
                                   return response;
                                 },
                                 itemAsString: (JobOrderFarmModel d) =>
