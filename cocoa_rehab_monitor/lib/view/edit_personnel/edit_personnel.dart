@@ -410,345 +410,345 @@ class _EditPersonnelState extends State<EditPersonnel> {
                                       ),
                                       const SizedBox(height: 20),
 
-                                      const Text(
-                                        'Region',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      FutureBuilder(
-                                        builder: (ctx, snapshot) {
-                                          // Checking if future is resolved or not
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            if (snapshot.hasError) {
-                                              return Center(
-                                                child: Text(
-                                                  '${snapshot.error} occurred',
-                                                  style: const TextStyle(
-                                                      fontSize: 18),
-                                                ),
-                                              );
-                                            } else if (snapshot.hasData) {
-                                              List? dataList =
-                                                  snapshot.data as List;
-                                              RegionDistrict? data =
-                                                  dataList.isNotEmpty
-                                                      ? dataList.first
-                                                          as RegionDistrict?
-                                                      : RegionDistrict();
-                                              editPersonnelController.region =
-                                                  data;
-
-                                              return DropdownSearch<
-                                                  RegionDistrict>(
-                                                popupProps:
-                                                    PopupProps.modalBottomSheet(
-                                                        showSelectedItems: true,
-                                                        showSearchBox: true,
-                                                        title: const Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 15),
-                                                          child: Center(
-                                                            child: Text(
-                                                              'Select Region',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        disabledItemFn:
-                                                            (RegionDistrict
-                                                                    s) =>
-                                                                false,
-                                                        modalBottomSheetProps:
-                                                            ModalBottomSheetProps(
-                                                          elevation: 6,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          AppBorderRadius
-                                                                              .md),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          AppBorderRadius
-                                                                              .md))),
-                                                        ),
-                                                        searchFieldProps:
-                                                            TextFieldProps(
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical: 4,
-                                                                    horizontal:
-                                                                        15),
-                                                            enabledBorder:
-                                                                inputBorder,
-                                                            focusedBorder:
-                                                                inputBorderFocused,
-                                                            errorBorder:
-                                                                inputBorder,
-                                                            focusedErrorBorder:
-                                                                inputBorderFocused,
-                                                            filled: true,
-                                                            fillColor: AppColor
-                                                                .xLightBackground,
-                                                          ),
-                                                        )),
-                                                dropdownDecoratorProps:
-                                                    DropDownDecoratorProps(
-                                                  dropdownSearchDecoration:
-                                                      InputDecoration(
-                                                    contentPadding:
-                                                        const EdgeInsets
-                                                                .symmetric(
-                                                            vertical: 4,
-                                                            horizontal: 15),
-                                                    enabledBorder: inputBorder,
-                                                    focusedBorder:
-                                                        inputBorderFocused,
-                                                    errorBorder: inputBorder,
-                                                    focusedErrorBorder:
-                                                        inputBorderFocused,
-                                                    filled: true,
-                                                    fillColor: AppColor
-                                                        .xLightBackground,
-                                                  ),
-                                                ),
-
-                                                asyncItems:
-                                                    (String filter) async {
-                                                  var response =
-                                                      await editPersonnelController
-                                                          .globalController
-                                                          .database!
-                                                          .regionDistrictDao
-                                                          .findRegions();
-                                                  return response;
-                                                },
-                                                itemAsString:
-                                                    (RegionDistrict d) =>
-                                                        d.regionName ?? '',
-                                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                                compareFn: (regionDistrict,
-                                                        filter) =>
-                                                    regionDistrict.regionName ==
-                                                    filter.regionName,
-                                                onChanged: (val) {
-                                                  editPersonnelController
-                                                      .region = val;
-                                                  editPersonnelController
-                                                          .district =
-                                                      RegionDistrict();
-                                                },
-                                                autoValidateMode:
-                                                    AutovalidateMode.always,
-                                                selectedItem: data,
-                                                validator: (item) {
-                                                  if (item == null) {
-                                                    return 'Region is required';
-                                                  } else {
-                                                    return null;
-                                                  }
-                                                },
-                                              );
-                                            }
-                                          }
-
-                                          // Displaying LoadingSpinner to indicate waiting state
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        },
-
-                                        // Future that needs to be resolved
-                                        // inorder to display something on the Canvas
-                                        future: globalController
-                                            .database!.regionDistrictDao
-                                            .findRegionDistrictByRegionId(
-                                                widget.personnel.region!),
-                                      ),
-                                      const SizedBox(height: 20),
-
-                                      const Text(
-                                        'District',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      FutureBuilder(
-                                        builder: (ctx, snapshot) {
-                                          // Checking if future is resolved or not
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            if (snapshot.hasError) {
-                                              return Center(
-                                                child: Text(
-                                                  '${snapshot.error} occurred',
-                                                  style: const TextStyle(
-                                                      fontSize: 18),
-                                                ),
-                                              );
-                                            } else if (snapshot.hasData) {
-                                              List? dataList =
-                                                  snapshot.data as List;
-                                              RegionDistrict? data =
-                                                  dataList.isNotEmpty
-                                                      ? dataList.first
-                                                          as RegionDistrict?
-                                                      : RegionDistrict();
-                                              editPersonnelController.district =
-                                                  data;
-
-                                              return DropdownSearch<
-                                                  RegionDistrict>(
-                                                popupProps:
-                                                    PopupProps.modalBottomSheet(
-                                                        showSelectedItems: true,
-                                                        showSearchBox: true,
-                                                        title: const Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 15),
-                                                          child: Center(
-                                                            child: Text(
-                                                              'Select District',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        disabledItemFn:
-                                                            (RegionDistrict
-                                                                    s) =>
-                                                                false,
-                                                        modalBottomSheetProps:
-                                                            ModalBottomSheetProps(
-                                                          elevation: 6,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          AppBorderRadius
-                                                                              .md),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          AppBorderRadius
-                                                                              .md))),
-                                                        ),
-                                                        searchFieldProps:
-                                                            TextFieldProps(
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical: 4,
-                                                                    horizontal:
-                                                                        15),
-                                                            enabledBorder:
-                                                                inputBorder,
-                                                            focusedBorder:
-                                                                inputBorderFocused,
-                                                            errorBorder:
-                                                                inputBorder,
-                                                            focusedErrorBorder:
-                                                                inputBorderFocused,
-                                                            filled: true,
-                                                            fillColor: AppColor
-                                                                .xLightBackground,
-                                                          ),
-                                                        )),
-                                                dropdownDecoratorProps:
-                                                    DropDownDecoratorProps(
-                                                  dropdownSearchDecoration:
-                                                      InputDecoration(
-                                                    contentPadding:
-                                                        const EdgeInsets
-                                                                .symmetric(
-                                                            vertical: 4,
-                                                            horizontal: 15),
-                                                    enabledBorder: inputBorder,
-                                                    focusedBorder:
-                                                        inputBorderFocused,
-                                                    errorBorder: inputBorder,
-                                                    focusedErrorBorder:
-                                                        inputBorderFocused,
-                                                    filled: true,
-                                                    fillColor: AppColor
-                                                        .xLightBackground,
-                                                  ),
-                                                ),
-                                                asyncItems:
-                                                    (String filter) async {
-                                                  var response =
-                                                      await editPersonnelController
-                                                          .globalController
-                                                          .database!
-                                                          .regionDistrictDao
-                                                          .findDistrictsInRegion(
-                                                              editPersonnelController
-                                                                      .region
-                                                                      ?.regionName ??
-                                                                  '');
-                                                  return response;
-                                                },
-                                                itemAsString:
-                                                    (RegionDistrict d) =>
-                                                        d.districtName ?? '',
-                                                compareFn:
-                                                    (regionDistrict, filter) =>
-                                                        regionDistrict
-                                                            .districtName ==
-                                                        filter.districtName,
-                                                onChanged: (val) {
-                                                  editPersonnelController
-                                                      .district = val;
-                                                },
-                                                autoValidateMode:
-                                                    AutovalidateMode.always,
-                                                selectedItem: data,
-                                                validator: (item) {
-                                                  if (item == null &&
-                                                      editPersonnelController
-                                                              .district?.id ==
-                                                          null) {
-                                                    return 'District is required';
-                                                  } else {
-                                                    return null;
-                                                  }
-                                                },
-                                              );
-                                            }
-                                          }
-
-                                          // Displaying LoadingSpinner to indicate waiting state
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        },
-
-                                        // Future that needs to be resolved
-                                        // inorder to display something on the Canvas
-                                        future: globalController
-                                            .database!.regionDistrictDao
-                                            .findRegionDistrictByDistrictId(
-                                                widget.personnel.district!
-                                                    ),
-                                      ),
-                                      const SizedBox(height: 20),
+                                      // const Text(
+                                      //   'Region',
+                                      //   style: TextStyle(
+                                      //       fontWeight: FontWeight.w500),
+                                      // ),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      // FutureBuilder(
+                                      //   builder: (ctx, snapshot) {
+                                      //     // Checking if future is resolved or not
+                                      //     if (snapshot.connectionState ==
+                                      //         ConnectionState.done) {
+                                      //       if (snapshot.hasError) {
+                                      //         return Center(
+                                      //           child: Text(
+                                      //             '${snapshot.error} occurred',
+                                      //             style: const TextStyle(
+                                      //                 fontSize: 18),
+                                      //           ),
+                                      //         );
+                                      //       } else if (snapshot.hasData) {
+                                      //         List? dataList =
+                                      //             snapshot.data as List;
+                                      //         RegionDistrict? data =
+                                      //             dataList.isNotEmpty
+                                      //                 ? dataList.first
+                                      //                     as RegionDistrict?
+                                      //                 : RegionDistrict();
+                                      //         editPersonnelController.region =
+                                      //             data;
+                                      //
+                                      //         return DropdownSearch<
+                                      //             RegionDistrict>(
+                                      //           popupProps:
+                                      //               PopupProps.modalBottomSheet(
+                                      //                   showSelectedItems: true,
+                                      //                   showSearchBox: true,
+                                      //                   title: const Padding(
+                                      //                     padding: EdgeInsets
+                                      //                         .symmetric(
+                                      //                             vertical: 15),
+                                      //                     child: Center(
+                                      //                       child: Text(
+                                      //                         'Select Region',
+                                      //                         style: TextStyle(
+                                      //                             fontWeight:
+                                      //                                 FontWeight
+                                      //                                     .w500),
+                                      //                       ),
+                                      //                     ),
+                                      //                   ),
+                                      //                   disabledItemFn:
+                                      //                       (RegionDistrict
+                                      //                               s) =>
+                                      //                           false,
+                                      //                   modalBottomSheetProps:
+                                      //                       ModalBottomSheetProps(
+                                      //                     elevation: 6,
+                                      //                     shape: RoundedRectangleBorder(
+                                      //                         borderRadius: BorderRadius.only(
+                                      //                             topLeft: Radius
+                                      //                                 .circular(
+                                      //                                     AppBorderRadius
+                                      //                                         .md),
+                                      //                             topRight: Radius
+                                      //                                 .circular(
+                                      //                                     AppBorderRadius
+                                      //                                         .md))),
+                                      //                   ),
+                                      //                   searchFieldProps:
+                                      //                       TextFieldProps(
+                                      //                     decoration:
+                                      //                         InputDecoration(
+                                      //                       contentPadding:
+                                      //                           const EdgeInsets
+                                      //                                   .symmetric(
+                                      //                               vertical: 4,
+                                      //                               horizontal:
+                                      //                                   15),
+                                      //                       enabledBorder:
+                                      //                           inputBorder,
+                                      //                       focusedBorder:
+                                      //                           inputBorderFocused,
+                                      //                       errorBorder:
+                                      //                           inputBorder,
+                                      //                       focusedErrorBorder:
+                                      //                           inputBorderFocused,
+                                      //                       filled: true,
+                                      //                       fillColor: AppColor
+                                      //                           .xLightBackground,
+                                      //                     ),
+                                      //                   )),
+                                      //           dropdownDecoratorProps:
+                                      //               DropDownDecoratorProps(
+                                      //             dropdownSearchDecoration:
+                                      //                 InputDecoration(
+                                      //               contentPadding:
+                                      //                   const EdgeInsets
+                                      //                           .symmetric(
+                                      //                       vertical: 4,
+                                      //                       horizontal: 15),
+                                      //               enabledBorder: inputBorder,
+                                      //               focusedBorder:
+                                      //                   inputBorderFocused,
+                                      //               errorBorder: inputBorder,
+                                      //               focusedErrorBorder:
+                                      //                   inputBorderFocused,
+                                      //               filled: true,
+                                      //               fillColor: AppColor
+                                      //                   .xLightBackground,
+                                      //             ),
+                                      //           ),
+                                      //
+                                      //           asyncItems:
+                                      //               (String filter) async {
+                                      //             var response =
+                                      //                 await editPersonnelController
+                                      //                     .globalController
+                                      //                     .database!
+                                      //                     .regionDistrictDao
+                                      //                     .findRegions();
+                                      //             return response;
+                                      //           },
+                                      //           itemAsString:
+                                      //               (RegionDistrict d) =>
+                                      //                   d.regionName ?? '',
+                                      //           // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                      //           compareFn: (regionDistrict,
+                                      //                   filter) =>
+                                      //               regionDistrict.regionName ==
+                                      //               filter.regionName,
+                                      //           onChanged: (val) {
+                                      //             editPersonnelController
+                                      //                 .region = val;
+                                      //             editPersonnelController
+                                      //                     .district =
+                                      //                 RegionDistrict();
+                                      //           },
+                                      //           autoValidateMode:
+                                      //               AutovalidateMode.always,
+                                      //           selectedItem: data,
+                                      //           validator: (item) {
+                                      //             if (item == null) {
+                                      //               return 'Region is required';
+                                      //             } else {
+                                      //               return null;
+                                      //             }
+                                      //           },
+                                      //         );
+                                      //       }
+                                      //     }
+                                      //
+                                      //     // Displaying LoadingSpinner to indicate waiting state
+                                      //     return const Center(
+                                      //       child: CircularProgressIndicator(),
+                                      //     );
+                                      //   },
+                                      //
+                                      //   // Future that needs to be resolved
+                                      //   // inorder to display something on the Canvas
+                                      //   future: globalController
+                                      //       .database!.regionDistrictDao
+                                      //       .findRegionDistrictByRegionId(
+                                      //           widget.personnel.region!),
+                                      // ),
+                                      // const SizedBox(height: 20),
+                                      //
+                                      // const Text(
+                                      //   'District',
+                                      //   style: TextStyle(
+                                      //       fontWeight: FontWeight.w500),
+                                      // ),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      // FutureBuilder(
+                                      //   builder: (ctx, snapshot) {
+                                      //     // Checking if future is resolved or not
+                                      //     if (snapshot.connectionState ==
+                                      //         ConnectionState.done) {
+                                      //       if (snapshot.hasError) {
+                                      //         return Center(
+                                      //           child: Text(
+                                      //             '${snapshot.error} occurred',
+                                      //             style: const TextStyle(
+                                      //                 fontSize: 18),
+                                      //           ),
+                                      //         );
+                                      //       } else if (snapshot.hasData) {
+                                      //         List? dataList =
+                                      //             snapshot.data as List;
+                                      //         RegionDistrict? data =
+                                      //             dataList.isNotEmpty
+                                      //                 ? dataList.first
+                                      //                     as RegionDistrict?
+                                      //                 : RegionDistrict();
+                                      //         editPersonnelController.district =
+                                      //             data;
+                                      //
+                                      //         return DropdownSearch<
+                                      //             RegionDistrict>(
+                                      //           popupProps:
+                                      //               PopupProps.modalBottomSheet(
+                                      //                   showSelectedItems: true,
+                                      //                   showSearchBox: true,
+                                      //                   title: const Padding(
+                                      //                     padding: EdgeInsets
+                                      //                         .symmetric(
+                                      //                             vertical: 15),
+                                      //                     child: Center(
+                                      //                       child: Text(
+                                      //                         'Select District',
+                                      //                         style: TextStyle(
+                                      //                             fontWeight:
+                                      //                                 FontWeight
+                                      //                                     .w500),
+                                      //                       ),
+                                      //                     ),
+                                      //                   ),
+                                      //                   disabledItemFn:
+                                      //                       (RegionDistrict
+                                      //                               s) =>
+                                      //                           false,
+                                      //                   modalBottomSheetProps:
+                                      //                       ModalBottomSheetProps(
+                                      //                     elevation: 6,
+                                      //                     shape: RoundedRectangleBorder(
+                                      //                         borderRadius: BorderRadius.only(
+                                      //                             topLeft: Radius
+                                      //                                 .circular(
+                                      //                                     AppBorderRadius
+                                      //                                         .md),
+                                      //                             topRight: Radius
+                                      //                                 .circular(
+                                      //                                     AppBorderRadius
+                                      //                                         .md))),
+                                      //                   ),
+                                      //                   searchFieldProps:
+                                      //                       TextFieldProps(
+                                      //                     decoration:
+                                      //                         InputDecoration(
+                                      //                       contentPadding:
+                                      //                           const EdgeInsets
+                                      //                                   .symmetric(
+                                      //                               vertical: 4,
+                                      //                               horizontal:
+                                      //                                   15),
+                                      //                       enabledBorder:
+                                      //                           inputBorder,
+                                      //                       focusedBorder:
+                                      //                           inputBorderFocused,
+                                      //                       errorBorder:
+                                      //                           inputBorder,
+                                      //                       focusedErrorBorder:
+                                      //                           inputBorderFocused,
+                                      //                       filled: true,
+                                      //                       fillColor: AppColor
+                                      //                           .xLightBackground,
+                                      //                     ),
+                                      //                   )),
+                                      //           dropdownDecoratorProps:
+                                      //               DropDownDecoratorProps(
+                                      //             dropdownSearchDecoration:
+                                      //                 InputDecoration(
+                                      //               contentPadding:
+                                      //                   const EdgeInsets
+                                      //                           .symmetric(
+                                      //                       vertical: 4,
+                                      //                       horizontal: 15),
+                                      //               enabledBorder: inputBorder,
+                                      //               focusedBorder:
+                                      //                   inputBorderFocused,
+                                      //               errorBorder: inputBorder,
+                                      //               focusedErrorBorder:
+                                      //                   inputBorderFocused,
+                                      //               filled: true,
+                                      //               fillColor: AppColor
+                                      //                   .xLightBackground,
+                                      //             ),
+                                      //           ),
+                                      //           asyncItems:
+                                      //               (String filter) async {
+                                      //             var response =
+                                      //                 await editPersonnelController
+                                      //                     .globalController
+                                      //                     .database!
+                                      //                     .regionDistrictDao
+                                      //                     .findDistrictsInRegion(
+                                      //                         editPersonnelController
+                                      //                                 .region
+                                      //                                 ?.regionName ??
+                                      //                             '');
+                                      //             return response;
+                                      //           },
+                                      //           itemAsString:
+                                      //               (RegionDistrict d) =>
+                                      //                   d.districtName ?? '',
+                                      //           compareFn:
+                                      //               (regionDistrict, filter) =>
+                                      //                   regionDistrict
+                                      //                       .districtName ==
+                                      //                   filter.districtName,
+                                      //           onChanged: (val) {
+                                      //             editPersonnelController
+                                      //                 .district = val;
+                                      //           },
+                                      //           autoValidateMode:
+                                      //               AutovalidateMode.always,
+                                      //           selectedItem: data,
+                                      //           validator: (item) {
+                                      //             if (item == null &&
+                                      //                 editPersonnelController
+                                      //                         .district?.id ==
+                                      //                     null) {
+                                      //               return 'District is required';
+                                      //             } else {
+                                      //               return null;
+                                      //             }
+                                      //           },
+                                      //         );
+                                      //       }
+                                      //     }
+                                      //
+                                      //     // Displaying LoadingSpinner to indicate waiting state
+                                      //     return const Center(
+                                      //       child: CircularProgressIndicator(),
+                                      //     );
+                                      //   },
+                                      //
+                                      //   // Future that needs to be resolved
+                                      //   // inorder to display something on the Canvas
+                                      //   future: globalController
+                                      //       .database!.regionDistrictDao
+                                      //       .findRegionDistrictByDistrictId(
+                                      //           widget.personnel.district!
+                                      //               ),
+                                      // ),
+                                      // const SizedBox(height: 20),
 
                                       // const Text('Operational Area',
                                       //   style: TextStyle(fontWeight: FontWeight.w500),

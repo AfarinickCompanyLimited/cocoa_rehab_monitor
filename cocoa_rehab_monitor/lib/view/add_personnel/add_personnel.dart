@@ -353,185 +353,185 @@ class _AddPersonnelState extends State<AddPersonnel> {
                               ),
                               const SizedBox(height: 20),
 
-                              const Text(
-                                'Region',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              DropdownSearch<RegionDistrict>(
-                                popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select Region',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    disabledItemFn: (RegionDistrict s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
-                                      ),
-                                    )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                ),
-                                // items: ['Greater Accra', 'Volta', 'Western'],
-                                asyncItems: (String filter) async {
-                                  var response = await addPersonnelController
-                                      .globalController
-                                      .database!
-                                      .regionDistrictDao
-                                      .findRegions();
-                                  return response;
-                                },
-                                itemAsString: (RegionDistrict d) =>
-                                    d.regionName ?? '',
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (regionDistrict, filter) =>
-                                    regionDistrict.regionName ==
-                                    filter.regionName,
-                                onChanged: (val) {
-                                  addPersonnelController.region = val;
-                                  addPersonnelController.district =
-                                      RegionDistrict();
-                                },
-                                selectedItem: addPersonnelController.region,
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null) {
-                                    return 'Region is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(height: 20),
-
-                              const Text(
-                                'District',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              DropdownSearch<RegionDistrict>(
-                                popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select District',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    disabledItemFn: (RegionDistrict s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
-                                      ),
-                                    )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                ),
-                                asyncItems: (String filter) async {
-                                  var response = await addPersonnelController
-                                      .globalController
-                                      .database!
-                                      .regionDistrictDao
-                                      .findDistrictsInRegion(
-                                          addPersonnelController
-                                                  .region?.regionName ??
-                                              '');
-                                  return response;
-                                },
-                                itemAsString: (RegionDistrict d) =>
-                                    d.districtName ?? '',
-                                compareFn: (regionDistrict, filter) =>
-                                    regionDistrict.districtName ==
-                                    filter.districtName,
-                                onChanged: (val) {
-                                  addPersonnelController.district = val;
-                                },
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null &&
-                                      addPersonnelController.district?.id ==
-                                          null) {
-                                    return 'District is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(height: 20),
+                              // const Text(
+                              //   'Region',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // DropdownSearch<RegionDistrict>(
+                              //   popupProps: PopupProps.modalBottomSheet(
+                              //       showSelectedItems: true,
+                              //       showSearchBox: true,
+                              //       title: const Padding(
+                              //         padding:
+                              //             EdgeInsets.symmetric(vertical: 15),
+                              //         child: Center(
+                              //           child: Text(
+                              //             'Select Region',
+                              //             style: TextStyle(
+                              //                 fontWeight: FontWeight.w500),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       disabledItemFn: (RegionDistrict s) => false,
+                              //       modalBottomSheetProps:
+                              //           ModalBottomSheetProps(
+                              //         elevation: 6,
+                              //         shape: RoundedRectangleBorder(
+                              //             borderRadius: BorderRadius.only(
+                              //                 topLeft: Radius.circular(
+                              //                     AppBorderRadius.md),
+                              //                 topRight: Radius.circular(
+                              //                     AppBorderRadius.md))),
+                              //       ),
+                              //       searchFieldProps: TextFieldProps(
+                              //         decoration: InputDecoration(
+                              //           contentPadding:
+                              //               const EdgeInsets.symmetric(
+                              //                   vertical: 4, horizontal: 15),
+                              //           enabledBorder: inputBorder,
+                              //           focusedBorder: inputBorderFocused,
+                              //           errorBorder: inputBorder,
+                              //           focusedErrorBorder: inputBorderFocused,
+                              //           filled: true,
+                              //           fillColor: AppColor.xLightBackground,
+                              //         ),
+                              //       )),
+                              //   dropdownDecoratorProps: DropDownDecoratorProps(
+                              //     dropdownSearchDecoration: InputDecoration(
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           vertical: 4, horizontal: 15),
+                              //       enabledBorder: inputBorder,
+                              //       focusedBorder: inputBorderFocused,
+                              //       errorBorder: inputBorder,
+                              //       focusedErrorBorder: inputBorderFocused,
+                              //       filled: true,
+                              //       fillColor: AppColor.xLightBackground,
+                              //     ),
+                              //   ),
+                              //   // items: ['Greater Accra', 'Volta', 'Western'],
+                              //   asyncItems: (String filter) async {
+                              //     var response = await addPersonnelController
+                              //         .globalController
+                              //         .database!
+                              //         .regionDistrictDao
+                              //         .findRegions();
+                              //     return response;
+                              //   },
+                              //   itemAsString: (RegionDistrict d) =>
+                              //       d.regionName ?? '',
+                              //   // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                              //   compareFn: (regionDistrict, filter) =>
+                              //       regionDistrict.regionName ==
+                              //       filter.regionName,
+                              //   onChanged: (val) {
+                              //     addPersonnelController.region = val;
+                              //     addPersonnelController.district =
+                              //         RegionDistrict();
+                              //   },
+                              //   selectedItem: addPersonnelController.region,
+                              //   autoValidateMode: AutovalidateMode.always,
+                              //   validator: (item) {
+                              //     if (item == null) {
+                              //       return 'Region is required';
+                              //     } else {
+                              //       return null;
+                              //     }
+                              //   },
+                              // ),
+                              // const SizedBox(height: 20),
+                              //
+                              // const Text(
+                              //   'District',
+                              //   style: TextStyle(fontWeight: FontWeight.w500),
+                              // ),
+                              // const SizedBox(
+                              //   height: 5,
+                              // ),
+                              // DropdownSearch<RegionDistrict>(
+                              //   popupProps: PopupProps.modalBottomSheet(
+                              //       showSelectedItems: true,
+                              //       showSearchBox: true,
+                              //       title: const Padding(
+                              //         padding:
+                              //             EdgeInsets.symmetric(vertical: 15),
+                              //         child: Center(
+                              //           child: Text(
+                              //             'Select District',
+                              //             style: TextStyle(
+                              //                 fontWeight: FontWeight.w500),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       disabledItemFn: (RegionDistrict s) => false,
+                              //       modalBottomSheetProps:
+                              //           ModalBottomSheetProps(
+                              //         elevation: 6,
+                              //         shape: RoundedRectangleBorder(
+                              //             borderRadius: BorderRadius.only(
+                              //                 topLeft: Radius.circular(
+                              //                     AppBorderRadius.md),
+                              //                 topRight: Radius.circular(
+                              //                     AppBorderRadius.md))),
+                              //       ),
+                              //       searchFieldProps: TextFieldProps(
+                              //         decoration: InputDecoration(
+                              //           contentPadding:
+                              //               const EdgeInsets.symmetric(
+                              //                   vertical: 4, horizontal: 15),
+                              //           enabledBorder: inputBorder,
+                              //           focusedBorder: inputBorderFocused,
+                              //           errorBorder: inputBorder,
+                              //           focusedErrorBorder: inputBorderFocused,
+                              //           filled: true,
+                              //           fillColor: AppColor.xLightBackground,
+                              //         ),
+                              //       )),
+                              //   dropdownDecoratorProps: DropDownDecoratorProps(
+                              //     dropdownSearchDecoration: InputDecoration(
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           vertical: 4, horizontal: 15),
+                              //       enabledBorder: inputBorder,
+                              //       focusedBorder: inputBorderFocused,
+                              //       errorBorder: inputBorder,
+                              //       focusedErrorBorder: inputBorderFocused,
+                              //       filled: true,
+                              //       fillColor: AppColor.xLightBackground,
+                              //     ),
+                              //   ),
+                              //   asyncItems: (String filter) async {
+                              //     var response = await addPersonnelController
+                              //         .globalController
+                              //         .database!
+                              //         .regionDistrictDao
+                              //         .findDistrictsInRegion(
+                              //             addPersonnelController
+                              //                     .region?.regionName ??
+                              //                 '');
+                              //     return response;
+                              //   },
+                              //   itemAsString: (RegionDistrict d) =>
+                              //       d.districtName ?? '',
+                              //   compareFn: (regionDistrict, filter) =>
+                              //       regionDistrict.districtName ==
+                              //       filter.districtName,
+                              //   onChanged: (val) {
+                              //     addPersonnelController.district = val;
+                              //   },
+                              //   autoValidateMode: AutovalidateMode.always,
+                              //   validator: (item) {
+                              //     if (item == null &&
+                              //         addPersonnelController.district?.id ==
+                              //             null) {
+                              //       return 'District is required';
+                              //     } else {
+                              //       return null;
+                              //     }
+                              //   },
+                              // ),
+                              // const SizedBox(height: 20),
 
                               // const Text('Operational Area',
                               //   style: TextStyle(fontWeight: FontWeight.w500),

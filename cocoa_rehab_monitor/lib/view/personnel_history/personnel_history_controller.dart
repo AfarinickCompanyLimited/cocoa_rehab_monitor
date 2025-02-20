@@ -50,6 +50,10 @@ class PersonnelHistoryController extends GetxController{
     }
   }
 
+  deletePersonnel(Personnel personnel) async {
+
+  }
+
 
   confirmDeletePersonnel(Personnel personnel) async {
     globals.primaryConfirmDialog(
@@ -68,10 +72,6 @@ class PersonnelHistoryController extends GetxController{
         okayTap: () {
           Get.back();
           globalController.database!.personnelDao.deletePersonnelByUID(personnel.uid!);
-          // pendingPersonnelRepository.personnelList.remove(personnel);
-
-          pendingRecordsController.itemList!.remove(personnel);
-          update(['pendingRecordsBuilder']);
         }
     );
   }
