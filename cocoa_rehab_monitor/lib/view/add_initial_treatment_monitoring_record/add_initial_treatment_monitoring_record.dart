@@ -83,21 +83,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColor.black)),
-                          // Text(
-                          //     widget.allMonitorings ==
-                          //             AllMonitorings.InitialTreatment
-                          //         ? 'New IT Monitoring Record'
-                          //         : widget.allMonitorings ==
-                          //                 AllMonitorings.Establishment
-                          //             ? 'New Establishment Record'
-                          //             : widget.allMonitorings ==
-                          //                     AllMonitorings.Maintenance
-                          //                 ? 'New Maintenance Record'
-                          //                 : '',
-                          //     style: TextStyle(
-                          //         fontSize: 16,
-                          //         fontWeight: FontWeight.w600,
-                          //         color: AppColor.black)),
+
                         ),
                       ],
                     ),
@@ -132,7 +118,7 @@ class _AddInitialTreatmentMonitoringRecordState
                                     addInitialTreatmentMonitoringRecordController
                                         .monitoringDateTC,
                                 type: DateTimePickerType.date,
-                                initialDate: DateTime.now(),
+
                                 dateMask: 'yyyy-MM-dd',
                                 firstDate: DateTime(1600),
                                 lastDate: DateTime.now(),
