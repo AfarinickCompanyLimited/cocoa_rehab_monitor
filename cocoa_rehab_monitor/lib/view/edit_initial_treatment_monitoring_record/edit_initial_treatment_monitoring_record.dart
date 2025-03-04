@@ -45,8 +45,6 @@ class _EditInitialTreatmentMonitoringRecordState
   var codes = [].obs;
 
   void splitCommunity() {
-
-    print("DATATATATTATTATA=====${widget.monitor!.toJsonOnline()}");
     // Clear existing data
     names.clear();
     areas.clear();
@@ -117,12 +115,6 @@ class _EditInitialTreatmentMonitoringRecordState
       editInitialTreatmentMonitoringRecordController.isDoneEqually.value =
           names.length > 1 ? "Yes" : "No";
 
-      // Print debug information
-      // print("Names :::::::::::: $names");
-      // print("Codes :::::::::::: $codes");
-      // print("Areas :::::::::::: $areas");
-      // print(
-      //     "COMMUNITY TEXT :::::::::::: ${editInitialTreatmentMonitoringRecordController.communityTC?.text}");
     }
   }
 
@@ -2690,6 +2682,7 @@ class _EditInitialTreatmentMonitoringRecordState
                                   height: 20,
                                 ),
 
+                                if(!widget.isViewMode)
                                 Row(
                                   children: [
                                     Expanded(
