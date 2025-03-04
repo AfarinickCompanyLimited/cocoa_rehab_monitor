@@ -86,10 +86,10 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   // farmerContactTC
 
-  TextEditingController? monitoringDateTC = TextEditingController(
+  TextEditingController?  reportingDateTC= TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
-  TextEditingController? reportingDateTC = TextEditingController();
+  TextEditingController?monitoringDateTC  = TextEditingController();
 
   TextEditingController? fuelPurchasedDateTC = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
