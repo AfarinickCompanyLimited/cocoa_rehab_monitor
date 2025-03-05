@@ -86,15 +86,18 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   // farmerContactTC
 
-  TextEditingController?  reportingDateTC= TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  TextEditingController? reportingDateTC = TextEditingController(
+    text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+  );
 
-  TextEditingController?monitoringDateTC  = TextEditingController();
+  TextEditingController? monitoringDateTC = TextEditingController();
 
   TextEditingController? fuelPurchasedDateTC = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+    text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+  );
   TextEditingController? fuelDateTC = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+    text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+  );
   TextEditingController? fuelQuantityPurchasedTC = TextEditingController();
   TextEditingController? fuelQuantityLtrTC = TextEditingController();
   TextEditingController? fuelRedOilLtrTC = TextEditingController();
@@ -108,7 +111,8 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   var isCompletedByGroup = ''.obs;
   var isDoneEqually = ''.obs;
 
-  InitialTreatmentMonitorDatabaseHelper initDb = InitialTreatmentMonitorDatabaseHelper.instance;
+  InitialTreatmentMonitorDatabaseHelper initDb =
+      InitialTreatmentMonitorDatabaseHelper.instance;
 
   PickedMedia? farmPhoto;
   OutbreakFarmFromServer farm = OutbreakFarmFromServer();
@@ -122,11 +126,13 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
   void clearRehabAssistantsToDefault() {
     rehabAssistants.clear();
-    rehabAssistants.add(InitialTreatmentRehabAssistantSelection(
-      index: RxInt(rehabAssistants.length + 1),
-      // areaCovered: TextEditingController(text: '0.0'),
-      // rehabAssistant: RehabAssistant(),
-    ));
+    rehabAssistants.add(
+      InitialTreatmentRehabAssistantSelection(
+        index: RxInt(rehabAssistants.length + 1),
+        // areaCovered: TextEditingController(text: '0.0'),
+        // rehabAssistant: RehabAssistant(),
+      ),
+    );
   }
 
   void clearAllRehabAssistants() {
@@ -182,10 +188,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     TaskStatus.completed,
   ];
 
-  final List<String> yesNoItems = [
-    YesNo.yes,
-    YesNo.no,
-  ];
+  final List<String> yesNoItems = [YesNo.yes, YesNo.no];
 
   // INITIALISE
   @override
@@ -210,39 +213,32 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   // START ADD MONITORING RECORD
   // ==============================================================================
   handleAddMonitoringRecord() async {
-
     var areaCovered = 0.0;
 
-    if (rehabAssistants.isEmpty) {
-      areaCovered = double.parse(areaCoveredTC!.text);
-      if (areaCovered > double.parse(farmSizeTC?.text ?? '0')) {
-        globals.showSnackBar(
-            title: 'Alert',
-            message:
-                'Area covered by rehab assistants cannot be bigger than farm size',
-            duration: 5);
-        return;
-      }
-
-      // for(int i = 0; i < rehabAssistants.length; i++){
-      //   if(rehabAssistants[i].rehabAssistant!.rehabName == rehabAssistants[i+1].rehabAssistant!.rehabName){
-      //
-      //   }
-      // }
-    } else {
-      await Future.forEach(rehabAssistants,
-          (InitialTreatmentRehabAssistantSelection item) async {
+    if (!rehabAssistants.isEmpty) {
+      await Future.forEach(rehabAssistants, (
+        InitialTreatmentRehabAssistantSelection item,
+      ) async {
         areaCovered += double.parse(item.areaCovered?.text ?? '0');
       });
+
       if (areaCovered > double.parse(farmSizeTC?.text ?? '0')) {
         globals.showSnackBar(
-            title: 'Alert',
-            message:
-                'Area covered by rehab assistants cannot be bigger than farm size',
-            duration: 5);
+          title: 'Alert',
+          message:
+              'Area covered by rehab assistants cannot be bigger than farm size',
+          duration: 5,
+        );
         return;
       }
+    } else {
+      globals.showSnackBar(
+        title: 'Alert',
+        message: "Select all rehab assistants",
+      );
     }
+
+
     var com = "";
     com += communityTC!.text;
     com += ",";
@@ -259,35 +255,23 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       com += element.subActivity!;
       com += "#";
     });
-
-
-   //
-   //  Uint8List? pictureOfFarm;
-   //  if (farmPhoto?.file != null) {
-   //    final bytes = await io.File(farmPhoto!.path!).readAsBytes();
-   //    // pictureOfFarm = base64Encode(bytes);
-   //    pictureOfFarm = bytes;
-   //  } else {
-   //    pictureOfFarm =
-   //        Uint8List(0); // Assign empty Uint8List when pictureOfFarm is null
-   //  }
-   //
-
-
-    //com += subActivity.subActivity!;
     com += "-";
 
-   globals.startWait(addMonitoringRecordScreenContext);
+    globals.startWait(addMonitoringRecordScreenContext);
 
     /// Fetch the activity using the main activity
     List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
 
     List<Ra> ras = [];
-    for(InitialTreatmentRehabAssistantSelection r in rehabAssistants){
-      ras.add(Ra(
+    for (InitialTreatmentRehabAssistantSelection r in rehabAssistants) {
+      ras.add(
+        Ra(
           rehabAsistant: r.rehabAssistant?.rehabCode,
-          areaCoveredHa: double.parse(r.areaCovered?.text ?? '0')));
-      com += "{${r.rehabAssistant!.rehabName} & ${r.rehabAssistant!.rehabCode} & ${r.areaCovered!.text}}%";
+          areaCoveredHa: double.parse(r.areaCovered?.text ?? '0'),
+        ),
+      );
+      com +=
+          "{${r.rehabAssistant!.rehabName} & ${r.rehabAssistant!.rehabCode} & ${r.areaCovered!.text}}%";
     }
 
     InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
@@ -296,7 +280,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       completionDate: monitoringDateTC!.text,
       reportingDate: reportingDateTC!.text,
       mainActivity: act.first.code,
-        activity: subActivityString,
+      activity: subActivityString,
       noRehabAssistants: rehabAssistants.length,
       areaCoveredHa: areaCovered,
       remark: remarksTC!.text,
@@ -307,7 +291,7 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       community: com,
       numberOfPeopleInGroup: int.tryParse(numberInGroupTC!.text.trim()),
       groupWork: isCompletedByGroup.value,
-      sector: int.tryParse(globalController.userInfo.value.sector!)
+      sector: int.tryParse(globalController.userInfo.value.sector!),
     );
 
     Map<String, dynamic> data = monitor.toJsonOnline();
@@ -329,8 +313,10 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     print('DATA-DATA-DATA ;;; $data');
     print('DATADATADATA---OFFLINE ;;; $data');
 
-    var postResult =
-         await outbreakFarmApiInterface.saveMonitoring(dataOffline, data, true);
+    var postResult = await outbreakFarmApiInterface.saveMonitoring(
+      dataOffline,
+      data,
+    );
     globals.endWait(addMonitoringRecordScreenContext);
 
     if (postResult['status'] == RequestStatus.True ||
@@ -338,25 +324,26 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
         postResult['status'] == RequestStatus.NoInternet) {
       Get.back();
       globals.showSecondaryDialog(
-          context: homeController.homeScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.success,
-          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+        context: homeController.homeScreenContext,
+        content: Text(
+          postResult['msg'],
+          style: const TextStyle(fontSize: 13),
+          textAlign: TextAlign.center,
+        ),
+        status: AlertDialogStatus.success,
+        okayTap: () => Navigator.of(homeController.homeScreenContext).pop(),
+      );
     } else if (postResult['status'] == RequestStatus.False) {
       globals.showSecondaryDialog(
-          context: addMonitoringRecordScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.error);
+        context: addMonitoringRecordScreenContext,
+        content: Text(
+          postResult['msg'],
+          style: const TextStyle(fontSize: 13),
+          textAlign: TextAlign.center,
+        ),
+        status: AlertDialogStatus.error,
+      );
     } else {}
-
   }
   // ==============================================================================
   // END ADD MONITORING RECORD
@@ -378,24 +365,26 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       areaCovered = double.parse(areaCoveredTC!.text);
       if (areaCovered > double.parse(farmSizeTC?.text ?? '0')) {
         globals.showSnackBar(
-            title: 'Alert',
-            message:
-                'Area covered by rehab assistants cannot be bigger than farm size',
-            duration: 5);
+          title: 'Alert',
+          message:
+              'Area covered by rehab assistants cannot be bigger than farm size',
+          duration: 5,
+        );
         return;
       }
-
     } else {
-      await Future.forEach(rehabAssistants,
-          (InitialTreatmentRehabAssistantSelection item) async {
+      await Future.forEach(rehabAssistants, (
+        InitialTreatmentRehabAssistantSelection item,
+      ) async {
         areaCovered += double.parse(item.areaCovered?.text ?? '0');
       });
       if (areaCovered > double.parse(farmSizeTC?.text ?? '0')) {
         globals.showSnackBar(
-            title: 'Alert',
-            message:
-                'Area covered by rehab assistants cannot be bigger than farm size',
-            duration: 5);
+          title: 'Alert',
+          message:
+              'Area covered by rehab assistants cannot be bigger than farm size',
+          duration: 5,
+        );
         return;
       }
     }
@@ -424,17 +413,21 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
 
     print("SUB ACTIVITY :::::: $subActivityList");
 
-   globals.startWait(addMonitoringRecordScreenContext);
+    globals.startWait(addMonitoringRecordScreenContext);
 
     /// Fetch the activity using the main activity
     List<ActivityModel> act = await db.getSubActivityByMainActivity(activity!);
 
     List<Ra> ras = [];
-    for(InitialTreatmentRehabAssistantSelection r in rehabAssistants){
-      ras.add(Ra(
+    for (InitialTreatmentRehabAssistantSelection r in rehabAssistants) {
+      ras.add(
+        Ra(
           rehabAsistant: r.rehabAssistant?.rehabCode,
-          areaCoveredHa: double.parse(r.areaCovered?.text ?? '0')));
-      com += "{${r.rehabAssistant!.rehabName} & ${r.rehabAssistant!.rehabCode} & ${r.areaCovered!.text}}%";
+          areaCoveredHa: double.parse(r.areaCovered?.text ?? '0'),
+        ),
+      );
+      com +=
+          "{${r.rehabAssistant!.rehabName} & ${r.rehabAssistant!.rehabCode} & ${r.areaCovered!.text}}%";
     }
 
     InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
@@ -477,14 +470,15 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
     //
     Get.back();
     globals.showSecondaryDialog(
-         context: homeController.homeScreenContext,
-        content: const Text(
-           'Monitoring record saved',
-          style: TextStyle(fontSize: 13),
-           textAlign: TextAlign.center,
-         ),
-         status: AlertDialogStatus.success,
-        okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+      context: homeController.homeScreenContext,
+      content: const Text(
+        'Monitoring record saved',
+        style: TextStyle(fontSize: 13),
+        textAlign: TextAlign.center,
+      ),
+      status: AlertDialogStatus.success,
+      okayTap: () => Navigator.of(homeController.homeScreenContext).pop(),
+    );
     // }
     //  else {
     //   isSaveButtonDisabled.value = false;
@@ -509,9 +503,9 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   // END OFFLINE SAVE MONITORING RECORD
   // ==============================================================================
 
-// ===========================================
-// START SHOW MEDIA SOURCE BOTTOM SHEET
-// ==========================================
+  // ===========================================
+  // START SHOW MEDIA SOURCE BOTTOM SHEET
+  // ==========================================
   chooseMediaSource() {
     AlertDialog(
       scrollable: true,
@@ -520,7 +514,8 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       contentPadding: EdgeInsets.zero,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18.0))),
+        borderRadius: BorderRadius.all(Radius.circular(18.0)),
+      ),
       content: MediaSourceDialog(
         mediaType: FileType.image,
         onCameraSourceTap: (source, mediaType) => pickMedia(source: source),
@@ -528,22 +523,26 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       ),
     ).show(addMonitoringRecordScreenContext);
   }
-// ===========================================
-// END SHOW MEDIA SOURCE BOTTOM SHEET
-// ==========================================
+  // ===========================================
+  // END SHOW MEDIA SOURCE BOTTOM SHEET
+  // ==========================================
 
-// ===========================================
-// START PICK MEDIA
-// ==========================================
+  // ===========================================
+  // START PICK MEDIA
+  // ==========================================
   pickMedia({int? source}) async {
     final XFile? mediaFile;
     var fileType = FileType.image;
     if (source == 0) {
       mediaFile = await mediaPicker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
     } else {
       mediaFile = await mediaPicker.pickImage(
-          source: ImageSource.camera, imageQuality: 50);
+        source: ImageSource.camera,
+        imageQuality: 50,
+      );
     }
 
     if (mediaFile != null) {
@@ -564,7 +563,8 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
       return null;
     }
   }
-// ===========================================
-// END PICK MEDIA
-// ==========================================
+
+  // ===========================================
+  // END PICK MEDIA
+  // ==========================================
 }
