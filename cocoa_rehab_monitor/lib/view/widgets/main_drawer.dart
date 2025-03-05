@@ -34,31 +34,9 @@ class MainDrawer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 10,),
-                    // Align(
-                    //   alignment: Alignment.topRight,
-                    //   child: Container(
-                    //     margin:
-                    //         EdgeInsets.only(right: appMainHorizontalPadding),
-                    //     child: CircleIconButton(
-                    //         icon: Builder(builder: (context) {
-                    //           return Icon(
-                    //             appIconClose,
-                    //             color: appColorButtonTextBlack,
-                    //             size: 15,
-                    //           );
-                    //         }),
-                    //         backgroundColor: Colors.white,
-                    //         hasShadow: false,
-                    //         onTap: () => Navigator.of(context).pop()),
-                    //   ),
-                    // ),
                     ListTile(
                       title: Row(
                         children: [
-                          // const Text(
-                          //   'Hello, ',
-                          //   style: TextStyle(fontSize: 14),
-                          // ),
                           Flexible(
                             child: Text(
                               "${indexController.userInfo.value.firstName!} ${indexController.userInfo.value.lastName!}",
@@ -66,22 +44,7 @@ class MainDrawer extends StatelessWidget {
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                           ),
-                          //Spacer(),
-                          // Container(
-                          //   margin:
-                          //   EdgeInsets.only(right: appMainHorizontalPadding),
-                          //   child: CircleIconButton(
-                          //       icon: Builder(builder: (context) {
-                          //         return Icon(
-                          //           appIconClose,
-                          //           color: appColorButtonTextBlack,
-                          //           size: 15,
-                          //         );
-                          //       }),
-                          //       backgroundColor: Colors.white,
-                          //       hasShadow: false,
-                          //       onTap: () => Navigator.of(context).pop()),
-                          // ),
+
                         ],
                       ),
                     ),
@@ -191,18 +154,6 @@ class MainDrawer extends StatelessWidget {
                     ),
                     const Divider(),
 
-                    // ListTile(
-                    //   title: const Text(
-                    //     'Settings',
-                    //     style: TextStyle(fontWeight: FontWeight.w400),
-                    //   ),
-                    //   minLeadingWidth: 10,
-                    //   leading: appIconSignOut(color: AppColor.black, size: 25),
-                    //   onTap: () => Get.to(() => QRCodeScannerScreen(),
-                    //       transition: Transition.fadeIn),
-                    // ),
-                    // const Divider(),
-
                     ListTile(
                       title: const Text(
                         'Logout',
@@ -259,14 +210,10 @@ class MainDrawer extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ColorFiltered(
-                                colorFilter: ColorFilter.mode(
-                                    AppColor.black, BlendMode.plus),
-                                child: Image.asset(
-                                  "assets/images/cocoa_monitor/af_logo.png",
-                                  fit: BoxFit.contain,
-                                  height: 80,
-                                ),
+                              Image.asset(
+                                "assets/images/cocoa_monitor/af_logo.png",
+                                fit: BoxFit.contain,
+                                height: 80,
                               ),
                               Image.asset(
                                 "assets/images/cocoa_monitor/k_logo.png",
