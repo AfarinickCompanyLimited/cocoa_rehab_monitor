@@ -97,13 +97,13 @@ class InitialTreatmentMonitorDatabaseHelper {
         : null;
   }
 
-  Future<int> updateData(InitialTreatmentMonitorModel data) async {
+  Future<int> updateData(Map<String, dynamic> data) async {
     final db = await instance.database;
     return await db.update(
       tableName,
-      data.toJson(),
+      data,
       where: '$uid = ?',
-      whereArgs: [data.uid],
+      whereArgs: [data["uid"]],
     );
   }
 
@@ -113,6 +113,20 @@ class InitialTreatmentMonitorDatabaseHelper {
       tableName,
       where: '$status = ?',
       whereArgs: [SubmissionStatus.submitted],
+    );
+    return result.isNotEmpty
+        ? result.map((json) => InitialTreatmentMonitorModel.fromJson(json)).toList()
+        : [];
+  }
+
+  Future<List<InitialTreatmentMonitorModel>> findInitialTreatmentMonitorByStatusWithLimit(int s, int limit, offset) async {
+    final db = await instance.database;
+    final result = await db.query(
+      tableName,
+      where: '$status = ?',
+      whereArgs: [s],
+      limit: limit,
+      offset: offset,
     );
     return result.isNotEmpty
         ? result.map((json) => InitialTreatmentMonitorModel.fromJson(json)).toList()
