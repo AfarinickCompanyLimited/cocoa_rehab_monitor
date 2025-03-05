@@ -1094,34 +1094,34 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                       Row(
                         children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: ()=>homeController.showMenuOptions(
-                                      AllMomitoringsMenuOptionsBottomSheet(
-                                    //allMonitorings: AllMonitorings.InitialTreatment,
-                                  )),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 8),
-                                padding: EdgeInsets.symmetric(vertical: 20),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.blueGrey.shade100),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset("assets/images/activity.png", color: AppColor.black,),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      'Rehab assistant(RA) reporting',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12,
-                                          color: AppColor.black),
-                                    ),
-                                  ],
-                                )),
-                            ),
-                          )
+                          // Expanded(
+                          //   child: GestureDetector(
+                          //     onTap: ()=>homeController.showMenuOptions(
+                          //             AllMomitoringsMenuOptionsBottomSheet(
+                          //           //allMonitorings: AllMonitorings.InitialTreatment,
+                          //         )),
+                          //     child: Container(
+                          //       margin: EdgeInsets.symmetric(horizontal: 8),
+                          //       padding: EdgeInsets.symmetric(vertical: 20),
+                          //       decoration: BoxDecoration(
+                          //           borderRadius: BorderRadius.circular(10),
+                          //           color: Colors.blueGrey.shade100),
+                          //       child: Row(
+                          //         mainAxisAlignment: MainAxisAlignment.center,
+                          //         children: [
+                          //           Image.asset("assets/images/activity.png", color: AppColor.black,),
+                          //           const SizedBox(width: 10),
+                          //           Text(
+                          //             'Rehab assistant(RA) reporting',
+                          //             style: TextStyle(
+                          //                 fontWeight: FontWeight.w700,
+                          //                 fontSize: 12,
+                          //                 color: AppColor.black),
+                          //           ),
+                          //         ],
+                          //       )),
+                          //   ),
+                          // )
                           // Spacer(),
                           // MenuCard3(
                           //   image: 'assets/images/cocoa_monitor/chainsaw.png',
@@ -1169,10 +1169,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                           Spacer(),
                           MenuCard2(
                             image:
-                                'assets/images/cocoa_monitor/assignment2.png',
-                            label: 'Map Farms',
+                                'assets/images/activity.png',
+                            label: 'Activity reporting',
                             onTap: () => homeController.showMenuOptions(
-                                const MapFarmsMenuOptionsBottomSheet()),
+                                const AllMomitoringsMenuOptionsBottomSheet()),
                             // onTap: () => homeController.showMenuOptions('Outbreak Farms', HomeMenuItem.OutbreakFarm),
                           ),
                           Spacer(),
