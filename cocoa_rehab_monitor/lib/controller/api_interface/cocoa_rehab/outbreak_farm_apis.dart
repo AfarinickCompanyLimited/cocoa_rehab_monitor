@@ -7,11 +7,13 @@ import 'package:cocoa_rehab_monitor/controller/db/initail_activity_db.dart';
 import 'package:cocoa_rehab_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_fuel.dart';
 import 'package:cocoa_rehab_monitor/controller/entity/cocoa_rehub_monitor/initial_treatment_monitor.dart';
 import 'package:cocoa_rehab_monitor/controller/entity/cocoa_rehub_monitor/outbreak_farm.dart';
+import 'package:cocoa_rehab_monitor/controller/model/activity_data_model.dart';
 import 'package:cocoa_rehab_monitor/controller/utils/connection_verify.dart';
 import 'package:cocoa_rehab_monitor/controller/global_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -195,7 +197,7 @@ class OutbreakFarmApiInterface {
 // ===================================================================================
 
   Future<Map<String, dynamic>> saveMonitoring(
-      Map<String, dynamic> d, Map<String, dynamic> data, bool edit) async {
+      Map<String, dynamic> d, Map<String, dynamic> data, {bool isUpdate = false}) async {
     final db = InitialTreatmentMonitorDatabaseHelper.instance;
 
     if (await ConnectionVerify.connectionIsAvailable()) {
@@ -211,19 +213,23 @@ class OutbreakFarmApiInterface {
           body: jsonEncode(data),
         );
 
-
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
-          //print("THE RESPONSE DATA: ${responseData}");
+          print("THE RESPONSE DATA: ${responseData}");
           if (responseData.first['status'] == RequestStatus.True) {
 
+            if(isUpdate){
+              await db.updateData(d);
+            } else {
               await db.saveData(d);
+            }
 
             return {
               'status': responseData.first['status'],
               'connectionAvailable': true,
               'msg': responseData.first['msg']
             };
+
           } else if (responseData.first['status'] == RequestStatus.Exist) {
             return {
               'status': responseData.first['status'],
@@ -259,7 +265,7 @@ class OutbreakFarmApiInterface {
           'status': RequestStatus.False,
           'connectionAvailable': true,
           'msg':
-          'There was an error submitting your request. Kindly contact your supervisor',
+          'There was an error submitting your request. Please verify the data and try again',
         };
       }
     } else {
@@ -430,33 +436,78 @@ class OutbreakFarmApiInterface {
 // ===================================================================================
 
   syncMonitoring() async {
-    final initialTreatmentMonitorDao =
-        indexController.database!.initialTreatmentMonitorDao;
+    final db = InitialTreatmentMonitorDatabaseHelper.instance;
     int offset = 0;
     int limit = 20;
     bool endOfRecords = false;
+    Map<String, dynamic> response={};
 
     while (!endOfRecords) {
-      List<InitialTreatmentMonitor> records = await initialTreatmentMonitorDao
+      List<InitialTreatmentMonitorModel> records = await db
           .findInitialTreatmentMonitorByStatusWithLimit(
-              SubmissionStatus.pending, limit, offset);
+          SubmissionStatus.pending, limit, offset);
+
       if (records.isNotEmpty) {
-        await Future.forEach(records, (InitialTreatmentMonitor item) async {
+        await Future.forEach(records, (InitialTreatmentMonitorModel item) async {
           item.status = SubmissionStatus.submitted;
-          Map<String, dynamic> data = item.toJson();
+
+          debugPrint("THE RAS DATA ======= ${item.ras}");
+
+          List<dynamic> r = jsonDecode(item.ras!); // Decode JSON string
+
+          List<Ra> ras = r.map((e) => Ra(
+            rehabAsistant: e["rehab_asistant"],
+            areaCoveredHa: e["area_covered_ha"],
+          )).toList();
+
+          debugPrint("Parsed RAS Data: ${jsonEncode(ras)}");
+
+          InitialTreatmentMonitorModel monitor = InitialTreatmentMonitorModel(
+            uid: item.uid,
+            agent: item.agent,
+            completionDate: item.completionDate,
+            reportingDate: item.reportingDate,
+            mainActivity: item.mainActivity,
+            activity: item.activity!.split(',')[0],
+            noRehabAssistants: item.noRehabAssistants,
+            areaCoveredHa: item.areaCoveredHa,
+            remark: item.remark,
+            status: SubmissionStatus.submitted,
+            ras: jsonEncode(ras),
+            farmRefNumber: item.farmRefNumber,
+            farmSizeHa: double.parse(item.farmSizeHa.toString()),
+            community: item.community!.split(',')[0],
+            numberOfPeopleInGroup: int.tryParse(item.numberOfPeopleInGroup.toString()),
+            groupWork: item.groupWork,
+            sector: int.tryParse(item.sector.toString()),
+          );
+
+          Map<String, dynamic> data = monitor.toJsonOnline();
+          Map<String, dynamic> dataOffline = monitor.toJson();
+
+          List actList = [];
+          actList.add(data["activity"]);
+
+          data["activity"] = actList;
           data.remove('ras');
           data.remove('staff_contact');
           data.remove('main_activity');
           data.remove('submission_status');
           data["rehab_assistants"] = jsonDecode(item.ras.toString());
+
+          debugPrint("THIS IS THE DATA ${data}");
+
           // data["fuel_oil"] = jsonDecode(item.fuelOil.toString());
-          await updateMonitoring(item, data);
+           response = await saveMonitoring(dataOffline,data, isUpdate: true);
+
         });
         offset += limit;
+
       } else {
         endOfRecords = true;
       }
     }
+    return response;
   }
   /*syncMonitoring() async{
     final initialTreatmentMonitorDao = indexController.database!.initialTreatmentMonitorDao;
