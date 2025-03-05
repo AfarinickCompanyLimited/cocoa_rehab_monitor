@@ -461,7 +461,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
     print('DATADATADATA ;;; $data');
     print('DATADATADATA---OFFLINE ;;; $dataOffline');
     var postResult =
-        await outbreakFarmApiInterface.saveMonitoring(dataOffline, data, true);
+        await outbreakFarmApiInterface.saveMonitoring(dataOffline, data, isUpdate: true);
     globals.endWait(editMonitoringRecordScreenContext);
 
     if (postResult['status'] == RequestStatus.True ||
@@ -655,7 +655,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
 
     InitialTreatmentMonitorDatabaseHelper dbb =
         InitialTreatmentMonitorDatabaseHelper.instance;
-    await dbb.updateData(monitorData);
+    await dbb.updateData(monitorData.toJson());
 
     globals.endWait(editMonitoringRecordScreenContext);
 
