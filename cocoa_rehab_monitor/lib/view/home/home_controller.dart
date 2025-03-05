@@ -645,17 +645,18 @@ class HomeController extends GetxController {
       //if (homeScreenContext.mounted) {
         globals.startWait(homeScreenContext);
      // }
-      await outbreakFarmApiInterface.syncMonitoring();
+      Map<String, dynamic> response = await outbreakFarmApiInterface.syncMonitoring();
+      debugPrint("THE RESPONSE DATA IS: ${response}");
       //if (homeScreenContext.mounted) {
         globals.endWait(homeScreenContext);
         globals.showSecondaryDialog(
             context: homeScreenContext,
-            content: const Text(
-              'Data synced',
+            content: Text(
+              response["msg"],
               style: TextStyle(fontSize: 13),
               textAlign: TextAlign.center,
             ),
-            status: AlertDialogStatus.success);
+            status: response["status"] == 3 ? AlertDialogStatus.error : AlertDialogStatus.success);
      // }
     } else {
       globals.showSnackBar(
