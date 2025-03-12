@@ -237,7 +237,7 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///home/mrtenkorang/development/flutter/packages/flutter",
+      "rootUri": "file:///home/mrtenkorang/snap/flutter/common/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -315,13 +315,13 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///home/mrtenkorang/development/flutter/packages/flutter_test",
+      "rootUri": "file:///home/mrtenkorang/snap/flutter/common/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///home/mrtenkorang/development/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///home/mrtenkorang/snap/flutter/common/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -390,6 +390,12 @@
       "rootUri": "file:///home/mrtenkorang/.pub-cache/hosted/pub.dev/http_parser-4.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "icons_launcher",
+      "rootUri": "file:///home/mrtenkorang/.pub-cache/hosted/pub.dev/icons_launcher-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "image",
@@ -747,7 +753,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///home/mrtenkorang/development/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///home/mrtenkorang/snap/flutter/common/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -926,6 +932,12 @@
       "languageVersion": "3.5"
     },
     {
+      "name": "universal_io",
+      "rootUri": "file:///home/mrtenkorang/.pub-cache/hosted/pub.dev/universal_io-2.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "url_launcher",
       "rootUri": "file:///home/mrtenkorang/.pub-cache/hosted/pub.dev/url_launcher-6.3.1",
       "packageUri": "lib/",
@@ -1046,10 +1058,10 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-02-18T11:21:38.963489Z",
+  "generated": "2025-03-11T18:41:26.251399Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
-  "flutterRoot": "file:///home/mrtenkorang/development/flutter",
-  "flutterVersion": "3.29.0",
+  "flutterRoot": "file:///home/mrtenkorang/snap/flutter/common/flutter",
+  "flutterVersion": "3.29.1",
   "pubCache": "file:///home/mrtenkorang/.pub-cache"
 }
