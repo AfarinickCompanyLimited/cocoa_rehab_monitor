@@ -141,6 +141,7 @@ class PaymentMethod {
 class YesNo {
   static String yes = "Yes";
   static String no = "No";
+  static String none = " ";
 }
 
 class TaskStatus {

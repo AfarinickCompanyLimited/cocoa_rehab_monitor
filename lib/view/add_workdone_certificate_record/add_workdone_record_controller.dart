@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously, avoid_print
-
 import 'package:cocoa_rehab_monitor/controller/constants.dart';
 import 'package:cocoa_rehab_monitor/controller/db/activity_db.dart';
 import 'package:cocoa_rehab_monitor/controller/db/contractor_certificate_of_workdone_db.dart';
@@ -9,7 +7,6 @@ import 'package:cocoa_rehab_monitor/controller/entity/cocoa_rehub_monitor/region
 import 'package:cocoa_rehab_monitor/controller/global_controller.dart';
 import 'package:cocoa_rehab_monitor/view/global_components/globals.dart';
 import 'package:cocoa_rehab_monitor/view/home/home_controller.dart';
-import 'package:cocoa_rehab_monitor/view/utils/view_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,102 +19,42 @@ import 'package:cocoa_rehab_monitor/controller/entity/cocoa_rehub_monitor/assign
 import 'package:cocoa_rehab_monitor/controller/model/activity_model.dart';
 import 'package:cocoa_rehab_monitor/controller/model/contractor_certificate_of_workdone_model.dart';
 
+import '../utils/view_constants.dart';
+
 class AddContractorCertificateRecordController extends GetxController {
+  // Dependencies
+  final HomeController homeController = Get.find();
+  final Globals globals = Globals();
+  final GlobalController globalController = Get.find();
+  final ContractorCertificateApiInterface contractorCertificateApiInterface =
+  ContractorCertificateApiInterface();
+  final ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
+  final JobOrderFarmsDbFarmDatabaseHelper jobDb =
+      JobOrderFarmsDbFarmDatabaseHelper.instance;
+  final ContractorCertificateDatabaseHelper contractorCertificateDatabaseHelper =
+      ContractorCertificateDatabaseHelper.instance;
+  final ImagePicker mediaPicker = ImagePicker();
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+  // Screen context
   late BuildContext addContractorCertificateRecordScreenContext;
 
-  final addContractorCertificateRecordFormKey = GlobalKey<FormState>();
+  // Form key
+  final GlobalKey<FormState> addContractorCertificateRecordFormKey =
+  GlobalKey<FormState>();
 
-  HomeController homeController = Get.find();
+  // Form controllers
+  final TextEditingController sectorTC = TextEditingController();
+  final TextEditingController districtTC = TextEditingController();
+  final TextEditingController farmSizeTC = TextEditingController();
+  final TextEditingController farmerNameTC = TextEditingController();
+  final TextEditingController farmReferenceNumberTC = TextEditingController();
+  final TextEditingController communityTC = TextEditingController();
 
-  Globals globals = Globals();
-
-  GlobalController globalController = Get.find();
-
-  ContractorCertificateApiInterface contractorCertificateApiInterface =
-      ContractorCertificateApiInterface();
-
-  final ImagePicker mediaPicker = ImagePicker();
-
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
-
-  // var isButtonDisabled = false.obs;
-  // var isSaveButtonDisabled = false.obs;
-
-  LocationData? locationData;
-
-  // Community? community = Community();
-
-  RegionDistrict? regionDistrict = RegionDistrict();
-
-  TextEditingController? sectorTC = TextEditingController();
-  TextEditingController? districtTC = TextEditingController();
-
-  Contractor? contractor = Contractor();
-
-  TextEditingController? farmSizeTC = TextEditingController();
-  TextEditingController? farmerNameTC = TextEditingController();
-
-  TextEditingController? farmReferenceNumberTC = TextEditingController();
-  TextEditingController? communityTC = TextEditingController();
-
-  ActivityModel? activit;
-  String? activity;
-
-  ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
-
-  JobOrderFarmsDbFarmDatabaseHelper jobDb =
-      JobOrderFarmsDbFarmDatabaseHelper.instance;
-
-  List<ActivityModel> subActivity = [];
-
-  List<ActivityModel> activities = [];
-
-  List<AssignedFarm> farmRefs = [];
-
-  List<String> act = [];
-
-  List<String> fr = [];
-
-  // getDistinctActivity() {
-  //   activities.forEach((activity) {
-  //     if(!act.contains(activity.mainActivity)){
-  //       act.add(activity.mainActivity!);
-  //     }
-  //   });
-  //   print("THE ACTIVITY STRINGS ::::::::: ${act}");
-  // }
-  //
-  // getDistinctFarmRefs(){
-  //   farmRefs.forEach((f){
-  //     fr.add(f.farmReference!);
-  //   });
-  // }
-  //
-  // getFarmRefs()async{
-  //   farmRefs = await globalController.database!.assignedFarmDao.findAllAssignedFarms();
-  // }
-  //
-  // getActivity() async {
-  //   activities = await db.getAllActivityWithMainActivityList([
-  //     MainActivities.Maintenance,
-  //     MainActivities.Establishment,
-  //     MainActivities.InitialTreatment,
-  //   ]);
-  //   print("THE ACTIVITY ::::::::: ${activities[0].mainActivity}");
-  // }
-
-  String? roundsOfWeeding;
-
-  List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
-
-  List<String> listOfRoundsOfWeeding = [
-    '1',
-    '2',
-  ];
-
-  List<String> sectorData = ['1', '2', '3', '4'];
-
-  List<String> listOfMonths = [
+  // Dropdown data
+  final List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
+  final List<String> listOfRoundsOfWeeding = ['1', '2'];
+  final List<String> listOfMonths = [
     'January',
     'February',
     'March',
@@ -132,229 +69,174 @@ class AddContractorCertificateRecordController extends GetxController {
     'December'
   ];
 
-  var selectedWeek;
-  var selectedMonth;
-  var selectedYear;
+  // Selected values
+  String? selectedWeek;
+  String? selectedMonth;
+  String? selectedYear;
+  String? activity;
+  String? roundsOfWeeding;
+  RegionDistrict? regionDistrict = RegionDistrict();
+  Contractor? contractor;
+  List<ActivityModel> subActivity = [];
 
-  ContractorCertificateDatabaseHelper contractorCertificateDatabaseHelper =
-      ContractorCertificateDatabaseHelper.instance;
+  // Location data
+  LocationData? locationData;
 
-  // INITIALISE
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // UserCurrentLocation? userCurrentLocation = UserCurrentLocation(
-      //     context: addContractorCertificateRecordScreenContext);
-      // userCurrentLocation.getUserLocation(
-      //     forceEnableLocation: true,
-      //     onLocationEnabled: (isEnabled, pos) {
-      //       if (isEnabled == true) {
-      //         locationData = pos!;
-      //         update();
-      //       }
-      //     });
-    });
+    _initializeController();
   }
 
-  // ==============================================================================
-  // START ADD MONITORING RECORD
-  // ==============================================================================
-  handleAddMonitoringRecord() async {
-    // isButtonDisabled.value = false;
-
-    String subActivityString = '';
-
-    for (int i = 0; i < subActivity.length; i++) {
-      subActivityString += subActivity[i].subActivity!;
-      if (i < subActivity.length - 1) {
-        subActivityString += ', ';
-      }
-    }
-
-    var com = '';
-    com += communityTC!.text;
-    com += '-';
-    com += subActivityString;
-    com += '- ';
-    com += activity!;
-    com += '- ';
-    com += contractor!.contractorName!;
-
-
-     globals.startWait(addContractorCertificateRecordScreenContext);
-    DateTime now = DateTime.now();
-    String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
-
-    List<int> subActivityList =
-        subActivity.map((activity) => activity.code).cast<int>().toList();
-
-    ContractorCertificateModel contractorCertificate =
-        ContractorCertificateModel(
-            uid: const Uuid().v4(),
-            currentYear: selectedYear,
-            currentMonth: selectedMonth,
-            currrentWeek: int.tryParse(selectedWeek),
-            reportingDate: formattedReportingDate,
-            activity: subActivityList,
-            farmerName: farmerNameTC!.text,
-
-            farmRefNumber: farmReferenceNumberTC!.text,
-            farmSizeHa: double.parse(farmSizeTC!.text),
-            community: com,
-            weedingRounds: int.tryParse(roundsOfWeeding!),
-            sector: int.tryParse(sectorTC!.text),
-            contractor: contractor?.contractorId,
-            district: globalController.userInfo.value.district,
-            status: SubmissionStatus.submitted,
-            userId: int.tryParse(
-              globalController.userInfo.value.userId!,
-            ));
-
-    Map<String, dynamic> data = contractorCertificate.toJson();
-    data.remove('main_activity');
-    data.remove('submission_status');
-
-    // print("UID TYPE::::: ${contractorCertificate.uid.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.currentYear.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.currentMonth.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.currrentWeek.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.sector.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.farmRefNumber.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.farmerName.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.farmSizeHa.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.community.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.activity.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.weedingRounds.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.contractor.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.district.runtimeType}");
-    // print("DATA TYPE::::: ${contractorCertificate.userId.runtimeType}");
-
-    data["community"] = communityTC!.text;
-
-    print('THIS IS Contractor Certificate DETAILS:::: $data');
-
-    var postResult = await contractorCertificateApiInterface
-        .saveContractorCertificate(contractorCertificate, data);
-    globals.endWait(addContractorCertificateRecordScreenContext);
-
-    if (postResult['status'] == RequestStatus.True ||
-        postResult['status'] == RequestStatus.Exist ||
-        postResult['status'] == RequestStatus.NoInternet) {
-      Get.back(result: {
-        'contractorCertificate': contractorCertificate,
-        'submitted': true
-      });
-      globals.showSecondaryDialog(
-          context: homeController.homeScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.success,
-          okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
-    } else if (postResult['status'] == RequestStatus.False) {
-      globals.showSecondaryDialog(
-          context: addContractorCertificateRecordScreenContext,
-          content: Text(
-            postResult['msg'],
-            style: const TextStyle(fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          status: AlertDialogStatus.error);
-    }
+  void _initializeController() {
+    sectorTC.text = globalController.userInfo.value.sector.toString();
   }
-  // ==============================================================================
-  // END ADD MONITORING RECORD
-  // ==============================================================================
 
-  // ==============================================================================
-  // START OFFLINE SAVE MONITORING RECORD
-  // ==============================================================================
-  handleSaveOfflineMonitoringRecord() async {
-    // isSaveButtonDisabled.value = false;
+  // ===========================================================================
+  // FORM SUBMISSION HANDLERS
+  // ===========================================================================
+
+  Future<void> handleAddMonitoringRecord() async {
+    if (!_validateForm()) return;
 
     globals.startWait(addContractorCertificateRecordScreenContext);
-    DateTime now = DateTime.now();
-    String formattedReportingDate = DateFormat('yyyy-MM-dd').format(now);
 
-    String subActivityString = '';
+    try {
+      final contractorCertificate = _createContractorCertificateModel(
+        status: SubmissionStatus.submitted,
+      );
 
-    for (int i = 0; i < subActivity.length; i++) {
-      subActivityString += subActivity[i].subActivity!;
-      if (i < subActivity.length - 1) {
-        subActivityString += ', ';
-      }
+      final data = _prepareSubmissionData(contractorCertificate);
+      final postResult = await contractorCertificateApiInterface
+          .saveContractorCertificate(contractorCertificate, data);
+
+      _handleSubmissionResponse(postResult, contractorCertificate);
+    } catch (e) {
+      globals.endWait(addContractorCertificateRecordScreenContext);
+      _showErrorDialog('An error occurred: ${e.toString()}');
     }
+  }
 
-    var com = '';
-    com += communityTC!.text;
-    com += '-';
-    com += subActivityString;
-    com += '- ';
-    com += activity!;
-    com += '- ';
-    com += contractor!.contractorName!;
+  Future<void> handleSaveOfflineMonitoringRecord() async {
+    if (!_validateForm()) return;
 
-    List<int> subActivityList =
-        subActivity.map((newActivity) => newActivity.code).cast<int>().toList();
+    globals.startWait(addContractorCertificateRecordScreenContext);
 
-    ContractorCertificateModel contractorCertificate =
-    ContractorCertificateModel(
-        uid: const Uuid().v4(),
-        currentYear: selectedYear,
-        currentMonth: selectedMonth,
-        currrentWeek: int.tryParse(selectedWeek),
-        reportingDate: formattedReportingDate,
-        activity: subActivityList,
-        farmerName: farmerNameTC!.text,
-        farmRefNumber: farmReferenceNumberTC!.text,
-        farmSizeHa: double.parse(farmSizeTC!.text),
-        community: com,
-        weedingRounds: int.tryParse(roundsOfWeeding!),
-        sector: int.tryParse(sectorTC!.text),
-        contractor: contractor?.contractorId,
-        district: globalController.userInfo.value.district,
+    try {
+      final contractorCertificate = _createContractorCertificateModel(
         status: SubmissionStatus.pending,
-        userId: int.tryParse(
-          globalController.userInfo.value.userId!,
-        ));
+      );
 
-    Map<String, dynamic> data = contractorCertificate.toJson();
-    print('THIS IS Contractor Certificate DATA DETAILS:::: $data');
-    print('THIS IS UUID :::: ${contractorCertificate.uid}');
+      await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
 
-    // data.remove('main_activity');
-    // data.remove('submission_status');
+      _handleOfflineSaveSuccess(contractorCertificate);
+    } catch (e) {
+      globals.endWait(addContractorCertificateRecordScreenContext);
+      _showErrorDialog('Failed to save offline: ${e.toString()}');
+    }
+  }
 
-    // final contractorCertificateDao =
-    //     globalController.database!.contractorCertificateDao;
-    // await contractorCertificateDao
-    //     .insertContractorCertificate(contractorCertificate);
-    ///Delete the data
-    //await contractorCertificateDatabaseHelper.deleteData(contractorCertificate.uid!);
-    /// insert the new data
-    await contractorCertificateDatabaseHelper.saveData(contractorCertificate);
+  // ===========================================================================
+  // PRIVATE HELPER METHODS
+  // ===========================================================================
 
+  bool _validateForm() {
+    if (!addContractorCertificateRecordFormKey.currentState!.validate()) {
+      globals.showSnackBar(
+        title: 'Alert',
+        message: 'Kindly provide all required information',
+      );
+      return false;
+    }
+    return true;
+  }
+
+  ContractorCertificateModel _createContractorCertificateModel({
+    required int status,
+  }) {
+    final now = DateTime.now();
+    final formattedReportingDate = dateFormat.format(now);
+
+    return ContractorCertificateModel(
+      uid: const Uuid().v4(),
+      currentYear: selectedYear,
+      currentMonth: selectedMonth,
+      currrentWeek: int.tryParse(selectedWeek ?? ''),
+      reportingDate: formattedReportingDate,
+      activity: subActivity.map((a) => a.code!).toList(),
+      farmerName: farmerNameTC.text,
+      farmRefNumber: farmReferenceNumberTC.text,
+      farmSizeHa: double.tryParse(farmSizeTC.text) ?? 0.0,
+      community: _buildCommunityString(),
+      weedingRounds: int.tryParse(roundsOfWeeding ?? ''),
+      sector: int.tryParse(sectorTC.text),
+      contractor: contractor?.contractorId,
+      district: globalController.userInfo.value.district,
+      status: status,
+      userId: int.tryParse(globalController.userInfo.value.userId ?? ''),
+    );
+  }
+
+  String _buildCommunityString() {
+    final subActivities = subActivity.map((a) => a.subActivity).join(', ');
+    return '${communityTC.text}-$subActivities- $activity- ${contractor?.contractorName}';
+  }
+
+  Map<String, dynamic> _prepareSubmissionData(
+      ContractorCertificateModel certificate) {
+    final data = certificate.toJson();
+    data['community'] = communityTC.text;
+    return data;
+  }
+
+  void _handleSubmissionResponse(
+      Map<String, dynamic> response, ContractorCertificateModel certificate) {
     globals.endWait(addContractorCertificateRecordScreenContext);
 
+    if (response['status'] == RequestStatus.True ||
+        response['status'] == RequestStatus.Exist ||
+        response['status'] == RequestStatus.NoInternet) {
+      Get.back(result: {
+        'contractorCertificate': certificate,
+        'submitted': true
+      });
+      _showSuccessDialog(response['msg']);
+    } else {
+      _showErrorDialog(response['msg']);
+    }
+  }
+
+  void _handleOfflineSaveSuccess(ContractorCertificateModel certificate) {
+    globals.endWait(addContractorCertificateRecordScreenContext);
     Get.back(result: {
-      'contractorCertificate': contractorCertificate,
+      'contractorCertificate': certificate,
       'submitted': false
     });
-    globals.showSecondaryDialog(
-        context: homeController.homeScreenContext,
-        content: const Text(
-          'Certificate saved',
-          style: TextStyle(fontSize: 13),
-          textAlign: TextAlign.center,
-        ),
-        status: AlertDialogStatus.success,
-        okayTap: () => Navigator.of(homeController.homeScreenContext).pop());
+    _showSuccessDialog('Certificate saved');
   }
-// ==============================================================================
-// END OFFLINE SAVE MONITORING RECORD
-// ==============================================================================
+
+  void _showSuccessDialog(String message) {
+    globals.showSecondaryDialog(
+      context: homeController.homeScreenContext,
+      content: Text(
+        message,
+        style: const TextStyle(fontSize: 13),
+        textAlign: TextAlign.center,
+      ),
+      status: AlertDialogStatus.success,
+      okayTap: () => Navigator.of(homeController.homeScreenContext).pop(),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    globals.showSecondaryDialog(
+      context: addContractorCertificateRecordScreenContext,
+      content: Text(
+        message,
+        style: const TextStyle(fontSize: 13),
+        textAlign: TextAlign.center,
+      ),
+      status: AlertDialogStatus.error,
+    );
+  }
 }

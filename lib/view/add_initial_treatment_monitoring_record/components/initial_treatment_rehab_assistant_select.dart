@@ -15,104 +15,91 @@ import 'package:get/get.dart';
 import '../../../controller/model/rehab_assistant_model.dart';
 
 class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
-  RxInt? index = 0.obs;
+  RxInt? index;
   TextEditingController? areaCovered;
-
   RehabAssistantModel? rehabAssistant;
 
-  InitialTreatmentRehabAssistantSelection(
-      {Key? key, this.index, this.areaCovered, this.rehabAssistant})
-      : super(key: key);
+  InitialTreatmentRehabAssistantSelection({
+    Key? key,
+    this.index,
+    this.areaCovered,
+    this.rehabAssistant,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AddInitialTreatmentMonitoringRecordController
-        addInitialTreatmentMonitoringRecordController = Get.find();
-    areaCovered = TextEditingController();
-    addInitialTreatmentMonitoringRecordController.areaCoveredRx.isEmpty
-        ? areaCovered
-        : areaCovered?.text =
-            addInitialTreatmentMonitoringRecordController.areaCoveredRx.value;
-    addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value ==
-            YesNo.no
-        ? areaCovered?.text =
-            addInitialTreatmentMonitoringRecordController.farmSizeTC!.text
-        : areaCovered;
-    addInitialTreatmentMonitoringRecordController.isCompletedByGroup.value ==
-            YesNo.no
-        ? addInitialTreatmentMonitoringRecordController.isDoneEqually.value ==
-            YesNo.yes
-        : addInitialTreatmentMonitoringRecordController.isDoneEqually.value ==
-            YesNo.no;
+    final controller = Get.find<AddInitialTreatmentMonitoringRecordController>();
+    final db = RehabAssistantDatabaseHelper.instance;
 
-    RehabAssistantDatabaseHelper db = RehabAssistantDatabaseHelper.instance;
+    // initialize text controller only if not passed
+    areaCovered ??= TextEditingController();
+
+    // fill text field conditionally
+    if (controller.areaCoveredRx.isNotEmpty) {
+      areaCovered!.text = controller.areaCoveredRx.value;
+    }
+
+    if (controller.isCompletedByGroup.value == YesNo.no) {
+      areaCovered!.text = controller.farmSizeTC!.text;
+    }
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
       width: double.infinity,
-      // padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: appColorInputBackgroundWhite.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(AppBorderRadius.xl)),
+        color: appColorInputBackgroundWhite.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(AppBorderRadius.xl),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // const SizedBox(height: 8,),
+          /// Index and delete button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  index.toString(),
+                  "${index?.value ?? ''}",
                   style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
-                Obx(
-                  () => addInitialTreatmentMonitoringRecordController
-                              .rehabAssistants.length >
-                          1
-                      ? CircleIconButton(
-                          icon: Icon(
-                            appIconTrashOld,
-                            color: tmtColorSecondary,
-                            size: 20,
-                          ),
-                          backgroundColor: Colors.white,
-                          hasShadow: false,
-                          onTap: () {
-                            if (addInitialTreatmentMonitoringRecordController
-                                .numberInGroupTC!.text.isEmpty) {
-                              addInitialTreatmentMonitoringRecordController
-                                  .rehabAssistants
-                                  .removeAt(index!.value - 1);
 
-                              addInitialTreatmentMonitoringRecordController
-                                  .rehabAssistants
-                                  .asMap()
-                                  .forEach((index, value) {
-                                addInitialTreatmentMonitoringRecordController
-                                    .rehabAssistants[index]
-                                    .index!
-                                    .value = index + 1;
-                                addInitialTreatmentMonitoringRecordController
-                                    .update();
-                              });
-                            }
-                          },
-                        )
-                      : Container(),
-                ),
+                GetBuilder(
+                    init: controller,
+                    builder: (context) {
+                  return controller.rehabAssistants.length > 1
+                      ? CircleIconButton(
+                    icon: Icon(appIconTrashOld, color: tmtColorSecondary, size: 20),
+                    backgroundColor: Colors.white,
+                    hasShadow: false,
+                    onTap: () {
+                      if (controller.numberInGroupTC!.text.isEmpty) {
+                        controller.rehabAssistants.removeAt(index!.value - 1);
+
+                        for (int i = 0; i < controller.rehabAssistants.length; i++) {
+                          controller.rehabAssistants[i].index!.value = i + 1;
+                        }
+
+                        controller.update();
+                      }
+                    },
+                  )
+                      : const SizedBox();
+                })
               ],
             ),
           ),
+
           const SizedBox(height: 8),
+
+          /// Rehab Assistant + Area Input Row
           Row(
             children: [
+              /// Rehab Assistant Dropdown
               Flexible(
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(left: 10.0),
@@ -121,97 +108,73 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     DropdownSearch<RehabAssistantModel>(
                       popupProps: PopupProps.modalBottomSheet(
-                          showSelectedItems: true,
-                          showSearchBox: true,
-                          itemBuilder: (context, item, selected) {
-                            return ListTile(
-                              title: Text(item.rehabName.toString(),
-                                  style: selected
-                                      ? TextStyle(color: AppColor.primary)
-                                      : const TextStyle()),
-                              subtitle: Text(
-                                item.staffId.toString(),
-                              ),
-                            );
-                          },
-                          title: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            child: Center(
-                              child: Text(
-                                'Select Rehab Assistant',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
+                        showSelectedItems: true,
+                        showSearchBox: true,
+                        itemBuilder: (context, item, selected) {
+                          return ListTile(
+                            title: Text(
+                              item.rehabName ?? "",
+                              style: selected ? TextStyle(color: AppColor.primary) : null,
+                            ),
+                            subtitle: Text(item.staffId ?? ""),
+                          );
+                        },
+                        title: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          child: Center(
+                            child: Text(
+                              'Select Rehab Assistant',
+                              style: TextStyle(fontWeight: FontWeight.w500),
                             ),
                           ),
-                          disabledItemFn: (RehabAssistantModel s) => false,
-                          modalBottomSheetProps: ModalBottomSheetProps(
-                            elevation: 6,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                    topLeft:
-                                        Radius.circular(AppBorderRadius.md),
-                                    topRight:
-                                        Radius.circular(AppBorderRadius.md))),
+                        ),
+                        modalBottomSheetProps: ModalBottomSheetProps(
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(AppBorderRadius.md)),
                           ),
-                          searchFieldProps: TextFieldProps(
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 15),
-                              enabledBorder: inputBorder,
-                              focusedBorder: inputBorderFocused,
-                              errorBorder: inputBorder,
-                              focusedErrorBorder: inputBorderFocused,
-                              filled: true,
-                              fillColor: AppColor.xLightBackground,
-                            ),
-                          )),
+                        ),
+                        searchFieldProps: TextFieldProps(
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
+                            enabledBorder: inputBorder,
+                            focusedBorder: inputBorderFocused,
+                            filled: true,
+                            fillColor: AppColor.xLightBackground,
+                          ),
+                        ),
+                      ),
                       dropdownDecoratorProps: DropDownDecoratorProps(
                         dropdownSearchDecoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 15),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
                           enabledBorder: inputBorder,
                           focusedBorder: inputBorderFocused,
-                          errorBorder: inputBorder,
-                          focusedErrorBorder: inputBorderFocused,
                           filled: true,
                           fillColor: AppColor.xLightBackground,
                         ),
                       ),
-
                       asyncItems: (String filter) async {
-                        var response =
-                            await db.getAllData();
-                        print("REHAB RESPONSE ++++++ $response");
-                        return response;
+                        return await db.getAllData();
                       },
-
-                      itemAsString: (RehabAssistantModel d) => d.rehabName ?? "",
-                      // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                      compareFn: (rehabAssistant, filter) =>
-                          rehabAssistant.rehabName == filter.rehabName,
+                      itemAsString: (item) => item.rehabName ?? "",
+                      compareFn: (a, b) => a.rehabName == b.rehabName,
+                      selectedItem: rehabAssistant,
                       onChanged: (val) {
                         rehabAssistant = val;
-                        addInitialTreatmentMonitoringRecordController.update();
+                        controller.update();
                       },
-                      selectedItem: rehabAssistant,
-                      // autoValidateMode: AutovalidateMode.always,
-                      validator: (item) {
-                        if (item == null) {
-                          return 'Select rehab assistant';
-                        } else {
-                          return null;
-                        }
-                      },
+                      validator: (item) => item == null ? 'Select rehab assistant' : null,
                     ),
                   ],
                 ),
               ),
+
               const SizedBox(width: 15),
+
+              /// Area Input
               Flexible(
                 flex: 1,
                 child: Column(
@@ -223,53 +186,32 @@ class InitialTreatmentRehabAssistantSelection extends StatelessWidget {
                         alignment: Alignment.bottomRight,
                         child: Text(
                           'Area (ha)',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 12),
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Obx(
-                      () => TextFormField(
+                    const SizedBox(height: 5),
+                    Obx(() {
+                      final isReadOnly = controller.isDoneEqually.value == YesNo.yes;
+                      return TextFormField(
                         controller: areaCovered,
-                        readOnly: addInitialTreatmentMonitoringRecordController
-                                    .isDoneEqually.value ==
-                                YesNo.no
-                            ? false
-                            : true,
+                        readOnly: isReadOnly,
                         keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 15),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                           enabledBorder: inputBorder,
                           focusedBorder: inputBorderFocused,
-                          errorBorder: inputBorder,
-                          focusedErrorBorder: inputBorderFocused,
                           filled: true,
-                          fillColor:
-                              addInitialTreatmentMonitoringRecordController
-                                          .isDoneEqually.value ==
-                                      YesNo.yes
-                                  ? AppColor.lightText
-                                  : AppColor.xLightBackground,
+                          fillColor: isReadOnly ? AppColor.lightText : AppColor.xLightBackground,
                         ),
-                        textAlign: TextAlign.center,
+                        validator: (value) => value!.trim().isEmpty ? "Required" : null,
                         onTap: () {
-                          // print(addInitialTreatmentMonitoringRecordController
-                          //     .rehabAssistants[index!.value - 1]
-                          //     .areaCoveredRx
-                          //     .value);
-                          // print(areaCovered?.text);
-                          print(addInitialTreatmentMonitoringRecordController
-                              .areaCoveredRx.value);
+                          print("Area Covered: ${controller.areaCoveredRx.value}");
                         },
-                        textInputAction: TextInputAction.next,
-                        validator: (String? value) =>
-                            value!.trim().isEmpty ? "Required" : null,
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                 ),
               ),
