@@ -113,7 +113,8 @@ class ContractorCertificateApiInterface {
         );
 
         if (response.statusCode == 200) {
-          final responseData = jsonDecode(response.data);
+
+          final responseData = response.data;
           if (responseData['status'] == RequestStatus.True) {
 
             db.saveData(contractorCertificate);
@@ -146,8 +147,8 @@ class ContractorCertificateApiInterface {
         }
       } catch (e, stackTrace) {
         debugPrint(e.toString());
-        // FirebaseCrashlytics.instance.recordError(e, stackTrace);
-        // FirebaseCrashlytics.instance.log('saveContractorCertificate');
+        FirebaseCrashlytics.instance.recordError(e, stackTrace);
+        FirebaseCrashlytics.instance.log('saveContractorCertificate');
         print("THE ERROR IS HERE: $e");
 
         return {
