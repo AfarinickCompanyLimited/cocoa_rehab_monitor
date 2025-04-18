@@ -57,6 +57,20 @@ class EditContractorCertificateRecordController extends GetxController {
   String? activity;
   List<ActivityModel> subActivity = [];
 
+  var isActivitySelected = false.obs;
+
+  getInitialActivityValue(){
+    isActivitySelected.value = activity.toString().isNotEmpty;
+  }
+
+  toggleClearIsActivitySelected(){
+    isActivitySelected.value = false;
+  }
+
+  toggleIsActivitySelected(){
+    isActivitySelected.value = true;
+  }
+
   final List<String> listOfWeeks = ['1', '2', '3', '4', '5'];
   final List<String> listOfMonths = [
     'January',
@@ -72,6 +86,7 @@ class EditContractorCertificateRecordController extends GetxController {
     'November',
     'December'
   ];
+
   final List<String> listOfRoundsOfWeeding = ['1', '2'];
 
   var selectedWeek = ''.obs;
@@ -109,6 +124,7 @@ class EditContractorCertificateRecordController extends GetxController {
     selectedMonth.value = contractorCertificate!.currentMonth ?? '';
     selectedYear.value = contractorCertificate!.currentYear ?? '';
     farmerNameTC.text = contractorCertificate!.farmerName ?? '';
+    farmReferenceNumberTC.text = contractorCertificate!.farmRefNumber ?? '';
     communityTC.text = comAndSub[0];
     communityNameTC.text = comAndSub[0];
     farmSizeTC.text = contractorCertificate!.farmSizeHa.toString();
@@ -121,6 +137,8 @@ class EditContractorCertificateRecordController extends GetxController {
         .toList();
 
     activity = comAndSub.last.trim();
+    getInitialActivityValue();
+
     jobOrderFarmModel =
     await jobDb.getFarmByID(contractorCertificate!.farmRefNumber!);
 
