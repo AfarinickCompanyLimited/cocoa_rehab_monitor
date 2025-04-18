@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,14 +28,18 @@ class _AddContractorCertificateRecordState
   bool subActivityCheck = false;
 
   AddContractorCertificateRecordController
-      addContractorCertificateRecordController =
-      Get.put(AddContractorCertificateRecordController());
+  addContractorCertificateRecordController = Get.put(
+    AddContractorCertificateRecordController(),
+  );
 
   @override
   Widget build(BuildContext context) {
     addContractorCertificateRecordController.sectorTC!.text =
         addContractorCertificateRecordController
-            .globalController.userInfo.value.sector
+            .globalController
+            .userInfo
+            .value
+            .sector
             .toString();
     // addContractorCertificateRecordController
     //     .districtTC!.text =  addContractorCertificateRecordController
@@ -41,8 +47,9 @@ class _AddContractorCertificateRecordState
     //     .toString()
     int currentYear = DateTime.now().year;
     int startingYear = 2022;
-    List<int> yearList =
-        List.generate((currentYear - startingYear) + 1, (index) {
+    List<int> yearList = List.generate((currentYear - startingYear) + 1, (
+      index,
+    ) {
       return startingYear + index;
     });
     // HomeController homeController = Get.find();
@@ -67,15 +74,19 @@ class _AddContractorCertificateRecordState
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: AppColor.lightText.withOpacity(0.5)))),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: AppColor.lightText.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top + 15,
-                        bottom: 10,
-                        left: AppPadding.horizontal,
-                        right: AppPadding.horizontal),
+                      top: MediaQuery.of(context).padding.top + 15,
+                      bottom: 10,
+                      left: AppPadding.horizontal,
+                      right: AppPadding.horizontal,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -85,15 +96,16 @@ class _AddContractorCertificateRecordState
                           backgroundColor: Colors.transparent,
                           onTap: () => Get.back(),
                         ),
-                        const SizedBox(
-                          width: 12,
-                        ),
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: Text('New WD By Contractor Certificate',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColor.black)),
+                          child: Text(
+                            'New WD By Contractor Certificate',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.black,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -103,15 +115,17 @@ class _AddContractorCertificateRecordState
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.only(
-                        left: AppPadding.horizontal,
-                        right: AppPadding.horizontal,
-                        bottom: AppPadding.vertical,
-                        top: 10),
+                      left: AppPadding.horizontal,
+                      right: AppPadding.horizontal,
+                      bottom: AppPadding.vertical,
+                      top: 10,
+                    ),
                     child: Column(
                       children: [
                         Form(
-                          key: addContractorCertificateRecordController
-                              .addContractorCertificateRecordFormKey,
+                          key:
+                              addContractorCertificateRecordController
+                                  .addContractorCertificateRecordFormKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -120,25 +134,29 @@ class _AddContractorCertificateRecordState
                                 'Current Year',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) => false,
-                                    fit: FlexFit.loose,
-                                    menuProps: MenuProps(
-                                        elevation: 6,
-                                        borderRadius: BorderRadius.circular(
-                                            AppBorderRadius.sm))),
-                                items: yearList
-                                    .map((year) => year.toString())
-                                    .toList(),
+                                  showSelectedItems: true,
+                                  disabledItemFn: (String s) => false,
+                                  fit: FlexFit.loose,
+                                  menuProps: MenuProps(
+                                    elevation: 6,
+                                    borderRadius: BorderRadius.circular(
+                                      AppBorderRadius.sm,
+                                    ),
+                                  ),
+                                ),
+                                items:
+                                    yearList
+                                        .map((year) => year.toString())
+                                        .toList(),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -167,24 +185,28 @@ class _AddContractorCertificateRecordState
                                 'Current Month',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) => false,
-                                    fit: FlexFit.loose,
-                                    menuProps: MenuProps(
-                                        elevation: 6,
-                                        borderRadius: BorderRadius.circular(
-                                            AppBorderRadius.sm))),
-                                items: addContractorCertificateRecordController
-                                    .listOfMonths,
+                                  showSelectedItems: true,
+                                  disabledItemFn: (String s) => false,
+                                  fit: FlexFit.loose,
+                                  menuProps: MenuProps(
+                                    elevation: 6,
+                                    borderRadius: BorderRadius.circular(
+                                      AppBorderRadius.sm,
+                                    ),
+                                  ),
+                                ),
+                                items:
+                                    addContractorCertificateRecordController
+                                        .listOfMonths,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -213,24 +235,28 @@ class _AddContractorCertificateRecordState
                                 'Current Week',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) => false,
-                                    fit: FlexFit.loose,
-                                    menuProps: MenuProps(
-                                        elevation: 6,
-                                        borderRadius: BorderRadius.circular(
-                                            AppBorderRadius.sm))),
-                                items: addContractorCertificateRecordController
-                                    .listOfWeeks,
+                                  showSelectedItems: true,
+                                  disabledItemFn: (String s) => false,
+                                  fit: FlexFit.loose,
+                                  menuProps: MenuProps(
+                                    elevation: 6,
+                                    borderRadius: BorderRadius.circular(
+                                      AppBorderRadius.sm,
+                                    ),
+                                  ),
+                                ),
+                                items:
+                                    addContractorCertificateRecordController
+                                        .listOfWeeks,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -259,9 +285,7 @@ class _AddContractorCertificateRecordState
                                 'Sector',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               TextFormField(
                                 readOnly: true,
                                 controller:
@@ -269,7 +293,9 @@ class _AddContractorCertificateRecordState
                                         .sectorTC,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                    vertical: 15,
+                                    horizontal: 15,
+                                  ),
                                   enabledBorder: inputBorder,
                                   focusedBorder: inputBorderFocused,
                                   errorBorder: inputBorder,
@@ -281,10 +307,11 @@ class _AddContractorCertificateRecordState
                                 textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Community is required"
-                                        : null,
+                                validator:
+                                    (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Community is required"
+                                            : null,
                               ),
 
                               const SizedBox(height: 20),
@@ -292,55 +319,60 @@ class _AddContractorCertificateRecordState
                                 'Farm Reference Number',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
 
                               DropdownSearch<JobOrderFarmModel>(
                                 popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select farm reference number',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                  showSelectedItems: true,
+                                  showSearchBox: true,
+                                  title: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    child: Center(
+                                      child: Text(
+                                        'Select farm reference number',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (JobOrderFarmModel s) =>
-                                        false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
+                                  ),
+                                  disabledItemFn:
+                                      (JobOrderFarmModel s) => false,
+                                  modalBottomSheetProps: ModalBottomSheetProps(
+                                    elevation: 6,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
+                                        topRight: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                            horizontal: 15,
+                                          ),
+                                      enabledBorder: inputBorder,
+                                      focusedBorder: inputBorderFocused,
+                                      errorBorder: inputBorder,
+                                      focusedErrorBorder: inputBorderFocused,
+                                      filled: true,
+                                      fillColor: AppColor.xLightBackground,
+                                    ),
+                                  ),
+                                ),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -358,11 +390,12 @@ class _AddContractorCertificateRecordState
                                   print("THE RESPONSE ::::::::::: $response");
                                   return response;
                                 },
-                                itemAsString: (JobOrderFarmModel d) =>
-                                    d.farmId.toString(),
+                                itemAsString:
+                                    (JobOrderFarmModel d) =>
+                                        d.farmId.toString(),
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (activity, filter) =>
-                                    activity == filter,
+                                compareFn:
+                                    (activity, filter) => activity == filter,
                                 onChanged: (val) {
                                   addContractorCertificateRecordController
                                       .farmReferenceNumberTC!
@@ -370,8 +403,12 @@ class _AddContractorCertificateRecordState
                                   addContractorCertificateRecordController
                                       .farmerNameTC!
                                       .text = val.farmerName.toString();
-                                  addContractorCertificateRecordController.farmSizeTC!.text = val.farmSize.toString();
-                                  addContractorCertificateRecordController.communityTC!.text = val.location.toString();
+                                  addContractorCertificateRecordController
+                                      .farmSizeTC!
+                                      .text = val.farmSize.toString();
+                                  addContractorCertificateRecordController
+                                      .communityTC!
+                                      .text = val.location.toString();
                                   // print(farmSizeTC
                                   //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
                                   //
@@ -472,9 +509,7 @@ class _AddContractorCertificateRecordState
                                 'Farmer name',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               TextFormField(
                                 controller:
                                     addContractorCertificateRecordController
@@ -482,7 +517,9 @@ class _AddContractorCertificateRecordState
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                    vertical: 15,
+                                    horizontal: 15,
+                                  ),
                                   enabledBorder: inputBorder,
                                   focusedBorder: inputBorderFocused,
                                   errorBorder: inputBorder,
@@ -491,22 +528,22 @@ class _AddContractorCertificateRecordState
                                   fillColor: AppColor.lightText,
                                 ),
                                 keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                  decimal: true,
+                                ),
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Farmer name is required"
-                                        : null,
+                                validator:
+                                    (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Farmer name is required"
+                                            : null,
                               ),
                               const SizedBox(height: 20),
                               const Text(
                                 'Farm Size (in hectares)',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               TextFormField(
                                 controller:
                                     addContractorCertificateRecordController
@@ -514,7 +551,9 @@ class _AddContractorCertificateRecordState
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                    vertical: 15,
+                                    horizontal: 15,
+                                  ),
                                   enabledBorder: inputBorder,
                                   focusedBorder: inputBorderFocused,
                                   errorBorder: inputBorder,
@@ -523,22 +562,22 @@ class _AddContractorCertificateRecordState
                                   fillColor: AppColor.lightText,
                                 ),
                                 keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                  decimal: true,
+                                ),
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Farm size is required"
-                                        : null,
+                                validator:
+                                    (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Farm size is required"
+                                            : null,
                               ),
                               const SizedBox(height: 20),
                               const Text(
                                 'Community',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               TextFormField(
                                 readOnly: true,
                                 controller:
@@ -546,7 +585,9 @@ class _AddContractorCertificateRecordState
                                         .communityTC,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15),
+                                    vertical: 15,
+                                    horizontal: 15,
+                                  ),
                                   enabledBorder: inputBorder,
                                   focusedBorder: inputBorderFocused,
                                   errorBorder: inputBorder,
@@ -558,195 +599,70 @@ class _AddContractorCertificateRecordState
                                 textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.next,
                                 autovalidateMode: AutovalidateMode.always,
-                                validator: (String? value) =>
-                                    value!.trim().isEmpty
-                                        ? "Community is required"
-                                        : null,
+                                validator:
+                                    (String? value) =>
+                                        value!.trim().isEmpty
+                                            ? "Community is required"
+                                            : null,
                               ),
                               const SizedBox(height: 20),
-                              // const Text(
-                              //   'District',
-                              //   style: TextStyle(fontWeight: FontWeight.w500),
-                              // ),
-                              // const SizedBox(
-                              //   height: 5,
-                              // ),
-                              // TextFormField(
-                              //   readOnly: true,
-                              //   controller:
-                              //   addContractorCertificateRecordController
-                              //       .districtTC,
-                              //   decoration: InputDecoration(
-                              //     contentPadding: const EdgeInsets.symmetric(
-                              //         vertical: 15, horizontal: 15),
-                              //     enabledBorder: inputBorder,
-                              //     focusedBorder: inputBorderFocused,
-                              //     errorBorder: inputBorder,
-                              //     focusedErrorBorder: inputBorderFocused,
-                              //     filled: true,
-                              //     fillColor: AppColor.lightText,
-                              //   ),
-                              //   keyboardType: TextInputType.text,
-                              //   textCapitalization: TextCapitalization.words,
-                              //   textInputAction: TextInputAction.next,
-                              //   autovalidateMode: AutovalidateMode.always,
-                              //   validator: (String? value) =>
-                              //   value!.trim().isEmpty
-                              //       ? "Community is required"
-                              //       : null,
-                              // ),
-
-                              /* const Text(
-                                'Community',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              DropdownSearch<Community>(
-                                popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    itemBuilder: (context, item, selected) {
-                                      return ListTile(
-                                        title: Text(item.community.toString(),
-                                            style: selected
-                                                ? TextStyle(
-                                                    color: AppColor.primary)
-                                                : const TextStyle()),
-                                        subtitle: Text(
-                                          item.operationalArea.toString(),
-                                        ),
-                                      );
-                                    },
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select community',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    disabledItemFn: (Community s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
-                                      ),
-                                    )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                ),
-                                asyncItems: (String filter) async {
-                                  var response =
-                                      await addContractorCertificateRecordController
-                                          .globalController
-                                          .database!
-                                          .communityDao
-                                          .findAllCommunity();
-                                  return response;
-                                },
-                                itemAsString: (Community d) =>
-                                    d.community ?? '',
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (d, filter) =>
-                                    d.community == filter.community,
-                                onChanged: (val) {
-                                  addContractorCertificateRecordController
-                                      .community = val;
-                                },
-                                selectedItem:
-                                    addContractorCertificateRecordController
-                                        .community,
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (item) {
-                                  if (item == null) {
-                                    return 'Community is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),*/
 
                               const Text(
                                 'Activity',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<String>(
                                 popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select Activity',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
+                                  showSelectedItems: true,
+                                  showSearchBox: true,
+                                  title: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    child: Center(
+                                      child: Text(
+                                        'Select Activity',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (String s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
+                                  ),
+                                  disabledItemFn: (String s) => false,
+                                  modalBottomSheetProps: ModalBottomSheetProps(
+                                    elevation: 6,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
+                                        topRight: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                            horizontal: 15,
+                                          ),
+                                      enabledBorder: inputBorder,
+                                      focusedBorder: inputBorderFocused,
+                                      errorBorder: inputBorder,
+                                      focusedErrorBorder: inputBorderFocused,
+                                      filled: true,
+                                      fillColor: AppColor.xLightBackground,
+                                    ),
+                                  ),
+                                ),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -763,10 +679,10 @@ class _AddContractorCertificateRecordState
                                       await addContractorCertificateRecordController
                                           .db
                                           .getAllActivityWithMainActivityList([
-                                    MainActivities.Maintenance,
-                                    MainActivities.Establishment,
-                                    MainActivities.InitialTreatment,
-                                  ]);
+                                            MainActivities.Maintenance,
+                                            MainActivities.Establishment,
+                                            MainActivities.InitialTreatment,
+                                          ]);
 
                                   activities.forEach((activity) {
                                     if (!act.contains(activity.mainActivity)) {
@@ -774,33 +690,27 @@ class _AddContractorCertificateRecordState
                                     }
                                   });
 
-                                  //debugPrint("THE RESPONSE ::::::::::: $activities");
-
                                   return act;
                                 },
                                 itemAsString: (String d) => d,
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (activity, filter) =>
-                                    activity == filter,
+                                compareFn:
+                                    (activity, filter) => activity == filter,
                                 onChanged: (val) {
                                   addContractorCertificateRecordController
                                       .activity = val!;
-                                  // print(
-                                  //     "Activity ------------- ${addContractorCertificateRecordController.activity?.mainActivity}");
-                                  //
-                                  // if (addContractorCertificateRecordController
-                                  //         .activity?.mainActivity ==
-                                  //     MainActivities.Maintenance) {
-                                  //   // addContractorCertificateRecordController
-                                  //   //     .activityCheck.value = true;
-                                  // }
 
-                                  // addContractorCertificateRecordController
-                                  //     .subActivity = Activity() as List<Activity>;
+                                  addContractorCertificateRecordController
+                                      .toggleClearIsActivitySelected();
+
+                                  Timer(
+                                    const Duration(milliseconds: 1000),
+                                    () =>
+                                        addContractorCertificateRecordController
+                                            .toggleIsActivitySelected(),
+                                  );
+
                                   addContractorCertificateRecordController
                                       .update();
-                                  // print(
-                                  //     ' SHOWWWW ${addContractorCertificateRecordController.activity?.code}');
                                 },
                                 autoValidateMode: AutovalidateMode.always,
                                 validator: (item) {
@@ -811,118 +721,154 @@ class _AddContractorCertificateRecordState
                                   }
                                 },
                               ),
-                              const SizedBox(height: 20),
 
-                              const Text(
-                                'Sub activity',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              DropdownSearch<ActivityModel>.multiSelection(
-                                popupProps:
-                                    PopupPropsMultiSelection.modalBottomSheet(
-                                        showSelectedItems: true,
-                                        showSearchBox: true,
-                                        title: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 15),
-                                          child: Center(
-                                            child: Text(
-                                              'Select sub activity',
+                              Obx(
+                                () =>
+                                    addContractorCertificateRecordController
+                                            .isActivitySelected
+                                            .value
+                                        ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 20),
+
+                                            const Text(
+                                              'Sub activity',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w500),
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        disabledItemFn: (ActivityModel s) =>
-                                            false,
-                                        modalBottomSheetProps:
-                                            ModalBottomSheetProps(
-                                          elevation: 6,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(
-                                                      AppBorderRadius.md),
-                                                  topRight: Radius.circular(
-                                                      AppBorderRadius.md))),
-                                        ),
-                                        searchFieldProps: TextFieldProps(
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 4,
-                                                    horizontal: 15),
-                                            enabledBorder: inputBorder,
-                                            focusedBorder: inputBorderFocused,
-                                            errorBorder: inputBorder,
-                                            focusedErrorBorder:
-                                                inputBorderFocused,
-                                            filled: true,
-                                            fillColor:
-                                                AppColor.xLightBackground,
-                                          ),
-                                        )),
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
-                                    enabledBorder: inputBorder,
-                                    focusedBorder: inputBorderFocused,
-                                    errorBorder: inputBorder,
-                                    focusedErrorBorder: inputBorderFocused,
-                                    filled: true,
-                                    fillColor: AppColor.xLightBackground,
-                                  ),
-                                ),
-                                asyncItems: (String filter) async {
-                                  var response =
-                                      await addContractorCertificateRecordController
-                                          .db
-                                          .getSubActivityByMainActivity(
-                                              addContractorCertificateRecordController
-                                                  .activity!);
+                                            const SizedBox(height: 5),
+                                            DropdownSearch<
+                                              ActivityModel
+                                            >.multiSelection(
+                                              popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                                                showSelectedItems: true,
+                                                showSearchBox: true,
+                                                title: const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 15,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Select sub activity',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                disabledItemFn:
+                                                    (ActivityModel s) => false,
+                                                modalBottomSheetProps:
+                                                    ModalBottomSheetProps(
+                                                      elevation: 6,
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                AppBorderRadius
+                                                                    .md,
+                                                              ),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                AppBorderRadius
+                                                                    .md,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                searchFieldProps: TextFieldProps(
+                                                  decoration: InputDecoration(
+                                                    contentPadding:
+                                                        const EdgeInsets.symmetric(
+                                                          vertical: 4,
+                                                          horizontal: 15,
+                                                        ),
+                                                    enabledBorder: inputBorder,
+                                                    focusedBorder:
+                                                        inputBorderFocused,
+                                                    errorBorder: inputBorder,
+                                                    focusedErrorBorder:
+                                                        inputBorderFocused,
+                                                    filled: true,
+                                                    fillColor:
+                                                        AppColor
+                                                            .xLightBackground,
+                                                  ),
+                                                ),
+                                              ),
+                                              dropdownDecoratorProps:
+                                                  DropDownDecoratorProps(
+                                                    dropdownSearchDecoration:
+                                                        InputDecoration(
+                                                          contentPadding:
+                                                              const EdgeInsets.symmetric(
+                                                                vertical: 4,
+                                                                horizontal: 15,
+                                                              ),
+                                                          enabledBorder:
+                                                              inputBorder,
+                                                          focusedBorder:
+                                                              inputBorderFocused,
+                                                          errorBorder:
+                                                              inputBorder,
+                                                          focusedErrorBorder:
+                                                              inputBorderFocused,
+                                                          filled: true,
+                                                          fillColor:
+                                                              AppColor
+                                                                  .xLightBackground,
+                                                        ),
+                                                  ),
+                                              asyncItems: (
+                                                String filter,
+                                              ) async {
+                                                var response =
+                                                    await addContractorCertificateRecordController
+                                                        .db
+                                                        .getSubActivityByMainActivity(
+                                                          addContractorCertificateRecordController
+                                                              .activity!,
+                                                        );
 
-                                  return response;
-                                },
-                                itemAsString: (ActivityModel d) =>
-                                    d.subActivity.toString(),
-                                // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (activity, filter) =>
-                                    activity.subActivity == filter.subActivity,
-                                onChanged: (vals) {
-                                  addContractorCertificateRecordController
-                                      .subActivity = vals;
+                                                return response;
+                                              },
+                                              itemAsString:
+                                                  (ActivityModel d) =>
+                                                      d.subActivity.toString(),
+                                              // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
+                                              compareFn:
+                                                  (activity, filter) =>
+                                                      activity.subActivity ==
+                                                      filter.subActivity,
+                                              onChanged: (vals) {
+                                                addContractorCertificateRecordController
+                                                    .subActivity = vals;
 
-                                  // if (addContractorCertificateRecordController
-                                  //             .subActivity.length ==
-                                  //         1 &&
-                                  //     addContractorCertificateRecordController
-                                  //             .subActivity[0].subActivity
-                                  //             .toString()
-                                  //             .toUpperCase() ==
-                                  //         "weeding of replanted farms"
-                                  //             .toUpperCase()) {
-                                  //
-                                  //   // addContractorCertificateRecordController
-                                  //   //     .subActivityCheck.value = true;
-                                  // }
 
-                                  addContractorCertificateRecordController
-                                      .update();
-                                },
-                                autoValidateMode: AutovalidateMode.always,
-                                validator: (items) {
-                                  if (items == null || items.isEmpty) {
-                                    return 'Sub activity is required';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                                                addContractorCertificateRecordController
+                                                    .update();
+                                              },
+                                              autoValidateMode:
+                                                  AutovalidateMode.always,
+                                              validator: (items) {
+                                                if (items == null ||
+                                                    items.isEmpty) {
+                                                  return 'Sub activity is required';
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                            ),
+                                            const SizedBox(height: 20),
+                                          ],
+                                        )
+                                        : SizedBox.shrink(),
                               ),
-                              const SizedBox(height: 20),
-
+                              SizedBox(height: 20),
                               // if (addContractorCertificateRecordController
                               //         .activityCheck.value &&
                               //     addContractorCertificateRecordController
@@ -940,15 +886,19 @@ class _AddContractorCertificateRecordState
                                   menuProps: MenuProps(
                                     elevation: 6,
                                     borderRadius: BorderRadius.circular(
-                                        AppBorderRadius.sm),
+                                      AppBorderRadius.sm,
+                                    ),
                                   ),
                                 ),
-                                items: addContractorCertificateRecordController
-                                    .listOfRoundsOfWeeding,
+                                items:
+                                    addContractorCertificateRecordController
+                                        .listOfRoundsOfWeeding,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -983,62 +933,71 @@ class _AddContractorCertificateRecordState
                                 'Contractor Name',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               DropdownSearch<Contractor>(
                                 popupProps: PopupProps.modalBottomSheet(
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    itemBuilder: (context, item, selected) {
-                                      return ListTile(
-                                        title: Text(
-                                            item.contractorName.toString(),
-                                            style: selected
+                                  showSelectedItems: true,
+                                  showSearchBox: true,
+                                  itemBuilder: (context, item, selected) {
+                                    return ListTile(
+                                      title: Text(
+                                        item.contractorName.toString(),
+                                        style:
+                                            selected
                                                 ? TextStyle(
-                                                    color: AppColor.primary)
-                                                : const TextStyle()),
-                                      );
-                                    },
-                                    title: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Center(
-                                        child: Text(
-                                          'Select contractor',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
+                                                  color: AppColor.primary,
+                                                )
+                                                : const TextStyle(),
+                                      ),
+                                    );
+                                  },
+                                  title: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    child: Center(
+                                      child: Text(
+                                        'Select contractor',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                    disabledItemFn: (Contractor s) => false,
-                                    modalBottomSheetProps:
-                                        ModalBottomSheetProps(
-                                      elevation: 6,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  AppBorderRadius.md),
-                                              topRight: Radius.circular(
-                                                  AppBorderRadius.md))),
-                                    ),
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 15),
-                                        enabledBorder: inputBorder,
-                                        focusedBorder: inputBorderFocused,
-                                        errorBorder: inputBorder,
-                                        focusedErrorBorder: inputBorderFocused,
-                                        filled: true,
-                                        fillColor: AppColor.xLightBackground,
+                                  ),
+                                  disabledItemFn: (Contractor s) => false,
+                                  modalBottomSheetProps: ModalBottomSheetProps(
+                                    elevation: 6,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
+                                        topRight: Radius.circular(
+                                          AppBorderRadius.md,
+                                        ),
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                            horizontal: 15,
+                                          ),
+                                      enabledBorder: inputBorder,
+                                      focusedBorder: inputBorderFocused,
+                                      errorBorder: inputBorder,
+                                      focusedErrorBorder: inputBorderFocused,
+                                      filled: true,
+                                      fillColor: AppColor.xLightBackground,
+                                    ),
+                                  ),
+                                ),
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 15),
+                                      vertical: 4,
+                                      horizontal: 15,
+                                    ),
                                     enabledBorder: inputBorder,
                                     focusedBorder: inputBorderFocused,
                                     errorBorder: inputBorder,
@@ -1056,11 +1015,13 @@ class _AddContractorCertificateRecordState
                                           .findAllContractors();
                                   return response;
                                 },
-                                itemAsString: (Contractor d) =>
-                                    d.contractorName ?? '',
+                                itemAsString:
+                                    (Contractor d) => d.contractorName ?? '',
                                 // filterFn: (regionDistrict, filter) => RegionDistrict.userFilterByCreationDate(filter),
-                                compareFn: (d, filter) =>
-                                    d.contractorName == filter.contractorName,
+                                compareFn:
+                                    (d, filter) =>
+                                        d.contractorName ==
+                                        filter.contractorName,
                                 onChanged: (val) {
                                   addContractorCertificateRecordController
                                       .contractor = val;
@@ -1120,9 +1081,7 @@ class _AddContractorCertificateRecordState
                               //             )
                               //           : Container();
                               //     }),
-                              const SizedBox(
-                                height: 40,
-                              ),
+                              const SizedBox(height: 40),
                               Row(
                                 children: [
                                   Expanded(
@@ -1144,24 +1103,26 @@ class _AddContractorCertificateRecordState
                                           addContractorCertificateRecordController
                                               .globals
                                               .showSnackBar(
-                                                  title: 'Alert',
-                                                  message:
-                                                      'Kindly provide all required information');
+                                                title: 'Alert',
+                                                message:
+                                                    'Kindly provide all required information',
+                                              );
                                         }
                                         // }
                                       },
                                       child:
-                                          // Obx(
-                                          // () =>
-                                          Text(
+                                      // Obx(
+                                      // () =>
+                                      Text(
                                         // addContractorCertificateRecordController
                                         //         .isSaveButtonDisabled.value
                                         //     ? 'Please wait ...'
                                         //     :
                                         'Save',
                                         style: TextStyle(
-                                            color: AppColor.white,
-                                            fontSize: 14),
+                                          color: AppColor.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                       // ),
                                     ),
@@ -1184,24 +1145,26 @@ class _AddContractorCertificateRecordState
                                           addContractorCertificateRecordController
                                               .globals
                                               .showSnackBar(
-                                                  title: 'Alert',
-                                                  message:
-                                                      'Kindly provide all required information');
+                                                title: 'Alert',
+                                                message:
+                                                    'Kindly provide all required information',
+                                              );
                                         }
                                         // }
                                       },
                                       child:
-                                          // Obx(
-                                          //   () =>
-                                          Text(
+                                      // Obx(
+                                      //   () =>
+                                      Text(
                                         // addContractorCertificateRecordController
                                         //         .isButtonDisabled.value
                                         //     ? 'Please wait ...'
                                         //     :
                                         'Submit',
                                         style: TextStyle(
-                                            color: AppColor.white,
-                                            fontSize: 14),
+                                          color: AppColor.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                       // ),
                                     ),
@@ -1215,7 +1178,7 @@ class _AddContractorCertificateRecordState
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

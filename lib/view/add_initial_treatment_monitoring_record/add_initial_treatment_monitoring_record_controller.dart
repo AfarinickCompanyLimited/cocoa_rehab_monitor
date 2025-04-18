@@ -121,6 +121,16 @@ class AddInitialTreatmentMonitoringRecordController extends GetxController {
   List<ActivityModel> subActivityList = [];
   String? activity;
 
+  var isActivitySelected = false.obs;
+
+  toggleClearIsActivitySelected(){
+    isActivitySelected.value = false;
+  }
+
+  toggleIsActivitySelected(){
+    isActivitySelected.value = true;
+  }
+
   List<InitialTreatmentRehabAssistantSelection> rehabAssistants =
       [InitialTreatmentRehabAssistantSelection(index: RxInt(1))].obs;
 
