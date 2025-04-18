@@ -60,6 +60,21 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
   List<ActivityModel> subActivityList = [];
   String? activity;
 
+  var isActivitySelected = false.obs;
+
+  getInitialActivityValue(){
+    isActivitySelected.value = activity.toString().isNotEmpty;
+  }
+
+  toggleClearIsActivitySelected(){
+    isActivitySelected.value = false;
+    subActivityList.clear();
+  }
+
+  toggleIsActivitySelected(){
+    isActivitySelected.value = true;
+  }
+
   GlobalController globalController = Get.find();
 
   OutbreakFarmApiInterface outbreakFarmApiInterface =
@@ -263,6 +278,7 @@ class EditInitialTreatmentMonitoringRecordController extends GetxController {
       // monitoringDateTC = TextEditingController(
       //     text: monitor!.completionDate);
 
+      getInitialActivityValue();
       List<ActivityModel> ls = await db.getMainActivityBySubActivity(ac.value);
       //subActivity = ls.first;
       // cocoaSeedlingsAliveTC?.text = monitor!.cocoaSeedlingsAlive.toString();
