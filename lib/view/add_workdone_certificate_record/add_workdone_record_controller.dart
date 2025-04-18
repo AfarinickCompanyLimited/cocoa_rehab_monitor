@@ -63,6 +63,20 @@ class AddContractorCertificateRecordController extends GetxController {
   ActivityModel? activit;
   String? activity;
 
+  var isActivitySelected = false.obs;
+
+  getInitialActivityValue(){
+    isActivitySelected.value = activity.toString().isNotEmpty;
+  }
+
+  toggleClearIsActivitySelected(){
+    isActivitySelected.value = false;
+  }
+
+  toggleIsActivitySelected(){
+    isActivitySelected.value = true;
+  }
+
   ActivityDatabaseHelper db = ActivityDatabaseHelper.instance;
 
   JobOrderFarmsDbFarmDatabaseHelper jobDb =
